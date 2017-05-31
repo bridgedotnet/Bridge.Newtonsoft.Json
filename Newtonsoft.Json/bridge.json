@@ -1,0 +1,39 @@
+﻿{
+  "output": "Resources/.generated",
+  "cleanOutputFolderBeforeBuild": true,
+  "outputFormatting": "Formatted",
+  "outputBy": "ClassPath",
+  "generateDocumentation": "None",
+  "logging": {
+    "level": "None"
+  },
+  "assembly": {
+    "disableInitAssembly": true,
+    "enableReservedNamespaces": true
+    //fullName: ""
+  },
+  "fileName": "generated.js",
+  "combineScripts": true,
+  "resources": [
+    {
+      "name": "bridge.js",
+      "extract": false
+    },
+    {
+      "name": "bridge.console.js",
+      "extract": false
+    },
+    {
+      // File paths relative to project root
+      "name": "newtonsoft.json.js",
+      "header": "Resources/.auxiliary/Header.js",
+      "remark": "\n\n// @source @{name}\n",
+      "files": [
+        "Resources/.auxiliary/AssemblyBegin.js",
+        "Resources/.generated/generated.js",
+        "Resources/Manual/JsonConvert.js",
+        "Resources/.auxiliary/AssemblyEnd.js"
+      ]
+    }
+  ]
+}

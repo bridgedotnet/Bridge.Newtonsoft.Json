@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge.Newtonsoft.Json", "Bridge.Newtonsoft.Json\Bridge.Newtonsoft.Json.csproj", "{A007DF6C-CE04-4142-BDDA-812AB1B91AD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json", "Newtonsoft.Json\Newtonsoft.Json.csproj", "{A007DF6C-CE04-4142-BDDA-812AB1B91AD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge.Newtonsoft.Json.Tests", "Tests\Bridge.Newtonsoft.Json.Tests\Bridge.Newtonsoft.Json.Tests.csproj", "{2E0BBC67-DDDF-4C46-8336-30E3E1EA64A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json.Tests", "Tests\Newtonsoft.Json.Tests\Newtonsoft.Json.Tests.csproj", "{2E0BBC67-DDDF-4C46-8336-30E3E1EA64A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{452E9BCF-161E-4CAE-A26F-7A83032A296F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "specs", "specs", "{EDCBD914-91AC-4EA5-AFE3-CC4240F4E9E9}"
 	ProjectSection(SolutionItems) = preProject
-		.build\specs\Bridge.Newtonsoft.Json.nuspec = .build\specs\Bridge.Newtonsoft.Json.nuspec
+		.build\specs\Newtonsoft.Json.nuspec = .build\specs\Newtonsoft.Json.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{85009D32-4BAA-4809-B2A0-0A545288470D}"
