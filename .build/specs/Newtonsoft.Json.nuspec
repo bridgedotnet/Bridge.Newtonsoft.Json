@@ -21,9 +21,13 @@
     </frameworkAssemblies>
   </metadata>
   <files>
+    <file src="../../README.md" target="README.md" />
+    <file src="../../LICENSE.md" target="LICENSE.md" />
+    <file src="../../Newtonsoft.Json/Newtonsoft.Json.LICENSE.md" target="Newtonsoft.Json.LICENSE.md" />
+
     <!--NET40-->
-    <file src="..\..\Newtonsoft.Json\bin\Release\Newtonsoft.Json.dll" target="lib\net40\Newtonsoft.Json.dll" />
-    <file src="..\..\Newtonsoft.Json\bin\Release\Newtonsoft.Json.xml" target="lib\net40\Newtonsoft.Json.xml" />
-    <file src="..\..\Newtonsoft.Json\bin\Release\Newtonsoft.Json.pdb" target="lib\net40\pdb\Newtonsoft.Json.pdb" />
+    <file src="../../Newtonsoft.Json/bin/Release/Newtonsoft.Json.dll" target="lib/net40/Newtonsoft.Json.dll" />
+    <file src="../../Newtonsoft.Json/bin/Release/Newtonsoft.Json.xml" target="lib/net40/Newtonsoft.Json.xml" />
+    <file src="../../Newtonsoft.Json/bin/Release/Newtonsoft.Json.pdb" target="lib/net40/pdb/Newtonsoft.Json.pdb" />
   </files>
 </package>
