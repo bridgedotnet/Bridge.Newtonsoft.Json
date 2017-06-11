@@ -110,6 +110,22 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     return JSON.stringify(value);
                 },
 
+                validateReflectable: function (type) {
+                    do {
+                        var ignoreMetaData = type === System.Object || type === Object || type.$literal || type.$kind === "anonymous",
+                            nometa = !Bridge.getMetadata(type);
+
+                        if (!ignoreMetaData && nometa) {
+                            if (Bridge.$jsonGuard) {
+                                delete Bridge.$jsonGuard;
+                            }
+
+                            throw new System.InvalidOperationException(Bridge.getTypeName(type) + " is not reflectable and cannot be serialized.");
+                        }
+                        type = ignoreMetaData ? null : Bridge.Reflection.getBaseType(type);
+                    } while (!ignoreMetaData && type != null)
+                },
+
                 SerializeObject: function (obj, formatting, settings, returnRaw, possibleType) {
                     if (Bridge.is(formatting, Newtonsoft.Json.JsonSerializerSettings)) {
                         settings = formatting;
@@ -232,12 +248,9 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             obj = dict;
                         } else {
                             var raw = {},
-                                ignoreMetaData = type === System.Object || type === Object || type.$literal || type.$kind === "anonymous",
                                 nometa = !Bridge.getMetadata(type);
 
-                            if (!ignoreMetaData && nometa) {
-                                throw new System.InvalidOperationException(Bridge.getTypeName(type) + " is not reflectable and cannot be serialized.");
-                            }
+                            Newtonsoft.Json.JsonConvert.validateReflectable(type);
 
                             if (settings && settings.TypeNameHandling) {
                                 raw["$type"] = Bridge.Reflection.getTypeQName(type);

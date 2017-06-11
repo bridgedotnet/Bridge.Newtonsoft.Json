@@ -8,6 +8,42 @@
 Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     "use strict";
 
+    Bridge.define("Newtonsoft.Json.Tests.Case2", {
+        statics: {
+            methods: {
+                TestMetadata: function () {
+                    Bridge.Test.NUnit.Assert.Throws$6(System.InvalidOperationException, $asm.$.Newtonsoft.Json.Tests.Case2.f1);
+
+                    Bridge.Test.NUnit.Assert.Throws$6(System.InvalidOperationException, $asm.$.Newtonsoft.Json.Tests.Case2.f2);
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(new Newtonsoft.Json.Tests.Case2.Class3());
+                    Bridge.Test.NUnit.Assert.AreDeepEqual("{\"Prop1\":0}", json);
+                }
+            }
+        }
+    });
+
+    Bridge.ns("Newtonsoft.Json.Tests.Case2", $asm.$);
+
+    Bridge.apply($asm.$.Newtonsoft.Json.Tests.Case2, {
+        f1: function () {
+            var o = Newtonsoft.Json.JsonConvert.SerializeObject(new Newtonsoft.Json.Tests.Case2.Class2());
+        },
+        f2: function () {
+            var o = Newtonsoft.Json.JsonConvert.SerializeObject(new Newtonsoft.Json.Tests.Case2.Class1());
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Case2.Class1", {
+        props: {
+            Prop1: 0
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Case2.I1", {
+        $kind: "interface"
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests", {
         statics: {
             methods: {
@@ -928,6 +964,23 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 }
             }
         }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Case2.Class2", {
+        inherits: [Newtonsoft.Json.Tests.Case2.Class1],
+        props: {
+            Prop1$1: 0
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Case2.Class3", {
+        inherits: [Newtonsoft.Json.Tests.Case2.I1],
+        props: {
+            Prop1: 0
+        },
+        alias: [
+            "Prop1", "Newtonsoft$Json$Tests$Case2$I1$Prop1"
+        ]
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.Person", {
