@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Issues\Case3.cs" />
     <Compile Include="Tests\DeserializationTests.cs" />
     <Compile Include="Issues\N1134.cs" />
     <Compile Include="Issues\N1438.cs" />

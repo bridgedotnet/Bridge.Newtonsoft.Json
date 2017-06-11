@@ -8,6 +8,24 @@
         }
     });
 
+    Bridge.define("Newtonsoft.Json.JsonException", {
+        inherits: [System.Exception],
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                System.Exception.ctor.call(this);
+            },
+            $ctor1: function (message) {
+                this.$initialize();
+                System.Exception.ctor.call(this, message);
+            },
+            $ctor2: function (message, innerException) {
+                this.$initialize();
+                System.Exception.ctor.call(this, message, innerException);
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.JsonSerializerSettings", {
         statics: {
             fields: {
@@ -74,6 +92,24 @@
             }
         },
         $flags: true
+    });
+
+    Bridge.define("Newtonsoft.Json.JsonSerializationException", {
+        inherits: [Newtonsoft.Json.JsonException],
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                Newtonsoft.Json.JsonException.ctor.call(this);
+            },
+            $ctor1: function (message) {
+                this.$initialize();
+                Newtonsoft.Json.JsonException.$ctor1.call(this, message);
+            },
+            $ctor2: function (message, innerException) {
+                this.$initialize();
+                Newtonsoft.Json.JsonException.$ctor2.call(this, message, innerException);
+            }
+        }
     });
 
     Bridge.define("Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver", {

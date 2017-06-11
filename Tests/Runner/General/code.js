@@ -644,6 +644,68 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         inherits: [System.Collections.Generic.List$1(System.Int32)]
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case4", {
+        statics: {
+            methods: {
+                TestConstructorWithArgument: function () {
+                    var x = new Newtonsoft.Json.Tests.Issues.Case4.MyString("abc");
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(x);
+                    var cloneX = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case4.MyString);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("abc", cloneX.Value);
+                },
+                TestConstructorWithIEnumerable: function () {
+                    var list = new (Newtonsoft.Json.Tests.Issues.Case4.MyList$1(System.String))(System.Array.init(["a", "b"], System.String));
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(list);
+                    var clone = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case4.MyList$1(System.String));
+
+                    Bridge.Test.NUnit.Assert.AreEqual("[\"a\",\"b\"]", json);
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Linq.Enumerable.from(list).toArray(), System.Linq.Enumerable.from(clone).toArray());
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case4.MyList$1", function (T) { return {
+        inherits: [System.Collections.Generic.IEnumerable$1(T)],
+        fields: {
+            _values: null
+        },
+        alias: [
+            "getEnumerator", ["System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(T) + "$getEnumerator", "System$Collections$Generic$IEnumerable$1$getEnumerator"]
+        ],
+        ctors: {
+            ctor: function (values) {
+                this.$initialize();
+                this._values = values;
+            }
+        },
+        methods: {
+            getEnumerator: function () {
+                return Bridge.getEnumerator(this._values, T);
+            },
+            System$Collections$IEnumerable$getEnumerator: function () {
+                return this.getEnumerator();
+            }
+        }
+    }; });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case4.MyString", {
+        props: {
+            Value: null
+        },
+        ctors: {
+            ctor: function (value) {
+                this.$initialize();
+                if (System.String.isNullOrWhiteSpace(value)) {
+                    throw new System.ArgumentException(System.String.format("Null/blank {0} specified", "value"));
+                }
+
+                this.Value = value;
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.SerializationTests", {
         statics: {
             methods: {
