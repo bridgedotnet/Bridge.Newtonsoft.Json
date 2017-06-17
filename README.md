@@ -72,7 +72,7 @@ Product deserializedProduct = JsonConvert.DeserializeObject<Product>(output);
 
 ## Deck.NET
 
-https://dev.deck.net/newtonsoft.json
+https://deck.net/newtonsoft.json
 
 ```csharp
 public class Program

@@ -17,9 +17,9 @@ namespace Newtonsoft.Json.Tests
             }
         }
 
-        public class Class2: Class1
+        public class Class2 : Class1
         {
-            public int Prop1
+            new public int Prop1
             {
                 get; set;
             }
@@ -56,7 +56,7 @@ namespace Newtonsoft.Json.Tests
             });
 
             var json = JsonConvert.SerializeObject(new Class3());
-            Assert.AreDeepEqual("{\"Prop1\":0}", json);
+            Assert.AreEqual("{\"Prop1\":0}", json);
         }
     }
 }
