@@ -1,5 +1,5 @@
 /*
- * @version   : 1.0.0-beta2 - A Bridge.NET implementation of Newtonsoft.Json
+ * @version   : 1.0.0-beta3 - A Bridge.NET implementation of Newtonsoft.Json
  * @author    : Object.NET, Inc. http://www.bridge.net/
  * @date      : 2017-06-07
  * @copyright : Copyright (c) 2008-2017, Object.NET, Inc. (http://www.object.net/). All rights reserved.
@@ -164,6 +164,22 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     return interfaceType ? Bridge.Reflection.getGenericArguments(interfaceType)[0] : null;
                 },
 
+                validateReflectable: function (type) {
+                    do {
+                        var ignoreMetaData = type === System.Object || type === Object || type.$literal || type.$kind === "anonymous",
+                            nometa = !Bridge.getMetadata(type);
+
+                        if (!ignoreMetaData && nometa) {
+                            if (Bridge.$jsonGuard) {
+                                delete Bridge.$jsonGuard;
+                            }
+
+                            throw new System.InvalidOperationException(Bridge.getTypeName(type) + " is not reflectable and cannot be serialized.");
+                        }
+                        type = ignoreMetaData ? null : Bridge.Reflection.getBaseType(type);
+                    } while (!ignoreMetaData && type != null)
+                },
+
                 SerializeObject: function (obj, formatting, settings, returnRaw, possibleType) {
                     if (Bridge.is(formatting, Newtonsoft.Json.JsonSerializerSettings)) {
                         settings = formatting;
@@ -287,12 +303,9 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             obj = arr;
                         } else {
                             var raw = {},
-                                ignoreMetaData = type === System.Object || type === Object || type.$literal || type.$kind === "anonymous",
                                 nometa = !Bridge.getMetadata(type);
 
-                            if (!ignoreMetaData && nometa) {
-                                throw new System.InvalidOperationException(Bridge.getTypeName(type) + " is not reflectable and cannot be serialized.");
-                            }
+                            Newtonsoft.Json.JsonConvert.validateReflectable(type);
 
                             if (settings && settings.TypeNameHandling) {
                                 raw["$type"] = Bridge.Reflection.getTypeQName(type);

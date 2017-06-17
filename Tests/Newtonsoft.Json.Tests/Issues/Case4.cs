@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Newtonsoft.Json.Tests.Issues
 {
-    // Bridge[#4]
+    // [#4]
     [Category("Issues")]
     [TestFixture(TestNameFormat = "#4 - {0}")]
     public class Case4
