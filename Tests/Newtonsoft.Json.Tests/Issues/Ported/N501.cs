@@ -18,7 +18,7 @@ namespace Newtonsoft.Json.Tests.Issues
     }
 
     // Bridge[#501]
-    [Category("Issues")]
+    [Category("Ported Issues")]
     [TestFixture(TestNameFormat = "#501 - {0}")]
     public class Bridge501
     {

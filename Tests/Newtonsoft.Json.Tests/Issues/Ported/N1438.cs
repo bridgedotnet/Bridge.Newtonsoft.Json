@@ -3,7 +3,7 @@ using Bridge;
 
 namespace Newtonsoft.Json.Tests.Issues
 {
-    [Category("Issues")]
+    [Category("Ported Issues")]
     [TestFixture(TestNameFormat = "#1438 - {0}")]
     public class Bridge1438
     {
