@@ -17,11 +17,17 @@ namespace Newtonsoft.Json.Tests.Issues
             public MyString(string value)
             {
                 if (string.IsNullOrWhiteSpace(value))
+                {
                     throw new ArgumentException($"Null/blank {nameof(value)} specified");
+                }
 
                 Value = value;
             }
-            public string Value { get; }
+
+            public string Value
+            {
+                get;
+            }
         }
 
         public sealed class MyList<T> : IEnumerable<T>
@@ -32,8 +38,15 @@ namespace Newtonsoft.Json.Tests.Issues
                 _values = values;
             }
 
-            public IEnumerator<T> GetEnumerator() { return _values.GetEnumerator(); }
-            IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
+            public IEnumerator<T> GetEnumerator()
+            {
+                return _values.GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
 
         [Test]
