@@ -57,7 +57,7 @@ module.exports = function(grunt) {
                     urls: ["http://127.0.0.1:9999/index.html?noglobals&hidepassed"],
                     browsers: browsers,
                     build: process.env.TRAVIS_JOB_ID,
-                    testname: "Bridge.NET Newtonsoft.Json client tests",
+                    testname: "Bridge.Newtonsoft.Json client tests",
                     throttled: 4,
                     sauceConfig: {
                         // https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options
@@ -76,6 +76,6 @@ module.exports = function(grunt) {
     }
 
     // https://gruntjs.com/api/grunt.task
-    grunt.registerTask("dev", ["connect", "watch"]);
+    // grunt.registerTask("dev", ["connect", "watch"]);
     grunt.registerTask("test", ["connect", "saucelabs-qunit"]);
 };
