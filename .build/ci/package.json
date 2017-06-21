@@ -1,0 +1,29 @@
+{
+  "name": "Bridge.Newtonsoft.Json",
+  "description": "Provides Bridge.NET support for a limited subset of the Newtonsoft.Json API.",
+  "homepage": "https://github.com/bridgedotnet/Bridge.Newtonsoft.Json",
+  "keywords": [
+    "Bridge.NET",
+    "JavaScript",
+    "Compiler"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bridgedotnet/Bridge.Newtonsoft.Json"
+  },
+  "engines": ["node"],
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~1.0.1",
+    "grunt-cli": "~1.2.0",
+    "grunt-saucelabs": "*",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-watch": "~1.0.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "directories": {
+    "test": "./spec"
+  }
+}
