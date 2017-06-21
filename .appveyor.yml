@@ -78,7 +78,6 @@ build:
 before_build:
 - appveyor-retry nuget restore "c:\projects\Json\.nuget\packages.config" -PackagesDirectory "c:\projects\Json\packages" -DisableParallelProcessing
 
-
 # scripts to run after build
 after_build:
 
