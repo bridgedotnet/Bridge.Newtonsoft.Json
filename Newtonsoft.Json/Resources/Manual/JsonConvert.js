@@ -43,6 +43,10 @@
                     } while (!ignoreMetaData && type != null)
                 },
 
+                defaultGuard: function () {
+                    Bridge.$jsonGuard && Bridge.$jsonGuard.pop();
+                },
+
                 SerializeObject: function (obj, formatting, settings, returnRaw, possibleType) {
                     if (Bridge.is(formatting, Newtonsoft.Json.JsonSerializerSettings)) {
                         settings = formatting;
@@ -81,7 +85,7 @@
                             arr,
                             i;
 
-                        var removeGuard = Bridge.emptyFn;
+                        var removeGuard = Newtonsoft.Json.JsonConvert.defaultGuard;
                         if (!Bridge.$jsonGuard) {
                             Bridge.$jsonGuard = [];
                             removeGuard = function () {

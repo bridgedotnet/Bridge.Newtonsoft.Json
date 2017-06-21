@@ -177,6 +177,10 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     } while (!ignoreMetaData && type != null)
                 },
 
+                defaultGuard: function () {
+                    Bridge.$jsonGuard && Bridge.$jsonGuard.pop();
+                },
+
                 SerializeObject: function (obj, formatting, settings, returnRaw, possibleType) {
                     if (Bridge.is(formatting, Newtonsoft.Json.JsonSerializerSettings)) {
                         settings = formatting;
@@ -215,7 +219,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             arr,
                             i;
 
-                        var removeGuard = Bridge.emptyFn;
+                        var removeGuard = Newtonsoft.Json.JsonConvert.defaultGuard;
                         if (!Bridge.$jsonGuard) {
                             Bridge.$jsonGuard = [];
                             removeGuard = function () {
