@@ -769,6 +769,85 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case8", {
+        statics: {
+            methods: {
+                TestGenericTypeHandling: function () {
+                    var $t;
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+
+                    var x = new (Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$1(Newtonsoft.Json.Tests.Issues.Case8.PageEditData))();
+
+                    x.Value = ($t = new Newtonsoft.Json.Tests.Issues.Case8.PageEditData(), $t.Data = 7, $t);
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(x, settings);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+ApiResponse`1[[Newtonsoft.Json.Tests.Issues.Case8+PageEditData, Newtonsoft.Json.Tests]], Newtonsoft.Json.Tests\",\"Value\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+PageEditData, Newtonsoft.Json.Tests\",\"Data\":7}}", json);
+
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$1(Newtonsoft.Json.Tests.Issues.Case8.PageEditData), settings);
+
+                    Bridge.Test.NUnit.Assert.NotNull(Bridge.unbox(result));
+
+                    var typedResult = Bridge.as(result, Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$1(Newtonsoft.Json.Tests.Issues.Case8.PageEditData));
+                    Bridge.Test.NUnit.Assert.NotNull(typedResult);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(7, typedResult.Value.Data);
+                },
+                TestGenericTypeHandlingMoreGenericLevel: function () {
+                    var $t, $t1;
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+
+                    var x = new (Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$2(Newtonsoft.Json.Tests.Issues.Case8.PageEditData$1(System.String),Newtonsoft.Json.Tests.Issues.Case8.PageEditData$1(Newtonsoft.Json.Tests.Issues.Case8.PageEditData)))();
+
+                    x.Value1 = ($t = new (Newtonsoft.Json.Tests.Issues.Case8.PageEditData$1(System.String))(), $t.Data = "Hi", $t);
+
+                    x.Value2 = ($t = new (Newtonsoft.Json.Tests.Issues.Case8.PageEditData$1(Newtonsoft.Json.Tests.Issues.Case8.PageEditData))(), $t.Data = ($t1 = new Newtonsoft.Json.Tests.Issues.Case8.PageEditData(), $t1.Data = 8, $t1), $t);
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(x, settings);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+ApiResponse`2[[Newtonsoft.Json.Tests.Issues.Case8+PageEditData`1[[System.String, mscorlib]], Newtonsoft.Json.Tests],[Newtonsoft.Json.Tests.Issues.Case8+PageEditData`1[[Newtonsoft.Json.Tests.Issues.Case8+PageEditData, Newtonsoft.Json.Tests]], Newtonsoft.Json.Tests]], Newtonsoft.Json.Tests\",\"Value1\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+PageEditData`1[[System.String, mscorlib]], Newtonsoft.Json.Tests\",\"Data\":\"Hi\"},\"Value2\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+PageEditData`1[[Newtonsoft.Json.Tests.Issues.Case8+PageEditData, Newtonsoft.Json.Tests]], Newtonsoft.Json.Tests\",\"Data\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+PageEditData, Newtonsoft.Json.Tests\",\"Data\":8}}}", json);
+
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$2(Newtonsoft.Json.Tests.Issues.Case8.PageEditData$1(System.String),Newtonsoft.Json.Tests.Issues.Case8.PageEditData$1(Newtonsoft.Json.Tests.Issues.Case8.PageEditData)), settings);
+
+                    Bridge.Test.NUnit.Assert.NotNull(Bridge.unbox(result));
+
+                    var typedResult = Bridge.as(result, Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$2(Newtonsoft.Json.Tests.Issues.Case8.PageEditData$1(System.String),Newtonsoft.Json.Tests.Issues.Case8.PageEditData$1(Newtonsoft.Json.Tests.Issues.Case8.PageEditData)));
+                    Bridge.Test.NUnit.Assert.NotNull(typedResult);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("Hi", typedResult.Value1.Data);
+                    Bridge.Test.NUnit.Assert.AreEqual(8, typedResult.Value2.Data.Data);
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$1", function (T) { return {
+        fields: {
+            Value: Bridge.getDefaultValue(T)
+        }
+    }; });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$2", function (T, K) { return {
+        fields: {
+            Value1: Bridge.getDefaultValue(T)
+        },
+        props: {
+            Value2: Bridge.getDefaultValue(K)
+        }
+    }; });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case8.PageEditData", {
+        props: {
+            Data: 0
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case8.PageEditData$1", function (T) { return {
+        props: {
+            Data: Bridge.getDefaultValue(T)
+        }
+    }; });
+
     Bridge.define("Newtonsoft.Json.Tests.SerializationTests", {
         statics: {
             methods: {
