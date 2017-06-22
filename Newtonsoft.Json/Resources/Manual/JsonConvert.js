@@ -479,9 +479,11 @@
 
                             return dictionary;
                         } else {
-                            if (settings && settings.TypeNameHandling > 0  && raw["$type"] != null) {
-                                var typeName = raw["$type"],
-									parts = typeName.split(",");
+                            var typeName = raw["$type"];
+
+                            if (settings && settings.TypeNameHandling > 0 && typeName != null) {
+                                var parts = typeName.split(",");
+
                                 if (parts.length > 1) {
                                     var lastEl = parts.pop();
 
