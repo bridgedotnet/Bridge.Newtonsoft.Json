@@ -614,7 +614,17 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return dictionary;
                         } else {
                             if (settings && settings.TypeNameHandling > 0  && raw["$type"] != null) {
-                                type = Bridge.Reflection.getType(raw["$type"].split(",")[0]);
+                                var typeName = raw["$type"],
+									parts = typeName.split(",");
+                                if (parts.length > 1) {
+                                    var lastEl = parts.pop();
+
+                                    if (lastEl.indexOf("]") < 0) {
+                                        typeName = parts.join(",");
+                                    }
+                                }
+
+                                type = Bridge.Reflection.getType(typeName);
                             }
 
                             if (type === null) {

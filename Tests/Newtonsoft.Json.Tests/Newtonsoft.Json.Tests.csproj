@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Issues\0100\Case002.cs" />
     <Compile Include="Issues\0100\Case004.cs" />
+    <Compile Include="Issues\0100\Case008.cs" />
     <Compile Include="Issues\0100\Case010.cs" />
     <Compile Include="Tests\DeserializationTests.cs" />
     <Compile Include="Issues\Ported\N1134.cs" />
