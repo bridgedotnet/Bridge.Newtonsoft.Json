@@ -848,6 +848,100 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     }; });
 
+    Bridge.define("Newtonsoft.Json.Tests.JsonConstructorTests", {
+        statics: {
+            methods: {
+                TestJsonConstructor: function () {
+                    var u = new Newtonsoft.Json.Tests.JsonConstructorTests.User.$ctor1("Frank", true);
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(u);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Enabled\":true,\"UserName\":\"Frank\"}", json);
+
+                    var cloneU = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.JsonConstructorTests.User);
+
+                    Bridge.Test.NUnit.Assert.NotNull(cloneU);
+                    Bridge.Test.NUnit.Assert.AreEqual("Frank", cloneU.UserName);
+                    Bridge.Test.NUnit.Assert.AreEqual(true, cloneU.Enabled);
+                },
+                TestJsonConstructorMyOtherString: function () {
+                    var x = Newtonsoft.Json.Tests.JsonConstructorTests.MyOtherString.Empty.Add("abc");
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(x);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Value\":\"abc\"}", json);
+
+                    var cloneX = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.JsonConstructorTests.MyOtherString);
+                    Bridge.Test.NUnit.Assert.NotNull(cloneX);
+                    Bridge.Test.NUnit.Assert.AreEqual("abc", cloneX.Value);
+                },
+                TestMultipleJsonConstructor: function () {
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonException, $asm.$.Newtonsoft.Json.Tests.JsonConstructorTests.f1);
+                }
+            }
+        }
+    });
+
+    Bridge.ns("Newtonsoft.Json.Tests.JsonConstructorTests", $asm.$);
+
+    Bridge.apply($asm.$.Newtonsoft.Json.Tests.JsonConstructorTests, {
+        f1: function () {
+            Newtonsoft.Json.JsonConvert.DeserializeObject("{}", Newtonsoft.Json.Tests.JsonConstructorTests.MultipleJsonConstructors);
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.JsonConstructorTests.MultipleJsonConstructors", {
+        ctors: {
+            $ctor1: function (s) {
+                this.$initialize();
+            },
+            ctor: function (i) {
+                this.$initialize();
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.JsonConstructorTests.MyOtherString", {
+        statics: {
+            props: {
+                Empty: null
+            },
+            ctors: {
+                init: function () {
+                    this.Empty = new Newtonsoft.Json.Tests.JsonConstructorTests.MyOtherString("");
+                }
+            }
+        },
+        props: {
+            Value: null
+        },
+        ctors: {
+            ctor: function (value) {
+                this.$initialize();
+                this.Value = value;
+            }
+        },
+        methods: {
+            Add: function (value) {
+                return new Newtonsoft.Json.Tests.JsonConstructorTests.MyOtherString(System.String.concat(this.Value, value));
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.JsonConstructorTests.User", {
+        props: {
+            UserName: null,
+            Enabled: false
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+            },
+            $ctor1: function (userName, enabled) {
+                this.$initialize();
+                this.UserName = userName;
+                this.Enabled = enabled;
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.SerializationTests", {
         statics: {
             methods: {

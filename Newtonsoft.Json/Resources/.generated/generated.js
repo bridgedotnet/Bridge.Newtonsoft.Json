@@ -8,6 +8,10 @@
         }
     });
 
+    Bridge.define("Newtonsoft.Json.JsonConstructorAttribute", {
+        inherits: [System.Attribute]
+    });
+
     Bridge.define("Newtonsoft.Json.JsonException", {
         inherits: [System.Exception],
         ctors: {

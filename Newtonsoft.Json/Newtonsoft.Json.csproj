@@ -53,6 +53,7 @@
     <Compile Include="Json\JsonSerializerSettings.cs" />
     <Compile Include="Json\JsonConvert.cs" />
     <Compile Include="Json\NullValueHandling.cs" />
+    <Compile Include="Json\JsonConstructorAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\.build\common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
