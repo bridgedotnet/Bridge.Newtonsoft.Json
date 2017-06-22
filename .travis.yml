@@ -1,0 +1,52 @@
+before_install:
+# Gets commit message
+- "export TRAVIS_COMMIT_MSG=\"$(git log --format=%B --no-merges -n 1)\""
+- echo "$TRAVIS_COMMIT_MSG"
+# Check if commit message contains label [skip travis] and exit if any
+# [skip ci] label is standard for AppVeyor so there should be another one that deos not exists https://github.com/travis-ci/travis-ci/issues/5032
+- if [[ "${TRAVIS_COMMIT_MSG,,}" == *"[skip travis]"* ]]; then echo "SETUP Commit message contains [skip travis], skipping the build" && exit; else echo "SETUP No skipping commit message labels found [skip travis], countinue building"; fi
+# Check if commit message contains labels [skip travis client] or [skip ci client] to skip client tests
+- if [ -z ${SKIP_CLIENT_TESTS+x} ]; then echo "SETUP SKIP_CLIENT_TESTS is unset"; else echo "SETUP SKIP_CLIENT_TESTS is set to '$SKIP_CLIENT_TESTS'"; fi
+- if [[ -z ${SKIP_CLIENT_TESTS+x} && "${TRAVIS_COMMIT_MSG,,}" == *"[skip travis client]"* ]]; then echo "SETUP Commit message contains [skip travis client]"; export SKIP_CLIENT_TESTS=true; fi
+- if [[ -z ${SKIP_CLIENT_TESTS+x} && "${TRAVIS_COMMIT_MSG,,}" == *"[skip ci client]"* ]]; then echo "SETUP Commit message contains [skip ci client]"; export SKIP_CLIENT_TESTS=true; fi
+- if [ ! "$SKIP_CLIENT_TESTS" == "true" ]; then echo "SETUP Will run client tests"; else echo "SETUP Will not run client tests as either the skipping labels found ([skip travis client], [skip ci client]) or set SKIP_CLIENT_TESTS=true"; fi
+# Check if commit message contains labels [skip travis server] or [skip ci server] to skip server tests
+- if [ -z ${SKIP_SERVER_TESTS+x} ]; then echo "SETUP SKIP_SERVER_TESTS is unset"; else echo "SETUP SKIP_SERVER_TESTS is set to '$SKIP_SERVER_TESTS'"; fi
+- if [[ -z ${SKIP_SERVER_TESTS+x} && "${TRAVIS_COMMIT_MSG,,}" == *"[skip travis server]"* ]]; then echo "SETUP Commit message contains [skip travis server]"; export SKIP_SERVER_TESTS=true; fi
+- if [[ -z ${SKIP_SERVER_TESTS+x} && "${TRAVIS_COMMIT_MSG,,}" == *"[skip ci server]"* ]]; then echo "SETUP Commit message contains [skip ci server]"; export SKIP_SERVER_TESTS=true; fi
+- if [ ! "$SKIP_SERVER_TESTS" == "true" ]; then echo "SETUP Will run server tests"; else echo "SETUP Will not run server tests as either the skipping labels found ([skip travis server], [skip ci server]) or set SKIP_SERVER_TESTS=true"; fi
+
+- echo "Mono build currently does not work for us https://github.com/travis-ci/travis-ci/issues/7374";
+- echo  "Set the environment to skip xbuild and server tests";
+- export SKIP_SERVER_TESTS=true;
+- export SKIP_XBUILD=true;
+
+
+# Below is a fix to for `package requires NuGet client version '3.0' or above, but the current NuGet version is '2.12.0.0'.`
+# according to https://github.com/travis-ci/travis-ci/issues/5932
+# We skip downloading and restoring latest nuget.exe as we have it in our solution
+# - mkdir -p .nuget
+# - wget -O .nuget/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+# - cd $TRAVIS_BUILD_DIR
+# The line below starts failing in travis-build version: 5ddd724fb Issue logged - https://github.com/travis-ci/travis-ci/issues/6854
+# - mono .nuget/nuget.exe
+install:
+# Mono build currently does not work for us https://github.com/travis-ci/travis-ci/issues/7374
+# - mono .nuget/nuget.exe restore Newtonsoft.Json.sln -Verbosity detailed
+env:
+  global:
+  - secure: N4LZI8E+D/KK0ohDU75aiX0H183tPzsOaJc3hx6L9XWFlSJ3kg/ilS1hBjFymwn7ZJAJKJP452gCY4FkhPUhex4HMnsOUGB+ayKoPJDAaV2+Ho12pSeS0VDF4QrAt7ODHN2RP3YKsczPCb2b6AAHtpW6+eaTRzqEPUoF6TnCCTlxy1NRCjCVGfflYOIYH/2toqCOauiDJQ+1tF5hZIPtPYM3v+6WAeDJzNfIQZGkzEV+mVeZUwtu9tom+OPnQZR9KSM7VMg9UHsMVbCZCSdXzXRu1k53yVulyO9mHuMN98UdONttdzbcOyvOIOISS6T1ik2n8ayxrFJvUCe5cxWMxEz8if04O37hnJCgJEXCGom3GCXRpdwpWd5F/zuvM8FQLfsTYHbwmFLBUxeC51An98+kZTU/xmjrbxRjYCxq/IlTDD5Rbxi04Khj3iozTGfckyTiQrUJmgR1HjksDxlhNc7B7ZOycjto3xhtuhnR/SV3606nRw56k0dV3KGLSBXdvuvbq9QVWc7d3TxrCFwIy0ZkzKKLXx44e99sikkDJiDH4ZYCivmoJk+hFDb9aij+8gFiH+jupeIpUE396unjnDcpfSO+JqIGZTUU39r0rUkTzYW0e4/IVJ5ppyGCMmLei3FqwCGyUP5kaM45T8fOrS1/MoMh3CObc+wjM9ucUnU=
+  - secure: ghtMiv4MOikxzXpD+BWlCfFns1/cno01QlnVjR4qXwDxJuBEn9L9ZIE+20ReJMieeEDN0skifdEy4kK8XkbRw/tHPbKlNH4gj0AwiifjpqfxSPBSlvarJF9aVZn9CCbHFnYZtHfGykvRVfJNb7ceiN99kVXLC/e7Gu3Sr7SBAY1/F8cBgNw2DuM1v3l6z2pEAHMliYZXsd9HVbNmXDKhuVTzui2+M0rwF+5iACCYrbbhUDZywWrNedq3hUEHYa3ZISELFlc82bG+VytdqaP1+DazaoDJCIm3vQ+ucjfcXK8MGTSutMNDIZqeJvwjXxNKnKuOmKiZOShLjFZe8L5ZQUb4AK4+TRN3ct5nt6sODgWyziUhU+PcdRhvd7vhBj1PtZ9yC1t9GCJubppo1rOV1CLkngQiI6JvlksxckmlLM/5tuj6g7RJQ/oYs0pPnj/IMIJjGMGBFjOXyyXt9AOUpZ4U6uDqrfcvd+bpx1km9YIhu8jOE+OUQMAPoqJ5UaBaSYBxs3coQLjtFtyh+Bb6+AoKqJK8dgh+V+M7F0/mkV2zfFMNC40qyUZFTUOSLOoTYYMpf7Ul/8wcnzrS63dbBiCP9XInPQse/PtxTRez3+QkTYKWpApeexmODjigdhAg/c+MYpUfcex7iXXUM09k5uI7FP3vq4FyCOyTYAdznSk=
+language: node_js
+solution: Newtonsoft.Json.sln
+before_script:
+- if [ ! "$SKIP_CLIENT_TESTS" == "true" ]; then cd $TRAVIS_BUILD_DIR/.build/ci; npm install; fi
+script:
+- if [[ ! "$SKIP_XBUILD" == "true" ]]; then cd $TRAVIS_BUILD_DIR; xbuild /p:Configuration=Release Newtonsoft.Json.sln; else echo "Skipping XBuild as SKIP_XBUILD"; fi
+- if [[ ! "$SKIP_CLIENT_TESTS" == "true" && ($TRAVIS_TEST_RESULT = 0 || "$SKIP_XBUILD" == "true")]]; then cd $TRAVIS_BUILD_DIR/.build/ci; cp -rf $TRAVIS_BUILD_DIR/Tests/Runner/* $TRAVIS_BUILD_DIR/.build/ci; npm test; else echo "Skipping sauce tests as SKIP_CLIENT_TESTS or build failed"; fi
+cache:
+  directories:
+  - packages
+notifications:
+  slack:
+    secure: A+usFzU5xP7a2/YfHbBafd8WWKV+dYMXTTlomBMrPyxjqwkHTJUE2eR9+8IG2jgwqZEDyBbL62JD/2fDL/npp/V0COVnVjzpWNUNHxjc6gLAuQY0c3+oQBbWe4pIFPc9PI164w6eVDF8DiO5NwIKxNZcbgqPps+sRSwwfhFG4cyXMv8YPjZE52dwimj+5L85IeZg2eKnNYqd4B+S7/NVDFRHkesXHSynF3Tw3Swl9vvCUTi8E/6TIadjuqLsfn7ROGvl1LahxS6gd4u/bzEHxYTYolyOiWonv3803Xf7ATow939qZ0wK8vODs9CwX8Me5BeGgnJ/SyDb1Rt8hJOXa35zR5cycfhBjoYe55B6stlkDcQ1iBOL+xE8AJt0GlIdORI/1HX65UfuXYh9gsTUtIRjH6UYbonrL5x7+uVnsHtY82O72CCvrgaGZm2mQ93RY5DrQbwOdPDiteL7jr49x2T6JasQdps6Iha13QvFofuqvcQR1TIBmauSxjW3/3V0b0iZx7fKd6l4Vdl8BXLGBeQvbD+GQHeHIN5cbMCEBOaMMlDfPoWghqsa58zXz1q4OXK/N0kPPGGhhR2IXZCe218iVcmeO6x/YFiLJrthjJ7No5mNwGgR/bJ2LsFymVMhbNadSooz3fs7Kw7ed4jkeeYRTuTxgomrgbQrahlCQ7s=

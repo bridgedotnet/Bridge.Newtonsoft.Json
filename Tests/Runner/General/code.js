@@ -12,9 +12,9 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         statics: {
             methods: {
                 TestMetadata: function () {
-                    Bridge.Test.NUnit.Assert.Throws(System.InvalidOperationException, $asm.$.Newtonsoft.Json.Tests.Case2.f1);
+                    Bridge.Test.NUnit.Assert.Throws$2(System.InvalidOperationException, $asm.$.Newtonsoft.Json.Tests.Case2.f1);
 
-                    Bridge.Test.NUnit.Assert.Throws(System.InvalidOperationException, $asm.$.Newtonsoft.Json.Tests.Case2.f2);
+                    Bridge.Test.NUnit.Assert.Throws$2(System.InvalidOperationException, $asm.$.Newtonsoft.Json.Tests.Case2.f2);
 
                     var json = Newtonsoft.Json.JsonConvert.SerializeObject(new Newtonsoft.Json.Tests.Case2.Class3());
                     Bridge.Test.NUnit.Assert.AreEqual("{\"Prop1\":0}", json);

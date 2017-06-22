@@ -35,8 +35,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Issues\Case2.cs" />
-    <Compile Include="Issues\Case10.cs" />
     <Compile Include="Issues\Case4.cs" />
+    <Compile Include="Issues\Case10.cs" />
     <Compile Include="Tests\DeserializationTests.cs" />
     <Compile Include="Issues\Ported\N1134.cs" />
     <Compile Include="Issues\Ported\N1438.cs" />
