@@ -4,6 +4,9 @@
   "outputFormatting": "Formatted",
   "fileName": "code.js",
   "outputBy": "Project",
+  "test": {
+    "skipCombine": true
+  },
   "logging": {
     "level": "None"
   }
