@@ -293,7 +293,6 @@
                                     } else {
                                         args[i] = Bridge.getDefaultValue(params[i].pt);
                                     }
-                                    
                                 }
                             }
 

@@ -431,7 +431,6 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                     } else {
                                         args[i] = Bridge.getDefaultValue(params[i].pt);
                                     }
-                                    
                                 }
                             }
 
