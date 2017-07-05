@@ -709,6 +709,41 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
+        statics: {
+            methods: {
+                TestCaseInsensitiveMatch: function () {
+                    var $t, $t1, $t2, $t3, $t4, $t5;
+                    var msg1 = "{\"data\": [1, 2, 3],\"done\": true, \"code\": 16}";
+                    var test1 = Newtonsoft.Json.JsonConvert.DeserializeObject(msg1, Newtonsoft.Json.Tests.Issues.Case14.Multiple$1(System.Int32));
+                    Bridge.Test.NUnit.Assert.True(test1.Done);
+                    Bridge.Test.NUnit.Assert.AreEqual(16, test1.Code);
+                    Bridge.Test.NUnit.Assert.AreEqual(3, test1.Data.length);
+                    Bridge.Test.NUnit.Assert.AreEqual(1, ($t = test1.Data)[System.Array.index(0, $t)]);
+                    Bridge.Test.NUnit.Assert.AreEqual(2, ($t1 = test1.Data)[System.Array.index(1, $t1)]);
+                    Bridge.Test.NUnit.Assert.AreEqual(3, ($t2 = test1.Data)[System.Array.index(2, $t2)]);
+
+                    var msg2 = "{\"Data\": [1, 2, 3],\"Done\": true, \"Code\": 16}";
+                    var test2 = Newtonsoft.Json.JsonConvert.DeserializeObject(msg2, Newtonsoft.Json.Tests.Issues.Case14.Multiple$1(System.Int32));
+                    Bridge.Test.NUnit.Assert.True(test2.Done);
+                    Bridge.Test.NUnit.Assert.AreEqual(16, test2.Code);
+                    Bridge.Test.NUnit.Assert.AreEqual(3, test2.Data.length);
+                    Bridge.Test.NUnit.Assert.AreEqual(1, ($t3 = test2.Data)[System.Array.index(0, $t3)]);
+                    Bridge.Test.NUnit.Assert.AreEqual(2, ($t4 = test2.Data)[System.Array.index(1, $t4)]);
+                    Bridge.Test.NUnit.Assert.AreEqual(3, ($t5 = test2.Data)[System.Array.index(2, $t5)]);
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case14.Multiple$1", function (T) { return {
+        props: {
+            Done: false,
+            Code: 0,
+            Data: null
+        }
+    }; });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case4", {
         statics: {
             methods: {

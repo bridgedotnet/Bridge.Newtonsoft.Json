@@ -47,6 +47,15 @@
                     Bridge.$jsonGuard && Bridge.$jsonGuard.pop();
                 },
 
+                getValue: function(obj, name) {
+                    name = name.toLowerCase();
+                    for (var key in obj) {
+                        if (key.toLowerCase() == name) {
+                            return obj[key];
+                        }
+                    }
+                },
+
                 SerializeObject: function (obj, formatting, settings, returnRaw, possibleType) {
                     if (Bridge.is(formatting, Newtonsoft.Json.JsonSerializerSettings)) {
                         settings = formatting;
@@ -533,8 +542,12 @@
                                 mname = camelCase ? (f.n.charAt(0).toLowerCase() + f.n.substr(1)) : f.n;
                                 value = raw[mname];
 
+                                if (value === undefined) {
+                                    value = Newtonsoft.Json.JsonConvert.getValue(raw, mname);
+                                }
+
                                 if (value !== undefined) {
-                                    Bridge.Reflection.fieldAccess(f, o, Newtonsoft.Json.JsonConvert.DeserializeObject(value, f.rt, settings, true));
+                                    Bridge.Reflection.fieldAccess(f,o, Newtonsoft.Json.JsonConvert.DeserializeObject(value, f.rt, settings, true));
                                 }
                             }
 
@@ -544,6 +557,10 @@
                                 p = properties[i];
                                 mname = camelCase ? (p.n.charAt(0).toLowerCase() + p.n.substr(1)) : p.n;
                                 value = raw[mname];
+
+                                if (value === undefined) {
+                                    value = Newtonsoft.Json.JsonConvert.getValue(raw, mname);
+                                }
 
                                 if (value !== undefined) {
                                     if (!!p.s) {
