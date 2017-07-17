@@ -51,6 +51,7 @@
     </Compile>
     <Compile Include="Tests\JsonConstructorTests.cs" />
     <Compile Include="Tests\SerializationTests.cs" />
+    <Compile Include="Utilities\DateHelper.cs" />
     <Compile Include="Utilities\DecimalHelper.cs" />
   </ItemGroup>
   <ItemGroup>
