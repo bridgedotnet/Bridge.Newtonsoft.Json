@@ -252,35 +252,27 @@ namespace Newtonsoft.Json.Tests
 
             var d2 = new DateTime(1700, 2, 28, 12, 3, 4, 5, DateTimeKind.Local);
             var s2 = d2.ToString();
-            var d2Utc = d2.ToUniversalTime();
-            var s2Utc = "\"" + d2Utc.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + "\"";
+            var s2Utc = "\"" + d2.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + "\"";
 
             var serialized2 = JsonConvert.SerializeObject(d2);
             Assert.AreEqual(s2Utc, serialized2, "d2 serialized string");
 
             json = JsonConvert.DeserializeObject<DateTime>(serialized2);
-            DateHelper.AssertDate(d2Utc, json, "d2 deserialized date: ");
+            DateHelper.AssertDate(json, DateTimeKind.Utc, d2.Ticks, d2.Year, d2.Month, d2.Day, d2.Hour, d2.Minute, d2.Second, d2.Millisecond, "d2 deserialized date: ");
 
-            var jsonLocal = json.ToLocalTime();
-            DateHelper.AssertDate(d2, jsonLocal, "d2 deserialized local date: ");
-
-            Assert.AreEqual(s2, jsonLocal.ToString(), "d2 deserialized local string: ");
+            Assert.AreEqual(s2, json.ToString(), "d2 deserialized string: ");
 
             var d3 = new DateTime(2017, 1, 8, 13, 3, 4, 5, DateTimeKind.Unspecified);
             var s3 = d3.ToString();
-            var d3Utc = d3.ToUniversalTime();
-            var s3Utc = "\"" + d3Utc.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + "\"";
+            var s3Utc = "\"" + d3.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + "\"";
 
             var serialized3 = JsonConvert.SerializeObject(d3);
             Assert.AreEqual(s3Utc, serialized3, "d3 serialized string");
 
             json = JsonConvert.DeserializeObject<DateTime>(serialized3);
-            DateHelper.AssertDate(d3Utc, json, "d3 deserialized date: ");
+            DateHelper.AssertDate(json, DateTimeKind.Utc, d3.Ticks, d3.Year, d3.Month, d3.Day, d3.Hour, d3.Minute, d3.Second, d3.Millisecond, "d3 deserialized date: ");
 
-            jsonLocal = json.ToLocalTime();
-            DateHelper.AssertDate(d3, DateTimeKind.Unspecified, jsonLocal.Ticks, jsonLocal.Year, jsonLocal.Month, jsonLocal.Day, jsonLocal.Hour, jsonLocal.Minute, jsonLocal.Second, jsonLocal.Millisecond, "d3 deserialized local date: ");
-
-            Assert.AreEqual(s3, jsonLocal.ToString(), "d3 deserialized local string: ");
+            Assert.AreEqual(s3, json.ToString(), "d3 deserialized string: ");
         }
 
         [Test]

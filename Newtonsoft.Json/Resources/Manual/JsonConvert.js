@@ -131,7 +131,7 @@
                         } else if (type === System.Decimal) {
                             return obj.toJSON();
                         } else if (type === System.DateTime) {
-                            var utc = System.DateTime.format(System.DateTime.toUniversalTime(obj), "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
+                            var utc = System.DateTime.format(obj, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
                             return returnRaw ? utc : this.stringify(utc, formatting);
                         } else if (Bridge.isArray(null, type)) {
                             if (type.$elementType === System.Byte) {

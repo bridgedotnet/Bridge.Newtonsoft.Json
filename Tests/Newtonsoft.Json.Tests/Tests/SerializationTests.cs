@@ -178,7 +178,7 @@ namespace Newtonsoft.Json.Tests
             DateTime dt = new DateTime(2010, 6, 10, 12, 0, 0, 0);
             var s = JsonConvert.SerializeObject(dt);
 
-            Assert.AreEqual(Bridge.Html5.JSON.Stringify(dt), s, "Result: " + s);
+            Assert.AreEqual("\"" + dt.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + "\"", s, "Result: " + s);
         }
 
         [Test]
@@ -235,7 +235,10 @@ namespace Newtonsoft.Json.Tests
             Assert.AreEqual(0, raw.ulongField, "#6");
             Assert.AreEqual(0, raw.decimalField, "#7");
             Assert.NotNull(raw.dateField, "#8");
-            Assert.AreEqual(((dynamic)c.dateField).toJSON(), raw.dateField, "#9 " + raw.dateField);
+
+            dynamic rawDateField = null;
+            //@ rawDateField = System.DateTime.format(c.dateField, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
+            Assert.AreEqual(rawDateField, raw.dateField, "#9 " + raw.dateField);
             Assert.AreEqual("Item1", raw.enumField, "#10");
             Assert.AreEqual(new int[] { 1, 2, 3 }, raw.arrayField, "#11");
             Assert.AreEqual(new string[] { "Item1", "Item2", "Item3" }, raw.listField, "#12");
