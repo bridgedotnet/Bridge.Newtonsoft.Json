@@ -266,7 +266,7 @@ namespace Newtonsoft.Json.Tests
 
             Assert.AreEqual(s2, jsonLocal.ToString(), "d2 deserialized local string: ");
 
-            var d3 = new DateTime(1700, 3, 38, 13, 3, 4, 5, DateTimeKind.Unspecified);
+            var d3 = new DateTime(2017, 1, 8, 13, 3, 4, 5, DateTimeKind.Unspecified);
             var s3 = d3.ToString();
             var d3Utc = d3.ToUniversalTime();
             var s3Utc = "\"" + d3Utc.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + "\"";

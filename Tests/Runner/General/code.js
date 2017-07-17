@@ -107,7 +107,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     Bridge.Test.NUnit.Assert.AreEqual(s2, System.DateTime.format(jsonLocal), "d2 deserialized local string: ");
 
-                    var d3 = System.DateTime.create(1700, 3, 38, 13, 3, 4, 5, System.DateTimeKind.Unspecified);
+                    var d3 = System.DateTime.create(2017, 1, 8, 13, 3, 4, 5, System.DateTimeKind.Unspecified);
                     var s3 = System.DateTime.format(d3);
                     var d3Utc = System.DateTime.toUniversalTime(d3);
                     var s3Utc = System.String.concat("\"", System.DateTime.format(d3Utc, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"), "\"");
