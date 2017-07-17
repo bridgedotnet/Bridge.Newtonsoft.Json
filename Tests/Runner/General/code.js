@@ -83,11 +83,11 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.True(System.Decimal.Zero.equalsT(Newtonsoft.Json.JsonConvert.DeserializeObject("0", System.Decimal)));
                 },
                 DateTimeWorks: function () {
-                    var dt = new Date(2010, 6 - 1, 10, 12, 0, 0, 0);
+                    var dt = System.DateTime.create(2010, 6, 10, 12, 0, 0, 0);
                     var jsonDt = Newtonsoft.Json.JsonConvert.DeserializeObject("\"2010-06-10T09:00:00.000\"", System.DateTime);
-                    Bridge.Test.NUnit.Assert.AreEqual(dt.getFullYear(), jsonDt.getFullYear());
-                    Bridge.Test.NUnit.Assert.AreEqual((dt.getMonth() + 1), (jsonDt.getMonth() + 1));
-                    Bridge.Test.NUnit.Assert.AreEqual(dt.getDate(), jsonDt.getDate());
+                    Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.getYear(dt), System.DateTime.getYear(jsonDt));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.getMonth(dt), System.DateTime.getMonth(jsonDt));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.getDay(dt), System.DateTime.getDay(jsonDt));
                 },
                 ArrayWorks: function () {
                     var intArr = System.Array.init([1, 2, 3], System.Int32);
@@ -416,7 +416,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 this.guidField = System.Guid.newGuid();
                 this.typeField = Newtonsoft.Json.Tests.SerializationTests;
                 this.charField = 97;
-                this.dateField = new Date(2010, 6 - 1, 10, 12, 0, 0, 0);
+                this.dateField = System.DateTime.create(2010, 6, 10, 12, 0, 0, 0);
                 this.arrayField = System.Array.init([1, 2, 3], System.Int32);
                 this.listField = $asm.$.Newtonsoft.Json.Tests.DeserializationTests.ClassWithFields.f1(new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.DeserializationTests.E1))());
                 this.dictField = $asm.$.Newtonsoft.Json.Tests.DeserializationTests.ClassWithFields.f2(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.DeserializationTests.E1))());
@@ -1026,7 +1026,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(System.Decimal.Zero.toFloat(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
                 },
                 DateTimeWorks: function () {
-                    var dt = new Date(2010, 6 - 1, 10, 12, 0, 0, 0);
+                    var dt = System.DateTime.create(2010, 6, 10, 12, 0, 0, 0);
                     var s = Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.box(dt, System.DateTime, System.DateTime.format));
 
                     Bridge.Test.NUnit.Assert.AreEqual(JSON.stringify(dt), s, System.String.concat("Result: ", s));
@@ -1196,7 +1196,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 this.guidField = System.Guid.newGuid();
                 this.typeField = Newtonsoft.Json.Tests.SerializationTests;
                 this.charField = 97;
-                this.dateField = new Date(2010, 6 - 1, 10, 12, 0, 0, 0);
+                this.dateField = System.DateTime.create(2010, 6, 10, 12, 0, 0, 0);
                 this.arrayField = System.Array.init([1, 2, 3], System.Int32);
                 this.listField = $asm.$.Newtonsoft.Json.Tests.SerializationTests.ClassWithFields.f1(new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.SerializationTests.E1))());
                 this.dictField = $asm.$.Newtonsoft.Json.Tests.SerializationTests.ClassWithFields.f2(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.SerializationTests.E1))());
