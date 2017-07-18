@@ -258,7 +258,7 @@ namespace Newtonsoft.Json.Tests
             Assert.AreEqual(s2Utc, serialized2, "d2 serialized string");
 
             json = JsonConvert.DeserializeObject<DateTime>(serialized2);
-            DateHelper.AssertDate(json, DateTimeKind.Utc, d2.Ticks, d2.Year, d2.Month, d2.Day, d2.Hour, d2.Minute, d2.Second, d2.Millisecond, "d2 deserialized date: ");
+            DateHelper.AssertDate(json, DateTimeKind.Local, d2.Ticks, d2.Year, d2.Month, d2.Day, d2.Hour, d2.Minute, d2.Second, d2.Millisecond, "d2 deserialized date: ");
 
             Assert.AreEqual(s2, json.ToString(), "d2 deserialized string: ");
 
@@ -270,7 +270,7 @@ namespace Newtonsoft.Json.Tests
             Assert.AreEqual(s3Utc, serialized3, "d3 serialized string");
 
             json = JsonConvert.DeserializeObject<DateTime>(serialized3);
-            DateHelper.AssertDate(json, DateTimeKind.Utc, d3.Ticks, d3.Year, d3.Month, d3.Day, d3.Hour, d3.Minute, d3.Second, d3.Millisecond, "d3 deserialized date: ");
+            DateHelper.AssertDate(json, DateTimeKind.Unspecified, d3.Ticks, d3.Year, d3.Month, d3.Day, d3.Hour, d3.Minute, d3.Second, d3.Millisecond, "d3 deserialized date: ");
 
             Assert.AreEqual(s3, json.ToString(), "d3 deserialized string: ");
         }
