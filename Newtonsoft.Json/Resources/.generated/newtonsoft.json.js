@@ -269,8 +269,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else if (type === System.Decimal) {
                             return obj.toJSON();
                         } else if (type === System.DateTime) {
-                            var utc = System.DateTime.format(obj, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
-                            return returnRaw ? utc : this.stringify(utc, formatting);
+                            var d = System.DateTime.format(obj, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
+                            return returnRaw ? d : this.stringify(d, formatting);
                         } else if (Bridge.isArray(null, type)) {
                             if (type.$elementType === System.Byte) {
                                 removeGuard();
@@ -497,7 +497,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else if (type === String.String) {
                             return "true";
                         } else if (type === System.DateTime) {
-                            return System.DateTime.create$2(1, 1);
+                            return System.DateTime.create$2(1, 0);
                         } else if (Bridge.Reflection.isEnum(type)) {
                             return Bridge.unbox(System.Enum.parse(type, 1));
                         } else {
@@ -539,7 +539,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else if (type === System.String) {
                             return raw.toString();
                         } else if (type === System.DateTime) {
-                            return System.DateTime.create$2(raw | 0, 1);
+                            return System.DateTime.create$2(raw | 0, 0);
                         } else {
                             return null;
                         }
@@ -585,8 +585,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else if (type === System.String) {
                             return field ? raw : JSON.parse(raw);
                         } else if (type === System.DateTime) {
-                            var utc = System.DateTime.parseExact(raw, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'", null, true, true);
-                            return utc != null ? utc : System.DateTime.parse(raw, undefined, true);
+                            var d = System.DateTime.parseExact(raw, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK", null, true, true);
+                            return d != null ? d : System.DateTime.parse(raw, undefined, true);
                         } else if (Bridge.Reflection.isEnum(type)) {
                             return Bridge.unbox(System.Enum.parse(type, raw));
                         } else if (type === System.Array.type(System.Byte, 1)) {

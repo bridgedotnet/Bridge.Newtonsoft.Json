@@ -252,7 +252,7 @@ namespace Newtonsoft.Json.Tests
 
             var d2 = new DateTime(1700, 2, 28, 12, 3, 4, 5, DateTimeKind.Local);
             var s2 = d2.ToString();
-            var s2Utc = "\"" + d2.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + "\"";
+            var s2Utc = "\"" + d2.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'FFFFFFFK") + "\"";
 
             var serialized2 = JsonConvert.SerializeObject(d2);
             Assert.AreEqual(s2Utc, serialized2, "d2 serialized string");
@@ -264,7 +264,7 @@ namespace Newtonsoft.Json.Tests
 
             var d3 = new DateTime(2017, 1, 8, 13, 3, 4, 5, DateTimeKind.Unspecified);
             var s3 = d3.ToString();
-            var s3Utc = "\"" + d3.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + "\"";
+            var s3Utc = "\"" + d3.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'FFFFFFFK") + "\"";
 
             var serialized3 = JsonConvert.SerializeObject(d3);
             Assert.AreEqual(s3Utc, serialized3, "d3 serialized string");
@@ -366,6 +366,17 @@ namespace Newtonsoft.Json.Tests
             Assert.AreEqual(c.longField.ToString(), jsonC.longField.ToString(), "#5");
             Assert.AreEqual(c.ulongField.ToString(), jsonC.ulongField.ToString(), "#6");
             Assert.AreEqual(c.decimalField.ToString(), jsonC.decimalField.ToString(), "#7");
+
+            Console.WriteLine(json);
+            Console.WriteLine(c.dateField);
+            Console.WriteLine(c.dateField.ToString());
+            Console.WriteLine(c.dateField.ToString("O"));
+
+            Console.WriteLine(jsonC);
+            Console.WriteLine(jsonC.dateField);
+            Console.WriteLine(jsonC.dateField.ToString());
+            Console.WriteLine(jsonC.dateField.ToString("O"));
+
             Assert.AreEqual(c.dateField.ToString(), jsonC.dateField.ToString(), "#8");
             Assert.AreEqual(c.enumField, jsonC.enumField, "#9");
             Assert.AreEqual(c.arrayField, jsonC.arrayField, "#10");

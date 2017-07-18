@@ -93,7 +93,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var d2 = System.DateTime.create(1700, 2, 28, 12, 3, 4, 5, System.DateTimeKind.Local);
                     var s2 = System.DateTime.format(d2);
-                    var s2Utc = System.String.concat("\"", System.DateTime.format(d2, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"), "\"");
+                    var s2Utc = System.String.concat("\"", System.DateTime.format(d2, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'FFFFFFFK"), "\"");
 
                     var serialized2 = Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.box(d2, System.DateTime, System.DateTime.format));
                     Bridge.Test.NUnit.Assert.AreEqual(s2Utc, serialized2, "d2 serialized string");
@@ -105,7 +105,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var d3 = System.DateTime.create(2017, 1, 8, 13, 3, 4, 5, System.DateTimeKind.Unspecified);
                     var s3 = System.DateTime.format(d3);
-                    var s3Utc = System.String.concat("\"", System.DateTime.format(d3, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"), "\"");
+                    var s3Utc = System.String.concat("\"", System.DateTime.format(d3, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'FFFFFFFK"), "\"");
 
                     var serialized3 = Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.box(d3, System.DateTime, System.DateTime.format));
                     Bridge.Test.NUnit.Assert.AreEqual(s3Utc, serialized3, "d3 serialized string");
@@ -183,6 +183,17 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(c.longField.toString(), jsonC.longField.toString(), "#5");
                     Bridge.Test.NUnit.Assert.AreEqual(c.ulongField.toString(), jsonC.ulongField.toString(), "#6");
                     Bridge.Test.NUnit.Assert.AreEqual(c.decimalField.toString(), jsonC.decimalField.toString(), "#7");
+
+                    System.Console.WriteLine(json);
+                    System.Console.WriteLine(Bridge.box(c.dateField, System.DateTime, System.DateTime.format));
+                    System.Console.WriteLine(System.DateTime.format(c.dateField));
+                    System.Console.WriteLine(System.DateTime.format(c.dateField, "O"));
+
+                    System.Console.WriteLine(jsonC);
+                    System.Console.WriteLine(Bridge.box(jsonC.dateField, System.DateTime, System.DateTime.format));
+                    System.Console.WriteLine(System.DateTime.format(jsonC.dateField));
+                    System.Console.WriteLine(System.DateTime.format(jsonC.dateField, "O"));
+
                     Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.format(c.dateField), System.DateTime.format(jsonC.dateField), "#8");
                     Bridge.Test.NUnit.Assert.AreEqual(c.enumField, jsonC.enumField, "#9");
                     Bridge.Test.NUnit.Assert.AreEqual(c.arrayField, jsonC.arrayField, "#10");
@@ -1055,7 +1066,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var dt = System.DateTime.create(2010, 6, 10, 12, 0, 0, 0);
                     var s = Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.box(dt, System.DateTime, System.DateTime.format));
 
-                    Bridge.Test.NUnit.Assert.AreEqual(System.String.concat("\"", System.DateTime.format(dt, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"), "\""), s, System.String.concat("Result: ", s));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.String.concat("\"", System.DateTime.format(dt, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'FFFFFFFK"), "\""), s, System.String.concat("Result: ", s));
                 },
                 ArrayWorks: function () {
                     var intArr = System.Array.init([1, 2, 3], System.Int32);
@@ -1094,7 +1105,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.NotNull(raw.dateField, "#8");
 
                     var rawDateField = null;
-                    rawDateField = System.DateTime.format(c.dateField, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'");
+                    rawDateField = System.DateTime.format(c.dateField, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'FFFFFFFK");
                     Bridge.Test.NUnit.Assert.AreEqual(rawDateField, raw.dateField, System.String.concat("#9 ", raw.dateField));
                     Bridge.Test.NUnit.Assert.AreEqual("Item1", raw.enumField, "#10");
                     Bridge.Test.NUnit.Assert.AreEqual(System.Array.init([1, 2, 3], System.Int32), raw.arrayField, "#11");
