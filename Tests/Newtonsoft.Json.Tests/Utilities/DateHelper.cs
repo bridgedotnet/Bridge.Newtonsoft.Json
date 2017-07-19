@@ -59,5 +59,22 @@ namespace Newtonsoft.Json.Tests.Utilities
             Assert.AreEqual(expected.Second, actual.Second, message + "Second");
             Assert.AreEqual(expected.Millisecond, actual.Millisecond, message + "Millisecond");
         }
+
+        public static string GetOffsetString()
+        {
+            var minutes = GetOffsetMinutes();
+            var b = minutes < 0 ? "+" : "-";
+
+            minutes = Math.Abs(minutes);
+
+            return b + (minutes / 60).ToString("00") + ":" + (minutes % 60).ToString("00");
+        }
+
+        public static int GetOffsetMinutes()
+        {
+            dynamic d = new DateTime();
+
+            return d.getTimezoneOffset();
+        }
     }
 }
