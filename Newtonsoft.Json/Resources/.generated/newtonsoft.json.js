@@ -585,8 +585,18 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else if (type === System.String) {
                             return field ? raw : JSON.parse(raw);
                         } else if (type === System.DateTime) {
-                            var d = System.DateTime.parseExact(raw, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK", null, true, true);
-                            return d != null ? d : System.DateTime.parse(raw, undefined, true);
+                            var isUtc = System.String.endsWith(raw, "Z");
+                            var format = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF" + isUtc ? "'Z'" : "K";
+
+                            var d = System.DateTime.parseExact(raw, format, null, true, true);
+
+                            d = d != null ? d : System.DateTime.parse(raw, undefined, true);
+
+                            if (isUtc) {
+                                System.DateTime.specifyKind(d, 1);
+                            }
+
+                            return d;
                         } else if (Bridge.Reflection.isEnum(type)) {
                             return Bridge.unbox(System.Enum.parse(type, raw));
                         } else if (type === System.Array.type(System.Byte, 1)) {
