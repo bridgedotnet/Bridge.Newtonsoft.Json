@@ -99,15 +99,15 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     json = Newtonsoft.Json.JsonConvert.DeserializeObject("\"2010-06-10T12:00:00Z\"", System.DateTime);
                     Newtonsoft.Json.Tests.Utilities.DateHelper.AssertDate(d3, json, "d3: ");
 
-                    // This a .Net passing d4
-                    //var d4 = (new DateTime(2010, 6, 10, 12, 0, 0, 0, DateTimeKind.Utc)).AddMinutes(-DateHelper.GetOffsetMinutes()).ToLocalTime();
-                    var d4 = (System.DateTime.create(2010, 6, 10, 12, 0, 0, 0, System.DateTimeKind.Local));
-                    var s = System.String.concat("\"2010-06-10T12:00:00", Newtonsoft.Json.Tests.Utilities.DateHelper.GetOffsetString(), "\"");
-                    Bridge.Test.NUnit.Assert.True(true, System.String.concat("d4 input: ", s));
-                    Bridge.Test.NUnit.Assert.True(true, System.String.concat("d4 expected: ", System.DateTime.format(d4, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'FFFFFFFK")));
+                    // DST problem
+                    //var s = "\"2010-06-10T12:00:00" + DateHelper.GetOffsetString() + "\"";
+                    //var d4 = (new DateTime(2010, 6, 10, 12, 0, 0, 0, s.Contains("Z") ? DateTimeKind.Utc :  DateTimeKind.Local));
 
-                    json = Newtonsoft.Json.JsonConvert.DeserializeObject(s, System.DateTime);
-                    Newtonsoft.Json.Tests.Utilities.DateHelper.AssertDate(d4, json, "d4: ");
+                    //Assert.True(true, "d4 input: " + s);
+                    //Assert.True(true, "d4 expected: " + d4.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'FFFFFFFK"));
+
+                    //json = JsonConvert.DeserializeObject<DateTime>(s);
+                    //DateHelper.AssertDate(d4, json, "d4: ");
                 },
                 DateTimeSerializationDeserializationTurnaroundWorks: function () {
                     var d2 = System.DateTime.create(1700, 2, 28, 12, 3, 4, 5, System.DateTimeKind.Local);
@@ -1361,13 +1361,16 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.getSecond(expected), System.DateTime.getSecond(actual), System.String.concat(message, "Second"));
                     Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.getMillisecond(expected), System.DateTime.getMillisecond(actual), System.String.concat(message, "Millisecond"));
                 },
-                GetOffsetString: function () {
-                    var minutes = Newtonsoft.Json.Tests.Utilities.DateHelper.GetOffsetMinutes();
-                    var b = minutes < 0 ? "+" : "-";
+                GetOffsetString: function (adjustment) {
+                    if (adjustment === void 0) { adjustment = 0; }
+                    var minutes = (Newtonsoft.Json.Tests.Utilities.DateHelper.GetOffsetMinutes() + adjustment) | 0;
 
+                    var b = minutes < 0 ? "+" : "-";
                     minutes = Math.abs(minutes);
 
-                    return System.String.concat(b, System.Int32.format((((Bridge.Int.div(minutes, 60)) | 0)), "00"), ":", System.Int32.format((minutes % 60), "00"));
+                    var offset = minutes !== 0 ? (System.String.concat(b, System.Int32.format((((Bridge.Int.div(minutes, 60)) | 0)), "00"), ":", System.Int32.format((minutes % 60), "00"))) : "Z";
+
+                    return offset;
                 },
                 GetOffsetMinutes: function () {
                     var d = System.DateTime.getDefaultValue();

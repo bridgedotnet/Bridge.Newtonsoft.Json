@@ -60,14 +60,18 @@ namespace Newtonsoft.Json.Tests.Utilities
             Assert.AreEqual(expected.Millisecond, actual.Millisecond, message + "Millisecond");
         }
 
-        public static string GetOffsetString()
+        public static string GetOffsetString(int adjustment = 0)
         {
-            var minutes = GetOffsetMinutes();
-            var b = minutes < 0 ? "+" : "-";
+            var minutes = GetOffsetMinutes() + adjustment;
 
+            var b = minutes < 0 ? "+" : "-";
             minutes = Math.Abs(minutes);
 
-            return b + (minutes / 60).ToString("00") + ":" + (minutes % 60).ToString("00");
+            var offset = minutes != 0
+                ? (b + (minutes / 60).ToString("00") + ":" + (minutes % 60).ToString("00"))
+                : "Z";
+
+            return offset;
         }
 
         public static int GetOffsetMinutes()
