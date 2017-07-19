@@ -586,7 +586,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return field ? raw : JSON.parse(raw);
                         } else if (type === System.DateTime) {
                             var isUtc = System.String.endsWith(raw, "Z");
-                            var format = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF" + isUtc ? "'Z'" : "K";
+                            var format = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF" + (isUtc ? "'Z'" : "K");
 
                             var d = System.DateTime.parseExact(raw, format, null, true, true);
 
