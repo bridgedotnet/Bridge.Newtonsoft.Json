@@ -454,8 +454,8 @@
 
                             d = d != null ? d : System.DateTime.parse(raw, undefined, true);
 
-                            if (isUtc) {
-                                System.DateTime.specifyKind(d, 1);
+                            if (isUtc && d.kind !== 1) {
+                                d = System.DateTime.specifyKind(d, 1);
                             }
 
                             return d;
