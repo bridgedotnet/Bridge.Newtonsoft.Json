@@ -526,16 +526,6 @@
                             var typeName = raw["$type"];
 
                             if (settings && settings.TypeNameHandling > 0 && typeName != null) {
-                                var parts = typeName.split(",");
-
-                                if (parts.length > 1) {
-                                    var lastEl = parts.pop();
-
-                                    if (lastEl.indexOf("]") < 0) {
-                                        typeName = parts.join(",");
-                                    }
-                                }
-
                                 type = Bridge.Reflection.getType(typeName);
                             }
 
