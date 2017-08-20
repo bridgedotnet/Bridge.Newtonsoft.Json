@@ -111,6 +111,21 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
         $flags: true
     });
 
+    Bridge.define("Newtonsoft.Json.Utils.AssemblyVersion", {
+        statics: {
+            fields: {
+                version: null,
+                compiler: null
+            },
+            ctors: {
+                init: function () {
+                    this.version = "1.1.0";
+                    this.compiler = "16.1.0";
+                }
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.JsonSerializationException", {
         inherits: [Newtonsoft.Json.JsonException],
         ctors: {
@@ -463,15 +478,14 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     }
 
                     if (!field && typeof raw === "string") {
-                        var obj,
-                            invalidJson = false;
+                        var obj;
                         try {
                             obj = JSON.parse(raw);
                         } catch (e) {
-                            invalidJson = true;
+                            throw new Newtonsoft.Json.JsonException(e.message);
                         }
 
-                        if (!invalidJson && (typeof obj === "object" || Bridge.isArray(obj) || type === System.Array.type(System.Byte, 1) || type === Function || type === System.Guid || type === System.DateTime || type === System.Char || Bridge.Reflection.isEnum(type))) {
+                        if (typeof obj === "object" || Bridge.isArray(obj) || type === System.Array.type(System.Byte, 1) || type === Function || type === System.Guid || type === System.DateTime || type === System.Char || Bridge.Reflection.isEnum(type)) {
                             raw = obj;
                         }
                     }

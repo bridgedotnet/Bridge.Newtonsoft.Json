@@ -62,6 +62,7 @@
     <Compile Include="Serialization\IContractResolver.cs" />
     <Compile Include="Json\Formatting.cs" />
     <Compile Include="Json\TypeNameHandling.cs" />
+    <Compile Include="Utils\Version.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\.auxiliary\AssemblyBegin.js" />

@@ -95,6 +95,21 @@
         $flags: true
     });
 
+    Bridge.define("Newtonsoft.Json.Utils.AssemblyVersion", {
+        statics: {
+            fields: {
+                version: null,
+                compiler: null
+            },
+            ctors: {
+                init: function () {
+                    this.version = "1.1.0";
+                    this.compiler = "16.1.0";
+                }
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.JsonSerializationException", {
         inherits: [Newtonsoft.Json.JsonException],
         ctors: {
