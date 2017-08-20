@@ -5770,19 +5770,11 @@ Bridge.define("System.Exception", {
             },
 
             getCultureInfo: function (name) {
-                if (name == null) {
+                if (!name) {
                     throw new System.ArgumentNullException("name");
-                } else if (name === "") {
-                    return System.Globalization.CultureInfo.invariantCulture;
                 }
 
-                var c = this.cultures[name];
-
-                if (c == null) {
-                    throw new System.Globalization.CultureNotFoundException("name", name);
-                }
-
-                return c;
+                return this.cultures[name];
             },
 
             getCultures: function () {
@@ -5806,31 +5798,19 @@ Bridge.define("System.Exception", {
                 System.Globalization.CultureInfo.cultures = {};
             }
 
-            if (name == null) {
-                throw new System.ArgumentNullException("name");
-            }
-
-            var c;
-
-            if (name === "") {
-                c =  System.Globalization.CultureInfo.invariantCulture;
+            if (System.Globalization.CultureInfo.cultures[name]) {
+                Bridge.copy(this, System.Globalization.CultureInfo.cultures[name], [
+                    "englishName",
+                    "nativeName",
+                    "numberFormat",
+                    "dateTimeFormat"
+                ]);
             } else {
-                c = System.Globalization.CultureInfo.cultures[name];
-            }
-
-            if (c == null) {
                 if (!create) {
                     throw new System.Globalization.CultureNotFoundException("name", name);
                 }
 
                 System.Globalization.CultureInfo.cultures[name] = this;
-            } else {
-                Bridge.copy(this, c, [
-                            "englishName",
-                            "nativeName",
-                            "numberFormat",
-                            "dateTimeFormat"
-                ]);
             }
         },
 
