@@ -303,7 +303,6 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
 
                             obj = arr;
                         } else if (Bridge.Reflection.isEnum(type)) {
-                            //var name = System.Enum.toString(type, obj);
                             return returnRaw ? obj : this.stringify(obj, formatting);
                         } else if (type === System.Char) {
                             return returnRaw ? String.fromCharCode(obj) : this.stringify(String.fromCharCode(obj), formatting);
@@ -333,7 +332,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             }
 
                             obj = arr;
-                        } else if(!wasBoxed) {
+                        } else if (!wasBoxed) {
                             var raw = {},
                                 nometa = !Bridge.getMetadata(type);
 
