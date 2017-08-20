@@ -37,6 +37,7 @@
     <Compile Include="Issues\0100\Case002.cs" />
     <Compile Include="Issues\0100\Case004.cs" />
     <Compile Include="Issues\0100\Case008.cs" />
+    <Compile Include="Issues\0100\Case027.cs" />
     <Compile Include="Issues\0100\Case022.cs" />
     <Compile Include="Issues\0100\Case018.cs" />
     <Compile Include="Issues\0100\Case014.cs" />

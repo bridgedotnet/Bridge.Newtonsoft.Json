@@ -118,8 +118,10 @@
                             removeGuard();
                         }
 
+                        var wasBoxed = false;
                         if (obj && obj.$boxed) {
                             obj = Bridge.unbox(obj, true);
+                            wasBoxed = true;
                         }
 
                         if (type === System.Guid) {
@@ -148,8 +150,8 @@
 
                             obj = arr;
                         } else if (Bridge.Reflection.isEnum(type)) {
-                            var name = System.Enum.toString(type, obj);
-                            return returnRaw ? name : this.stringify(name, formatting);
+                            //var name = System.Enum.toString(type, obj);
+                            return returnRaw ? obj : this.stringify(obj, formatting);
                         } else if (type === System.Char) {
                             return returnRaw ? String.fromCharCode(obj) : this.stringify(String.fromCharCode(obj), formatting);
                         } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IDictionary, type)) {
@@ -178,7 +180,7 @@
                             }
 
                             obj = arr;
-                        } else {
+                        } else if(!wasBoxed) {
                             var raw = {},
                                 nometa = !Bridge.getMetadata(type);
 

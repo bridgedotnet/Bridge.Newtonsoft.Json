@@ -890,6 +890,33 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case27", {
+        statics: {
+            methods: {
+                TestEnumJson: function () {
+                    var product = new Newtonsoft.Json.Tests.Issues.Case27.Product();
+
+                    product.Name = "Apple";
+                    product.Price = 3.99;
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(product);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Name\":\"Apple\",\"Price\":3.99}", json);
+
+                    product = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case27.Product);
+                    Bridge.Test.NUnit.Assert.AreEqual("Apple", product.Name);
+                    Bridge.Test.NUnit.Assert.AreEqual(3.99, product.Price);
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case27.Product", {
+        props: {
+            Name: null,
+            Price: 0
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case4", {
         statics: {
             methods: {
@@ -1188,7 +1215,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual("[0,1,2]", Newtonsoft.Json.JsonConvert.SerializeObject(enumArr));
                 },
                 EnumWorks: function () {
-                    Bridge.Test.NUnit.Assert.AreEqual("\"Item1\"", Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.box(Newtonsoft.Json.Tests.SerializationTests.E1.Item1, Newtonsoft.Json.Tests.SerializationTests.E1, System.Enum.toStringFn(Newtonsoft.Json.Tests.SerializationTests.E1))));
+                    Bridge.Test.NUnit.Assert.AreEqual("0", Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.box(Newtonsoft.Json.Tests.SerializationTests.E1.Item1, Newtonsoft.Json.Tests.SerializationTests.E1, System.Enum.toStringFn(Newtonsoft.Json.Tests.SerializationTests.E1))));
                 },
                 IListWorks: function () {
                     var list = $asm.$.Newtonsoft.Json.Tests.SerializationTests.f1(new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.SerializationTests.E1))());

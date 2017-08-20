@@ -197,7 +197,7 @@ namespace Newtonsoft.Json.Tests
         [Test]
         public static void EnumWorks()
         {
-            Assert.AreEqual("\"Item1\"", JsonConvert.SerializeObject(E1.Item1));
+            Assert.AreEqual("0", JsonConvert.SerializeObject(E1.Item1));
         }
 
         [Test]
