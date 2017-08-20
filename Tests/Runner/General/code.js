@@ -893,8 +893,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case27", {
         statics: {
             methods: {
-                TestEnumJson: function () {
-                    var product = new Newtonsoft.Json.Tests.Issues.Case27.Product();
+                TestValueTypeProperty: function () {
+                    var product = new Newtonsoft.Json.Tests.Issues.Case27.Product1();
 
                     product.Name = "Apple";
                     product.Price = 3.99;
@@ -902,16 +902,36 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var json = Newtonsoft.Json.JsonConvert.SerializeObject(product);
                     Bridge.Test.NUnit.Assert.AreEqual("{\"Name\":\"Apple\",\"Price\":3.99}", json);
 
-                    product = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case27.Product);
+                    product = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case27.Product1);
                     Bridge.Test.NUnit.Assert.AreEqual("Apple", product.Name);
                     Bridge.Test.NUnit.Assert.AreEqual(3.99, product.Price);
+                },
+                TestValueTypeField: function () {
+                    var product = new Newtonsoft.Json.Tests.Issues.Case27.Product2();
+
+                    product.Name = "Apple";
+                    product.Price = 4;
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(product);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Name\":\"Apple\",\"Price\":4}", json);
+
+                    product = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case27.Product2);
+                    Bridge.Test.NUnit.Assert.AreEqual("Apple", product.Name);
+                    Bridge.Test.NUnit.Assert.AreEqual(4, product.Price);
                 }
             }
         }
     });
 
-    Bridge.define("Newtonsoft.Json.Tests.Issues.Case27.Product", {
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case27.Product1", {
         props: {
+            Name: null,
+            Price: 0
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case27.Product2", {
+        fields: {
             Name: null,
             Price: 0
         }

@@ -33,7 +33,8 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             QUnit.test("#14 - TestCaseInsensitiveMatch", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case14.TestCaseInsensitiveMatch);
             QUnit.test("#18 - TestNullable", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case18.TestNullable);
             QUnit.test("#22 - TestEnumJson", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case22.TestEnumJson);
-            QUnit.test("#27 - TestEnumJson", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case27.TestEnumJson);
+            QUnit.test("#27 - TestValueTypeProperty", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case27.TestValueTypeProperty);
+            QUnit.test("#27 - TestValueTypeField", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case27.TestValueTypeField);
             QUnit.test("#4 - TestConstructorWithArgument", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case4.TestConstructorWithArgument);
             QUnit.test("#4 - TestConstructorWithIEnumerable", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case4.TestConstructorWithIEnumerable);
             QUnit.test("#8 - TestGenericTypeHandling", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case8.TestGenericTypeHandling);
@@ -331,10 +332,15 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case27)],
         statics: {
             methods: {
-                TestEnumJson: function (assert) {
+                TestValueTypeProperty: function (assert) {
                     var $t;
-                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case27).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case27, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestEnumJson()", $t.Line = "22", $t));
-                    Newtonsoft.Json.Tests.Issues.Case27.TestEnumJson();
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case27).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case27, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestValueTypeProperty()", $t.Line = "29", $t));
+                    Newtonsoft.Json.Tests.Issues.Case27.TestValueTypeProperty();
+                },
+                TestValueTypeField: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case27).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case27, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestValueTypeField()", $t.Line = "45", $t));
+                    Newtonsoft.Json.Tests.Issues.Case27.TestValueTypeField();
                 }
             }
         },
