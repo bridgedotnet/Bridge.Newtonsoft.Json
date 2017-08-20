@@ -322,15 +322,14 @@
                     }
 
                     if (!field && typeof raw === "string") {
-                        var obj,
-                            invalidJson = false;
+                        var obj;
                         try {
                             obj = JSON.parse(raw);
                         } catch (e) {
-                            invalidJson = true;
+                            throw new Newtonsoft.Json.JsonException(e.message);
                         }
 
-                        if (!invalidJson && (typeof obj === "object" || Bridge.isArray(obj) || type === System.Array.type(System.Byte, 1) || type === Function || type === System.Guid || type === System.DateTime || type === System.Char || Bridge.Reflection.isEnum(type))) {
+                        if (typeof obj === "object" || Bridge.isArray(obj) || type === System.Array.type(System.Byte, 1) || type === Function || type === System.Guid || type === System.DateTime || type === System.Char || Bridge.Reflection.isEnum(type)) {
                             raw = obj;
                         }
                     }

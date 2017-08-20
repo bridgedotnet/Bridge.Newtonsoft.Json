@@ -890,6 +890,45 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case26", {
+        statics: {
+            methods: {
+                TestInvalidJson: function () {
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonException, $asm.$.Newtonsoft.Json.Tests.Issues.Case26.f1);
+
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonException, $asm.$.Newtonsoft.Json.Tests.Issues.Case26.f2);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(0, Newtonsoft.Json.JsonConvert.DeserializeObject("0", System.Int32));
+                }
+            }
+        }
+    });
+
+    Bridge.ns("Newtonsoft.Json.Tests.Issues.Case26", $asm.$);
+
+    Bridge.apply($asm.$.Newtonsoft.Json.Tests.Issues.Case26, {
+        f1: function () {
+            var product = Newtonsoft.Json.JsonConvert.DeserializeObject("fiherifuer", Newtonsoft.Json.Tests.Issues.Case26.Product);
+        },
+        f2: function () {
+            var product = Newtonsoft.Json.JsonConvert.DeserializeObject("{Name:\"name\"", Newtonsoft.Json.Tests.Issues.Case26.Product);
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case26.Product", {
+        props: {
+            Name: null,
+            ExpiryDate: null,
+            Price: 0,
+            Sizes: null
+        },
+        ctors: {
+            init: function () {
+                this.ExpiryDate = System.DateTime.getDefaultValue();
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case27", {
         statics: {
             methods: {
