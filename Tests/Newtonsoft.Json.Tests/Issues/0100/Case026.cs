@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using Bridge;
-using Bridge.Test.NUnit;
 using System.Collections.Generic;
 using System.Linq;
+
+using Bridge.Test.NUnit;
 
 namespace Newtonsoft.Json.Tests.Issues
 {
