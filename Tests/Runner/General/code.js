@@ -3,7 +3,7 @@
  * @version 1.1.0
  * @author Object.NET, Inc.
  * @copyright Copyright 2008-2017 Object.NET, Inc.
- * @compiler Bridge.NET 16.1.0
+ * @compiler Bridge.NET 16.2.0
  */
 Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     "use strict";
@@ -861,7 +861,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             methods: {
                 TestPropertiesWithSameReferenceValue: function () {
                     var $t;
-                    var a = {  };
+                    var a = { };
 
                     var json = Newtonsoft.Json.JsonConvert.SerializeObject(new Newtonsoft.Json.Tests.Issues.Case10.ClassWithMissingProperty(a, a), ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t));
 
