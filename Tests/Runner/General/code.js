@@ -1114,6 +1114,39 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case34", {
+        statics: {
+            methods: {
+                TestNullable: function () {
+                    var $t;
+                    var guid = System.Guid.newGuid();
+                    var obj = ($t = new Newtonsoft.Json.Tests.Issues.Case34.Test1(), $t.GUID = guid, $t.IntProp = 1, $t);
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    Bridge.Test.NUnit.Assert.AreEqual(System.String.format("{{\"GUID\":\"{0}\",\"IntProp\":1}}", guid.toString()), json);
+                    obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case34.Test1);
+                    Bridge.Test.NUnit.Assert.AreEqual(guid.toString(), obj.GUID.toString());
+                    Bridge.Test.NUnit.Assert.AreEqual(1, System.Nullable.getValue(obj.IntProp));
+
+                    obj = new Newtonsoft.Json.Tests.Issues.Case34.Test1();
+
+                    json = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"GUID\":null,\"IntProp\":null}", json);
+                    obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case34.Test1);
+                    Bridge.Test.NUnit.Assert.Null(obj.GUID);
+                    Bridge.Test.NUnit.Assert.Null(obj.IntProp);
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case34.Test1", {
+        props: {
+            GUID: null,
+            IntProp: null
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case4", {
         statics: {
             methods: {

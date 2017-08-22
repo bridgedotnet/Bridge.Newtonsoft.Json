@@ -78,9 +78,9 @@
                         }
                     }
 
-                    /*if (possibleType && Bridge.Reflection.isEnum(possibleType)) {
-                        return System.Enum.toString(possibleType, obj);
-                    }*/
+                    if (possibleType && possibleType.$nullable) {
+                        possibleType = possibleType.$nullableType;
+                    }
 
                     if (possibleType && possibleType === System.Char) {
                         return String.fromCharCode(obj);
