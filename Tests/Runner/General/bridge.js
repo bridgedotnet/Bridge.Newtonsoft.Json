@@ -3077,7 +3077,7 @@
     // @source Object.js
 
     Bridge.define("System.Object", {
-        
+
     });
 
     Bridge.define("System.Void", {
@@ -3540,7 +3540,7 @@
                     }
 
                     return m;
-                }                
+                }
             };
 
             re = re || /[[,\]]/g;
@@ -3552,7 +3552,7 @@
                 t,
                 noasm = !asm;
 
-            asm = asm || Bridge.$currentAssembly;
+            //asm = asm || Bridge.$currentAssembly;
 
             if (m) {
                 tname = typeName.substring(last, m.index);
@@ -3565,7 +3565,7 @@
 
                         for (; ;) {
                             next();
-                            t = Bridge.Reflection._getType(typeName, Bridge.SystemAssembly, re);
+                            t = Bridge.Reflection._getType(typeName, null, re);
 
                             if (!t) {
                                 return null;
@@ -5007,13 +5007,13 @@ Bridge.define("System.Exception", {
         getBaseException: function() {
             var inner = this.innerException;
             var back = this;
-            
+
             while (inner != null) {
                 back = inner;
                 inner = inner.innerException;
             }
-            
-            return back;  
+
+            return back;
         },
 
         toString: function () {
@@ -5024,11 +5024,11 @@ Bridge.define("System.Exception", {
             } else {
                 builder += "\n";
             }
-                
+
             if (this.StackTrace != null) {
                 builder += this.StackTrace + "\n";
             }
-                
+
             return builder;
         },
 
@@ -5178,7 +5178,7 @@ Bridge.define("System.Exception", {
                         return this.paramName;
                     }
                 }
-            }  
+            }
         },
 
         ctor: function (message, paramName, innerException) {
@@ -5445,7 +5445,7 @@ Bridge.define("System.Exception", {
                 back = back.InnerException;
                 backAsAggregate = Bridge.as(back, System.AggregateException);
             }
-            return back;  
+            return back;
         },
 
         flatten: function () {
@@ -10419,7 +10419,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                         return this._condition;
                     }
                 }
-            }  
+            }
         },
 
         ctor: function (failureKind, failureMessage, userMessage, condition, innerException) {
@@ -11734,7 +11734,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
 				    }
 				}
 			},
-			
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
@@ -11823,7 +11823,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
 				    }
 				}
 			},
-			
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
@@ -12487,7 +12487,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                 } else {
                     this._capacity = this.items.length;
                 }
-                
+
                 this.clear.$clearCallbacks = [];
             },
 
@@ -12535,9 +12535,9 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             trimExcess: function () {
                 var threshold = Bridge.Int.clip32(this.Capacity * 0.9);
                 if (this.items.length < threshold) {
-                    this.Capacity = this.items.length;                
+                    this.Capacity = this.items.length;
                 }
-            }, 
+            },
 
             add: function (value) {
                 this.checkReadOnly();
@@ -12795,7 +12795,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                 if (action == null) {
                     throw new System.ArgumentNullException("action");
                 }
- 
+
                 for (var i = 0; i < this.items.length; i++) {
                     action(this.items[i]);
                 }
@@ -14487,17 +14487,17 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
             toString$1: function (fieldCount) {
                 var sb;
                 switch (fieldCount) {
-                    case 0: 
+                    case 0:
                         return ("");
-                    case 1: 
+                    case 1:
                         return (this._Major.toString());
-                    case 2: 
+                    case 2:
                         sb = new System.Text.StringBuilder();
                         System.Version.appendPositiveNumber(this._Major, sb);
                         sb.append(String.fromCharCode(46));
                         System.Version.appendPositiveNumber(this._Minor, sb);
                         return sb.toString();
-                    default: 
+                    default:
                         if (this._Build === -1) {
                             throw new System.ArgumentException("Build should be > 0 if fieldCount > 2", "fieldCount");
                         }
@@ -14582,13 +14582,13 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
             },
             getVersionParseException: function () {
                 switch (this.m_failure) {
-                    case System.Version.ParseFailureKind.ArgumentNullException: 
+                    case System.Version.ParseFailureKind.ArgumentNullException:
                         return new System.ArgumentNullException(this.m_argumentName);
-                    case System.Version.ParseFailureKind.ArgumentException: 
+                    case System.Version.ParseFailureKind.ArgumentException:
                         return new System.ArgumentException("VersionString");
-                    case System.Version.ParseFailureKind.ArgumentOutOfRangeException: 
+                    case System.Version.ParseFailureKind.ArgumentOutOfRangeException:
                         return new System.ArgumentOutOfRangeException(this.m_exceptionArgument, "Cannot be < 0");
-                    case System.Version.ParseFailureKind.FormatException: 
+                    case System.Version.ParseFailureKind.FormatException:
                         // Regenerate the FormatException as would be thrown by Int32.Parse()
                         try {
                             System.Int32.parse(this.m_exceptionArgument);
@@ -14607,7 +14607,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                             }
                         }
                         return new System.FormatException("InvalidString");
-                    default: 
+                    default:
                         return new System.ArgumentException("VersionString");
                 }
             },
@@ -16324,7 +16324,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                     var array = buffer.getArray(),
                         count = buffer.getCount(),
                         offset = buffer.getOffset();
- 
+
                     var data = new Uint8Array(count);
 
                     for (var i = 0; i < count; i++) {
@@ -16334,7 +16334,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                     if (messageType === "text") {
                         data = String.fromCharCode.apply(null, data);
                     }
- 
+
                     this.socket.send(data);
                 }
 
@@ -16604,7 +16604,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
 					}
 				}
 			},
-			
+
             alias: [
 				"getCurrent", "System$Collections$IEnumerator$getCurrent",
 				"moveNext", "System$Collections$IEnumerator$moveNext",
@@ -16645,7 +16645,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
 							return this.getCurrent();
 						}
 					},
-					
+
 					Current$1: {
 						get: function () {
 							return this.getCurrent();
@@ -19974,16 +19974,16 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                 s = list.toArray().join("-");
 
                 switch (format) {
-                    case "n": 
-                    case "N": 
+                    case "n":
+                    case "N":
                         return System.Guid.replace.replace(s, "");
-                    case "b": 
-                    case "B": 
+                    case "b":
+                    case "B":
                         return System.String.concat(String.fromCharCode(123), s, String.fromCharCode(125));
-                    case "p": 
-                    case "P": 
+                    case "p":
+                    case "P":
                         return System.String.concat(String.fromCharCode(40), s, String.fromCharCode(41));
-                    default: 
+                    default:
                         return s;
                 }
             },
@@ -20370,7 +20370,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
             if (!Bridge.isDefined(useCache)) {
                 useCache = false;
             }
-            
+
             var scope = System.Text.RegularExpressions;
 
             if (pattern == null) {
@@ -20699,7 +20699,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                     get: function() {
                         return this._capcount;
                     }
-                }    
+                }
             },
 
             alias: [
@@ -21077,7 +21077,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
 					}
 				}
 			},
-			
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
@@ -21453,7 +21453,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
 					}
 				}
 			},
-			
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
@@ -28875,77 +28875,77 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
                 init: function () {
                     this.HashPrime = 101;
                     this.primes = System.Array.init([
-                        3, 
-                        7, 
-                        11, 
-                        17, 
-                        23, 
-                        29, 
-                        37, 
-                        47, 
-                        59, 
-                        71, 
-                        89, 
-                        107, 
-                        131, 
-                        163, 
-                        197, 
-                        239, 
-                        293, 
-                        353, 
-                        431, 
-                        521, 
-                        631, 
-                        761, 
-                        919, 
-                        1103, 
-                        1327, 
-                        1597, 
-                        1931, 
-                        2333, 
-                        2801, 
-                        3371, 
-                        4049, 
-                        4861, 
-                        5839, 
-                        7013, 
-                        8419, 
-                        10103, 
-                        12143, 
-                        14591, 
-                        17519, 
-                        21023, 
-                        25229, 
-                        30293, 
-                        36353, 
-                        43627, 
-                        52361, 
-                        62851, 
-                        75431, 
-                        90523, 
-                        108631, 
-                        130363, 
-                        156437, 
-                        187751, 
-                        225307, 
-                        270371, 
-                        324449, 
-                        389357, 
-                        467237, 
-                        560689, 
-                        672827, 
-                        807403, 
-                        968897, 
-                        1162687, 
-                        1395263, 
-                        1674319, 
-                        2009191, 
-                        2411033, 
-                        2893249, 
-                        3471899, 
-                        4166287, 
-                        4999559, 
-                        5999471, 
+                        3,
+                        7,
+                        11,
+                        17,
+                        23,
+                        29,
+                        37,
+                        47,
+                        59,
+                        71,
+                        89,
+                        107,
+                        131,
+                        163,
+                        197,
+                        239,
+                        293,
+                        353,
+                        431,
+                        521,
+                        631,
+                        761,
+                        919,
+                        1103,
+                        1327,
+                        1597,
+                        1931,
+                        2333,
+                        2801,
+                        3371,
+                        4049,
+                        4861,
+                        5839,
+                        7013,
+                        8419,
+                        10103,
+                        12143,
+                        14591,
+                        17519,
+                        21023,
+                        25229,
+                        30293,
+                        36353,
+                        43627,
+                        52361,
+                        62851,
+                        75431,
+                        90523,
+                        108631,
+                        130363,
+                        156437,
+                        187751,
+                        225307,
+                        270371,
+                        324449,
+                        389357,
+                        467237,
+                        560689,
+                        672827,
+                        807403,
+                        968897,
+                        1162687,
+                        1395263,
+                        1674319,
+                        2009191,
+                        2411033,
+                        2893249,
+                        3471899,
+                        4166287,
+                        4999559,
+                        5999471,
                         7199369
                     ], System.Int32);
                     this.MaxPrimeArrayLength = 2146435069;
