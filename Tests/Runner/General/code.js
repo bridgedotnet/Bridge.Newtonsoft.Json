@@ -1221,6 +1221,34 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     Bridge.Test.NUnit.Assert.AreEqual("Hi", typedResult.Value1.Data);
                     Bridge.Test.NUnit.Assert.AreEqual(8, typedResult.Value2.Data.Data);
+                },
+                TestGenericAndArrayTypeHandling: function () {
+                    var $t, $t1;
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+
+                    var x = new (Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$1(System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.PageEditData)))();
+
+                    x.Value = System.Array.init([($t = new Newtonsoft.Json.Tests.Issues.Case8.PageEditData(), $t.Data = 7, $t)], Newtonsoft.Json.Tests.Issues.Case8.PageEditData);
+
+                    var items = System.Array.init([x], Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$1(System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.PageEditData)));
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(items, settings);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+ApiResponse`1[[Newtonsoft.Json.Tests.Issues.Case8+PageEditData[]]], Newtonsoft.Json.Tests\",\"Value\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+PageEditData, Newtonsoft.Json.Tests\",\"Data\":7}]}]", json);
+
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$1(System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.PageEditData))), settings);
+
+                    Bridge.Test.NUnit.Assert.NotNull(Bridge.unbox(result));
+
+                    var typedResult = Bridge.as(result, System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$1(System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.PageEditData))));
+
+                    Bridge.Test.NUnit.Assert.NotNull(typedResult);
+                    Bridge.Test.NUnit.Assert.AreEqual(1, typedResult.length);
+                    Bridge.Test.NUnit.Assert.NotNull(typedResult[System.Array.index(0, typedResult)]);
+                    Bridge.Test.NUnit.Assert.NotNull(typedResult[System.Array.index(0, typedResult)].Value);
+                    Bridge.Test.NUnit.Assert.AreEqual(1, typedResult[System.Array.index(0, typedResult)].Value.length);
+                    Bridge.Test.NUnit.Assert.NotNull(($t = typedResult[System.Array.index(0, typedResult)].Value)[System.Array.index(0, $t)]);
+                    Bridge.Test.NUnit.Assert.AreEqual(7, ($t1 = typedResult[System.Array.index(0, typedResult)].Value)[System.Array.index(0, $t1)].Data);
                 }
             }
         }
