@@ -27,7 +27,7 @@ namespace Newtonsoft.Json.Tests.Issues
         }
 
         [Test]
-        public static void TestNullable()
+        public static void TestGuid()
         {
             var guid = Guid.NewGuid();
             var obj = new Test1 { GUID = guid, IntProp = 1 };

@@ -37,7 +37,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             QUnit.test("#26 - TestInvalidJson", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case26.TestInvalidJson);
             QUnit.test("#27 - TestValueTypeProperty", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case27.TestValueTypeProperty);
             QUnit.test("#27 - TestValueTypeField", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case27.TestValueTypeField);
-            QUnit.test("#34 - TestNullable", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case34.TestNullable);
+            QUnit.test("#34 - TestGuid", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case34.TestGuid);
             QUnit.test("#4 - TestConstructorWithArgument", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case4.TestConstructorWithArgument);
             QUnit.test("#4 - TestConstructorWithIEnumerable", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case4.TestConstructorWithIEnumerable);
             QUnit.test("#8 - TestGenericTypeHandling", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case8.TestGenericTypeHandling);
@@ -417,10 +417,10 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case34)],
         statics: {
             methods: {
-                TestNullable: function (assert) {
+                TestGuid: function (assert) {
                     var $t;
-                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case34).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case34, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestNullable()", $t.Line = "29", $t));
-                    Newtonsoft.Json.Tests.Issues.Case34.TestNullable();
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case34).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case34, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestGuid()", $t.Line = "29", $t));
+                    Newtonsoft.Json.Tests.Issues.Case34.TestGuid();
                 }
             }
         },

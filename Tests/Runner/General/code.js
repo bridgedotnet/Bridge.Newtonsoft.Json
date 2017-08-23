@@ -1117,7 +1117,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case34", {
         statics: {
             methods: {
-                TestNullable: function () {
+                TestGuid: function () {
                     var $t;
                     var guid = System.Guid.newGuid();
                     var obj = ($t = new Newtonsoft.Json.Tests.Issues.Case34.Test1(), $t.GUID = guid, $t.IntProp = 1, $t);
