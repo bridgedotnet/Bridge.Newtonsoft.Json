@@ -85,7 +85,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\packages\Bridge.Min.16.1.0\build\Bridge.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bridge.Min.16.1.0\build\Bridge.Min.targets'))" />
+    <Error Condition="!Exists('..\packages\Bridge.Min.16.2.0\build\Bridge.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bridge.Min.16.2.0\build\Bridge.Min.targets'))" />
   </Target>
   <!-- NuGet packaging starts -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -98,8 +98,8 @@
     </NuGetPackageSourcePath>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Bridge, Version=16.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Bridge.Core.16.1.0\lib\net40\Bridge.dll</HintPath>
+    <Reference Include="Bridge, Version=16.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Core.16.2.0\lib\net40\Bridge.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -111,6 +111,6 @@
     <Message Text="Cleaning NuGet packages in $(ProjectDir)$(OutDir)" Importance="high" />
     <Delete Files="@(FilesToDelete)" ContinueOnError="true" />
   </Target>
-  <Import Project="..\packages\Bridge.Min.16.1.0\build\Bridge.Min.targets" Condition="Exists('..\packages\Bridge.Min.16.1.0\build\Bridge.Min.targets')" />
+  <Import Project="..\packages\Bridge.Min.16.2.0\build\Bridge.Min.targets" Condition="Exists('..\packages\Bridge.Min.16.2.0\build\Bridge.Min.targets')" />
   <!-- NuGet packaging finishes -->
 </Project>

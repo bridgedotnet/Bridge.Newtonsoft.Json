@@ -11,6 +11,19 @@ namespace Newtonsoft.Json.Tests.Issues
     [TestFixture(TestNameFormat = "#8 - {0}")]
     public class Case8
     {
+        public sealed class Container
+        {
+            public static Container<K> Create<K>(K value)
+            {
+                return new Container<K>() { Item1 = value };
+            }
+        }
+
+        public sealed class Container<T>
+        {
+            public T Item1;
+        }
+
         public sealed class ApiResponse<T>
         {
             public T Value;
@@ -112,6 +125,99 @@ namespace Newtonsoft.Json.Tests.Issues
 
             Assert.AreEqual("Hi", typedResult.Value1.Data);
             Assert.AreEqual(8, typedResult.Value2.Data.Data);
+        }
+
+        [Test]
+        public static void TestGenericAndArrayTypeHandling()
+        {
+            var settings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            };
+
+            var x = new ApiResponse<PageEditData[]>();
+
+            x.Value = new PageEditData[]
+            {
+                new PageEditData()
+                {
+                    Data = 7
+                }
+            };
+
+            var items = new ApiResponse<PageEditData[]>[] { x };
+
+            var json = JsonConvert.SerializeObject(items, settings);
+
+            Assert.AreEqual("[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+ApiResponse`1[[Newtonsoft.Json.Tests.Issues.Case8+PageEditData[]]], Newtonsoft.Json.Tests\",\"Value\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+PageEditData, Newtonsoft.Json.Tests\",\"Data\":7}]}]", json);
+
+            object result = JsonConvert.DeserializeObject<ApiResponse<PageEditData[]>[]>(
+                json,
+                settings
+            );
+
+            Assert.NotNull(result);
+
+            var typedResult = result as ApiResponse<PageEditData[]>[];
+
+            Assert.NotNull(typedResult);
+            Assert.AreEqual(1, typedResult.Length);
+            Assert.NotNull(typedResult[0]);
+            Assert.NotNull(typedResult[0].Value);
+            Assert.AreEqual(1, typedResult[0].Value.Length);
+            Assert.NotNull(typedResult[0].Value[0]);
+            Assert.AreEqual(7, typedResult[0].Value[0].Data);
+        }
+
+        [Test]
+        public static void TestGenericAndArrayTypeHandlingMoreLevels()
+        {
+            var settings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            };
+
+            var pages = new PageEditData[]
+            {
+                new PageEditData()
+                {
+                    Data = 7
+                }
+            };
+
+            var contaners = new Container<PageEditData[]>[] { Container.Create(pages) };
+
+            var responses = new ApiResponse<Container<PageEditData[]>[]>[]
+            {
+                new ApiResponse<Container<PageEditData[]>[]>
+                {
+                    Value = contaners
+                }
+            };
+
+            var json = JsonConvert.SerializeObject(responses, settings);
+
+            Assert.AreEqual("[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+ApiResponse`1[[Newtonsoft.Json.Tests.Issues.Case8+Container`1[[Newtonsoft.Json.Tests.Issues.Case8+PageEditData[]]][]]], Newtonsoft.Json.Tests\",\"Value\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+Container`1[[Newtonsoft.Json.Tests.Issues.Case8+PageEditData[]]], Newtonsoft.Json.Tests\",\"Item1\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case8+PageEditData, Newtonsoft.Json.Tests\",\"Data\":7}]}]}]", json);
+
+            object result = JsonConvert.DeserializeObject<ApiResponse<Container<PageEditData[]>[]>[]>(
+                json,
+                settings
+            );
+
+            Assert.NotNull(result);
+
+            var typedResult = result as ApiResponse<Container<PageEditData[]>[]>[];
+
+            Assert.NotNull(typedResult);
+            Assert.AreEqual(1, typedResult.Length);
+            Assert.NotNull(typedResult[0]);
+            Assert.NotNull(typedResult[0].Value);
+            Assert.AreEqual(1, typedResult[0].Value.Length);
+            Assert.NotNull(typedResult[0].Value[0]);
+            Assert.NotNull(typedResult[0].Value[0].Item1);
+            Assert.AreEqual(1, typedResult[0].Value[0].Item1.Length);
+            Assert.NotNull(typedResult[0].Value[0].Item1[0]);
+            Assert.AreEqual(7, typedResult[0].Value[0].Item1[0].Data);
         }
     }
 }
