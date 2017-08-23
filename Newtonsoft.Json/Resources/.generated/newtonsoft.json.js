@@ -1,5 +1,5 @@
 /*
- * @version   : 1.1.1 - A Bridge.NET implementation of Newtonsoft.Json
+ * @version   : 1.2.0 - A Bridge.NET implementation of Newtonsoft.Json
  * @author    : Object.NET, Inc. http://www.bridge.net/
  * @date      : 2017-08-22
  * @copyright : Copyright (c) 2008-2017, Object.NET, Inc. (http://www.object.net/). All rights reserved.
@@ -119,7 +119,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
             },
             ctors: {
                 init: function () {
-                    this.version = "1.1.1";
+                    this.version = "1.2.0";
                     this.compiler = "16.2.0";
                 }
             }
