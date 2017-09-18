@@ -396,6 +396,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             jsonCtor = null;
 
                         if (ctors.length > 0) {
+                            ctors = ctors.filter(function (c) { return !c.isSynthetic; });
+
                             for (var idx = 0; idx < ctors.length; idx++) {
                                 var c = ctors[idx],
                                     hasAttribute = System.Attribute.getCustomAttributes(c, Newtonsoft.Json.JsonConstructorAttribute).length > 0,

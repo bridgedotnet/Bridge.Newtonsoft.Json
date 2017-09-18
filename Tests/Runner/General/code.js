@@ -1171,6 +1171,26 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case38", {
+        statics: {
+            methods: {
+                TestKeyValuePair: function () {
+                    var $t;
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(new (System.Collections.Generic.KeyValuePair$2(System.Int32,System.String))(1, "bla1"), settings);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"$type\":\"System.Collections.Generic.KeyValuePair`2[[System.Int32, mscorlib],[System.String, mscorlib]], mscorlib\",\"Key\":1,\"Value\":\"bla1\"}", json);
+
+                    var obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json, System.Collections.Generic.KeyValuePair$2(System.Int32,System.String), settings);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(1, obj.key);
+                    Bridge.Test.NUnit.Assert.AreEqual("bla1", obj.value);
+                }
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case4", {
         statics: {
             methods: {
