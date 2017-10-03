@@ -1251,6 +1251,24 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case43", {
+        statics: {
+            methods: {
+                TestCultureInfo: function () {
+                    var $t;
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+                    var c = new System.Globalization.CultureInfo("iv");
+                    var j = Newtonsoft.Json.JsonConvert.SerializeObject(c, settings);
+                    Bridge.Test.NUnit.Assert.AreEqual("\"iv\"", j);
+
+                    var obj = Newtonsoft.Json.JsonConvert.DeserializeObject("\"iv\"", System.Globalization.CultureInfo, settings);
+                    Bridge.Test.NUnit.Assert.NotNull(obj);
+                    Bridge.Test.NUnit.Assert.AreEqual("iv", obj.name);
+                }
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8", {
         statics: {
             methods: {

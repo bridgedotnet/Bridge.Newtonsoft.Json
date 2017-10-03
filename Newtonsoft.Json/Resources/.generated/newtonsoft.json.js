@@ -258,7 +258,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return;
                         }
 
-                        if (type !== System.Guid &&
+                        if (type !== System.Globalization.CultureInfo &&
+                            type !== System.Guid &&
                             type !== System.Uri &&
                             type !== System.Int64 &&
                             type !== System.UInt64 &&
@@ -277,7 +278,9 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             wasBoxed = true;
                         }
 
-                        if (type === System.Guid) {
+                        if (type === System.Globalization.CultureInfo) {
+                            return returnRaw ? obj.name : this.stringify(obj.name, formatting);
+                        } else if (type === System.Guid) {
                             return returnRaw ? obj.toString() : this.stringify(obj.toString(), formatting);
                         } else if (type === System.Uri) {
                             return returnRaw ? obj.getAbsoluteUri() : this.stringify(obj.getAbsoluteUri(), formatting);
@@ -488,7 +491,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             throw new Newtonsoft.Json.JsonException(e.message);
                         }
 
-                        if (typeof obj === "object" || Bridge.isArray(obj) || type === System.Array.type(System.Byte, 1) || type === Function || type === System.Guid || type === System.Uri || type === System.DateTime || type === System.Char || Bridge.Reflection.isEnum(type)) {
+                        if (typeof obj === "object" || Bridge.isArray(obj) || type === System.Array.type(System.Byte, 1) || type === Function || type === System.Guid || type === System.Globalization.CultureInfo || type === System.Uri || type === System.DateTime || type === System.Char || Bridge.Reflection.isEnum(type)) {
                             raw = obj;
                         }
                     }
@@ -572,6 +575,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     } else if (typeof raw === "string") {
                         if (type === Function) {
                             return Bridge.Reflection.getType(raw);
+                        } else if (type === System.Globalization.CultureInfo) {
+                            return new System.Globalization.CultureInfo(raw);
                         } else if (type === System.Uri) {
                             return new System.Uri(raw);
                         } else if (type === System.Guid) {
