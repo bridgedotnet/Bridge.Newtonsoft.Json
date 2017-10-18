@@ -2,12 +2,16 @@ module.exports = function(grunt) {
     var browsers = [
     {
         browserName: "firefox",
-        version: "52",
-        platform: "WIN8"
+        version: "55",
+        platform: "Windows 10"
     }
     , {
         browserName: "googlechrome",
-        platform: "XP"
+        platform: "WIN7"
+    }
+    , {
+        browserName: "googlechrome",
+        platform: "WIN8"
     }
     , {
         browserName: "googlechrome",
