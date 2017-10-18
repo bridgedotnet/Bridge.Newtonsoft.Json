@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/bridgedotnet/Bridge.Newtonsoft.Json"
+    "url": "git://github.com/bridgedotnet/Bridge.Newtonsoft.Json/Bridge.Newtonsoft.Json.git"
   },
   "engines": ["node"],
   "dependencies": {},

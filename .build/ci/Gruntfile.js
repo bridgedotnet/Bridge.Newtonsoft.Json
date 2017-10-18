@@ -15,6 +15,10 @@ module.exports = function(grunt) {
     }
     , {
         browserName: "googlechrome",
+        platform: "Windows 8.1"
+    }
+    , {
+        browserName: "googlechrome",
         platform: "Windows 10"
     }
     , {
@@ -80,6 +84,6 @@ module.exports = function(grunt) {
     }
 
     // https://gruntjs.com/api/grunt.task
-    // grunt.registerTask("dev", ["connect", "watch"]);
+    grunt.registerTask("dev", ["connect", "watch"]);
     grunt.registerTask("test", ["connect", "saucelabs-qunit"]);
 };
