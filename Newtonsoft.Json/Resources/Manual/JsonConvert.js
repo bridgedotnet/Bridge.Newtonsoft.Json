@@ -1,4 +1,3 @@
-/* global Newtonsoft, Bridge, System */
     Bridge.define("Newtonsoft.Json.JsonConvert", {
         statics: {
             methods: {
