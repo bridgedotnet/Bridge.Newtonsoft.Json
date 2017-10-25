@@ -1,3 +1,4 @@
+/* global Newtonsoft, Bridge, System */
     Bridge.define("Newtonsoft.Json.JsonConvert", {
         statics: {
             methods: {
@@ -235,7 +236,7 @@
                     return returnRaw ? obj : this.stringify(obj, formatting);
                 },
 
-                createInstance: function (type, raw, settings) {
+                getInstanceBuilder: function (type, raw, settings) {
                     var rawIsArray = Bridge.isArray(raw),
                         isEnumerable = rawIsArray && Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, type),
                         isObject = typeof raw === "object" && !rawIsArray,
@@ -277,22 +278,29 @@
                                 jsonCtor = ctors[0];
                             }
 
-                            var params = jsonCtor.pi || [],
-                                args = [];
-
+                            var params = jsonCtor.pi || [];
+                            
                             if (isEnumerable) {
-                                if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
-                                    var arr = [],
-                                        elementType = Bridge.Reflection.getGenericArguments(params[0].pt)[0] ||
-                                                      Bridge.Reflection.getGenericArguments(type)[0] ||
-                                                      System.Object;
-                                    for (var i = 0; i < raw.length; i++) {
-                                        arr[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], elementType, settings, true);
+                                return function (raw) {
+                                    var args = [];
+                                    if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
+                                        var arr = [],
+                                            elementType = Bridge.Reflection.getGenericArguments(params[0].pt)[0] ||
+                                                          Bridge.Reflection.getGenericArguments(type)[0] ||
+                                                          System.Object;
+                                        for (var i = 0; i < raw.length; i++) {
+                                            arr[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], elementType, settings, true);
+                                        }
+                                        args.push(arr);
+                                        isList = true;
                                     }
-                                    args.push(arr);
-                                    isList = true;
+                                    var v = Bridge.Reflection.invokeCI(jsonCtor, args);
+                                    return isList ? {$list: true, value: v} : v;
                                 }
-                            } else {
+                            };
+                            
+                            return function (raw) {
+                                var args = [];
                                 var theKeys = Object.getOwnPropertyNames(raw).toString();
                                 for (var i = 0; i < params.length; i++) {
                                     var name = params[i].sn || params[i].n,
@@ -306,16 +314,21 @@
                                         args[i] = Bridge.getDefaultValue(params[i].pt);
                                     }
                                 }
-                            }
-
-                            var v = Bridge.Reflection.invokeCI(jsonCtor, args);
-                            return isList ? {$list: true, value: v} : v;
+                                return Bridge.Reflection.invokeCI(jsonCtor, args);
+                            };
                         }
                     }
 
-                    return Bridge.createInstance(type);
+                    return function () {
+                        return Bridge.createInstance(type);
+                    };
                 },
 
+                createInstance: function (type, raw, settings) {
+                    var builder = this.getInstanceBuilder(type, raw, settings);
+                    return builder(raw);
+                },
+                    
                 DeserializeObject: function (raw, type, settings, field) {
                     settings = settings || {};
                     if (type.$kind === "interface") {
