@@ -1269,6 +1269,36 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case49", {
+        statics: {
+            methods: {
+                TestInvalidSchema: function () {
+                    var json = "{\"Member1\": \"spaghetti\"}";
+                    Bridge.Test.NUnit.Assert.Throws$2(System.ArgumentException, function () {
+                        Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case49.MyClass);
+                    });
+
+                    json = "{\"InField\": \"spaghetti\"}";
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonException, function () {
+                        Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case49.MyClass);
+                    });
+
+                    json = "{\"InField\": 15.1}";
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonException, function () {
+                        Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case49.MyClass);
+                    });
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case49.MyClass", {
+        fields: {
+            InField: 0,
+            Member1: null
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8", {
         statics: {
             methods: {

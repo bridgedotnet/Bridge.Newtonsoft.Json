@@ -534,9 +534,16 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 return def + 1;
                             }
 
-                            return null;
+                            throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
                     } else if (typeof raw === "number") {
+                        if (type.$number && !type.$is(raw)) {
+                            if ((type !== System.Decimal || !type.tryParse(raw, null, {})) &&
+                                (!System.Int64.is64BitType(type) || !type.tryParse(raw.toString(), {}))) {
+                                throw new Newtonsoft.Json.JsonException(System.String.format("Input string '{0}' is not a valid {1}", raw, Bridge.getTypeName(type)));
+                            }                            
+                        }
+
                         if (type === System.Boolean) {
                             return raw !== 0;
                         } else if (Bridge.Reflection.isEnum(type)) {
@@ -570,9 +577,20 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else if (type === System.DateTime) {
                             return System.DateTime.create$2(raw | 0, 0);
                         } else {
-                            return null;
+                            throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
                     } else if (typeof raw === "string") {
+                        var isDecimal = type === System.Decimal,
+                            isSpecial = isDecimal || System.Int64.is64BitType(type);
+                        if (isSpecial && (isDecimal ? !type.tryParse(raw, null, {}) : !type.tryParse(raw, {}))) {
+                            throw new Newtonsoft.Json.JsonException(System.String.format("Input string '{0}' is not a valid {1}", raw, Bridge.getTypeName(type)));
+                        }
+
+                        var isFloat = type == System.Double || type == System.Single;
+                        if (!isSpecial && type.$number && (isFloat ? !type.tryParse(raw, null, {}) : !type.tryParse(raw, {}))) {
+                            throw new Newtonsoft.Json.JsonException(System.String.format("Could not convert {0} to {1}: {2}", Bridge.getTypeName(raw), Bridge.getTypeName(type), raw));
+                        }
+
                         if (type === Function) {
                             return Bridge.Reflection.getType(raw);
                         } else if (type === System.Globalization.CultureInfo) {
@@ -635,7 +653,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else if (type === System.Array.type(System.Byte, 1)) {
                             return System.Convert.fromBase64String(raw);
                         } else {
-                            return null;
+                            throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
                     } else if (typeof raw === "object") {
                         if (def !== null && type.$kind !== "struct") {
