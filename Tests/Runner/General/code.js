@@ -1269,6 +1269,63 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case50", {
+        statics: {
+            fields: {
+                sb: null
+            },
+            methods: {
+                TestDeserializationConstructor: function () {
+                    var $t;
+                    Newtonsoft.Json.Tests.Issues.Case50.sb = new System.Text.StringBuilder();
+
+                    var person = ($t = new Newtonsoft.Json.Tests.Issues.Case50.Person(123, "Dan"), $t.SomethingElse = 456, $t);
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(person, settings);
+                    var clone = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case50.Person);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("123123", Newtonsoft.Json.Tests.Issues.Case50.sb.toString());
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case50.Person", {
+        fields: {
+            _id: 0,
+            _somethingElse: 0
+        },
+        props: {
+            Id: {
+                get: function () {
+                    return this._id;
+                },
+                set: function (value) {
+                    Newtonsoft.Json.Tests.Issues.Case50.sb.append("2");
+                    this._id = value;
+                }
+            },
+            SomethingElse: {
+                get: function () {
+                    return this._somethingElse;
+                },
+                set: function (value) {
+                    Newtonsoft.Json.Tests.Issues.Case50.sb.append("3");
+                    this._somethingElse = value;
+                }
+            },
+            Name: null
+        },
+        ctors: {
+            ctor: function (id, name) {
+                this.$initialize();
+                Newtonsoft.Json.Tests.Issues.Case50.sb.append("1");
+                this.Id = id;
+                this.Name = name;
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8", {
         statics: {
             methods: {
