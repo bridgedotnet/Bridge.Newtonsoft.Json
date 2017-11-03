@@ -345,7 +345,7 @@
                     }
 
                     var isObject = type === Object || type === System.Object;
-                    if (isObject || type.$literal) {
+                    if (isObject || type.$literal && !Bridge.getMetadata(type)) {
                         return Bridge.merge(isObject ? {} : Bridge.createInstance(type), raw);
                     }
 

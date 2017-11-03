@@ -1269,6 +1269,38 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case52", {
+        statics: {
+            methods: {
+                TestObjectLiteral: function () {
+                    var $t;
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+
+                    var x = Newtonsoft.Json.Tests.Issues.Case52.Person.ctor(System.DateTime.getNow());
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(x, settings);
+                    var clone = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case52.Person, settings);
+
+                    Bridge.Test.NUnit.Assert.True(Bridge.is(Bridge.box(clone.Value, System.DateTime, System.DateTime.format), System.DateTime));
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case52.Person", {
+        $literal: true,
+        ctors: {
+            ctor: function (value) {
+                var $this = { };
+                $this.$getType = function () { return Newtonsoft.Json.Tests.Issues.Case52.Person; };
+                (function (){
+                    this.Value = null;
+                    this.Value = value;
+                }).call($this);
+                return $this;
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8", {
         statics: {
             methods: {
