@@ -194,6 +194,33 @@ namespace Newtonsoft.Json.Tests
             }
         }
 
+        [Reflectable]
+        public class AnotherPerson
+        {
+            private int _numberOfTimesThatIdHasBeenSet;
+            private int _id;
+            public AnotherPerson(int id, string name)
+            {
+                _numberOfTimesThatIdHasBeenSet = 0;
+                Id = id;
+                Name = name;
+            }
+            public int Id
+            {
+                get
+                {
+                    return _id;
+                }
+                set
+                {
+                    _id = value;
+                    _numberOfTimesThatIdHasBeenSet++;
+                }
+            }
+            public string Name { get; }
+            public int NumberOfTimesThatIdHasBeenSet { get { return _numberOfTimesThatIdHasBeenSet; } }
+        }
+
         #endregion Test data
 
         [Test]
@@ -624,6 +651,20 @@ namespace Newtonsoft.Json.Tests
 
             var s = JsonConvert.DeserializeObject<string>("\"Some string\"");
             Assert.AreEqual("Some string", s, "Bridge544 string");
+        }
+
+        [Test]
+        public void Test1()
+        {
+            var person = new AnotherPerson(123, "Dan");
+
+            var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects };
+            var json = JsonConvert.SerializeObject(person, settings);
+            var clone = JsonConvert.DeserializeObject<AnotherPerson>(json, settings);
+
+            Assert.AreEqual(person.Id, clone.Id);
+            Assert.AreEqual(person.Name, clone.Name);
+            Assert.AreEqual(1, clone.NumberOfTimesThatIdHasBeenSet, "The AnotherPerson class' Id property should only be set once during deserialisation");
         }
     }
 }

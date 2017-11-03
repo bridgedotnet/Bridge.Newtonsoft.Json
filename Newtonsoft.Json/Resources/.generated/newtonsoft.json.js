@@ -387,7 +387,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     return returnRaw ? obj : this.stringify(obj, formatting);
                 },
 
-                createInstance: function (type, raw, settings) {
+                getInstanceBuilder: function (type, raw, settings) {
                     var rawIsArray = Bridge.isArray(raw),
                         isEnumerable = rawIsArray && Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, type),
                         isObject = typeof raw === "object" && !rawIsArray,
@@ -429,22 +429,60 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 jsonCtor = ctors[0];
                             }
 
-                            var params = jsonCtor.pi || [],
-                                args = [];
-
+                            var params = jsonCtor.pi || [];
+                            
                             if (isEnumerable) {
-                                if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
-                                    var arr = [],
-                                        elementType = Bridge.Reflection.getGenericArguments(params[0].pt)[0] ||
-                                                      Bridge.Reflection.getGenericArguments(type)[0] ||
-                                                      System.Object;
-                                    for (var i = 0; i < raw.length; i++) {
-                                        arr[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], elementType, settings, true);
+                                return function (raw) {
+                                    var args = [];
+                                    if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
+                                        // If this non-empty list of items are all of the same type then we don't need to repeat the reflection work that determines what constructor to use (if any) for
+                                        // each one of them - we can call getInstanceBuilder just once and then reuse the returned function when we translate each item. With large lists that all contain
+                                        // objects that are precisely the same type, this can save a lot of work (and so reduce the deserialisation time signicantly). It will only work when TypeNameHandling
+                                        // is enabled, if not then we fall back to calling DeserializeObject every time (which is also what happens if the types of the items vary).
+                                        var arr = [],
+                                            elementType = Bridge.Reflection.getGenericArguments(params[0].pt)[0] ||
+                                                          Bridge.Reflection.getGenericArguments(type)[0] ||
+                                                          System.Object;
+                                        var commonElementInstanceBuilder;
+                                        if (settings && settings.TypeNameHandling && raw.length > 0 && raw[0]) {
+                                            var useSameInstanceBuilderForAllValues = true;
+                                            var firstElementTypeName = raw[0].$type;
+                                            if (!firstElementTypeName) {
+                                                useSameInstanceBuilderForAllValues = false;
+                                            }
+                                            else {
+                                                for (var i = 1; i < raw.length; i++) {
+                                                    var nextElementTypeName = raw[i] ? raw[i].$type : null;
+                                                    if (!nextElementTypeName || (nextElementTypeName !== firstElementTypeName)) {
+                                                        useSameInstanceBuilderForAllValues = false;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            if (useSameInstanceBuilderForAllValues) {
+                                                commonElementInstanceBuilder = this.getInstanceBuilder(elementType, raw[0], settings);
+                                            }
+                                            else {
+                                                commonElementInstanceBuilder = null;
+                                            }
+                                        }
+                                        else {
+                                            commonElementInstanceBuilder = null;
+                                        }
+                                        for (var i = 0; i < raw.length; i++) {
+                                            var item = raw[i];
+                                            arr[i] = commonElementInstanceBuilder ? commonElementInstanceBuilder(item) : Newtonsoft.Json.JsonConvert.DeserializeObject(item, elementType, settings, true);
+                                        }
+                                        args.push(arr);
+                                        isList = true;
                                     }
-                                    args.push(arr);
-                                    isList = true;
+                                    var v = Bridge.Reflection.invokeCI(jsonCtor, args);
+                                    return isList ? {$list: true, value: v} : v;
                                 }
-                            } else {
+                            };
+                            
+                            return function (raw) {
+                                var args = [];
                                 var theKeys = Object.getOwnPropertyNames(raw).toString();
                                 for (var i = 0; i < params.length; i++) {
                                     var name = params[i].sn || params[i].n,
@@ -458,16 +496,21 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                         args[i] = Bridge.getDefaultValue(params[i].pt);
                                     }
                                 }
-                            }
-
-                            var v = Bridge.Reflection.invokeCI(jsonCtor, args);
-                            return isList ? {$list: true, value: v} : v;
+                                return Bridge.Reflection.invokeCI(jsonCtor, args);
+                            };
                         }
                     }
 
-                    return Bridge.createInstance(type);
+                    return function () {
+                        return Bridge.createInstance(type);
+                    };
                 },
 
+                createInstance: function (type, raw, settings) {
+                    var builder = this.getInstanceBuilder(type, raw, settings).bind(this);
+                    return builder(raw);
+                },
+                    
                 DeserializeObject: function (raw, type, settings, field) {
                     settings = settings || {};
                     if (type.$kind === "interface") {

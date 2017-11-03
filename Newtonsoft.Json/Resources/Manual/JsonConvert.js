@@ -67,7 +67,7 @@
                             return;
                         }
 
-                        return returnRaw ? null : this.stringify(null, formatting);
+                        return returnRaw ? null : Newtonsoft.Json.JsonConvert.stringify(null, formatting);
                     }
 
                     var objType = Bridge.getType(obj);
@@ -88,7 +88,7 @@
 
                     if (typeof obj === "function") {
                         var name = Bridge.getTypeName(obj);
-                        return returnRaw ? name : this.stringify(name, formatting);
+                        return returnRaw ? name : Newtonsoft.Json.JsonConvert.stringify(name, formatting);
                     } else if (typeof obj === "object") {
                         var type = possibleType || objType,
                             arr,
@@ -127,11 +127,11 @@
                         }
 
                         if (type === System.Globalization.CultureInfo) {
-                            return returnRaw ? obj.name : this.stringify(obj.name, formatting);
+                            return returnRaw ? obj.name : Newtonsoft.Json.JsonConvert.stringify(obj.name, formatting);
                         } else if (type === System.Guid) {
-                            return returnRaw ? obj.toString() : this.stringify(obj.toString(), formatting);
+                            return returnRaw ? obj.toString() : Newtonsoft.Json.JsonConvert.stringify(obj.toString(), formatting);
                         } else if (type === System.Uri) {
-                            return returnRaw ? obj.getAbsoluteUri() : this.stringify(obj.getAbsoluteUri(), formatting);
+                            return returnRaw ? obj.getAbsoluteUri() : Newtonsoft.Json.JsonConvert.stringify(obj.getAbsoluteUri(), formatting);
                         } else if (type === System.Int64) {
                             return obj.toJSON();
                         } else if (type === System.UInt64) {
@@ -140,12 +140,12 @@
                             return obj.toJSON();
                         } else if (type === System.DateTime) {
                             var d = System.DateTime.format(obj, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
-                            return returnRaw ? d : this.stringify(d, formatting);
+                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
                         } else if (Bridge.isArray(null, type)) {
                             if (type.$elementType === System.Byte) {
                                 removeGuard();
                                 var json = System.Convert.toBase64String(obj);
-                                return returnRaw ? json : this.stringify(json, formatting);
+                                return returnRaw ? json : Newtonsoft.Json.JsonConvert.stringify(json, formatting);
                             }
 
                             arr = [];
@@ -156,9 +156,9 @@
 
                             obj = arr;
                         } else if (Bridge.Reflection.isEnum(type)) {
-                            return returnRaw ? obj : this.stringify(obj, formatting);
+                            return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
                         } else if (type === System.Char) {
-                            return returnRaw ? String.fromCharCode(obj) : this.stringify(String.fromCharCode(obj), formatting);
+                            return returnRaw ? String.fromCharCode(obj) : Newtonsoft.Json.JsonConvert.stringify(String.fromCharCode(obj), formatting);
                         } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IDictionary, type)) {
                             var typesGeneric = System.Collections.Generic.Dictionary$2.getTypeParameters(type),
                                 typeKey = typesGeneric[0],
@@ -232,10 +232,10 @@
                         removeGuard();
                     }
 
-                    return returnRaw ? obj : this.stringify(obj, formatting);
+                    return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
                 },
 
-                createInstance: function (type, raw, settings) {
+                getInstanceBuilder: function (type, raw, settings) {
                     var rawIsArray = Bridge.isArray(raw),
                         isEnumerable = rawIsArray && Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, type),
                         isObject = typeof raw === "object" && !rawIsArray,
@@ -277,45 +277,103 @@
                                 jsonCtor = ctors[0];
                             }
 
-                            var params = jsonCtor.pi || [],
-                                args = [];
-
+                            var params = jsonCtor.pi || [];
+                            
                             if (isEnumerable) {
-                                if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
-                                    var arr = [],
-                                        elementType = Bridge.Reflection.getGenericArguments(params[0].pt)[0] ||
-                                                      Bridge.Reflection.getGenericArguments(type)[0] ||
-                                                      System.Object;
-                                    for (var i = 0; i < raw.length; i++) {
-                                        arr[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], elementType, settings, true);
+                                return {
+                                    constructorArgumentsAccountFor: function (name) { return false; },
+                                    builder: function (raw) {
+                                        var args = [];
+                                        if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
+                                            // If this non-empty list of items are all of the same type then we don't need to repeat the reflection work that determines what constructor to use (if any) for
+                                            // each one of them - we can call getInstanceBuilder just once and then reuse the returned function when we translate each item. With large lists that all contain
+                                            // objects that are precisely the same type, this can save a lot of work (and so reduce the deserialisation time signicantly). It will only work when TypeNameHandling
+                                            // is enabled, if not then we fall back to calling DeserializeObject every time (which is also what happens if the types of the items vary).
+                                            var arr = [],
+                                                elementType = Bridge.Reflection.getGenericArguments(params[0].pt)[0] ||
+                                                              Bridge.Reflection.getGenericArguments(type)[0] ||
+                                                              System.Object;
+                                            var commonElementInstanceBuilder;
+                                            if (settings && settings.TypeNameHandling && raw.length > 0 && raw[0]) {
+                                                var useSameInstanceBuilderForAllValues = true;
+                                                var firstElementTypeName = raw[0].$type;
+                                                if (!firstElementTypeName) {
+                                                    useSameInstanceBuilderForAllValues = false;
+                                                }
+                                                else {
+                                                    for (var i = 1; i < raw.length; i++) {
+                                                        var nextElementTypeName = raw[i] ? raw[i].$type : null;
+                                                        if (!nextElementTypeName || (nextElementTypeName !== firstElementTypeName)) {
+                                                            useSameInstanceBuilderForAllValues = false;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                if (useSameInstanceBuilderForAllValues) {
+                                                    commonElementInstanceBuilder = Newtonsoft.Json.JsonConvert.getInstanceBuilder(elementType, raw[0], settings).builder;
+                                                }
+                                                else {
+                                                    commonElementInstanceBuilder = null;
+                                                }
+                                            }
+                                            else {
+                                                commonElementInstanceBuilder = null;
+                                            }
+                                            for (var i = 0; i < raw.length; i++) {
+                                                var item = raw[i];
+                                                arr[i] = commonElementInstanceBuilder ? commonElementInstanceBuilder(item) : Newtonsoft.Json.JsonConvert.DeserializeObject(item, elementType, settings, true);
+                                            }
+                                            args.push(arr);
+                                            isList = true;
+                                        }
+                                        var v = Bridge.Reflection.invokeCI(jsonCtor, args);
+                                        return isList ? {$list: true, value: v} : v;
                                     }
-                                    args.push(arr);
-                                    isList = true;
                                 }
-                            } else {
-                                var theKeys = Object.getOwnPropertyNames(raw).toString();
-                                for (var i = 0; i < params.length; i++) {
-                                    var name = params[i].sn || params[i].n,
-                                        match = new RegExp(name, 'i').exec(theKeys);
-
-                                    name = match && match.length > 0 ? match[0] : null;
-
-                                    if (name) {
-                                        args[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[name], params[i].pt, settings, true);
-                                    } else {
-                                        args[i] = Bridge.getDefaultValue(params[i].pt);
-                                    }
-                                }
+                            };
+                            
+                            var lowerCaseConstructorArgumentNames = [];
+                            for (var i = 0; i < params.length; i++) {
+                                lowerCaseConstructorArgumentNames.push((params[i].sn || params[i].n).toLowerCase());
                             }
+                            return {
+                                constructorArgumentsAccountFor: function (name) {
+                                    // If the named value has already been matched to a constructor argument then we don't need the deserialisation process to do anything more with it. The logic in the
+                                    // build function below using case insensitive name matching, so we'll do the same here.
+                                    return lowerCaseConstructorArgumentNames.indexOf((name || "").toLowerCase()) !== -1;
+                                },
+                                builder: function (raw) {
+                                    var args = [];
+                                    var theKeys = Object.getOwnPropertyNames(raw).toString();
+                                    for (var i = 0; i < params.length; i++) {
+                                        var name = params[i].sn || params[i].n,
+                                            match = new RegExp(name, 'i').exec(theKeys);
 
-                            var v = Bridge.Reflection.invokeCI(jsonCtor, args);
-                            return isList ? {$list: true, value: v} : v;
+                                        name = match && match.length > 0 ? match[0] : null;
+
+                                        if (name) {
+                                            args[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[name], params[i].pt, settings, true);
+                                        } else {
+                                            args[i] = Bridge.getDefaultValue(params[i].pt);
+                                        }
+                                    }
+                                    return Bridge.Reflection.invokeCI(jsonCtor, args);
+                                }
+                            };
                         }
                     }
 
-                    return Bridge.createInstance(type);
+                    return {
+                        constructorArgumentsAccountFor: function (name) { return false; },
+                        builder: function () { return Bridge.createInstance(type); }
+                    };
                 },
 
+                createInstance: function (type, raw, settings) {
+                    var builder = Newtonsoft.Json.JsonConvert.getInstanceBuilder(type, raw, settings).builder;
+                    return builder(raw);
+                },
+                    
                 DeserializeObject: function (raw, type, settings, field) {
                     settings = settings || {};
                     if (type.$kind === "interface") {
@@ -547,7 +605,8 @@
                                 throw TypeError(System.String.concat("Cannot find type: ", raw["$type"]));
                             }
 
-                            var o = Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings);
+                            var builderInfo = Newtonsoft.Json.JsonConvert.getInstanceBuilder(type, raw, settings);
+                            var o = builderInfo.builder(raw);
 
                             if (o && o.$list) {
                                 o = o.value;
@@ -555,6 +614,7 @@
 
                             var camelCase = settings && Bridge.is(settings.ContractResolver, Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver),
                                 fields = Bridge.Reflection.getMembers(type, 4, 20),
+                                properties = Bridge.Reflection.getMembers(type, 16, 20),
                                 value,
                                 f,
                                 p,
@@ -575,10 +635,13 @@
                                 }
                             }
 
-                            var properties = Bridge.Reflection.getMembers(type, 16, 20);
-
                             for (i = 0; i < properties.length; i++) {
                                 p = properties[i];
+                                if (builderInfo.constructorArgumentsAccountFor(p.n)) {
+                                    // If this value has already been used to set a constructor argument then we don't need to repeat the work of deserialising it and setting it - not only is it doing
+                                    // more work than necessary but it would also be inconsistent with the .NET version of the library (see issue #50)
+                                    continue;
+                                }
                                 mname = camelCase ? (p.n.charAt(0).toLowerCase() + p.n.substr(1)) : p.n;
                                 value = raw[mname];
 
