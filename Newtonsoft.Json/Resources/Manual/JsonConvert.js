@@ -278,7 +278,8 @@
                             }
 
                             var params = jsonCtor.pi || [],
-                                args = [];
+                                args = [],
+                                names = [];
 
                             if (isEnumerable) {
                                 if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
@@ -302,6 +303,7 @@
 
                                     if (name) {
                                         args[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[name], params[i].pt, settings, true);
+                                        names.push(name);
                                     } else {
                                         args[i] = Bridge.getDefaultValue(params[i].pt);
                                     }
@@ -309,11 +311,11 @@
                             }
 
                             var v = Bridge.Reflection.invokeCI(jsonCtor, args);
-                            return isList ? {$list: true, value: v} : v;
+                            return isList ? { $list: true, value: v, names: names } : {names: names, value: v};
                         }
                     }
 
-                    return Bridge.createInstance(type);
+                    return { names: [], value: Bridge.createInstance(type) };
                 },
 
                 DeserializeObject: function (raw, type, settings, field) {
@@ -382,9 +384,16 @@
                                 return def + 1;
                             }
 
-                            return null;
+                            throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
                     } else if (typeof raw === "number") {
+                        if (type.$number && !type.$is(raw)) {
+                            if ((type !== System.Decimal || !type.tryParse(raw, null, {})) &&
+                                (!System.Int64.is64BitType(type) || !type.tryParse(raw.toString(), {}))) {
+                                throw new Newtonsoft.Json.JsonException(System.String.format("Input string '{0}' is not a valid {1}", raw, Bridge.getTypeName(type)));
+                            }                            
+                        }
+
                         if (type === System.Boolean) {
                             return raw !== 0;
                         } else if (Bridge.Reflection.isEnum(type)) {
@@ -418,9 +427,20 @@
                         } else if (type === System.DateTime) {
                             return System.DateTime.create$2(raw | 0, 0);
                         } else {
-                            return null;
+                            throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
                     } else if (typeof raw === "string") {
+                        var isDecimal = type === System.Decimal,
+                            isSpecial = isDecimal || System.Int64.is64BitType(type);
+                        if (isSpecial && (isDecimal ? !type.tryParse(raw, null, {}) : !type.tryParse(raw, {}))) {
+                            throw new Newtonsoft.Json.JsonException(System.String.format("Input string '{0}' is not a valid {1}", raw, Bridge.getTypeName(type)));
+                        }
+
+                        var isFloat = type == System.Double || type == System.Single;
+                        if (!isSpecial && type.$number && (isFloat ? !type.tryParse(raw, null, {}) : !type.tryParse(raw, {}))) {
+                            throw new Newtonsoft.Json.JsonException(System.String.format("Could not convert {0} to {1}: {2}", Bridge.getTypeName(raw), Bridge.getTypeName(type), raw));
+                        }
+
                         if (type === Function) {
                             return Bridge.Reflection.getType(raw);
                         } else if (type === System.Globalization.CultureInfo) {
@@ -483,7 +503,7 @@
                         } else if (type === System.Array.type(System.Byte, 1)) {
                             return System.Convert.fromBase64String(raw);
                         } else {
-                            return null;
+                            throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
                     } else if (typeof raw === "object") {
                         if (def !== null && type.$kind !== "struct") {
@@ -509,6 +529,8 @@
                                 return list.value;
                             }
 
+                            list = list.value;
+
                             if (raw.length === undefined) {
                                 return list;
                             }
@@ -521,7 +543,8 @@
                         } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IDictionary, type)) {
                             var typesGeneric = System.Collections.Generic.Dictionary$2.getTypeParameters(type),
                                 typeKey = typesGeneric[0] || System.Object,
-                                typeValue = typesGeneric[1] || System.Object;
+                                typeValue = typesGeneric[1] || System.Object,
+                                names;
 
                             var dictionary = Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings);
 
@@ -529,9 +552,14 @@
                                 return dictionary.value;
                             }
 
+                            names = dictionary.names || [];
+                            dictionary = dictionary.value;
+
                             for (var each in raw) {
                                 if (raw.hasOwnProperty(each)) {
-                                    dictionary.add(Newtonsoft.Json.JsonConvert.DeserializeObject(each, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw[each], typeValue, settings, true));
+                                    if (names.indexOf(each) < 0) {
+                                        dictionary.add(Newtonsoft.Json.JsonConvert.DeserializeObject(each, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw[each], typeValue, settings, true));
+                                    }                                    
                                 }
                             }
 
@@ -547,11 +575,11 @@
                                 throw TypeError(System.String.concat("Cannot find type: ", raw["$type"]));
                             }
 
-                            var o = Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings);
+                            var o = Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings),
+                                names;
 
-                            if (o && o.$list) {
-                                o = o.value;
-                            }
+                            names = o.names || [];
+                            o = o.value;
 
                             var camelCase = settings && Bridge.is(settings.ContractResolver, Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver),
                                 fields = Bridge.Reflection.getMembers(type, 4, 20),
@@ -562,8 +590,14 @@
                                 i;
 
                             for (i = 0; i < fields.length; i++) {
-                                f = fields[i];
+                                f = fields[i];                                
+
                                 mname = camelCase ? (f.n.charAt(0).toLowerCase() + f.n.substr(1)) : f.n;
+
+                                if (names.indexOf(mname) > -1) {
+                                    continue;
+                                }
+
                                 value = raw[mname];
 
                                 if (value === undefined) {
@@ -579,7 +613,13 @@
 
                             for (i = 0; i < properties.length; i++) {
                                 p = properties[i];
+
                                 mname = camelCase ? (p.n.charAt(0).toLowerCase() + p.n.substr(1)) : p.n;
+
+                                if (names.indexOf(mname) > -1) {
+                                    continue;
+                                }
+
                                 value = raw[mname];
 
                                 if (value === undefined) {

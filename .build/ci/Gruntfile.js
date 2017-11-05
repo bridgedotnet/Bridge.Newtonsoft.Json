@@ -2,17 +2,17 @@ module.exports = function(grunt) {
     var browsers = [
     {
         browserName: "firefox",
-        version: "55",
+        //version: "55",
         platform: "Windows 10"
     }
-    , {
+    /*, {
         browserName: "googlechrome",
         platform: "WIN7"
     }
     , {
         browserName: "googlechrome",
         platform: "WIN8"
-    }
+    }*/
     , {
         browserName: "googlechrome",
         platform: "Windows 8.1"
@@ -25,14 +25,15 @@ module.exports = function(grunt) {
         browserName: "googlechrome",
         platform: "linux"
     } 
+    /* MS-Edge never returns from a submitted test run.
+     * ,{
+        browserName: "microsoftedge",
+        platform: "Windows 10"
+    }*/
     //, {
         // browserName: "iphone",
         // platform: 'Mac 10.10',
         // version: '9.2'
-    // }
-    // ,{
-        // browserName: "microsoftedge",
-        // platform: "Windows 10"
     // }
     // , {
         // browserName: "android",
