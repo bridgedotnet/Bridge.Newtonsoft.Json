@@ -1320,12 +1320,42 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /** @namespace Newtonsoft.Json.Tests.Issues */
+
+    /**
+     * This test cases consists in double-checking whether a static string is
+     populated in the expected sequence, then checking if the resulting
+     sequence is the expected one.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case50
+     */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case50", {
         statics: {
             fields: {
+                /**
+                 * Static string builder to store the sequence.
+                 *
+                 * @static
+                 * @private
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case50
+                 * @type System.Text.StringBuilder
+                 */
                 sb: null
             },
             methods: {
+                /**
+                 * The test consists in resetting the string sequencer, instantiating
+                 the class, running the serialization/deserialization calls, then
+                 verifying the end result in the string sequence against the
+                 expected result.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case50
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case50
+                 * @return  {void}
+                 */
                 TestDeserializationConstructor: function () {
                     var $t;
                     Newtonsoft.Json.Tests.Issues.Case50.sb = new System.Text.StringBuilder();
@@ -1335,41 +1365,95 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var json = Newtonsoft.Json.JsonConvert.SerializeObject(person, settings);
                     var clone = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case50.Person);
 
+                    // If the unnecessary call is happening, the "2" will be appended
+                    // twice the second time it appears (deserialization) and the
+                    // sequence will be "1231223".
                     Bridge.Test.NUnit.Assert.AreEqual("123123", Newtonsoft.Json.Tests.Issues.Case50.sb.toString());
                 }
             }
         }
     });
 
+    /**
+     * Class definition. It will update the sequence above as the class
+     is used throughout the application life cycle.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case50.Person
+     */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case50.Person", {
         fields: {
             _id: 0,
             _somethingElse: 0
         },
         props: {
+            /**
+             * Id
+             *
+             * @instance
+             * @public
+             * @memberof Newtonsoft.Json.Tests.Issues.Case50.Person
+             * @function Id
+             * @type number
+             */
             Id: {
                 get: function () {
                     return this._id;
                 },
                 set: function (value) {
+                    // Append a '2' to the static string builder sequence
+                    // whenever the class instance's Id is modified.
                     Newtonsoft.Json.Tests.Issues.Case50.sb.append("2");
                     this._id = value;
                 }
             },
+            /**
+             * An additional arbitrary property.
+             *
+             * @instance
+             * @public
+             * @memberof Newtonsoft.Json.Tests.Issues.Case50.Person
+             * @function SomethingElse
+             * @type number
+             */
             SomethingElse: {
                 get: function () {
                     return this._somethingElse;
                 },
                 set: function (value) {
+                    // Append a '3' to the static string builder sequence
+                    // whenever the class instance's SomethingElse is modified.
                     Newtonsoft.Json.Tests.Issues.Case50.sb.append("3");
                     this._somethingElse = value;
                 }
             },
+            /**
+             * A readonly name property.
+             *
+             * @instance
+             * @public
+             * @memberof Newtonsoft.Json.Tests.Issues.Case50.Person
+             * @function Name
+             * @type string
+             */
             Name: null
         },
         ctors: {
+            /**
+             * Constructor.
+             *
+             * @instance
+             * @public
+             * @this Newtonsoft.Json.Tests.Issues.Case50.Person
+             * @memberof Newtonsoft.Json.Tests.Issues.Case50.Person
+             * @param   {number}    id      
+             * @param   {string}    name
+             * @return  {void}
+             */
             ctor: function (id, name) {
                 this.$initialize();
+                // Append a '1' to the static string builder sequence
+                // whenever the class is instantiated.
                 Newtonsoft.Json.Tests.Issues.Case50.sb.append("1");
                 this.Id = id;
                 this.Name = name;

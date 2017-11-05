@@ -555,7 +555,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             methods: {
                 TestDeserializationConstructor: function (assert) {
                     var $t;
-                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case50).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case50, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestDeserializationConstructor()", $t.Line = "44", $t));
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case50).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case50, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestDeserializationConstructor()", $t.Line = "83", $t));
                     Newtonsoft.Json.Tests.Issues.Case50.TestDeserializationConstructor();
                 }
             }
