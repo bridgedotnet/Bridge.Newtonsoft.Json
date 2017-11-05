@@ -235,7 +235,7 @@
                     return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
                 },
 
-                createInstance: function (type, raw, settings) {
+                getInstanceBuilder: function (type, raw, settings) {
                     var rawIsArray = Bridge.isArray(raw),
                         isEnumerable = rawIsArray && Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, type),
                         isObject = typeof raw === "object" && !rawIsArray,
@@ -277,47 +277,60 @@
                                 jsonCtor = ctors[0];
                             }
 
-                            var params = jsonCtor.pi || [],
-                                args = [],
-                                names = [];
+                            var params = jsonCtor.pi || [];
 
                             if (isEnumerable) {
-                                if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
-                                    var arr = [],
-                                        elementType = Bridge.Reflection.getGenericArguments(params[0].pt)[0] ||
-                                                      Bridge.Reflection.getGenericArguments(type)[0] ||
-                                                      System.Object;
-                                    for (var i = 0; i < raw.length; i++) {
-                                        arr[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], elementType, settings, true);
-                                    }
-                                    args.push(arr);
-                                    isList = true;
-                                }
-                            } else {
-                                var theKeys = Object.getOwnPropertyNames(raw).toString();
-                                for (var i = 0; i < params.length; i++) {
-                                    var name = params[i].sn || params[i].n,
-                                        match = new RegExp(name, 'i').exec(theKeys);
-
-                                    name = match && match.length > 0 ? match[0] : null;
-
-                                    if (name) {
-                                        args[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[name], params[i].pt, settings, true);
-                                        names.push(name);
-                                    } else {
-                                        args[i] = Bridge.getDefaultValue(params[i].pt);
-                                    }
-                                }
+								return function (raw) {
+									var args = [];
+									if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
+										var arr = [],
+											elementType = Bridge.Reflection.getGenericArguments(params[0].pt)[0] ||
+														  Bridge.Reflection.getGenericArguments(type)[0] ||
+														  System.Object;
+										for (var i = 0; i < raw.length; i++) {
+											arr[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], elementType, settings, true);
+										}
+										args.push(arr);
+										isList = true;
+									}
+									var v = Bridge.Reflection.invokeCI(jsonCtor, args);
+									return isList ? { $list: true, names: [], value: v } : { names: [], value: v };
+								};
                             }
+							
+							return function (raw) {
+								var args = [];
+								var names = [];
+								var theKeys = Object.getOwnPropertyNames(raw).toString();
+								for (var i = 0; i < params.length; i++) {
+									var name = params[i].sn || params[i].n,
+										match = new RegExp(name, 'i').exec(theKeys);
 
-                            var v = Bridge.Reflection.invokeCI(jsonCtor, args);
-                            return isList ? { $list: true, value: v, names: names } : {names: names, value: v};
+									name = match && match.length > 0 ? match[0] : null;
+
+									if (name) {
+										args[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[name], params[i].pt, settings, true);
+										names.push(name);
+									} else {
+										args[i] = Bridge.getDefaultValue(params[i].pt);
+									}
+								}
+
+								return { names: names, value: Bridge.Reflection.invokeCI(jsonCtor, args) };
+							};
                         }
                     }
-
-                    return { names: [], value: Bridge.createInstance(type) };
+					
+					return function () {
+                    	return { names: [], value: Bridge.createInstance(type) };
+					};
                 },
 
+                createInstance: function (type, raw, settings) {
+					var builder = this.getInstanceBuilder(type, raw, settings);
+					return builder(raw);
+				},
+				
                 DeserializeObject: function (raw, type, settings, field) {
                     settings = settings || {};
                     if (type.$kind === "interface") {
