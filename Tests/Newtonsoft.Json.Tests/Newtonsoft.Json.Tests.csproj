@@ -50,6 +50,7 @@
     <Compile Include="Issues\0100\Case010.cs" />
     <Compile Include="Issues\0100\Case050.cs" />
     <Compile Include="Issues\0100\Case052.cs" />
+    <Compile Include="Tests\ListOptimisationTests.cs" />
     <Compile Include="Tests\DeserializationTests.cs" />
     <Compile Include="Issues\Ported\N1134.cs" />
     <Compile Include="Issues\Ported\N1438.cs" />
