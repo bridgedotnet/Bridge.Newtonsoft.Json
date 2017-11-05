@@ -67,7 +67,7 @@
                             return;
                         }
 
-                        return returnRaw ? null : this.stringify(null, formatting);
+                        return returnRaw ? null : Newtonsoft.Json.JsonConvert.stringify(null, formatting);
                     }
 
                     var objType = Bridge.getType(obj);
@@ -88,7 +88,7 @@
 
                     if (typeof obj === "function") {
                         var name = Bridge.getTypeName(obj);
-                        return returnRaw ? name : this.stringify(name, formatting);
+                        return returnRaw ? name : Newtonsoft.Json.JsonConvert.stringify(name, formatting);
                     } else if (typeof obj === "object") {
                         var type = possibleType || objType,
                             arr,
@@ -127,11 +127,11 @@
                         }
 
                         if (type === System.Globalization.CultureInfo) {
-                            return returnRaw ? obj.name : this.stringify(obj.name, formatting);
+                            return returnRaw ? obj.name : Newtonsoft.Json.JsonConvert.stringify(obj.name, formatting);
                         } else if (type === System.Guid) {
-                            return returnRaw ? obj.toString() : this.stringify(obj.toString(), formatting);
+                            return returnRaw ? obj.toString() : Newtonsoft.Json.JsonConvert.stringify(obj.toString(), formatting);
                         } else if (type === System.Uri) {
-                            return returnRaw ? obj.getAbsoluteUri() : this.stringify(obj.getAbsoluteUri(), formatting);
+                            return returnRaw ? obj.getAbsoluteUri() : Newtonsoft.Json.JsonConvert.stringify(obj.getAbsoluteUri(), formatting);
                         } else if (type === System.Int64) {
                             return obj.toJSON();
                         } else if (type === System.UInt64) {
@@ -140,12 +140,12 @@
                             return obj.toJSON();
                         } else if (type === System.DateTime) {
                             var d = System.DateTime.format(obj, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
-                            return returnRaw ? d : this.stringify(d, formatting);
+                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
                         } else if (Bridge.isArray(null, type)) {
                             if (type.$elementType === System.Byte) {
                                 removeGuard();
                                 var json = System.Convert.toBase64String(obj);
-                                return returnRaw ? json : this.stringify(json, formatting);
+                                return returnRaw ? json : Newtonsoft.Json.JsonConvert.stringify(json, formatting);
                             }
 
                             arr = [];
@@ -156,9 +156,9 @@
 
                             obj = arr;
                         } else if (Bridge.Reflection.isEnum(type)) {
-                            return returnRaw ? obj : this.stringify(obj, formatting);
+                            return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
                         } else if (type === System.Char) {
-                            return returnRaw ? String.fromCharCode(obj) : this.stringify(String.fromCharCode(obj), formatting);
+                            return returnRaw ? String.fromCharCode(obj) : Newtonsoft.Json.JsonConvert.stringify(String.fromCharCode(obj), formatting);
                         } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IDictionary, type)) {
                             var typesGeneric = System.Collections.Generic.Dictionary$2.getTypeParameters(type),
                                 typeKey = typesGeneric[0],
@@ -232,7 +232,7 @@
                         removeGuard();
                     }
 
-                    return returnRaw ? obj : this.stringify(obj, formatting);
+                    return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
                 },
 
                 createInstance: function (type, raw, settings) {
