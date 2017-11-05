@@ -1269,6 +1269,57 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case49", {
+        statics: {
+            methods: {
+                TestInvalidSchema: function () {
+                    // String bound to object.
+                    var json = "{\"Member1\": \"spaghetti\"}";
+                    Bridge.Test.NUnit.Assert.Throws$2(System.ArgumentException, function () {
+                        Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case49.MyClass);
+                    });
+
+                    // String bound to int
+                    json = "{\"InField\": \"spaghetti\"}";
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonException, function () {
+                        Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case49.MyClass);
+                    });
+
+                    // Float bound to int
+                    json = "{\"InField\": 15.1}";
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonException, function () {
+                        Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case49.MyClass);
+                    });
+
+                    // Nested string bound to object
+                    json = "{\"InField\": 15, \"Member1\": { \"Member1\": \"spaghetti\"}";
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonException, function () {
+                        Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case49.MyClass);
+                    });
+
+                    // Nested int bound to object
+                    json = "{\"InField\": 15, \"Member1\": { \"Member1\": 18}";
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonException, function () {
+                        Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case49.MyClass);
+                    });
+
+                    // Nested float bound to int
+                    json = "{\"InField\": 15, \"Member1\": { \"InField\": 18.2}";
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonException, function () {
+                        Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case49.MyClass);
+                    });
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case49.MyClass", {
+        fields: {
+            InField: 0,
+            Member1: null
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case50", {
         statics: {
             fields: {
