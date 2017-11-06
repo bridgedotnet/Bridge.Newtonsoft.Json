@@ -5,15 +5,16 @@ using Bridge.Test.NUnit;
 
 namespace Newtonsoft.Json.Tests
 {
-	[Category("ListOptimisations")]
+	[Category("ListOptimizations")]
     [TestFixture]
-    public class ListOptimisationTests
+    public class ListOptimizationTests
     {
         /// <summary>
-        /// The list deserialisation optimisation should apply to this data because each item in the list is of exactly the same type
+        /// The list deserialize optimization should apply to this data because
+        /// each item in the list is of exactly the same type
         /// </summary>
         [Test]
-        public static void EnsureThatAppliedOptimisationDoesNotBreakListDeserialisation()
+        public static void DeserializationWorks()
         {
             var items = new NonNullList<KeyValuePairDataModel>(new[]
             {
@@ -25,17 +26,19 @@ namespace Newtonsoft.Json.Tests
             var json = JsonConvert.SerializeObject(items, settings);
             var cloneAsArray = JsonConvert.DeserializeObject<NonNullList<KeyValuePairDataModel>>(json, settings).ToArray();
 
-            Assert.AreEqual(2, cloneAsArray.Length);
-            Assert.AreEqual(typeof(KeyValuePairDataModel), cloneAsArray[0].GetType());
-            Assert.AreEqual(typeof(KeyValuePairDataModel), cloneAsArray[1].GetType());
+            Assert.AreEqual(2, cloneAsArray.Length, "Optimized deserialization length");
+            Assert.AreEqual(typeof(KeyValuePairDataModel), cloneAsArray[0].GetType(), "Optimized deserialization index 0 data type");
+            Assert.AreEqual(typeof(KeyValuePairDataModel), cloneAsArray[1].GetType(), "Optimized deserialization index 1 data type");
         }
 
         /// <summary>
-        /// The optimisation should NOT apply to this data since there are different types in the list (this test is to ensure that the optimisation checks didn't break anything in
-        /// the non-optimisation paths)
+        /// The optimization should NOT apply to this data since there are
+        /// different types in the list (this test is to ensure that the
+        /// optimization checks didn't break anything in the non-optimization
+        /// paths)
         /// </summary>
         [Test]
-        public static void EnsureThatOptimisationDoesNotBreakListDeserialisationWhereItIsNotApplicable()
+        public static void NoOptDeserializationWorks()
         {
             var items = new NonNullList<KeyValuePairDataModelBase>(new KeyValuePairDataModelBase[]
             {
@@ -47,9 +50,9 @@ namespace Newtonsoft.Json.Tests
             var json = JsonConvert.SerializeObject(items, settings);
             var cloneAsArray = JsonConvert.DeserializeObject<NonNullList<KeyValuePairDataModelBase>>(json, settings).ToArray();
 
-            Assert.AreEqual(2, cloneAsArray.Length);
-            Assert.AreEqual(typeof(KeyValuePairDataModel), cloneAsArray[0].GetType());
-            Assert.AreEqual(typeof(AlternativeKeyValuePairDataModel), cloneAsArray[1].GetType());
+            Assert.AreEqual(2, cloneAsArray.Length, "Non-optimized deserialization length");
+            Assert.AreEqual(typeof(KeyValuePairDataModel), cloneAsArray[0].GetType(), "Non-optimized deserialization index 0 data type");
+            Assert.AreEqual(typeof(AlternativeKeyValuePairDataModel), cloneAsArray[1].GetType(), "Non-optimized deserialization index 1 data type");
         }
 
         public sealed class KeyValuePairDataModel : KeyValuePairDataModelBase
