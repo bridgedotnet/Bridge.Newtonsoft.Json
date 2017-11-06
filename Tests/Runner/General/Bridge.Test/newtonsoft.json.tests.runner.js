@@ -54,6 +54,9 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             QUnit.test("TestJsonConstructor", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.JsonConstructorTests.TestJsonConstructor);
             QUnit.test("TestJsonConstructorMyOtherString", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.JsonConstructorTests.TestJsonConstructorMyOtherString);
             QUnit.test("TestMultipleJsonConstructor", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.JsonConstructorTests.TestMultipleJsonConstructor);
+            QUnit.module("ListOptimizations");
+            QUnit.test("DeserializationWorks", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.ListOptimizationTests.DeserializationWorks);
+            QUnit.test("NoOptDeserializationWorks", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.ListOptimizationTests.NoOptDeserializationWorks);
             QUnit.module("Ported Issues");
             QUnit.test("#1134 - TestJsonArrayParse", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Bridge1134.TestJsonArrayParse);
             QUnit.test("#1438 - TestJSONParse", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Bridge1438.TestJSONParse);
@@ -804,6 +807,36 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
                 var $t;
                 if (this.context == null) {
                     this.context = ($t = new Bridge.Test.Runtime.FixtureContext(), $t.Project = "Newtonsoft.Json.Tests", $t.ClassName = "Newtonsoft.Json.Tests.JsonConstructorTests", $t.File = "Newtonsoft.Json.Tests\\Tests\\JsonConstructorTests.cs", $t);
+                }
+                return this.context;
+            }
+        }
+    });
+
+    Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.ListOptimizationTests", {
+        inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.ListOptimizationTests)],
+        statics: {
+            methods: {
+                DeserializationWorks: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.ListOptimizationTests).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.ListOptimizationTests, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "DeserializationWorks()", $t.Line = "16", $t));
+                    Newtonsoft.Json.Tests.ListOptimizationTests.DeserializationWorks();
+                },
+                NoOptDeserializationWorks: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.ListOptimizationTests).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.ListOptimizationTests, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "NoOptDeserializationWorks()", $t.Line = "40", $t));
+                    Newtonsoft.Json.Tests.ListOptimizationTests.NoOptDeserializationWorks();
+                }
+            }
+        },
+        fields: {
+            context: null
+        },
+        methods: {
+            GetContext: function () {
+                var $t;
+                if (this.context == null) {
+                    this.context = ($t = new Bridge.Test.Runtime.FixtureContext(), $t.Project = "Newtonsoft.Json.Tests", $t.ClassName = "Newtonsoft.Json.Tests.ListOptimizationTests", $t.File = "Newtonsoft.Json.Tests\\Tests\\ListOptimizationTests.cs", $t);
                 }
                 return this.context;
             }

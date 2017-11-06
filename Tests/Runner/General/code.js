@@ -1742,6 +1742,161 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests", {
+        statics: {
+            methods: {
+                /**
+                 * The list deserialize optimization should apply to this data because
+                 each item in the list is of exactly the same type
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.ListOptimizationTests
+                 * @memberof Newtonsoft.Json.Tests.ListOptimizationTests
+                 * @return  {void}
+                 */
+                DeserializationWorks: function () {
+                    var $t;
+                    var items = new (Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel)).$ctor1(System.Array.init([new Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel(), new Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel()], Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel));
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(items, settings);
+                    var cloneAsArray = System.Linq.Enumerable.from(Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel), settings)).toArray();
+
+                    Bridge.Test.NUnit.Assert.AreEqual(2, cloneAsArray.length, "Optimized deserialization length");
+                    Bridge.Test.NUnit.Assert.AreEqual(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, "Optimized deserialization index 0 data type");
+                    Bridge.Test.NUnit.Assert.AreEqual(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, "Optimized deserialization index 1 data type");
+                },
+                /**
+                 * The optimization should NOT apply to this data since there are
+                 different types in the list (this test is to ensure that the
+                 optimization checks didn't break anything in the non-optimization
+                 paths)
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.ListOptimizationTests
+                 * @memberof Newtonsoft.Json.Tests.ListOptimizationTests
+                 * @return  {void}
+                 */
+                NoOptDeserializationWorks: function () {
+                    var $t;
+                    var items = new (Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase)).$ctor1(System.Array.init([new Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel(), new Newtonsoft.Json.Tests.ListOptimizationTests.AlternativeKeyValuePairDataModel()], Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase));
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(items, settings);
+                    var cloneAsArray = System.Linq.Enumerable.from(Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase), settings)).toArray();
+
+                    Bridge.Test.NUnit.Assert.AreEqual(2, cloneAsArray.length, "Non-optimized deserialization length");
+                    Bridge.Test.NUnit.Assert.AreEqual(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, Bridge.getType(cloneAsArray[System.Array.index(0, cloneAsArray)]), "Non-optimized deserialization index 0 data type");
+                    Bridge.Test.NUnit.Assert.AreEqual(Newtonsoft.Json.Tests.ListOptimizationTests.AlternativeKeyValuePairDataModel, Bridge.getType(cloneAsArray[System.Array.index(1, cloneAsArray)]), "Non-optimized deserialization index 1 data type");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase");
+
+    Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1", function (T) { return {
+        inherits: [System.Collections.Generic.IEnumerable$1(T)],
+        fields: {
+            _headIfAny: null
+        },
+        props: {
+            Count: {
+                get: function () {
+                    return (this._headIfAny == null) ? 0 : ((this._headIfAny.Count) >>> 0);
+                }
+            }
+        },
+        alias: ["getEnumerator", ["System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(T) + "$getEnumerator", "System$Collections$Generic$IEnumerable$1$getEnumerator"]],
+        ctors: {
+            ctor: function (headIfAny) {
+                this.$initialize();
+                this._headIfAny = headIfAny;
+            },
+            $ctor1: function (values) {
+                var $t, $t1;
+                this.$initialize();
+                var node = null;
+                $t = Bridge.getEnumerator(System.Linq.Enumerable.from(values).reverse());
+                try {
+                    while ($t.moveNext()) {
+                        var value = $t.Current;
+                        node = ($t1 = new (Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1.Node(T))(), $t1.Count = ((((node == null) ? 0 : node.Count) + 1) | 0), $t1.Item = value, $t1.NextIfAny = node, $t1);
+                    }
+                } finally {
+                    if (Bridge.is($t, System.IDisposable)) {
+                        $t.System$IDisposable$dispose();
+                    }
+                }this._headIfAny = node;
+            }
+        },
+        methods: {
+            getEnumerator: function () {
+                var $step = 0,
+                    $jumpFromFinally,
+                    $returnValue,
+                    node,
+                    $async_e;
+
+                var $enumerator = new (Bridge.GeneratorEnumerator$1(T))(Bridge.fn.bind(this, function () {
+                    try {
+                        for (;;) {
+                            switch ($step) {
+                                case 0: {
+                                    node = this._headIfAny;
+                                    $step = 1;
+                                    continue;
+                                }
+                                case 1: {
+                                    if ( node != null ) {
+                                            $step = 2;
+                                            continue;
+                                        } 
+                                        $step = 4;
+                                        continue;
+                                }
+                                case 2: {
+                                    $enumerator.current = node.Item;
+                                        $step = 3;
+                                        return true;
+                                }
+                                case 3: {
+                                    node = node.NextIfAny;
+
+                                        $step = 1;
+                                        continue;
+                                }
+                                case 4: {
+
+                                }
+                                default: {
+                                    return false;
+                                }
+                            }
+                        }
+                    } catch($async_e1) {
+                        $async_e = System.Exception.create($async_e1);
+                        throw $async_e;
+                    }
+                }));
+                return $enumerator;
+            },
+            System$Collections$IEnumerable$getEnumerator: function () {
+                return this.getEnumerator();
+            }
+        }
+    }; });
+
+    Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1.Node", function (T) { return {
+        fields: {
+            Count: 0,
+            Item: Bridge.getDefaultValue(T),
+            NextIfAny: null
+        }
+    }; });
+
     Bridge.define("Newtonsoft.Json.Tests.SerializationTests", {
         statics: {
             methods: {
@@ -2145,5 +2300,13 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 return System.String.format("{0} {1} {2} {3}", this.Id, this.Name, this.Address.Street, this.Address.City);
             }
         }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.AlternativeKeyValuePairDataModel", {
+        inherits: [Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase]
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel", {
+        inherits: [Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase]
     });
 });

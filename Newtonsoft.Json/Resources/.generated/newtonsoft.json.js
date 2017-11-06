@@ -435,10 +435,9 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 return function (raw) {
                                     var args = [];
                                     if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
-                                        // If this non-empty list of items are all of the same type then we don't need to repeat the reflection work that determines what constructor to use (if any) for
-                                        // each one of them - we can call getInstanceBuilder just once and then reuse the returned function when we translate each item. With large lists that all contain
-                                        // objects that are precisely the same type, this can save a lot of work (and so reduce the deserialisation time signicantly). It will only work when TypeNameHandling
-                                        // is enabled, if not then we fall back to calling DeserializeObject every time (which is also what happens if the types of the items vary).									
+                                        // Call getInstanceBuilder() just once and reuse it if the list of items are of the
+                                        // same type. Requires TypeNameHandling to be enabled. This improves performance
+                                        // on large sets of data.
                                         var arr = [],
                                             elementType = Bridge.Reflection.getGenericArguments(params[0].pt)[0] ||
                                                           Bridge.Reflection.getGenericArguments(type)[0] ||
@@ -468,7 +467,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                         }
                                         else {
                                             commonElementInstanceBuilder = null;
-                                        }														  
+                                        }														
                                         for (var i = 0; i < raw.length; i++) {
                                             var item = raw[i];
                                             arr[i] = commonElementInstanceBuilder ? commonElementInstanceBuilder(item) : Newtonsoft.Json.JsonConvert.DeserializeObject(item, elementType, settings, true);
@@ -480,7 +479,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                     return isList ? { $list: true, names: [], value: v } : { names: [], value: v };
                                 };
                             }
-                            
+
                             return function (raw) {
                                 var args = [];
                                 var names = [];
@@ -503,7 +502,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             };
                         }
                     }
-                    
+
                     return function () {
                         return { names: [], value: Bridge.createInstance(type) };
                     };
@@ -513,7 +512,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     var builder = this.getInstanceBuilder(type, raw, settings);
                     return builder(raw);
                 },
-                
+
                 DeserializeObject: function (raw, type, settings, field) {
                     settings = settings || {};
                     if (type.$kind === "interface") {
@@ -587,7 +586,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             if ((type !== System.Decimal || !type.tryParse(raw, null, {})) &&
                                 (!System.Int64.is64BitType(type) || !type.tryParse(raw.toString(), {}))) {
                                 throw new Newtonsoft.Json.JsonException(System.String.format("Input string '{0}' is not a valid {1}", raw, Bridge.getTypeName(type)));
-                            }                            
+                            }
                         }
 
                         if (type === System.Boolean) {
@@ -755,7 +754,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 if (raw.hasOwnProperty(each)) {
                                     if (names.indexOf(each) < 0) {
                                         dictionary.add(Newtonsoft.Json.JsonConvert.DeserializeObject(each, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw[each], typeValue, settings, true));
-                                    }                                    
+                                    }
                                 }
                             }
 
@@ -786,7 +785,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 i;
 
                             for (i = 0; i < fields.length; i++) {
-                                f = fields[i];                                
+                                f = fields[i];
 
                                 mname = camelCase ? (f.n.charAt(0).toLowerCase() + f.n.substr(1)) : f.n;
 
