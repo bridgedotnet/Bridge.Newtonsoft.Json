@@ -98,7 +98,6 @@
             }
 
             if (Bridge.isArray(o)) {
-                var arr = [];
                 for (var i = 0; i < o.length; i++) {
                     var item = o[i];
 
@@ -113,9 +112,8 @@
                         item = item.$clone();
                     }
 
-                    arr[i] = item;
+                    o[i] = item;
                 }
-                o = arr;
             }
 
             if (o && !noclone && o.$clone) {
@@ -2093,8 +2091,22 @@
                                     m = prototype[name];
                                 }
 
-                                scope[alias] = m;
-                                aliases.push({ fn: name, alias: alias });
+                                if (!Bridge.isFunction(m)) {
+                                    descriptor = {
+                                        get: function () {
+                                            return this[name];
+                                        },
+
+                                        set: function (value) {
+                                            this[name] = value;
+                                        }
+                                    };
+                                    Object.defineProperty(obj, alias, descriptor);
+                                    aliases.push({ alias: alias, descriptor: descriptor });
+                                } else {
+                                    scope[alias] = m;
+                                    aliases.push({ fn: name, alias: alias });
+                                }                                
                             }
                         }
                     })(statics ? scope : prototype, config.alias[i], config.alias[i + 1], cls);
@@ -4021,6 +4033,10 @@
             } else if (ci.sm) {
                 return ci.td[ci.sn].apply(null, args);
             } else {
+                if (ci.td.$literal) {
+                    return (ci.sn ? ci.td[ci.sn] : ci.td).apply(ci.td, args);
+                }
+
                 return Bridge.Reflection.applyConstructor(ci.sn ? ci.td[ci.sn] : ci.td, args);
             }
         },
@@ -9951,7 +9967,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
         },
 
         equals: function (other) {
-            return other.ticks.eq(this.ticks);
+            return Bridge.is(other, System.TimeSpan) ? other.ticks.eq(this.ticks) : false;
         },
 
         equalsT: function (other) {
@@ -11894,14 +11910,16 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
     Bridge.define('System.Collections.Generic.IEnumerator$1', function (T) {
         return {
             inherits: [System.Collections.IEnumerator],
-            $kind: "interface"
+            $kind: "interface",
+            $variance: [1]
         };
     });
 
     Bridge.define('System.Collections.Generic.IEnumerable$1', function (T) {
         return {
             inherits: [System.Collections.IEnumerable],
-            $kind: "interface"
+            $kind: "interface",
+            $variance: [1]
         };
     });
 
@@ -11914,7 +11932,8 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
 
     Bridge.define('System.Collections.Generic.IEqualityComparer$1', function (T) {
         return {
-            $kind: "interface"
+            $kind: "interface",
+            $variance: [2]
         };
     });
 
@@ -11934,7 +11953,8 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
 
     Bridge.define('System.Collections.Generic.IComparer$1', function (T) {
         return {
-            $kind: "interface"
+            $kind: "interface",
+            $variance: [2]
         };
     });
 

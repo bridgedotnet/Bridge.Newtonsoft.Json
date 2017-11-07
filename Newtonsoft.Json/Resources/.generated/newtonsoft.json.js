@@ -394,7 +394,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         isList = false;
 
                     if (isEnumerable || isObject) {
-                        var ctors = Bridge.Reflection.getMembers(type, 1, 28),
+                        var ctors = Bridge.Reflection.getMembers(type, 1, 54),
+                            publicCtors = [],
                             hasDefault = false,
                             jsonCtor = null;
 
@@ -417,16 +418,20 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
 
                                     jsonCtor = c;
                                 }
+
+                                if (c.a === 2) {
+                                    publicCtors.push(c);
+                                }
                             }
                         }
 
                         if (!hasDefault && ctors.length > 0) {
-                            if (ctors.length > 1 && jsonCtor == null) {
+                            if (publicCtors.length !== 1 && jsonCtor == null) {
                                 throw new Newtonsoft.Json.JsonSerializationException("Unable to find a constructor to use for type " + Bridge.getTypeName(type) + ". A class should either have a default constructor or one constructor with arguments.");
                             }
 
                             if (jsonCtor == null) {
-                                jsonCtor = ctors[0];
+                                jsonCtor = publicCtors[0];
                             }
 
                             var params = jsonCtor.pi || [],
