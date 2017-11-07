@@ -67,7 +67,7 @@
                             return;
                         }
 
-                        return returnRaw ? null : this.stringify(null, formatting);
+                        return returnRaw ? null : Newtonsoft.Json.JsonConvert.stringify(null, formatting);
                     }
 
                     var objType = Bridge.getType(obj);
@@ -88,7 +88,7 @@
 
                     if (typeof obj === "function") {
                         var name = Bridge.getTypeName(obj);
-                        return returnRaw ? name : this.stringify(name, formatting);
+                        return returnRaw ? name : Newtonsoft.Json.JsonConvert.stringify(name, formatting);
                     } else if (typeof obj === "object") {
                         var type = possibleType || objType,
                             arr,
@@ -127,11 +127,11 @@
                         }
 
                         if (type === System.Globalization.CultureInfo) {
-                            return returnRaw ? obj.name : this.stringify(obj.name, formatting);
+                            return returnRaw ? obj.name : Newtonsoft.Json.JsonConvert.stringify(obj.name, formatting);
                         } else if (type === System.Guid) {
-                            return returnRaw ? obj.toString() : this.stringify(obj.toString(), formatting);
+                            return returnRaw ? obj.toString() : Newtonsoft.Json.JsonConvert.stringify(obj.toString(), formatting);
                         } else if (type === System.Uri) {
-                            return returnRaw ? obj.getAbsoluteUri() : this.stringify(obj.getAbsoluteUri(), formatting);
+                            return returnRaw ? obj.getAbsoluteUri() : Newtonsoft.Json.JsonConvert.stringify(obj.getAbsoluteUri(), formatting);
                         } else if (type === System.Int64) {
                             return obj.toJSON();
                         } else if (type === System.UInt64) {
@@ -140,12 +140,12 @@
                             return obj.toJSON();
                         } else if (type === System.DateTime) {
                             var d = System.DateTime.format(obj, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
-                            return returnRaw ? d : this.stringify(d, formatting);
+                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
                         } else if (Bridge.isArray(null, type)) {
                             if (type.$elementType === System.Byte) {
                                 removeGuard();
                                 var json = System.Convert.toBase64String(obj);
-                                return returnRaw ? json : this.stringify(json, formatting);
+                                return returnRaw ? json : Newtonsoft.Json.JsonConvert.stringify(json, formatting);
                             }
 
                             arr = [];
@@ -156,9 +156,9 @@
 
                             obj = arr;
                         } else if (Bridge.Reflection.isEnum(type)) {
-                            return returnRaw ? obj : this.stringify(obj, formatting);
+                            return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
                         } else if (type === System.Char) {
-                            return returnRaw ? String.fromCharCode(obj) : this.stringify(String.fromCharCode(obj), formatting);
+                            return returnRaw ? String.fromCharCode(obj) : Newtonsoft.Json.JsonConvert.stringify(String.fromCharCode(obj), formatting);
                         } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IDictionary, type)) {
                             var typesGeneric = System.Collections.Generic.Dictionary$2.getTypeParameters(type),
                                 typeKey = typesGeneric[0],
@@ -232,10 +232,10 @@
                         removeGuard();
                     }
 
-                    return returnRaw ? obj : this.stringify(obj, formatting);
+                    return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
                 },
 
-                createInstance: function (type, raw, settings) {
+                getInstanceBuilder: function (type, raw, settings) {
                     var rawIsArray = Bridge.isArray(raw),
                         isEnumerable = rawIsArray && Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, type),
                         isObject = typeof raw === "object" && !rawIsArray,
@@ -277,22 +277,60 @@
                                 jsonCtor = ctors[0];
                             }
 
-                            var params = jsonCtor.pi || [],
-                                args = [];
+                            var params = jsonCtor.pi || [];
 
                             if (isEnumerable) {
-                                if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
-                                    var arr = [],
-                                        elementType = Bridge.Reflection.getGenericArguments(params[0].pt)[0] ||
-                                                      Bridge.Reflection.getGenericArguments(type)[0] ||
-                                                      System.Object;
-                                    for (var i = 0; i < raw.length; i++) {
-                                        arr[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], elementType, settings, true);
+                                return function (raw) {
+                                    var args = [];
+                                    if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, params[0].pt)) {
+                                        // Call getInstanceBuilder() just once and reuse it if the list of items are of the
+                                        // same type. Requires TypeNameHandling to be enabled. This improves performance
+                                        // on large sets of data.
+                                        var arr = [],
+                                            elementType = Bridge.Reflection.getGenericArguments(params[0].pt)[0] ||
+                                                          Bridge.Reflection.getGenericArguments(type)[0] ||
+                                                          System.Object,
+                                            commonElementInstanceBuilder;
+                                        if (settings && settings.TypeNameHandling && raw.length > 0 && raw[0]) {
+                                            var useSameInstanceBuilderForAllValues = true;
+                                            var firstElementTypeName = raw[0].$type;
+                                            if (!firstElementTypeName) {
+                                                useSameInstanceBuilderForAllValues = false;
+                                            }
+                                            else {
+                                                for (var i = 1; i < raw.length; i++) {
+                                                    var nextElementTypeName = raw[i] ? raw[i].$type : null;
+                                                    if (!nextElementTypeName || (nextElementTypeName !== firstElementTypeName)) {
+                                                        useSameInstanceBuilderForAllValues = false;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            if (useSameInstanceBuilderForAllValues) {
+                                                commonElementInstanceBuilder = Newtonsoft.Json.JsonConvert.getInstanceBuilder(elementType, raw[0], settings);
+                                            }
+                                            else {
+                                                commonElementInstanceBuilder = null;
+                                            }
+                                        }
+                                        else {
+                                            commonElementInstanceBuilder = null;
+                                        }														
+                                        for (var i = 0; i < raw.length; i++) {
+                                            var item = raw[i];
+                                            arr[i] = commonElementInstanceBuilder ? commonElementInstanceBuilder(item) : Newtonsoft.Json.JsonConvert.DeserializeObject(item, elementType, settings, true);
+                                        }
+                                        args.push(arr);
+                                        isList = true;
                                     }
-                                    args.push(arr);
-                                    isList = true;
-                                }
-                            } else {
+                                    var v = Bridge.Reflection.invokeCI(jsonCtor, args);
+                                    return isList ? { $list: true, names: [], value: v } : { names: [], value: v };
+                                };
+                            }
+
+                            return function (raw) {
+                                var args = [];
+                                var names = [];
                                 var theKeys = Object.getOwnPropertyNames(raw).toString();
                                 for (var i = 0; i < params.length; i++) {
                                     var name = params[i].sn || params[i].n,
@@ -302,18 +340,25 @@
 
                                     if (name) {
                                         args[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[name], params[i].pt, settings, true);
+                                        names.push(name);
                                     } else {
                                         args[i] = Bridge.getDefaultValue(params[i].pt);
                                     }
                                 }
-                            }
 
-                            var v = Bridge.Reflection.invokeCI(jsonCtor, args);
-                            return isList ? {$list: true, value: v} : v;
+                                return { names: names, value: Bridge.Reflection.invokeCI(jsonCtor, args) };
+                            };
                         }
                     }
 
-                    return Bridge.createInstance(type);
+                    return function () {
+                        return { names: [], value: Bridge.createInstance(type) };
+                    };
+                },
+
+                createInstance: function (type, raw, settings) {
+                    var builder = this.getInstanceBuilder(type, raw, settings);
+                    return builder(raw);
                 },
 
                 DeserializeObject: function (raw, type, settings, field) {
@@ -345,7 +390,7 @@
                     }
 
                     var isObject = type === Object || type === System.Object;
-                    if (isObject || type.$literal) {
+                    if (isObject || type.$literal && !Bridge.getMetadata(type)) {
                         return Bridge.merge(isObject ? {} : Bridge.createInstance(type), raw);
                     }
 
@@ -382,9 +427,16 @@
                                 return def + 1;
                             }
 
-                            return null;
+                            throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
                     } else if (typeof raw === "number") {
+                        if (type.$number && !type.$is(raw)) {
+                            if ((type !== System.Decimal || !type.tryParse(raw, null, {})) &&
+                                (!System.Int64.is64BitType(type) || !type.tryParse(raw.toString(), {}))) {
+                                throw new Newtonsoft.Json.JsonException(System.String.format("Input string '{0}' is not a valid {1}", raw, Bridge.getTypeName(type)));
+                            }
+                        }
+
                         if (type === System.Boolean) {
                             return raw !== 0;
                         } else if (Bridge.Reflection.isEnum(type)) {
@@ -418,9 +470,20 @@
                         } else if (type === System.DateTime) {
                             return System.DateTime.create$2(raw | 0, 0);
                         } else {
-                            return null;
+                            throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
                     } else if (typeof raw === "string") {
+                        var isDecimal = type === System.Decimal,
+                            isSpecial = isDecimal || System.Int64.is64BitType(type);
+                        if (isSpecial && (isDecimal ? !type.tryParse(raw, null, {}) : !type.tryParse(raw, {}))) {
+                            throw new Newtonsoft.Json.JsonException(System.String.format("Input string '{0}' is not a valid {1}", raw, Bridge.getTypeName(type)));
+                        }
+
+                        var isFloat = type == System.Double || type == System.Single;
+                        if (!isSpecial && type.$number && (isFloat ? !type.tryParse(raw, null, {}) : !type.tryParse(raw, {}))) {
+                            throw new Newtonsoft.Json.JsonException(System.String.format("Could not convert {0} to {1}: {2}", Bridge.getTypeName(raw), Bridge.getTypeName(type), raw));
+                        }
+
                         if (type === Function) {
                             return Bridge.Reflection.getType(raw);
                         } else if (type === System.Globalization.CultureInfo) {
@@ -483,7 +546,7 @@
                         } else if (type === System.Array.type(System.Byte, 1)) {
                             return System.Convert.fromBase64String(raw);
                         } else {
-                            return null;
+                            throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
                     } else if (typeof raw === "object") {
                         if (def !== null && type.$kind !== "struct") {
@@ -509,6 +572,8 @@
                                 return list.value;
                             }
 
+                            list = list.value;
+
                             if (raw.length === undefined) {
                                 return list;
                             }
@@ -521,7 +586,8 @@
                         } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IDictionary, type)) {
                             var typesGeneric = System.Collections.Generic.Dictionary$2.getTypeParameters(type),
                                 typeKey = typesGeneric[0] || System.Object,
-                                typeValue = typesGeneric[1] || System.Object;
+                                typeValue = typesGeneric[1] || System.Object,
+                                names;
 
                             var dictionary = Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings);
 
@@ -529,9 +595,14 @@
                                 return dictionary.value;
                             }
 
+                            names = dictionary.names || [];
+                            dictionary = dictionary.value;
+
                             for (var each in raw) {
                                 if (raw.hasOwnProperty(each)) {
-                                    dictionary.add(Newtonsoft.Json.JsonConvert.DeserializeObject(each, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw[each], typeValue, settings, true));
+                                    if (names.indexOf(each) < 0) {
+                                        dictionary.add(Newtonsoft.Json.JsonConvert.DeserializeObject(each, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw[each], typeValue, settings, true));
+                                    }
                                 }
                             }
 
@@ -547,11 +618,11 @@
                                 throw TypeError(System.String.concat("Cannot find type: ", raw["$type"]));
                             }
 
-                            var o = Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings);
+                            var o = Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings),
+                                names;
 
-                            if (o && o.$list) {
-                                o = o.value;
-                            }
+                            names = o.names || [];
+                            o = o.value;
 
                             var camelCase = settings && Bridge.is(settings.ContractResolver, Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver),
                                 fields = Bridge.Reflection.getMembers(type, 4, 20),
@@ -563,7 +634,13 @@
 
                             for (i = 0; i < fields.length; i++) {
                                 f = fields[i];
+
                                 mname = camelCase ? (f.n.charAt(0).toLowerCase() + f.n.substr(1)) : f.n;
+
+                                if (names.indexOf(mname) > -1) {
+                                    continue;
+                                }
+
                                 value = raw[mname];
 
                                 if (value === undefined) {
@@ -579,7 +656,13 @@
 
                             for (i = 0; i < properties.length; i++) {
                                 p = properties[i];
+
                                 mname = camelCase ? (p.n.charAt(0).toLowerCase() + p.n.substr(1)) : p.n;
+
+                                if (names.indexOf(mname) > -1) {
+                                    continue;
+                                }
+
                                 value = raw[mname];
 
                                 if (value === undefined) {

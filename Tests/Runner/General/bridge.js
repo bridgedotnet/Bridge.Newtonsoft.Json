@@ -873,6 +873,24 @@
             return obj;
         },
 
+        copyProperties: function (to, from) {
+            var names = Bridge.getPropertyNames(from, false),
+                i;
+
+            for (i = 0; i < names.length; i++) {
+                var name = names[i],
+                    own = from.hasOwnProperty(name),
+                    dcount = name.split("$").length;
+
+                if (own && (dcount === 1 || dcount === 2 && name.match("\$\d+$"))) {
+                    to[name] = from[name];
+                }
+                
+            }
+
+            return to;
+        }, 
+
         merge: function (to, from, callback, elemFactory) {
             if (to == null) {
                 return from;
@@ -4003,6 +4021,10 @@
             } else if (ci.sm) {
                 return ci.td[ci.sn].apply(null, args);
             } else {
+                if (ci.td.$literal) {
+                    return (ci.sn ? ci.td[ci.sn] : ci.td).apply(ci.td, args);
+                }
+
                 return Bridge.Reflection.applyConstructor(ci.sn ? ci.td[ci.sn] : ci.td, args);
             }
         },
