@@ -30,6 +30,10 @@
         }
     });
 
+    Bridge.define("Newtonsoft.Json.JsonIgnoreAttribute", {
+        inherits: [System.Attribute]
+    });
+
     Bridge.define("Newtonsoft.Json.JsonSerializerSettings", {
         statics: {
             fields: {

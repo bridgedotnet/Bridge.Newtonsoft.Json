@@ -1493,6 +1493,38 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case63", {
+        statics: {
+            methods: {
+                TestJsonIgnore: function () {
+                    var $t;
+                    var x = ($t = new Newtonsoft.Json.Tests.Issues.Case63.Product(), $t.Name = "Apple", $t.ExpiryDate = System.DateTime.getNow(), $t.Price = 3.99, $t.Sizes = System.Array.init(["S", "M", "L"], System.String), $t);
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(x);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Name\":\"Apple\",\"Price\":3.99}", json);
+
+                    var clone = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case63.Product);
+
+                    Bridge.Test.NUnit.Assert.True(Bridge.is(clone, Newtonsoft.Json.Tests.Issues.Case63.Product));
+                    Bridge.Test.NUnit.Assert.AreEqual("Apple", clone.Name);
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case63.Product", {
+        props: {
+            Name: null,
+            ExpiryDate: null,
+            Price: 0,
+            Sizes: null
+        },
+        ctors: {
+            init: function () {
+                this.ExpiryDate = System.DateTime.getDefaultValue();
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8", {
         statics: {
             methods: {
