@@ -32,6 +32,12 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             QUnit.test("#2 - TestMetadata", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case2.TestMetadata);
             QUnit.test("#10 - TestPropertiesWithSameReferenceValue", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case10.TestPropertiesWithSameReferenceValue);
             QUnit.test("#14 - TestCaseInsensitiveMatch", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case14.TestCaseInsensitiveMatch);
+            QUnit.test("#16 - TestPopulateObject", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16.TestPopulateObject);
+            QUnit.test("#16 - DeserializationBasics2", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16.DeserializationBasics2);
+            QUnit.test("#16 - PopulateObjectWithHeaderComment", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16.PopulateObjectWithHeaderComment);
+            QUnit.test("#16 - PopulatePerson", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16.PopulatePerson);
+            QUnit.test("#16 - PopulateArray", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16.PopulateArray);
+            QUnit.test("#16 - PopulateDictionary", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16.PopulateDictionary);
             QUnit.test("#18 - TestNullable", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case18.TestNullable);
             QUnit.test("#22 - TestEnumJson", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case22.TestEnumJson);
             QUnit.test("#25 - TestSerializerSettings", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case25.TestSerializerSettings);
@@ -262,6 +268,56 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
                 var $t;
                 if (this.context == null) {
                     this.context = ($t = new Bridge.Test.Runtime.FixtureContext(), $t.Project = "Newtonsoft.Json.Tests", $t.ClassName = "Newtonsoft.Json.Tests.Issues.Case14", $t.File = "Newtonsoft.Json.Tests\\Issues\\0100\\Case014.cs", $t);
+                }
+                return this.context;
+            }
+        }
+    });
+
+    Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16", {
+        inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case16)],
+        statics: {
+            methods: {
+                TestPopulateObject: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case16).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestPopulateObject()", $t.Line = "41", $t));
+                    Newtonsoft.Json.Tests.Issues.Case16.TestPopulateObject();
+                },
+                DeserializationBasics2: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case16).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "DeserializationBasics2()", $t.Line = "66", $t));
+                    Newtonsoft.Json.Tests.Issues.Case16.DeserializationBasics2();
+                },
+                PopulateObjectWithHeaderComment: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case16).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "PopulateObjectWithHeaderComment()", $t.Line = "82", $t));
+                    Newtonsoft.Json.Tests.Issues.Case16.PopulateObjectWithHeaderComment();
+                },
+                PopulatePerson: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case16).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "PopulatePerson()", $t.Line = "93", $t));
+                    Newtonsoft.Json.Tests.Issues.Case16.PopulatePerson();
+                },
+                PopulateArray: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case16).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "PopulateArray()", $t.Line = "103", $t));
+                    Newtonsoft.Json.Tests.Issues.Case16.PopulateArray();
+                },
+                PopulateDictionary: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case16).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "PopulateDictionary()", $t.Line = "116", $t));
+                    Newtonsoft.Json.Tests.Issues.Case16.PopulateDictionary();
+                }
+            }
+        },
+        fields: {
+            context: null
+        },
+        methods: {
+            GetContext: function () {
+                var $t;
+                if (this.context == null) {
+                    this.context = ($t = new Bridge.Test.Runtime.FixtureContext(), $t.Project = "Newtonsoft.Json.Tests", $t.ClassName = "Newtonsoft.Json.Tests.Issues.Case16", $t.File = "Newtonsoft.Json.Tests\\Issues\\0100\\Case016.cs", $t);
                 }
                 return this.context;
             }

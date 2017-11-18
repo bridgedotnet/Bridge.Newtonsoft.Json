@@ -944,6 +944,133 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     }; });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case16", {
+        statics: {
+            methods: {
+                TestPopulateObject: function () {
+                    var $t;
+                    var account = ($t = new Newtonsoft.Json.Tests.Issues.Case16.Account(), $t.Email = "james@example.com", $t.Active = true, $t.CreatedDate = System.DateTime.create(2013, 1, 20, 0, 0, 0, 0, System.DateTimeKind.Utc), $t.Roles = $asm.$.Newtonsoft.Json.Tests.Issues.Case16.f1(new (System.Collections.Generic.List$1(System.String)).ctor()), $t);
+
+                    var json = "{\n              \"Active\": false,\n              \"Roles\": [\n                \"Expired\"\n              ]\n            }";
+
+                    Newtonsoft.Json.JsonConvert.PopulateObject(json, account);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("james@example.com", account.Email);
+                    Bridge.Test.NUnit.Assert.False(account.Active);
+                    Bridge.Test.NUnit.Assert.AreEqual("User, Admin, Expired", account.Roles.toArray().join(", "));
+                },
+                DeserializationBasics2: function () {
+                    var s = new Newtonsoft.Json.Tests.Issues.Case16.Session();
+                    s.Date = System.DateTime.create(2014, 6, 4);
+
+                    var j = "{\n              \"Name\": \"Serialize All The Things\"\n            }";
+
+                    Newtonsoft.Json.JsonConvert.PopulateObject(j, s);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("Serialize All The Things", s.Name);
+                    Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.create(2014, 6, 4), s.Date);
+                },
+                PopulateObjectWithHeaderComment: function () {
+                    var json = "{\"prop\": 1.0}";
+
+                    var o = new Newtonsoft.Json.Tests.Issues.Case16.PopulateTestObject();
+                    Newtonsoft.Json.JsonConvert.PopulateObject(json, o);
+
+                    Bridge.Test.NUnit.Assert.True(System.Decimal(1.0).equalsT(o.Prop));
+                },
+                PopulatePerson: function () {
+                    var p = new Newtonsoft.Json.Tests.Issues.Case16.Person();
+
+                    Newtonsoft.Json.JsonConvert.PopulateObject("{\"Name\":\"James\"}", p);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("James", p.Name);
+                },
+                PopulateArray: function () {
+                    var people = $asm.$.Newtonsoft.Json.Tests.Issues.Case16.f2(new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case16.Person)).ctor());
+
+                    Newtonsoft.Json.JsonConvert.PopulateObject("[{\"Name\":\"James\"}, null]", people);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(3, System.Array.getCount(people, Newtonsoft.Json.Tests.Issues.Case16.Person));
+                    Bridge.Test.NUnit.Assert.AreEqual("Initial", System.Array.getItem(people, 0, Newtonsoft.Json.Tests.Issues.Case16.Person).Name);
+                    Bridge.Test.NUnit.Assert.AreEqual("James", System.Array.getItem(people, 1, Newtonsoft.Json.Tests.Issues.Case16.Person).Name);
+                    Bridge.Test.NUnit.Assert.AreEqual(null, System.Array.getItem(people, 2, Newtonsoft.Json.Tests.Issues.Case16.Person));
+                },
+                PopulateDictionary: function () {
+                    var people = $asm.$.Newtonsoft.Json.Tests.Issues.Case16.f3(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case16.Person))());
+
+                    Newtonsoft.Json.JsonConvert.PopulateObject("{\"key3\":{\"Name\":\"Initial3_1\"},\"key5\":{\"Name\":\"Initial5\"}}", people);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(3, System.Array.getCount(people, System.Collections.Generic.KeyValuePair$2(System.String,Newtonsoft.Json.Tests.Issues.Case16.Person)));
+                    Bridge.Test.NUnit.Assert.AreEqual("key3, key4, key5", System.Linq.Enumerable.from(people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$Keys).toArray().join(", "));
+                    Bridge.Test.NUnit.Assert.AreEqual("Initial3_1", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key3").Name);
+                    Bridge.Test.NUnit.Assert.AreEqual(0, people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key3").Tag);
+                    Bridge.Test.NUnit.Assert.AreEqual("Initial4", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key4").Name);
+                    Bridge.Test.NUnit.Assert.AreEqual("Initial5", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key5").Name);
+                }
+            }
+        }
+    });
+
+    Bridge.ns("Newtonsoft.Json.Tests.Issues.Case16", $asm.$);
+
+    Bridge.apply($asm.$.Newtonsoft.Json.Tests.Issues.Case16, {
+        f1: function (_o1) {
+            _o1.add("User");
+            _o1.add("Admin");
+            return _o1;
+        },
+        f2: function (_o1) {
+            var $t;
+            _o1.add(($t = new Newtonsoft.Json.Tests.Issues.Case16.Person(), $t.Name = "Initial", $t));
+            return _o1;
+        },
+        f3: function (_o1) {
+            var $t;
+            _o1.add("key3", ($t = new Newtonsoft.Json.Tests.Issues.Case16.Person(), $t.Tag = 3, $t.Name = "Initial3", $t));
+            _o1.add("key4", ($t = new Newtonsoft.Json.Tests.Issues.Case16.Person(), $t.Name = "Initial4", $t));
+            return _o1;
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case16.Account", {
+        props: {
+            Email: null,
+            Active: false,
+            CreatedDate: null,
+            Roles: null
+        },
+        ctors: {
+            init: function () {
+                this.CreatedDate = System.DateTime.getDefaultValue();
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case16.Person", {
+        props: {
+            Tag: 0,
+            Name: null
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case16.PopulateTestObject", {
+        props: {
+            Prop: System.Decimal(0.0)
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case16.Session", {
+        props: {
+            Name: null,
+            Date: null
+        },
+        ctors: {
+            init: function () {
+                this.Date = System.DateTime.getDefaultValue();
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case18", {
         statics: {
             methods: {
