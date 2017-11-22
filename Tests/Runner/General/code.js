@@ -944,6 +944,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     }; });
 
+    /** @namespace Newtonsoft.Json.Tests.Issues */
+
+    /**
+     * Tests for the PopulateObject and related methods.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case16
+     */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case16", {
         statics: {
             methods: {
@@ -955,9 +963,9 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     Newtonsoft.Json.JsonConvert.PopulateObject(json, account);
 
-                    Bridge.Test.NUnit.Assert.AreEqual("james@example.com", account.Email);
-                    Bridge.Test.NUnit.Assert.False(account.Active);
-                    Bridge.Test.NUnit.Assert.AreEqual("User, Admin, Expired", account.Roles.toArray().join(", "));
+                    Bridge.Test.NUnit.Assert.AreEqual("james@example.com", account.Email, "Previously feed string is intact.");
+                    Bridge.Test.NUnit.Assert.False(account.Active, "Boolean propery updated from json.");
+                    Bridge.Test.NUnit.Assert.AreEqual("User, Admin, Expired", account.Roles.toArray().join(", "), "Old list members kept and new list entry populated in the object.");
                 },
                 DeserializationBasics2: function () {
                     var s = new Newtonsoft.Json.Tests.Issues.Case16.Session();
@@ -967,8 +975,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     Newtonsoft.Json.JsonConvert.PopulateObject(j, s);
 
-                    Bridge.Test.NUnit.Assert.AreEqual("Serialize All The Things", s.Name);
-                    Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.create(2014, 6, 4), s.Date);
+                    Bridge.Test.NUnit.Assert.AreEqual("Serialize All The Things", s.Name, "Deserialized json string populated in object.");
+                    Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.create(2014, 6, 4), s.Date, "Date not included in json deserialization is kept intact.");
                 },
                 PopulateObjectWithHeaderComment: function () {
                     var json = "{\"prop\": 1.0}";
@@ -976,36 +984,36 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var o = new Newtonsoft.Json.Tests.Issues.Case16.PopulateTestObject();
                     Newtonsoft.Json.JsonConvert.PopulateObject(json, o);
 
-                    Bridge.Test.NUnit.Assert.True(System.Decimal(1.0).equalsT(o.Prop));
+                    Bridge.Test.NUnit.Assert.True(System.Decimal(1.0).equalsT(o.Prop), "Decimal property from deserialized json reflected into object.");
                 },
                 PopulatePerson: function () {
                     var p = new Newtonsoft.Json.Tests.Issues.Case16.Person();
 
                     Newtonsoft.Json.JsonConvert.PopulateObject("{\"Name\":\"James\"}", p);
 
-                    Bridge.Test.NUnit.Assert.AreEqual("James", p.Name);
+                    Bridge.Test.NUnit.Assert.AreEqual("James", p.Name, "String property from deserialized json populated into object.");
                 },
                 PopulateArray: function () {
                     var people = $asm.$.Newtonsoft.Json.Tests.Issues.Case16.f2(new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case16.Person)).ctor());
 
                     Newtonsoft.Json.JsonConvert.PopulateObject("[{\"Name\":\"James\"}, null]", people);
 
-                    Bridge.Test.NUnit.Assert.AreEqual(3, System.Array.getCount(people, Newtonsoft.Json.Tests.Issues.Case16.Person));
-                    Bridge.Test.NUnit.Assert.AreEqual("Initial", System.Array.getItem(people, 0, Newtonsoft.Json.Tests.Issues.Case16.Person).Name);
-                    Bridge.Test.NUnit.Assert.AreEqual("James", System.Array.getItem(people, 1, Newtonsoft.Json.Tests.Issues.Case16.Person).Name);
-                    Bridge.Test.NUnit.Assert.AreEqual(null, System.Array.getItem(people, 2, Newtonsoft.Json.Tests.Issues.Case16.Person));
+                    Bridge.Test.NUnit.Assert.AreEqual(3, System.Array.getCount(people, Newtonsoft.Json.Tests.Issues.Case16.Person), "Array length updated/appended on populate.");
+                    Bridge.Test.NUnit.Assert.AreEqual("Initial", System.Array.getItem(people, 0, Newtonsoft.Json.Tests.Issues.Case16.Person).Name, "Array position of first entry remained at first position.");
+                    Bridge.Test.NUnit.Assert.AreEqual("James", System.Array.getItem(people, 1, Newtonsoft.Json.Tests.Issues.Case16.Person).Name, "Populated entry appended in the array.");
+                    Bridge.Test.NUnit.Assert.AreEqual(null, System.Array.getItem(people, 2, Newtonsoft.Json.Tests.Issues.Case16.Person), "Last populated entry placed last in the array.");
                 },
                 PopulateDictionary: function () {
                     var people = $asm.$.Newtonsoft.Json.Tests.Issues.Case16.f3(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case16.Person))());
 
                     Newtonsoft.Json.JsonConvert.PopulateObject("{\"key3\":{\"Name\":\"Initial3_1\"},\"key5\":{\"Name\":\"Initial5\"}}", people);
 
-                    Bridge.Test.NUnit.Assert.AreEqual(3, System.Array.getCount(people, System.Collections.Generic.KeyValuePair$2(System.String,Newtonsoft.Json.Tests.Issues.Case16.Person)));
-                    Bridge.Test.NUnit.Assert.AreEqual("key3, key4, key5", System.Linq.Enumerable.from(people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$Keys).toArray().join(", "));
-                    Bridge.Test.NUnit.Assert.AreEqual("Initial3_1", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key3").Name);
-                    Bridge.Test.NUnit.Assert.AreEqual(0, people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key3").Tag);
-                    Bridge.Test.NUnit.Assert.AreEqual("Initial4", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key4").Name);
-                    Bridge.Test.NUnit.Assert.AreEqual("Initial5", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key5").Name);
+                    Bridge.Test.NUnit.Assert.AreEqual(3, System.Array.getCount(people, System.Collections.Generic.KeyValuePair$2(System.String,Newtonsoft.Json.Tests.Issues.Case16.Person)), "Dictionary length increased by populating it. Existing entry updated.");
+                    Bridge.Test.NUnit.Assert.AreEqual("key3, key4, key5", System.Linq.Enumerable.from(people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$Keys).toArray().join(", "), "Keys' sequence follow expected order in dictionary.");
+                    Bridge.Test.NUnit.Assert.AreEqual("Initial3_1", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key3").Name, "'key3' entry updated accordingly after populating it.");
+                    Bridge.Test.NUnit.Assert.AreEqual(0, people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key3").Tag, "Updated key's object fully renewed (new instance).");
+                    Bridge.Test.NUnit.Assert.AreEqual("Initial4", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key4").Name, "Unchanged key remained intact.");
+                    Bridge.Test.NUnit.Assert.AreEqual("Initial5", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key5").Name, "Appended key name has json string's provided value.");
                 }
             }
         }
@@ -1446,8 +1454,6 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             Member1: null
         }
     });
-
-    /** @namespace Newtonsoft.Json.Tests.Issues */
 
     /**
      * This test cases consists in double-checking whether a static string is
