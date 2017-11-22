@@ -3101,13 +3101,13 @@
         },
 
         getCustomAttributes: function (attributeType) {
-            if (attributeType && !Bridge.isBoolean(attributeType)) {
+            if (this.attr && attributeType && !Bridge.isBoolean(attributeType)) {
                 return this.attr.filter(function (a) {
                     return Bridge.is(a, attributeType);
                 });
             }
 
-            return this.attr;
+            return this.attr || [];
         }
     });
 
@@ -22684,7 +22684,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
 Bridge.define("System.Text.RegularExpressions.RegexParser", {
     statics: {
         _Q: 5, // quantifier
-        _S: 4, // ordinary stoppper
+        _S: 4, // ordinary stopper
         _Z: 3, // ScanBlank stopper
         _X: 2, // whitespace
         _E: 1, // should be escaped

@@ -124,6 +124,53 @@ public class Product
 }
 ```
 
+## JsonConvert.PopulateObject
+
+Populates the specified object following the description in a JSON string.
+
+Original **PopulateObject** [documentation](http://www.newtonsoft.com/json/help/html/Overload_Newtonsoft_Json_JsonConvert_PopulateObject.htm) from Newtonsoft.Json.
+
+Supported | Name | Description
+:----: | ---- | ----
+![supported](https://speed.bridge.net/icons/png/16px/check.png) | PopulateObject(String, Object) | Populates the specified object with values from a JSON string.
+![supported](https://speed.bridge.net/icons/png/16px/check.png) | PopulateObject(String, Object, [JsonSerializerSettings](https://github.com/bridgedotnet/Bridge.Newtonsoft.Json/blob/master/README.md#jsonserializersettings)) | Populates the specified object with values from a JSON string using [JsonSerializerSettings](https://github.com/bridgedotnet/Bridge.Newtonsoft.Json/blob/master/README.md#jsonserializersettings).
+
+#### Example
+
+```csharp
+Account account = new Account
+{
+    Email = "james@example.com",
+    Active = true,
+    CreatedDate = new DateTime(2013, 1, 20, 0, 0, 0, DateTimeKind.Utc),
+    Roles = new List<string>
+    {
+        "User",
+        "Admin"
+    }
+};
+
+string json = @"{
+    ""Active"": false,
+    ""Roles"": [
+    ""Expired""
+    ]
+}";
+
+JsonConvert.PopulateObject(json, account);
+
+// {
+//   "Email": "james@example.com",
+//   "Active": false,
+//   "CreateDate" = "2013-01-20",
+//   "Roles": [
+//     "User",
+//     "Admin",
+//     "Expired"
+//   ]
+// }
+```
+
 ## Formatting
 
 Specifies formatting options for the JsonTextWriter.
