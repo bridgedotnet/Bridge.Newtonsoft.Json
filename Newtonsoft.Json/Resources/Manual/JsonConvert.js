@@ -323,7 +323,7 @@
                                         }														
                                         for (var i = 0; i < raw.length; i++) {
                                             var item = raw[i];
-                                            arr[i] = commonElementInstanceBuilder ? commonElementInstanceBuilder(item) : Newtonsoft.Json.JsonConvert.DeserializeObject(item, elementType, settings, true);
+                                            arr[i] = commonElementInstanceBuilder ? commonElementInstanceBuilder(item).value : Newtonsoft.Json.JsonConvert.DeserializeObject(item, elementType, settings, true);
                                         }
                                         args.push(arr);
                                         isList = true;
