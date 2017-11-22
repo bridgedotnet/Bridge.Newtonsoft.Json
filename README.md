@@ -282,3 +282,42 @@ public class Message
     }
 }
 ```
+
+## JsonIgnore Attribute
+
+Instructs the JsonSerializer not to serialize the public field or public read/write property value.
+
+Original **JsonIgnore** [documentation](https://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_JsonIgnoreAttribute.htm) from Newtonsoft.Json.
+
+```csharp
+public class Product
+{
+    public string Name { get; set; }
+
+    [JsonIgnore]
+    public DateTime ExpiryDate { get; set; }
+
+    public double Price { get; set; }
+
+    [JsonIgnore]
+    public string[] Sizes { get; set; }
+}
+
+public static void Main()
+{
+    var x = new Product
+    {
+        Name = "Apple",
+        ExpiryDate = DateTime.Now,
+        Price = 3.99,
+        Sizes = new string[] { "S", "M", "L" }
+    };
+
+    var json = JsonConvert.SerializeObject(x);
+}
+
+// {
+//   "Name": "Apple",
+//   "Price": "3.99"
+// }
+```
