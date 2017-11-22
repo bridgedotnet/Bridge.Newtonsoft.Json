@@ -666,7 +666,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             methods: {
                 TestJsonIgnore: function (assert) {
                     var $t;
-                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case63).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case63, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestJsonIgnore()", $t.Line = "26", $t));
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case63).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case63, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestJsonIgnore()", $t.Line = "36", $t));
                     Newtonsoft.Json.Tests.Issues.Case63.TestJsonIgnore();
                 }
             }
