@@ -1626,6 +1626,66 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * Checks whether the 'JasonIgnore' setting properly works on objects
+     while serializing and deserializing.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case63
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case63", {
+        statics: {
+            methods: {
+                /**
+                 * The test consists in making an instance of the Product object,
+                 serializing it, and then deserializing. The properties with the
+                 attribute should not come back from the object, and the serialized
+                 string should not contain text unique to those ignored properties.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case63
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case63
+                 * @return  {void}
+                 */
+                TestJsonIgnore: function () {
+                    var $t;
+                    var x = ($t = new Newtonsoft.Json.Tests.Issues.Case63.Product(), $t.Name = "Apple", $t.ExpiryDate = System.DateTime.getNow(), $t.Price = 3.99, $t.Sizes = System.Array.init(["S", "M", "L"], System.String), $t);
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(x);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Name\":\"Apple\",\"Price\":3.99}", json, "Output serialized JSON has the expected fields.");
+
+                    var clone = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case63.Product);
+
+                    Bridge.Test.NUnit.Assert.True(Bridge.is(clone, Newtonsoft.Json.Tests.Issues.Case63.Product), "Just serialized object deserializes back to the same object.");
+                    Bridge.Test.NUnit.Assert.AreEqual("Apple", clone.Name, "Serialized JSON string correctly fills the object when deserialized.");
+
+                    var new_json = "{\"Name\":\"Apple\",\"Price\":3.99,\"Sizes\":[\"A\",\"B\",\"C\"]}";
+                    var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(new_json, Newtonsoft.Json.Tests.Issues.Case63.Product);
+
+                    Bridge.Test.NUnit.Assert.True(Bridge.is(deserialized, Newtonsoft.Json.Tests.Issues.Case63.Product), "Fresh JSON string deserializes to a Product obejct.");
+                    Bridge.Test.NUnit.Assert.AreEqual("Apple", deserialized.Name, "Fresh JSON string correctly fills the object when deserialized back in.");
+
+                    // JsonIgnore only affects serialization -- not deserialization.
+                    Bridge.Test.NUnit.Assert.True(deserialized.Sizes != null && deserialized.Sizes.length === 3, "Ignored JSON property is serialized back in if provided within JSON string.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case63.Product", {
+        props: {
+            Name: null,
+            ExpiryDate: null,
+            Price: 0,
+            Sizes: null
+        },
+        ctors: {
+            init: function () {
+                this.ExpiryDate = System.DateTime.getDefaultValue();
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8", {
         statics: {
             methods: {

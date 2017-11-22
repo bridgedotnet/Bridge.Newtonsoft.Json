@@ -349,15 +349,20 @@
 
                                 for (i = 0; i < fields.length; i++) {
                                     var f = fields[i],
-                                        fname = camelCase ? (f.n.charAt(0).toLowerCase() + f.n.substr(1)) : f.n;
-                                    raw[fname] = Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.Reflection.fieldAccess(f, obj), formatting, settings, true, f.rt);
+                                        fname = camelCase ? (f.n.charAt(0).toLowerCase() + f.n.substr(1)) : f.n,
+                                        hasIgnore = System.Attribute.getCustomAttributes(f, Newtonsoft.Json.JsonIgnoreAttribute).length > 0;
+
+                                    if (!hasIgnore) {
+                                        raw[fname] = Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.Reflection.fieldAccess(f, obj), formatting, settings, true, f.rt);
+                                    }                                    
                                 }
 
                                 var properties = Bridge.Reflection.getMembers(type, 16, 20);
 
                                 for (i = 0; i < properties.length; i++) {
-                                    var p = properties[i];
-                                    if (!!p.g) {
+                                    var p = properties[i],
+                                        hasIgnore = System.Attribute.getCustomAttributes(p, Newtonsoft.Json.JsonIgnoreAttribute).length > 0;
+                                    if (!!p.g && !hasIgnore) {
                                         var pname = camelCase ? (p.n.charAt(0).toLowerCase() + p.n.substr(1)) : p.n;
                                         raw[pname] = Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.Reflection.midel(p.g, obj)(), formatting, settings, true, p.rt);
                                     }

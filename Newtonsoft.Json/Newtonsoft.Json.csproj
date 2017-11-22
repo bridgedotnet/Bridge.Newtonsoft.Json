@@ -48,6 +48,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Json\JsonIgnoreAttribute.cs" />
     <Compile Include="Json\JsonException.cs" />
     <Compile Include="Json\JsonSerializationException.cs" />
     <Compile Include="Json\JsonSerializerSettings.cs" />
