@@ -124,5 +124,20 @@ namespace Newtonsoft.Json
         /// </param>
         /// <returns>The deserialized object from the JSON string.</returns>
         public static extern object DeserializeObject(string value, Type type, JsonSerializerSettings settings);
+
+        /// <summary>
+        /// Populates the object with values from the JSON string.
+        /// </summary>
+        /// <param name="value">The JSON to populate values from.</param>
+        /// <param name="target">The target object to populate values onto.</param>
+        public static extern void PopulateObject(string value, object target);
+
+        /// <summary>
+        /// Populates the object with values from the JSON string using JsonSerializerSettings.
+        /// </summary>
+        /// <param name="value">The JSON to populate values from.</param>
+        /// <param name="target">The target object to populate values onto.</param>
+        /// <param name="settings">The JsonSerializerSettings used to deserialize the object. If this is null, default serialization settings will be used.</param>
+        public static extern void PopulateObject(string value, object target, JsonSerializerSettings settings);
     }
 }

@@ -124,6 +124,53 @@ public class Product
 }
 ```
 
+## JsonConvert.PopulateObject
+
+Populates the specified object following the description in a JSON string.
+
+Original **PopulateObject** [documentation](http://www.newtonsoft.com/json/help/html/Overload_Newtonsoft_Json_JsonConvert_PopulateObject.htm) from Newtonsoft.Json.
+
+Supported | Name | Description
+:----: | ---- | ----
+![supported](https://speed.bridge.net/icons/png/16px/check.png) | PopulateObject(String, Object) | Populates the specified object with values from a JSON string.
+![supported](https://speed.bridge.net/icons/png/16px/check.png) | PopulateObject(String, Object, [JsonSerializerSettings](https://github.com/bridgedotnet/Bridge.Newtonsoft.Json/blob/master/README.md#jsonserializersettings)) | Populates the specified object with values from a JSON string using [JsonSerializerSettings](https://github.com/bridgedotnet/Bridge.Newtonsoft.Json/blob/master/README.md#jsonserializersettings).
+
+#### Example
+
+```csharp
+Account account = new Account
+{
+    Email = "james@example.com",
+    Active = true,
+    CreatedDate = new DateTime(2013, 1, 20, 0, 0, 0, DateTimeKind.Utc),
+    Roles = new List<string>
+    {
+        "User",
+        "Admin"
+    }
+};
+
+string json = @"{
+    ""Active"": false,
+    ""Roles"": [
+    ""Expired""
+    ]
+}";
+
+JsonConvert.PopulateObject(json, account);
+
+// {
+//   "Email": "james@example.com",
+//   "Active": false,
+//   "CreateDate" = "2013-01-20",
+//   "Roles": [
+//     "User",
+//     "Admin",
+//     "Expired"
+//   ]
+// }
+```
+
 ## Formatting
 
 Specifies formatting options for the JsonTextWriter.
@@ -234,4 +281,43 @@ public class Message
         return new Message(Value + value);
     }
 }
+```
+
+## JsonIgnore Attribute
+
+Instructs the JsonSerializer not to serialize the public field or public read/write property value.
+
+Original **JsonIgnore** [documentation](https://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_JsonIgnoreAttribute.htm) from Newtonsoft.Json.
+
+```csharp
+public class Product
+{
+    public string Name { get; set; }
+
+    [JsonIgnore]
+    public DateTime ExpiryDate { get; set; }
+
+    public double Price { get; set; }
+
+    [JsonIgnore]
+    public string[] Sizes { get; set; }
+}
+
+public static void Main()
+{
+    var x = new Product
+    {
+        Name = "Apple",
+        ExpiryDate = DateTime.Now,
+        Price = 3.99,
+        Sizes = new string[] { "S", "M", "L" }
+    };
+
+    var json = JsonConvert.SerializeObject(x);
+}
+
+// {
+//   "Name": "Apple",
+//   "Price": "3.99"
+// }
 ```

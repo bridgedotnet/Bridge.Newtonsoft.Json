@@ -56,6 +56,144 @@
                     }
                 },
 
+                PopulateObject: function (value, target, settings, schema) {
+                    settings = settings || {};
+                    var targetType = Bridge.getType(target);
+
+                    var raw;
+
+                    if (typeof value === "string") {
+                        try {
+                            raw = JSON.parse(value);
+                        } catch (e) {
+                            throw new Newtonsoft.Json.JsonException(e.message);
+                        }
+                    }
+                    else {
+                        raw = value;
+                    }                    
+
+                    if (targetType.$nullable) {
+                        targetType = targetType.$nullableType;
+                    }
+
+                    if (raw != null && typeof raw === "object") {
+                        if (Bridge.isArray(null, targetType)) {
+                            if (raw.length === undefined) {
+                                return;
+                            }
+
+                            for (var i = 0; i < raw.length; i++) {
+                                target.push(Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], targetType.$elementType, settings, true));
+                            }
+                        } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IList, targetType)) {
+                            var typeElement = System.Collections.Generic.List$1.getElementType(targetType) || System.Object;
+
+                            if (!Bridge.isArray(raw)) {
+                                raw = raw.toArray();
+                            }                            
+
+                            for (var i = 0; i < raw.length; i++) {
+                                target.add(Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], typeElement, settings, true));
+                            }
+                        } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IDictionary, targetType)) {
+                            var typesGeneric = System.Collections.Generic.Dictionary$2.getTypeParameters(targetType),
+                                typeKey = typesGeneric[0] || System.Object,
+                                typeValue = typesGeneric[1] || System.Object,
+                                keys;
+
+                            if (Bridge.is(raw, System.Collections.IDictionary)) {
+                                keys = System.Linq.Enumerable.from(raw.getKeys()).toArray()
+                                for (var i = 0; i < keys.length; i++) {
+                                    var key = keys[i];
+                                    target.set(Newtonsoft.Json.JsonConvert.DeserializeObject(key, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw.get(key), typeValue, settings, true), false);
+                                }
+                            }
+                            else {
+                                for (var each in raw) {
+                                    if (raw.hasOwnProperty(each)) {
+                                        target.set(Newtonsoft.Json.JsonConvert.DeserializeObject(each, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw[each], typeValue, settings, true), false);
+                                    }
+                                }
+                            }                            
+                        } else {
+                            var camelCase = settings && Bridge.is(settings.ContractResolver, Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver),
+                                fields = Bridge.Reflection.getMembers(targetType, 4, 20),
+                                properties = Bridge.Reflection.getMembers(targetType, 16, 20),
+                                value,
+                                f,
+                                p,
+                                mname,
+                                i;
+
+                            for (i = 0; i < fields.length; i++) {
+                                f = fields[i];
+
+                                mname = camelCase ? (f.n.charAt(0).toLowerCase() + f.n.substr(1)) : f.n;
+
+                                value = raw[mname];
+
+                                if (value === undefined) {
+                                    value = Newtonsoft.Json.JsonConvert.getValue(raw, mname);
+                                }
+
+                                var inSchema = (schema || raw)[mname];
+
+                                if (inSchema === undefined) {
+                                    inSchema = !!Newtonsoft.Json.JsonConvert.getValue(schema || raw, mname);
+                                }
+
+                                if (inSchema !== undefined) {
+                                    var needSet = value === null || value === false || value === true || typeof value === "number" || typeof value === "string";
+                                    var targetValue = Bridge.unbox(Bridge.Reflection.fieldAccess(f, target));
+                                    var instance = Newtonsoft.Json.JsonConvert.DeserializeObject(value, f.rt, settings, true);
+
+                                    if (needSet || targetValue == null) {
+                                        Bridge.Reflection.fieldAccess(f, target, instance);
+                                    } else {
+                                        Newtonsoft.Json.JsonConvert.PopulateObject(instance, targetValue, settings, value);
+                                    }                                    
+                                }
+                            }
+
+                            for (i = 0; i < properties.length; i++) {
+                                p = properties[i];
+
+                                mname = camelCase ? (p.n.charAt(0).toLowerCase() + p.n.substr(1)) : p.n;
+
+                                value = raw[mname];
+
+                                if (value === undefined) {
+                                    value = Newtonsoft.Json.JsonConvert.getValue(raw, mname);
+                                }
+
+                                var inSchema = (schema || raw)[mname];
+
+                                if (inSchema === undefined) {
+                                    inSchema = Newtonsoft.Json.JsonConvert.getValue(schema || raw, mname);
+                                }
+
+                                if (inSchema !== undefined) {
+                                    var needSet = value === null || value === false || value === true || typeof value === "number" || typeof value === "string";
+                                    var targetValue = Bridge.unbox(Bridge.Reflection.midel(p.g, target)());
+                                    instance = Newtonsoft.Json.JsonConvert.DeserializeObject(value, p.rt, settings, true);
+
+                                    if (needSet || targetValue == null) {
+                                        if (!!p.s) {
+                                            Bridge.Reflection.midel(p.s, target)(instance);
+                                        }
+                                        else if (type.$kind === "anonymous") {
+                                            target[p.n] = instance;
+                                        }
+                                    } else {
+                                        Newtonsoft.Json.JsonConvert.PopulateObject(instance, targetValue, settings, value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+
                 SerializeObject: function (obj, formatting, settings, returnRaw, possibleType) {
                     if (Bridge.is(formatting, Newtonsoft.Json.JsonSerializerSettings)) {
                         settings = formatting;
@@ -211,15 +349,20 @@
 
                                 for (i = 0; i < fields.length; i++) {
                                     var f = fields[i],
-                                        fname = camelCase ? (f.n.charAt(0).toLowerCase() + f.n.substr(1)) : f.n;
-                                    raw[fname] = Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.Reflection.fieldAccess(f, obj), formatting, settings, true, f.rt);
+                                        fname = camelCase ? (f.n.charAt(0).toLowerCase() + f.n.substr(1)) : f.n,
+                                        hasIgnore = System.Attribute.getCustomAttributes(f, Newtonsoft.Json.JsonIgnoreAttribute).length > 0;
+
+                                    if (!hasIgnore) {
+                                        raw[fname] = Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.Reflection.fieldAccess(f, obj), formatting, settings, true, f.rt);
+                                    }                                    
                                 }
 
                                 var properties = Bridge.Reflection.getMembers(type, 16, 20);
 
                                 for (i = 0; i < properties.length; i++) {
-                                    var p = properties[i];
-                                    if (!!p.g) {
+                                    var p = properties[i],
+                                        hasIgnore = System.Attribute.getCustomAttributes(p, Newtonsoft.Json.JsonIgnoreAttribute).length > 0;
+                                    if (!!p.g && !hasIgnore) {
                                         var pname = camelCase ? (p.n.charAt(0).toLowerCase() + p.n.substr(1)) : p.n;
                                         raw[pname] = Newtonsoft.Json.JsonConvert.SerializeObject(Bridge.Reflection.midel(p.g, obj)(), formatting, settings, true, p.rt);
                                     }
