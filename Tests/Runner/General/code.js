@@ -1686,6 +1686,184 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * The test here consists in verifying whether a serialized IEnumerable
+     extension's elements values are deserialized back.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case68
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case68", {
+        statics: {
+            methods: {
+                /**
+                 * The test here should basically check if the serialized object has
+                 value on its properties once it is deserialized.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case68
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case68
+                 * @return  {void}
+                 */
+                TestCustomIEnumerable: function () {
+                    var $t;
+                    var o1 = new (Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case68.Test)).$ctor1(System.Array.init([new Newtonsoft.Json.Tests.Issues.Case68.Test("bla1")], Newtonsoft.Json.Tests.Issues.Case68.Test));
+                    var s = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(o1, s);
+                    var o2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case68.Test), s);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(1, System.Linq.Enumerable.from(o2).count(), "Number of elements retained over serialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla1", System.Linq.Enumerable.from(o2).first().Name, "First element's value retained over serialization.");
+
+                    o1 = new (Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case68.Test)).$ctor1(System.Array.init([new Newtonsoft.Json.Tests.Issues.Case68.Test("bla1"), new Newtonsoft.Json.Tests.Issues.Case68.Test("bla2")], Newtonsoft.Json.Tests.Issues.Case68.Test));
+                    json = Newtonsoft.Json.JsonConvert.SerializeObject(o1, s);
+                    o2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case68.Test), s);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(2, System.Linq.Enumerable.from(o2).count(), "Number of elements retained over serialization when there are two elements in the list.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla1", System.Linq.Enumerable.from(o2).first().Name, "First element's value retained over serialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla2", System.Linq.Enumerable.from(o2).skip(1).first().Name, "Second element's value retained over serialization.");
+                }
+            }
+        }
+    });
+
+    /**
+     * An extension to IEnumerable that will use the Test class above.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1
+     * @implements  System.Collections.Generic.IEnumerable$1
+     * @param   {Function}    [name]
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1", function (T) { return {
+        inherits: [System.Collections.Generic.IEnumerable$1(T)],
+        statics: {
+            fields: {
+                _empty: null
+            },
+            props: {
+                Empty: {
+                    get: function () {
+                        return Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1(T)._empty;
+                    }
+                }
+            },
+            ctors: {
+                init: function () {
+                    this._empty = new (Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1(T)).ctor(null);
+                }
+            }
+        },
+        fields: {
+            _headIfAny: null
+        },
+        alias: ["getEnumerator", ["System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(T) + "$getEnumerator", "System$Collections$Generic$IEnumerable$1$getEnumerator"]],
+        ctors: {
+            ctor: function (headIfAny) {
+                this.$initialize();
+                this._headIfAny = headIfAny;
+            },
+            $ctor1: function (values) {
+                var $t, $t1;
+                this.$initialize();
+                var node = null;
+                $t = Bridge.getEnumerator(System.Linq.Enumerable.from(values).reverse());
+                try {
+                    while ($t.moveNext()) {
+                        var value = $t.Current;
+                        node = ($t1 = new (Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1.Node(T))(), $t1.Count = ((((node == null) ? 0 : node.Count) + 1) | 0), $t1.Item = value, $t1.NextIfAny = node, $t1);
+                    }
+                } finally {
+                    if (Bridge.is($t, System.IDisposable)) {
+                        $t.System$IDisposable$dispose();
+                    }
+                }this._headIfAny = node;
+            }
+        },
+        methods: {
+            getEnumerator: function () {
+                var $step = 0,
+                    $jumpFromFinally,
+                    $returnValue,
+                    node,
+                    $async_e;
+
+                var $enumerator = new (Bridge.GeneratorEnumerator$1(T))(Bridge.fn.bind(this, function () {
+                    try {
+                        for (;;) {
+                            switch ($step) {
+                                case 0: {
+                                    node = this._headIfAny;
+                                    $step = 1;
+                                    continue;
+                                }
+                                case 1: {
+                                    if ( node != null ) {
+                                            $step = 2;
+                                            continue;
+                                        } 
+                                        $step = 4;
+                                        continue;
+                                }
+                                case 2: {
+                                    $enumerator.current = node.Item;
+                                        $step = 3;
+                                        return true;
+                                }
+                                case 3: {
+                                    node = node.NextIfAny;
+
+                                        $step = 1;
+                                        continue;
+                                }
+                                case 4: {
+
+                                }
+                                default: {
+                                    return false;
+                                }
+                            }
+                        }
+                    } catch($async_e1) {
+                        $async_e = System.Exception.create($async_e1);
+                        throw $async_e;
+                    }
+                }));
+                return $enumerator;
+            },
+            System$Collections$IEnumerable$getEnumerator: function () {
+                return this.getEnumerator();
+            }
+        }
+    }; });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1.Node", function (T) { return {
+        fields: {
+            Count: 0,
+            Item: Bridge.getDefaultValue(T),
+            NextIfAny: null
+        }
+    }; });
+
+    /**
+     * A test object implementing a 'string' property to check against.
+     *
+     * @private
+     * @class Newtonsoft.Json.Tests.Issues.Case68.Test
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case68.Test", {
+        props: {
+            Name: null
+        },
+        ctors: {
+            ctor: function (name) {
+                this.$initialize();
+                this.Name = name;
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8", {
         statics: {
             methods: {
