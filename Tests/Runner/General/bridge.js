@@ -1133,7 +1133,7 @@
         },
 
         isDate: function (obj) {
-            return Object.prototype.toString.call(obj) === "[object Date]";
+            return obj instanceof Date;
         },
 
         isNull: function (value) {
@@ -9784,22 +9784,23 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             },
 
             gt: function (a, b) {
-                return (System.DateTime.$is(a) && System.DateTime.$is(b)) ? (System.DateTime.getTicks(a) > System.DateTime.getTicks(b)) : false;
+                return (a != null && b != null) ? (System.DateTime.getTicks(a).gt(System.DateTime.getTicks(b))) : false;
             },
 
             gte: function (a, b) {
-                return (System.DateTime.$is(a) && System.DateTime.$is(b)) ? (System.DateTime.getTicks(a) >= System.DateTime.getTicks(b)) : false;
+                return (a != null && b != null) ? (System.DateTime.getTicks(a).gte(System.DateTime.getTicks(b))) : false;
             },
 
             lt: function (a, b) {
-                return (System.DateTime.$is(a) && System.DateTime.$is(b)) ? (System.DateTime.getTicks(a) < System.DateTime.getTicks(b)) : false;
+                return (a != null && b != null) ? (System.DateTime.getTicks(a).lt(System.DateTime.getTicks(b))) : false;
             },
 
             lte: function (a, b) {
-                return (System.DateTime.$is(a) && System.DateTime.$is(b)) ? (System.DateTime.getTicks(a) <= System.DateTime.getTicks(b)) : false;
+                return (a != null && b != null) ? (System.DateTime.getTicks(a).lte(System.DateTime.getTicks(b))) : false;
             }
         }
     });
+
     // @source TimeSpan.js
 
     Bridge.define("System.TimeSpan", {
@@ -35680,6 +35681,60 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
                     }
                     return System.Collections.HashHelpers.getPrime(newSize);
                 }
+            }
+        }
+    });
+
+    // @source browsableAttribute.js
+
+    Bridge.define("System.ComponentModel.BrowsableAttribute", {
+        inherits: [System.Attribute],
+        statics: {
+            fields: {
+                yes: null,
+                no: null,
+                default: null
+            },
+            ctors: {
+                init: function () {
+                    this.yes = new System.ComponentModel.BrowsableAttribute(true);
+                    this.no = new System.ComponentModel.BrowsableAttribute(false);
+                    this.default = System.ComponentModel.BrowsableAttribute.yes;
+                }
+            }
+        },
+        fields: {
+            browsable: false
+        },
+        props: {
+            Browsable: {
+                get: function () {
+                    return this.browsable;
+                }
+            }
+        },
+        ctors: {
+            init: function () {
+                this.browsable = true;
+            },
+            ctor: function (browsable) {
+                this.$initialize();
+                System.Attribute.ctor.call(this);
+                this.browsable = browsable;
+            }
+        },
+        methods: {
+            equals: function (obj) {
+                if (Bridge.referenceEquals(obj, this)) {
+                    return true;
+                }
+
+                var other = Bridge.as(obj, System.ComponentModel.BrowsableAttribute);
+
+                return (other != null) && other.Browsable === this.browsable;
+            },
+            getHashCode: function () {
+                return Bridge.getHashCode(this.browsable);
             }
         }
     });

@@ -693,7 +693,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             methods: {
                 TestTypeGenericSerialize: function (assert) {
                     var $t;
-                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case67).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case67, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestTypeGenericSerialize()", $t.Line = "89", $t));
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case67).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case67, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestTypeGenericSerialize()", $t.Line = "94", $t));
                     Newtonsoft.Json.Tests.Issues.Case67.TestTypeGenericSerialize();
                 }
             }

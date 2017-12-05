@@ -1688,7 +1688,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
     /**
      * The test here consists in verifying whether generic types are correctly
-     serialized when type name is serialized with the object.
+     serialized in different class and namespaces situations and when
+     System.Uri is used as generics' specialization.
      *
      * @public
      * @class Newtonsoft.Json.Tests.Issues.Case67
