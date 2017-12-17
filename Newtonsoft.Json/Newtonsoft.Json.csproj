@@ -48,6 +48,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Json\DefaultValueHandling.cs" />
+    <Compile Include="Json\JsonPropertyAttribute.cs" />
     <Compile Include="Json\JsonIgnoreAttribute.cs" />
     <Compile Include="Json\JsonException.cs" />
     <Compile Include="Json\JsonSerializationException.cs" />
@@ -55,6 +57,8 @@
     <Compile Include="Json\JsonConvert.cs" />
     <Compile Include="Json\NullValueHandling.cs" />
     <Compile Include="Json\JsonConstructorAttribute.cs" />
+    <Compile Include="Json\ObjectCreationHandling.cs" />
+    <Compile Include="Json\Required.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\.build\common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
