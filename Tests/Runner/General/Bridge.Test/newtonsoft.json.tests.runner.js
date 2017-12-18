@@ -747,12 +747,12 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             methods: {
                 TestJsonProperty: function (assert) {
                     var $t;
-                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case72).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case72, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestJsonProperty()", $t.Line = "61", $t));
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case72).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case72, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestJsonProperty()", $t.Line = "59", $t));
                     Newtonsoft.Json.Tests.Issues.Case72.TestJsonProperty();
                 },
                 TestJsonPropertyOrder: function (assert) {
                     var $t;
-                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case72).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case72, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestJsonPropertyOrder()", $t.Line = "74", $t));
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case72).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case72, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestJsonPropertyOrder()", $t.Line = "73", $t));
                     Newtonsoft.Json.Tests.Issues.Case72.TestJsonPropertyOrder();
                 },
                 TestJsonPropertyRequire: function (assert) {
@@ -762,7 +762,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
                 },
                 TestJsonPropertyNullValue: function (assert) {
                     var $t;
-                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case72).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case72, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestJsonPropertyNullValue()", $t.Line = "106", $t));
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case72).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case72, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestJsonPropertyNullValue()", $t.Line = "110", $t));
                     Newtonsoft.Json.Tests.Issues.Case72.TestJsonPropertyNullValue();
                 }
             }

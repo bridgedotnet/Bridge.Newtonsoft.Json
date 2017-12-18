@@ -57,7 +57,7 @@ namespace Newtonsoft.Json.Tests.Issues
             Assert.True((object)deserialized is Product, "Fresh JSON string deserializes to a Product obejct.");
             Assert.AreEqual("Apple", deserialized.Name, "Fresh JSON string correctly fills the object when deserialized back in.");
 
-            Assert.Null(deserialized.Sizes);
+            Assert.Null(deserialized.Sizes, "Ignored JSon property is ignored when deserializing.");
         }
     }
 }
