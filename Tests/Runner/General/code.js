@@ -1665,8 +1665,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.True(Bridge.is(deserialized, Newtonsoft.Json.Tests.Issues.Case63.Product), "Fresh JSON string deserializes to a Product obejct.");
                     Bridge.Test.NUnit.Assert.AreEqual("Apple", deserialized.Name, "Fresh JSON string correctly fills the object when deserialized back in.");
 
-                    // JsonIgnore only affects serialization -- not deserialization.
-                    Bridge.Test.NUnit.Assert.True(deserialized.Sizes != null && deserialized.Sizes.length === 3, "Ignored JSON property is serialized back in if provided within JSON string.");
+                    Bridge.Test.NUnit.Assert.Null(deserialized.Sizes, "Ignored JSon property is ignored when deserializing.");
                 }
             }
         }
@@ -1929,6 +1928,105 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 this.$initialize();
                 this.Name = name;
             }
+        }
+    });
+
+    /**
+     * This tests the JsonProperty attribute.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case72
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case72", {
+        statics: {
+            methods: {
+                TestJsonProperty: function () {
+                    var $t;
+                    var starcraft = ($t = new Newtonsoft.Json.Tests.Issues.Case72.Videogame(), $t.Name = "Starcraft", $t.ReleaseDate = System.DateTime.create(1998, 1, 1), $t);
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(starcraft);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"name\":\"Starcraft\",\"release_date\":\"1998-01-01T00:00:00\"}", json, "Specified property names reflected in serialized string.");
+                },
+                TestJsonPropertyOrder: function () {
+                    var $t;
+                    var account = ($t = new Newtonsoft.Json.Tests.Issues.Case72.Account(), $t.FullName = "Aaron Account", $t.EmailAddress = "aaron@example.com", $t.Deleted = true, $t.DeletedDate = System.DateTime.create(2013, 1, 25), $t);
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(account);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"FullName\":\"Aaron Account\",\"EmailAddress\":\"aaron@example.com\",\"Deleted\":true,\"DeletedDate\":\"2013-01-25T00:00:00\"}", json, "Specified order is followed in output json.");
+                },
+                TestJsonPropertyRequire: function () {
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonSerializationException, $asm.$.Newtonsoft.Json.Tests.Issues.Case72.f1, "Exception thrown if none of the required property is absent.");
+
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonSerializationException, $asm.$.Newtonsoft.Json.Tests.Issues.Case72.f2, "Exception thrown if Required.Always property is absent and allowNull property is present.");
+
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonSerializationException, $asm.$.Newtonsoft.Json.Tests.Issues.Case72.f3, "Exception thrown if Required.Always required property is null.");
+
+                    var game = Newtonsoft.Json.JsonConvert.DeserializeObject("{\"Name\": \"Starcraft III\",\"ReleaseDate\": null}", Newtonsoft.Json.Tests.Issues.Case72.Videogame2);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("Starcraft III", game.Name, "Required property deserialized correctly.");
+                    Bridge.Test.NUnit.Assert.Null(game.ReleaseDate, "Required.AllowNull deserialized as null when so specified.");
+                },
+                TestJsonPropertyNullValue: function () {
+                    var $t;
+                    Bridge.Test.NUnit.Assert.AreEqual("{}", Newtonsoft.Json.JsonConvert.SerializeObject(new Newtonsoft.Json.Tests.Issues.Case72.Vessel()));
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Name\":\"vessel\"}", Newtonsoft.Json.JsonConvert.SerializeObject(($t = new Newtonsoft.Json.Tests.Issues.Case72.Vessel(), $t.Name = "vessel", $t)));
+                }
+            }
+        }
+    });
+
+    Bridge.ns("Newtonsoft.Json.Tests.Issues.Case72", $asm.$);
+
+    Bridge.apply($asm.$.Newtonsoft.Json.Tests.Issues.Case72, {
+        f1: function () {
+            var game1 = Newtonsoft.Json.JsonConvert.DeserializeObject("{}", Newtonsoft.Json.Tests.Issues.Case72.Videogame2);
+        },
+        f2: function () {
+            var game2 = Newtonsoft.Json.JsonConvert.DeserializeObject("{\"ReleaseDate\": null}", Newtonsoft.Json.Tests.Issues.Case72.Videogame2);
+        },
+        f3: function () {
+            var game3 = Newtonsoft.Json.JsonConvert.DeserializeObject("{\"Name\": null,\"ReleaseDate\": null}", Newtonsoft.Json.Tests.Issues.Case72.Videogame2);
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case72.Account", {
+        props: {
+            EmailAddress: null,
+            Deleted: false,
+            DeletedDate: null,
+            FullName: null
+        },
+        ctors: {
+            init: function () {
+                this.DeletedDate = System.DateTime.getDefaultValue();
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case72.Vessel", {
+        props: {
+            Name: null,
+            Class: null,
+            LaunchDate: null
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case72.Videogame", {
+        props: {
+            Name: null,
+            ReleaseDate: null
+        },
+        ctors: {
+            init: function () {
+                this.ReleaseDate = System.DateTime.getDefaultValue();
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case72.Videogame2", {
+        props: {
+            Name: null,
+            ReleaseDate: null
         }
     });
 

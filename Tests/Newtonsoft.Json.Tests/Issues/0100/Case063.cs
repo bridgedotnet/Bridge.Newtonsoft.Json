@@ -57,8 +57,7 @@ namespace Newtonsoft.Json.Tests.Issues
             Assert.True((object)deserialized is Product, "Fresh JSON string deserializes to a Product obejct.");
             Assert.AreEqual("Apple", deserialized.Name, "Fresh JSON string correctly fills the object when deserialized back in.");
 
-            // JsonIgnore only affects serialization -- not deserialization.
-            Assert.True(deserialized.Sizes != null && deserialized.Sizes.Length == 3, "Ignored JSON property is serialized back in if provided within JSON string.");
+            Assert.Null(deserialized.Sizes, "Ignored JSon property is ignored when deserializing.");
         }
     }
 }

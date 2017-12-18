@@ -9,9 +9,10 @@ namespace Newtonsoft.Json
     {
         internal const NullValueHandling DefaultNullValueHandling = NullValueHandling.Include;
         internal const TypeNameHandling DefaultTypeNameHandling = TypeNameHandling.None;
-
+        internal DefaultValueHandling? _defaultValueHandling;
         internal TypeNameHandling? _typeNameHandling;
         internal NullValueHandling? _nullValueHandling;
+        internal ObjectCreationHandling? _objectCreationHandling;
 
         /// <summary>
         /// Gets or sets how null values are handled during serialization and deserialization.
@@ -27,6 +28,22 @@ namespace Newtonsoft.Json
             {
                 _nullValueHandling = value;
             }
+        }
+
+        public ObjectCreationHandling ObjectCreationHandling
+        {
+            get { return _objectCreationHandling ?? default(ObjectCreationHandling); }
+            set { _objectCreationHandling = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the default value handling used when serializing a property.
+        /// </summary>
+        /// <value>The default value handling.</value>
+        public DefaultValueHandling DefaultValueHandling
+        {
+            get { return _defaultValueHandling ?? default(DefaultValueHandling); }
+            set { _defaultValueHandling = value; }
         }
 
         /// <summary>
