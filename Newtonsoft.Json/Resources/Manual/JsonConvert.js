@@ -417,8 +417,14 @@
                                 enm = Bridge.getEnumerator(obj);
 
                             while (enm.moveNext()) {
-                                var entr = enm.Current;
-                                dict[Newtonsoft.Json.JsonConvert.SerializeObject(entr.key, formatting, settings, true, typeKey)] = Newtonsoft.Json.JsonConvert.SerializeObject(entr.value, formatting, settings, true, typeValue);
+                                var entr = enm.Current,
+                                    keyJson = Newtonsoft.Json.JsonConvert.SerializeObject(entr.key, formatting, settings, true, typeKey);
+
+                                if (typeof keyJson === 'object') {
+                                    keyJson = entr.key.toString();
+                                }
+
+                                dict[keyJson] = Newtonsoft.Json.JsonConvert.SerializeObject(entr.value, formatting, settings, true, typeValue);
                             }
 
                             obj = dict;
