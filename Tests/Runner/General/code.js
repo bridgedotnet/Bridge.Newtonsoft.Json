@@ -2051,10 +2051,16 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     listingLevelNames.add(key, "None");
 
                     Bridge.Test.NUnit.Assert.AreEqual("{\"Value\":1}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.Newtonsoft.Json.Tests.Issues.Case74.MyKey, key, false), "Object serialized correctly.");
-                    Bridge.Test.NUnit.Assert.AreEqual("{\"1\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String), listingLevelNames, false), "Dictionary serialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"1\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String), listingLevelNames, false), "Custom dictionary serialized correctly.");
 
-                    Bridge.Test.NUnit.Assert.AreEqual("{\"$type\":\"Demo.MyKey, Demo\",\"Value\":1}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.Newtonsoft.Json.Tests.Issues.Case74.MyKey, key, true), "Object serialized correctly (detailed).");
-                    Bridge.Test.NUnit.Assert.AreEqual("{\"$type\":\"System.Collections.Generic.Dictionary`2[[JsonTest.MyKey, JsonTest],[System.String, mscorlib]], mscorlib\",\"1\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String), listingLevelNames, true), "Dictionary serialized correctly (detailed).");
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case74+MyKey, Newtonsoft.Json.Tests\",\"Value\":1}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.Newtonsoft.Json.Tests.Issues.Case74.MyKey, key, true), "Object serialized correctly (detailed).");
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"$type\":\"System.Collections.Generic.Dictionary`2[[Newtonsoft.Json.Tests.Issues.Case74+MyKey, Newtonsoft.Json.Tests],[System.String, mscorlib]], mscorlib\",\"1\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String), listingLevelNames, true), "Custom dictionary serialized correctly (detailed).");
+
+                    var dict = new (System.Collections.Generic.Dictionary$2(System.Int32,System.String))();
+                    dict.add(5, "five");
+
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"5\":\"five\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(System.Int32,System.String), dict, false), "Basic dictionary serialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.String, mscorlib]], mscorlib\",\"5\":\"five\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(System.Int32,System.String), dict, true), "Basic dictionary serialized correctly (detailed).");
                 }
             }
         }

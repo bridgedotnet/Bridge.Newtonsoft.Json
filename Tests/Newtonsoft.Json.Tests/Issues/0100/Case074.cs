@@ -48,10 +48,16 @@ namespace Newtonsoft.Json.Tests.Issues
             listingLevelNames.Add(key, "None");
 
             Assert.AreEqual("{\"Value\":1}", Serialize(key, false), "Object serialized correctly.");
-            Assert.AreEqual("{\"1\":\"None\"}", Serialize(listingLevelNames, false), "Dictionary serialized correctly.");
+            Assert.AreEqual("{\"1\":\"None\"}", Serialize(listingLevelNames, false), "Custom dictionary serialized correctly.");
 
-            Assert.AreEqual("{\"$type\":\"Demo.MyKey, Demo\",\"Value\":1}", Serialize(key, true), "Object serialized correctly (detailed).");
-            Assert.AreEqual("{\"$type\":\"System.Collections.Generic.Dictionary`2[[JsonTest.MyKey, JsonTest],[System.String, mscorlib]], mscorlib\",\"1\":\"None\"}", Serialize(listingLevelNames, true), "Dictionary serialized correctly (detailed).");
+            Assert.AreEqual("{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case74+MyKey, Newtonsoft.Json.Tests\",\"Value\":1}", Serialize(key, true), "Object serialized correctly (detailed).");
+            Assert.AreEqual("{\"$type\":\"System.Collections.Generic.Dictionary`2[[Newtonsoft.Json.Tests.Issues.Case74+MyKey, Newtonsoft.Json.Tests],[System.String, mscorlib]], mscorlib\",\"1\":\"None\"}", Serialize(listingLevelNames, true), "Custom dictionary serialized correctly (detailed).");
+
+            var dict = new Dictionary<int, string>();
+            dict.Add(5, "five");
+
+            Assert.AreEqual("{\"5\":\"five\"}", Serialize(dict, false), "Basic dictionary serialized correctly.");
+            Assert.AreEqual("{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.String, mscorlib]], mscorlib\",\"5\":\"five\"}", Serialize(dict, true), "Basic dictionary serialized correctly (detailed).");
         }
     }
 }
