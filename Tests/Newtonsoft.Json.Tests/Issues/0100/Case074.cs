@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Newtonsoft.Json.Tests.Issues
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Category("Issues")]
     [TestFixture(TestNameFormat = "#74 - {0}")]
     public class Case74
@@ -25,9 +28,16 @@ namespace Newtonsoft.Json.Tests.Issues
             public override string ToString() => Value.ToString();
         }
 
-        public static string Serialise<T>(T thing)
+        public static string Serialize<T>(T thing, bool alt)
         {
-            return JsonConvert.SerializeObject(thing);
+            if (alt)
+            {
+                return JsonConvert.SerializeObject(thing, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(thing);
+            }
         }
 
         [Test]
@@ -37,11 +47,11 @@ namespace Newtonsoft.Json.Tests.Issues
             var listingLevelNames = new Dictionary<MyKey, string>();
             listingLevelNames.Add(key, "None");
 
-            var serialisedKey = Serialise(key);
-            var serialisedDictionary = Serialise(listingLevelNames);
+            Assert.AreEqual("{\"Value\":1}", Serialize(key, false), "Object serialized correctly.");
+            Assert.AreEqual("{\"1\":\"None\"}", Serialize(listingLevelNames, false), "Dictionary serialized correctly.");
 
-            Assert.AreEqual("{\"Value\":1}", serialisedKey);
-            Assert.AreEqual("{\"1\":\"None\"}", serialisedDictionary);
+            Assert.AreEqual("{\"$type\":\"Demo.MyKey, Demo\",\"Value\":1}", Serialize(key, true), "Object serialized correctly (detailed).");
+            Assert.AreEqual("{\"$type\":\"System.Collections.Generic.Dictionary`2[[JsonTest.MyKey, JsonTest],[System.String, mscorlib]], mscorlib\",\"1\":\"None\"}", Serialize(listingLevelNames, true), "Dictionary serialized correctly (detailed).");
         }
     }
 }
