@@ -1955,7 +1955,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual("{\"FullName\":\"Aaron Account\",\"EmailAddress\":\"aaron@example.com\",\"Deleted\":true,\"DeletedDate\":\"2013-01-25T00:00:00\"}", json, "Specified order is followed in output json.");
                 },
                 TestJsonPropertyRequire: function () {
-                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonSerializationException, $asm.$.Newtonsoft.Json.Tests.Issues.Case72.f1, "Exception thrown if none of the required property is absent.");
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonSerializationException, $asm.$.Newtonsoft.Json.Tests.Issues.Case72.f1, "Exception thrown if none of the required properties are present.");
 
                     Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonSerializationException, $asm.$.Newtonsoft.Json.Tests.Issues.Case72.f2, "Exception thrown if Required.Always property is absent and allowNull property is present.");
 
@@ -1968,8 +1968,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 },
                 TestJsonPropertyNullValue: function () {
                     var $t;
-                    Bridge.Test.NUnit.Assert.AreEqual("{}", Newtonsoft.Json.JsonConvert.SerializeObject(new Newtonsoft.Json.Tests.Issues.Case72.Vessel()));
-                    Bridge.Test.NUnit.Assert.AreEqual("{\"Name\":\"vessel\"}", Newtonsoft.Json.JsonConvert.SerializeObject(($t = new Newtonsoft.Json.Tests.Issues.Case72.Vessel(), $t.Name = "vessel", $t)));
+                    Bridge.Test.NUnit.Assert.AreEqual("{}", Newtonsoft.Json.JsonConvert.SerializeObject(new Newtonsoft.Json.Tests.Issues.Case72.Vessel()), "Empty json object matches serialized new/default.");
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Name\":\"vessel\"}", Newtonsoft.Json.JsonConvert.SerializeObject(($t = new Newtonsoft.Json.Tests.Issues.Case72.Vessel(), $t.Name = "vessel", $t)), "Json object properties' representation matches serialized object with initializers.");
                 }
             }
         }
@@ -2027,6 +2027,83 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         props: {
             Name: null,
             ReleaseDate: null
+        }
+    });
+
+    /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case74
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case74", {
+        statics: {
+            methods: {
+                Serialize: function (T, thing, alt) {
+                    var $t;
+                    if (alt) {
+                        return Newtonsoft.Json.JsonConvert.SerializeObject(thing, ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t));
+                    } else {
+                        return Newtonsoft.Json.JsonConvert.SerializeObject(thing);
+                    }
+                },
+                TestCustomDictionaryKey: function () {
+                    var key = new Newtonsoft.Json.Tests.Issues.Case74.MyKey.$ctor1(1);
+                    var listingLevelNames = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String))();
+                    listingLevelNames.add(key, "None");
+
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Value\":1}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.Newtonsoft.Json.Tests.Issues.Case74.MyKey, key, false), "Object serialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"1\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String), listingLevelNames, false), "Custom dictionary serialized correctly.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case74.MyKey", {
+        inherits: function () { return [System.IEquatable$1(Newtonsoft.Json.Tests.Issues.Case74.MyKey)]; },
+        $kind: "struct",
+        statics: {
+            methods: {
+                op_Explicit$1: function (value) {
+                    return value.Value;
+                },
+                op_Explicit: function (value) {
+                    return new Newtonsoft.Json.Tests.Issues.Case74.MyKey.$ctor1(value);
+                },
+                op_Equality: function (a, b) {
+                    return a.Value === b.Value;
+                },
+                op_Inequality: function (a, b) {
+                    return a.Value !== b.Value;
+                },
+                getDefaultValue: function () { return new Newtonsoft.Json.Tests.Issues.Case74.MyKey(); }
+            }
+        },
+        props: {
+            Value: 0
+        },
+        alias: ["equalsT", "System$IEquatable$1$Newtonsoft$Json$Tests$Issues$Case74$MyKey$equalsT"],
+        ctors: {
+            $ctor1: function (value) {
+                this.$initialize();
+                this.Value = value;
+            },
+            ctor: function () {
+                this.$initialize();
+            }
+        },
+        methods: {
+            equalsT: function (o) {
+                return this.Value === o.Value;
+            },
+            equals: function (o) {
+                return Bridge.is(o, Newtonsoft.Json.Tests.Issues.Case74.MyKey) && this.equalsT(System.Nullable.getValue(Bridge.cast(Bridge.unbox(o), Newtonsoft.Json.Tests.Issues.Case74.MyKey)));
+            },
+            getHashCode: function () {
+                return Bridge.getHashCode(this.Value);
+            },
+            toString: function () {
+                return this.Value.toString();
+            },
+            $clone: function (to) { return this; }
         }
     });
 
