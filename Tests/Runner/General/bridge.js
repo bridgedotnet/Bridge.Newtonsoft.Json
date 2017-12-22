@@ -1,5 +1,5 @@
 /**
- * @version   : 16.5.0 - Bridge.NET
+ * @version   : 16.6.0 - Bridge.NET
  * @author    : Object.NET, Inc. http://bridge.net/
  * @copyright : Copyright 2008-2017 Object.NET, Inc. http://object.net/
  * @license   : See license.txt and https://github.com/bridgedotnet/Bridge/blob/master/LICENSE.md
@@ -483,7 +483,10 @@
             if (typeof Bridge.global.jQuery !== "undefined") {
                 Bridge.global.jQuery(delayfn);
             } else {
-                if (typeof Bridge.global.document === "undefined" || Bridge.global.document.readyState === "complete" || Bridge.global.document.readyState === "loaded") {
+                if (typeof Bridge.global.document === "undefined" ||
+                    Bridge.global.document.readyState === "complete" ||
+                    Bridge.global.document.readyState === "loaded" ||
+                    Bridge.global.document.readyState === "interactive") {
                     delayfn();
                 } else {
                     Bridge.on("DOMContentLoaded", Bridge.global.document, delayfn);
@@ -1133,7 +1136,7 @@
         },
 
         isDate: function (obj) {
-            return Object.prototype.toString.call(obj) === "[object Date]";
+            return obj instanceof Date;
         },
 
         isNull: function (value) {
@@ -1185,45 +1188,58 @@
                 return true;
             }
 
-            if (a && a.$boxed && a.type.equals && a.type.equals.length === 2) {
-                return a.type.equals(a, b);
+            var guardItem = Bridge.$equalsGuard[Bridge.$equalsGuard.length - 1];
+            if (guardItem && guardItem.a === a && guardItem.b === b) {
+                return a === b;
             }
 
-            if (b && b.$boxed && b.type.equals && b.type.equals.length === 2) {
-                return b.type.equals(b, a);
-            }
+            Bridge.$equalsGuard.push({a: a, b: b});
 
-            if (a && Bridge.isFunction(a.equals) && a.equals.length === 1) {
-                return a.equals(b);
-            }
-
-            if (b && Bridge.isFunction(b.equals) && b.equals.length === 1) {
-                return b.equals(a);
-            } if (Bridge.isFunction(a) && Bridge.isFunction(b)) {
-                return Bridge.fn.equals.call(a, b);
-            } else if (Bridge.isDate(a) && Bridge.isDate(b)) {
-                if (a.kind !== undefined && a.ticks !== undefined && b.kind !== undefined && b.ticks !== undefined) {
-                    return a.ticks.equals(b.ticks);
+            var fn = function (a, b) {
+                if (a && a.$boxed && a.type.equals && a.type.equals.length === 2) {
+                    return a.type.equals(a, b);
                 }
 
-                return a.valueOf() === b.valueOf();
-            } else if (Bridge.isNull(a) && Bridge.isNull(b)) {
-                return true;
-            } else if (Bridge.isNull(a) !== Bridge.isNull(b)) {
-                return false;
-            }
+                if (b && b.$boxed && b.type.equals && b.type.equals.length === 2) {
+                    return b.type.equals(b, a);
+                }
 
-            var eq = a === b;
+                if (a && Bridge.isFunction(a.equals) && a.equals.length === 1) {
+                    return a.equals(b);
+                }
 
-            if (!eq && typeof a === "object" && typeof b === "object" && a !== null && b !== null && a.$kind === "struct" && b.$kind === "struct" && a.$$name === b.$$name) {
-                return Bridge.getHashCode(a) === Bridge.getHashCode(b) && Bridge.objectEquals(a, b);
-            }
+                if (b && Bridge.isFunction(b.equals) && b.equals.length === 1) {
+                    return b.equals(a);
+                } if (Bridge.isFunction(a) && Bridge.isFunction(b)) {
+                    return Bridge.fn.equals.call(a, b);
+                } else if (Bridge.isDate(a) && Bridge.isDate(b)) {
+                    if (a.kind !== undefined && a.ticks !== undefined && b.kind !== undefined && b.ticks !== undefined) {
+                        return a.ticks.equals(b.ticks);
+                    }
 
-            if (!eq && a && b && a.hasOwnProperty("item1") && Bridge.isPlainObject(a) && b.hasOwnProperty("item1") && Bridge.isPlainObject(b)) {
-                return Bridge.objectEquals(a, b);
-            }
+                    return a.valueOf() === b.valueOf();
+                } else if (Bridge.isNull(a) && Bridge.isNull(b)) {
+                    return true;
+                } else if (Bridge.isNull(a) !== Bridge.isNull(b)) {
+                    return false;
+                }
 
-            return eq;
+                var eq = a === b;
+
+                if (!eq && typeof a === "object" && typeof b === "object" && a !== null && b !== null && a.$kind === "struct" && b.$kind === "struct" && a.$$name === b.$$name) {
+                    return Bridge.getHashCode(a) === Bridge.getHashCode(b) && Bridge.objectEquals(a, b);
+                }
+
+                if (!eq && a && b && a.hasOwnProperty("item1") && Bridge.isPlainObject(a) && b.hasOwnProperty("item1") && Bridge.isPlainObject(b)) {
+                    return Bridge.objectEquals(a, b);
+                }
+
+                return eq;
+            };            
+
+            var result = fn(a, b);
+            Bridge.$equalsGuard.pop();
+            return result;
         },
 
         objectEquals: function (a, b) {
@@ -1863,6 +1879,7 @@
 
     globals.Bridge = core;
     globals.Bridge.caller = [];
+    globals.Bridge.$equalsGuard = [];
 
     if (globals.console) {
         globals.Bridge.Console = globals.console;
@@ -3019,7 +3036,7 @@
 
     // @source ReflectionAssembly.js
 
-    Bridge.assembly = function (assemblyName, res, callback) {
+    Bridge.assembly = function (assemblyName, res, callback, restore) {
         if (!callback) {
             callback = res;
             res = {};
@@ -3035,6 +3052,7 @@
             Bridge.apply(asm.res, res || {});
         }
 
+        var oldAssembly = Bridge.$currentAssembly;
         Bridge.$currentAssembly = asm;
 
         if (callback) {
@@ -3047,6 +3065,10 @@
         }
 
         Bridge.init();
+
+        if (restore) {
+            Bridge.$currentAssembly = oldAssembly;
+        }
     };
 
     Bridge.define("System.Reflection.Assembly", {
@@ -3101,13 +3123,13 @@
         },
 
         getCustomAttributes: function (attributeType) {
-            if (attributeType && !Bridge.isBoolean(attributeType)) {
+            if (this.attr && attributeType && !Bridge.isBoolean(attributeType)) {
                 return this.attr.filter(function (a) {
                     return Bridge.is(a, attributeType);
                 });
             }
 
-            return this.attr;
+            return this.attr || [];
         }
     });
 
@@ -3129,8 +3151,8 @@
     // @source systemAssemblyVersion.js
 
     Bridge.init(function () {
-        Bridge.SystemAssembly.version = "16.5.0";
-        Bridge.SystemAssembly.compiler = "16.5.0";
+        Bridge.SystemAssembly.version = "16.6.0";
+        Bridge.SystemAssembly.compiler = "16.6.0";
     });
 
     Bridge.define("Bridge.Utils.SystemAssemblyVersion");
@@ -8234,7 +8256,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
     };
 
     System.Decimal.prototype.equals = function (v) {
-        if (v instanceof System.Decimal) {
+        if (v instanceof System.Decimal || typeof v === "number") {
             return !this.compareTo(v);
         }
 
@@ -9779,22 +9801,23 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             },
 
             gt: function (a, b) {
-                return (System.DateTime.$is(a) && System.DateTime.$is(b)) ? (System.DateTime.getTicks(a) > System.DateTime.getTicks(b)) : false;
+                return (a != null && b != null) ? (System.DateTime.getTicks(a).gt(System.DateTime.getTicks(b))) : false;
             },
 
             gte: function (a, b) {
-                return (System.DateTime.$is(a) && System.DateTime.$is(b)) ? (System.DateTime.getTicks(a) >= System.DateTime.getTicks(b)) : false;
+                return (a != null && b != null) ? (System.DateTime.getTicks(a).gte(System.DateTime.getTicks(b))) : false;
             },
 
             lt: function (a, b) {
-                return (System.DateTime.$is(a) && System.DateTime.$is(b)) ? (System.DateTime.getTicks(a) < System.DateTime.getTicks(b)) : false;
+                return (a != null && b != null) ? (System.DateTime.getTicks(a).lt(System.DateTime.getTicks(b))) : false;
             },
 
             lte: function (a, b) {
-                return (System.DateTime.$is(a) && System.DateTime.$is(b)) ? (System.DateTime.getTicks(a) <= System.DateTime.getTicks(b)) : false;
+                return (a != null && b != null) ? (System.DateTime.getTicks(a).lte(System.DateTime.getTicks(b))) : false;
             }
         }
     });
+
     // @source TimeSpan.js
 
     Bridge.define("System.TimeSpan", {
@@ -17554,20 +17577,24 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
 
     // @source Uri.js
 
-    Bridge.define("System.Uri", {
-        ctor: function (uriString) {
-            this.$initialize();
-            this.absoluteUri = uriString;
-        },
+Bridge.assembly("System", {}, function ($asm, globals) {
+        "use strict";
 
-        getAbsoluteUri: function () {
-            return this.absoluteUri;
-        },
+        Bridge.define("System.Uri", {
+            ctor: function (uriString) {
+                this.$initialize();
+                this.absoluteUri = uriString;
+            },
 
-        toJSON: function () {
-            return this.absoluteUri;
-        }
-    });
+            getAbsoluteUri: function () {
+                return this.absoluteUri;
+            },
+
+            toJSON: function () {
+                return this.absoluteUri;
+            }
+        });
+    }, true);
 
     // @source Generator.js
 
@@ -22684,7 +22711,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
 Bridge.define("System.Text.RegularExpressions.RegexParser", {
     statics: {
         _Q: 5, // quantifier
-        _S: 4, // ordinary stoppper
+        _S: 4, // ordinary stopper
         _Z: 3, // ScanBlank stopper
         _X: 2, // whitespace
         _E: 1, // should be escaped
@@ -35671,6 +35698,107 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
                     }
                     return System.Collections.HashHelpers.getPrime(newSize);
                 }
+            }
+        }
+    });
+
+    // @source browsableAttribute.js
+
+    Bridge.define("System.ComponentModel.BrowsableAttribute", {
+        inherits: [System.Attribute],
+        statics: {
+            fields: {
+                yes: null,
+                no: null,
+                default: null
+            },
+            ctors: {
+                init: function () {
+                    this.yes = new System.ComponentModel.BrowsableAttribute(true);
+                    this.no = new System.ComponentModel.BrowsableAttribute(false);
+                    this.default = System.ComponentModel.BrowsableAttribute.yes;
+                }
+            }
+        },
+        fields: {
+            browsable: false
+        },
+        props: {
+            Browsable: {
+                get: function () {
+                    return this.browsable;
+                }
+            }
+        },
+        ctors: {
+            init: function () {
+                this.browsable = true;
+            },
+            ctor: function (browsable) {
+                this.$initialize();
+                System.Attribute.ctor.call(this);
+                this.browsable = browsable;
+            }
+        },
+        methods: {
+            equals: function (obj) {
+                if (Bridge.referenceEquals(obj, this)) {
+                    return true;
+                }
+
+                var other = Bridge.as(obj, System.ComponentModel.BrowsableAttribute);
+
+                return (other != null) && other.Browsable === this.browsable;
+            },
+            getHashCode: function () {
+                return Bridge.getHashCode(this.browsable);
+            }
+        }
+    });
+
+    // @source defaultValueAttribute.js
+
+    Bridge.define("System.ComponentModel.DefaultValueAttribute", {
+        inherits: [System.Attribute],
+        fields: {
+            value: null
+        },
+        props: {
+            Value: {
+                get: function () {
+                    return this.value;
+                }
+            }
+        },
+        ctors: {
+            ctor: function (value) {
+                this.$initialize();
+                System.Attribute.ctor.call(this);
+                this.value = value;
+            }
+        },
+        methods: {
+            equals: function (obj) {
+                if (Bridge.referenceEquals(obj, this)) {
+                    return true;
+                }
+
+                var other = Bridge.as(obj, System.ComponentModel.DefaultValueAttribute);
+
+                if (other != null) {
+                    if (this.Value != null) {
+                        return Bridge.equals(this.Value, other.Value);
+                    } else {
+                        return (other.Value == null);
+                    }
+                }
+                return false;
+            },
+            getHashCode: function () {
+                return Bridge.getHashCode(this);
+            },
+            setValue: function (value) {
+                this.value = value;
             }
         }
     });

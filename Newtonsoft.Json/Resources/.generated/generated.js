@@ -1,3 +1,16 @@
+    Bridge.define("Newtonsoft.Json.DefaultValueHandling", {
+        $kind: "enum",
+        statics: {
+            fields: {
+                Include: 0,
+                Ignore: 1,
+                Populate: 2,
+                IgnoreAndPopulate: 3
+            }
+        },
+        $flags: true
+    });
+
     Bridge.define("Newtonsoft.Json.Formatting", {
         $kind: "enum",
         statics: {
@@ -30,6 +43,90 @@
         }
     });
 
+    Bridge.define("Newtonsoft.Json.JsonIgnoreAttribute", {
+        inherits: [System.Attribute]
+    });
+
+    Bridge.define("Newtonsoft.Json.JsonPropertyAttribute", {
+        inherits: [System.Attribute],
+        fields: {
+            _nullValueHandling: null,
+            _defaultValueHandling: null,
+            _objectCreationHandling: null,
+            _typeNameHandling: null,
+            _required: null,
+            _order: null
+        },
+        props: {
+            NullValueHandling: {
+                get: function () {
+                    var $t;
+                    return ($t = this._nullValueHandling, $t != null ? $t : 0);
+                },
+                set: function (value) {
+                    this._nullValueHandling = value;
+                }
+            },
+            DefaultValueHandling: {
+                get: function () {
+                    var $t;
+                    return ($t = this._defaultValueHandling, $t != null ? $t : 0);
+                },
+                set: function (value) {
+                    this._defaultValueHandling = value;
+                }
+            },
+            ObjectCreationHandling: {
+                get: function () {
+                    var $t;
+                    return ($t = this._objectCreationHandling, $t != null ? $t : 0);
+                },
+                set: function (value) {
+                    this._objectCreationHandling = value;
+                }
+            },
+            TypeNameHandling: {
+                get: function () {
+                    var $t;
+                    return ($t = this._typeNameHandling, $t != null ? $t : 0);
+                },
+                set: function (value) {
+                    this._typeNameHandling = value;
+                }
+            },
+            Required: {
+                get: function () {
+                    var $t;
+                    return ($t = this._required, $t != null ? $t : Newtonsoft.Json.Required.Default);
+                },
+                set: function (value) {
+                    this._required = value;
+                }
+            },
+            Order: {
+                get: function () {
+                    var $t;
+                    return ($t = this._order, $t != null ? $t : Bridge.getDefaultValue(System.Int32));
+                },
+                set: function (value) {
+                    this._order = value;
+                }
+            },
+            PropertyName: null
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                System.Attribute.ctor.call(this);
+            },
+            $ctor1: function (propertyName) {
+                this.$initialize();
+                System.Attribute.ctor.call(this);
+                this.PropertyName = propertyName;
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.JsonSerializerSettings", {
         statics: {
             fields: {
@@ -44,8 +141,10 @@
             }
         },
         fields: {
+            _defaultValueHandling: null,
             _typeNameHandling: null,
-            _nullValueHandling: null
+            _nullValueHandling: null,
+            _objectCreationHandling: null
         },
         props: {
             NullValueHandling: {
@@ -55,6 +154,24 @@
                 },
                 set: function (value) {
                     this._nullValueHandling = value;
+                }
+            },
+            ObjectCreationHandling: {
+                get: function () {
+                    var $t;
+                    return ($t = this._objectCreationHandling, $t != null ? $t : 0);
+                },
+                set: function (value) {
+                    this._objectCreationHandling = value;
+                }
+            },
+            DefaultValueHandling: {
+                get: function () {
+                    var $t;
+                    return ($t = this._defaultValueHandling, $t != null ? $t : 0);
+                },
+                set: function (value) {
+                    this._defaultValueHandling = value;
                 }
             },
             TypeNameHandling: {
@@ -76,6 +193,29 @@
             fields: {
                 Include: 0,
                 Ignore: 1
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.ObjectCreationHandling", {
+        $kind: "enum",
+        statics: {
+            fields: {
+                Auto: 0,
+                Reuse: 1,
+                Replace: 2
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Required", {
+        $kind: "enum",
+        statics: {
+            fields: {
+                Default: 0,
+                AllowNull: 1,
+                Always: 2,
+                DisallowNull: 3
             }
         }
     });
@@ -103,8 +243,8 @@
             },
             ctors: {
                 init: function () {
-                    this.version = "1.3.0";
-                    this.compiler = "16.5.0";
+                    this.version = "1.4.0";
+                    this.compiler = "16.6.0";
                 }
             }
         }
