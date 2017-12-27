@@ -827,7 +827,11 @@
                         } else if (type === System.Guid) {
                             return System.Guid.parse(raw);
                         } else if (type === System.Boolean) {
-                            return raw !== "";
+                            var parsed = { v: false };
+                            if (!System.String.isNullOrWhiteSpace(raw) && System.Boolean.tryParse(raw, parsed)) {
+                                return parsed.v;
+                            }
+                            return false;
                         } else if (type === System.SByte) {
                             return raw | 0;
                         } else if (type === System.Byte) {
