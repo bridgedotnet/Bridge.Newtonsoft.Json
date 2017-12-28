@@ -2107,6 +2107,47 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * This test consists in verifying the serialization of a string
+     representing true/false into a boolean accordingly.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case79
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case79", {
+        statics: {
+            methods: {
+                /**
+                 * The test will just manually create the serialized version of the 
+                 object and deserialize it, then verifying if the expected value
+                 is inferred.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case79
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case79
+                 * @return  {void}
+                 */
+                TestCustomDictionaryKey: function () {
+                    var serializedStringFalse = "{\"IsItReal\":\"false\"}";
+                    var serializedStringTrue = "{\"IsItReal\":\"true\"}";
+                    var deserializeFalse = Newtonsoft.Json.JsonConvert.DeserializeObject(serializedStringFalse, Newtonsoft.Json.Tests.Issues.Case79.SuperClass);
+
+                    var deserializeTrue = Newtonsoft.Json.JsonConvert.DeserializeObject(serializedStringTrue, Newtonsoft.Json.Tests.Issues.Case79.SuperClass);
+
+                    Bridge.Test.NUnit.Assert.False(deserializeFalse.IsItReal, "The \"false\" string is deserialized as boolean false.");
+                    Bridge.Test.NUnit.Assert.True(deserializeTrue.IsItReal, "The \"true\" string is deserialized as boolean true.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case79.SuperClass", {
+        props: {
+            IsItReal: false
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8", {
         statics: {
             methods: {
