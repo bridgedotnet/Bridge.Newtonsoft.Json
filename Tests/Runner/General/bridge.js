@@ -4591,10 +4591,10 @@
         },
 
         tryParse: function (enumType, value, result, ignoreCase) {
-            result.v = 0;
             result.v = Bridge.unbox(enumMethods.parse(enumType, value, ignoreCase, true), true);
 
             if (result.v == null) {
+                result.v = 0;
                 return false;
             }
 
@@ -9939,11 +9939,19 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             },
 
             eq: function (t1, t2) {
-                return Bridge.hasValue$1(t1, t2) ? (t1.ticks.eq(t2.ticks)) : null;
+                if (t1 === null && t2 === null) {
+                    return true;
+                }
+
+                return Bridge.hasValue$1(t1, t2) ? (t1.ticks.eq(t2.ticks)) : false;
             },
 
             neq: function (t1, t2) {
-                return Bridge.hasValue$1(t1, t2) ? (t1.ticks.ne(t2.ticks)) : null;
+                if (t1 === null && t2 === null) {
+                    return false;
+                }
+
+                return Bridge.hasValue$1(t1, t2) ? (t1.ticks.ne(t2.ticks)) : true;
             },
 
             plus: function (t) {
@@ -10805,7 +10813,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
         },
 
         getRank: function (arr) {
-            return arr.$s ? arr.$s.length : 1;
+            return arr.$type ? arr.$type.$rank : (arr.$s ? arr.$s.length : 1);
         },
 
         getLower: function (arr, d) {
@@ -10979,7 +10987,13 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             } else {
                 newArr = arr.slice(0);
             }
+
             newArr.$type = arr.$type;
+            newArr.$v = arr.$v;
+            newArr.$s = arr.$s;
+            newArr.get = System.Array.$get;
+            newArr.set = System.Array.$set;
+
             return newArr;
         },
 

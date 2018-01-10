@@ -2303,6 +2303,35 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     }; });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case82", {
+        statics: {
+            methods: {
+                TestNullableDeserialization: function () {
+                    var $t;
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+                    var test = new Newtonsoft.Json.Tests.Issues.Case82.Test();
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(test, settings);
+                    test = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case82.Test, settings);
+
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.lifteq("equals", test.ID, System.Int64(3)));
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case82.Test", {
+        fields: {
+            ID: null
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                this.ID = System.Int64(3);
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.JsonConstructorTests", {
         statics: {
             methods: {
