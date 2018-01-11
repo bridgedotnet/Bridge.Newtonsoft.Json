@@ -625,8 +625,18 @@
                                             commonElementInstanceBuilder = null;
                                         }														
                                         for (var i = 0; i < raw.length; i++) {
-                                            var item = raw[i];
-                                            arr[i] = commonElementInstanceBuilder ? commonElementInstanceBuilder(item).value : Newtonsoft.Json.JsonConvert.DeserializeObject(item, elementType, settings, true);
+                                            var item = raw[i],
+                                                inst,
+                                                names,
+                                                useBuilder = commonElementInstanceBuilder && !commonElementInstanceBuilder.default;
+
+                                            if (useBuilder) {
+                                                inst = commonElementInstanceBuilder(item);
+                                                arr[i] = inst.value;
+                                                names = inst.names;
+                                            }
+
+                                            arr[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(item, elementType, settings, true, useBuilder ? arr[i] : undefined, names);
                                         }
                                         args.push(arr);
                                         isList = true;
@@ -637,20 +647,23 @@
                             }
 
                             return function (raw) {
-                                var args = [];
-                                var names = [];
-                                var theKeys = Object.getOwnPropertyNames(raw).toString();
+                                var args = [],
+                                    names = [],
+                                    keys = Object.getOwnPropertyNames(raw),
+                                    strKeys = keys.toString();
+
                                 for (var i = 0; i < params.length; i++) {
-                                    var name = params[i].sn || params[i].n,
-                                        match = new RegExp(name, 'i').exec(theKeys);
+                                    var prm = params[i],
+                                        name = prm.sn || prm.n,
+                                        match = new RegExp(name, 'i').exec(strKeys);
 
                                     name = match && match.length > 0 ? match[0] : null;
 
                                     if (name) {
-                                        args[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[name], params[i].pt, settings, true);
+                                        args[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[name], prm.pt, settings, true);
                                         names.push(name);
                                     } else {
-                                        args[i] = Bridge.getDefaultValue(params[i].pt);
+                                        args[i] = Bridge.getDefaultValue(prm.pt);
                                     }
                                 }
 
@@ -659,9 +672,13 @@
                         }
                     }
 
-                    return function () {
+                    var fn = function () {
                         return { names: [], value: Bridge.createInstance(type) };
                     };
+
+                    fn.default = true;
+
+                    return fn;
                 },
 
                 createInstance: function (type, raw, settings) {
@@ -695,7 +712,7 @@
                     return false;
                 },
 
-                DeserializeObject: function (raw, type, settings, field, instance) {
+                DeserializeObject: function (raw, type, settings, field, instance, i_names) {
                     settings = settings || {};
                     if (type.$kind === "interface") {
                         if (type === System.Collections.IList) {
@@ -956,7 +973,7 @@
                                 throw TypeError(System.String.concat("Cannot find type: ", raw["$type"]));
                             }
 
-                            var o = instance ? { value: instance } : Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings),
+                            var o = instance ? { value: instance, names: i_names } : Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings),
                                 names;
 
                             names = o.names || [];
