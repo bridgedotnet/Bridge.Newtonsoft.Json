@@ -144,17 +144,17 @@ namespace Newtonsoft.Json.Tests
         public static void Int64Works()
         {
             long value = long.MaxValue;
-            Assert.AreEqual(long.MaxValue.ToDynamic().toNumber(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(long.MaxValue.ToDynamic().toString(), JsonConvert.SerializeObject(value));
 
             value = long.MinValue;
-            Assert.AreEqual(long.MinValue.ToDynamic().toNumber(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(long.MinValue.ToDynamic().toString(), JsonConvert.SerializeObject(value));
         }
 
         [Test]
         public static void UInt64Works()
         {
             ulong value = ulong.MaxValue;
-            Assert.AreEqual(ulong.MaxValue.ToDynamic().toNumber(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(ulong.MaxValue.ToDynamic().toString(), JsonConvert.SerializeObject(value));
 
             value = ulong.MinValue;
             Assert.AreEqual(ulong.MinValue.ToDynamic().toNumber(), JsonConvert.SerializeObject(value));

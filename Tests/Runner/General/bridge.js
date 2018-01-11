@@ -1178,9 +1178,9 @@
             return typeof value === "string";
         },
 
-        unroll: function (value, scope) {
+        unroll: function (value) {
             var d = value.split("."),
-                o = (scope || Bridge.global)[d[0]],
+                o = Bridge.global[d[0]],
                 i = 1;
 
             for (i; i < d.length; i++) {
@@ -2448,10 +2448,6 @@
             Class.$$name = className;
             Class.$kind = prop.$kind;
 
-            if (prop.$metadata) {
-                Class.$metadata = prop.$metadata;
-            }
-
             if (gCfg && isGenericInstance) {
                 Class.$genericTypeDefinition = gCfg.fn;
                 Class.$typeArguments = gCfg.args;
@@ -3020,19 +3016,6 @@
         },
 
         init: function (fn) {
-            if (Bridge.Reflection) {
-                var metas = Bridge.Reflection.deferredMeta,
-                len = metas.length;
-
-                if (len > 0) {
-                    Bridge.Reflection.deferredMeta = [];
-                    for (var i = 0; i < len; i++) {
-                        var item = metas[i];
-                        Bridge.setMetadata(item.typeName, item.metadata);
-                    }
-                }
-            }
-
             if (fn) {
                 var old = Bridge.Class.staticInitAllow;
                 Bridge.Class.staticInitAllow = true;
@@ -3199,20 +3182,8 @@
 
     // @source Reflection.js
 
-Bridge.Reflection = {
-        deferredMeta: [],
-
+    Bridge.Reflection = {
         setMetadata: function (type, metadata) {
-            if (Bridge.isString(type)) {
-                var typeName = type;
-                type = Bridge.unroll(typeName);
-
-                if (type == null) {
-                    Bridge.Reflection.deferredMeta.push({ typeName: typeName, metadata: metadata });
-                    return;
-                }
-            }
-
             type.$getMetadata = Bridge.Reflection.getMetadata;
             type.$metadata = metadata;
         },
@@ -4091,20 +4062,13 @@ Bridge.Reflection = {
                 }
             }
 
-            var orig = method;
-            method = function () {
-                var args = [],
-                    params = mi.pi || [],
-                    p;
-
-                for (var i = 0; i < arguments.length; i++) {
-                    p = params[i] || params[params.length - 1];
-                    args[i] = p && p.pt === System.Object ? arguments[i] : Bridge.unbox(arguments[i]);
-                }
-
-                var v = orig.apply(this, args);
-                return v != null && mi.box ? mi.box(v) : v;
-            };
+            if (mi.box) {
+                var unboxed = method;
+                method = function() {
+                    var v = unboxed.apply(this, arguments);
+                    return v != null ? mi.box(v) : v;
+                };
+            }
 
             return bind !== false ? Bridge.fn.bind(target, method) : method;
         },
@@ -7453,7 +7417,8 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
     };
 
     System.Int64.prototype.toJSON = function () {
-        return this.toNumber();
+        var safe = Math.pow(2, 53) - 1;
+        return this.gt(safe) || this.lt(-safe) ? this.toString() : this.toNumber();
     };
 
     System.Int64.prototype.toString = function (format, provider) {
@@ -7963,7 +7928,6 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
         return System.UInt64.create(l);
     };
 
-    System.UInt64.prototype.toJSON = System.Int64.prototype.toJSON;
     System.UInt64.prototype.toString = System.Int64.prototype.toString;
     System.UInt64.prototype.format = System.Int64.prototype.format;
     System.UInt64.prototype.isNegative = System.Int64.prototype.isNegative;
@@ -8085,6 +8049,11 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
         var remainder = a.mod(b);
         result.v = remainder;
         return a.sub(remainder).div(b);
+    };
+
+    System.UInt64.prototype.toJSON = function () {
+        var safe = Math.pow(2, 53) - 1;
+        return this.gt(safe) ? this.toString() : this.toNumber();
     };
 
     System.UInt64.prototype.and = System.Int64.prototype.and;
@@ -21534,7 +21503,7 @@ Bridge.assembly("System", {}, function ($asm, globals) {
             if (!Bridge.isDefined(useCache)) {
                 useCache = false;
             }
-
+            
             var scope = System.Text.RegularExpressions;
 
             if (pattern == null) {
@@ -21863,7 +21832,7 @@ Bridge.assembly("System", {}, function ($asm, globals) {
                     get: function() {
                         return this._capcount;
                     }
-                }
+                }    
             },
 
             alias: [

@@ -2322,7 +2322,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     test = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case82.Test, settings);
 
                     Bridge.Test.NUnit.Assert.True(System.Nullable.eq(test.IntID, 2147481147), "Nullable int can be deserialized.");
-                    //Assert.True(test.LowID == long.MinValue + 5, "Nullable long with MinValue base can be deserialized.");
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.lifteq("equals", test.LowID, System.Int64([5,-2147483648])), "Nullable long with MinValue base can be deserialized.");
                     Bridge.Test.NUnit.Assert.True(System.Nullable.lifteq("equals", test.ID, System.Int64(3)), "Nullable long can be deserialized.");
                     Bridge.Test.NUnit.Assert.True(System.Nullable.lifteq("equals", test.HighID, System.Int64([-5001,2147483647])), "Nullable long with MaxValue base can be deserialized.");
                     Bridge.Test.NUnit.Assert.True(System.Nullable.eq(test.FltID, 2.5), "Nullable float can be deserialized.");
@@ -2347,7 +2347,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             ctor: function () {
                 this.$initialize();
                 this.IntID = 2147481147;
-                //LowID = long.MinValue + 5;
+                this.LowID = System.Int64([5,-2147483648]);
                 this.ID = System.Int64(3);
                 this.HighID = System.Int64([-5001,2147483647]);
                 this.FltID = 2.5;
@@ -2630,14 +2630,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 },
                 Int64Works: function () {
                     var value = System.Int64.MaxValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Int64.MaxValue.toNumber(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Int64.MaxValue.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
 
                     value = System.Int64.MinValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Int64.MinValue.toNumber(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Int64.MinValue.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
                 },
                 UInt64Works: function () {
                     var value = System.UInt64.MaxValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.UInt64.MaxValue.toNumber(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.UInt64.MaxValue.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
 
                     value = System.UInt64.MinValue;
                     Bridge.Test.NUnit.Assert.AreEqual(System.UInt64.MinValue.toNumber(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
