@@ -6363,6 +6363,9 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
         statics: {
             $number: true,
 
+            MAX_SAFE_INTEGER: Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1,
+            MIN_SAFE_INTEGER: Number.MIN_SAFE_INTEGER || -(Math.pow(2, 53) - 1),
+
             $is: function (instance) {
                 return typeof (instance) === "number" && isFinite(instance) && Math.floor(instance, 0) === instance;
             },
@@ -7453,7 +7456,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
     };
 
     System.Int64.prototype.toJSON = function () {
-        return this.toNumber();
+        return this.gt(Bridge.Int.MAX_SAFE_INTEGER) || this.lt(Bridge.Int.MIN_SAFE_INTEGER) ? this.toString() : this.toNumber();
     };
 
     System.Int64.prototype.toString = function (format, provider) {
@@ -7963,7 +7966,6 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
         return System.UInt64.create(l);
     };
 
-    System.UInt64.prototype.toJSON = System.Int64.prototype.toJSON;
     System.UInt64.prototype.toString = System.Int64.prototype.toString;
     System.UInt64.prototype.format = System.Int64.prototype.format;
     System.UInt64.prototype.isNegative = System.Int64.prototype.isNegative;
@@ -8085,6 +8087,10 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
         var remainder = a.mod(b);
         result.v = remainder;
         return a.sub(remainder).div(b);
+    };
+
+    System.UInt64.prototype.toJSON = function () {
+        return this.gt(Bridge.Int.MAX_SAFE_INTEGER) ? this.toString() : this.toNumber();
     };
 
     System.UInt64.prototype.and = System.Int64.prototype.and;
