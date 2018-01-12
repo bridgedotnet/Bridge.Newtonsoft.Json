@@ -141,7 +141,11 @@
                         return false;
                     }
 
-                    if (Bridge.equals(Bridge.unbox(value, true), cfg.defaultValue) && (defaultValueHandling === Newtonsoft.Json.DefaultValueHandling.Ignore || defaultValueHandling === Newtonsoft.Json.DefaultValueHandling.IgnoreAndPopulate)) {
+                    var x = Bridge.unbox(value, true),
+                        y = cfg.defaultValue,
+                        oneNull = x == null || y == null && !(x == null && y == null);
+
+                    if (!oneNull && Bridge.equals(x, y) && (defaultValueHandling === Newtonsoft.Json.DefaultValueHandling.Ignore || defaultValueHandling === Newtonsoft.Json.DefaultValueHandling.IgnoreAndPopulate)) {
                         return false;
                     }
 
