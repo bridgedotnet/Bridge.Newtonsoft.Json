@@ -2303,9 +2303,26 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     }; });
 
+    /**
+     * The test here consists in checking whether generics can be deserialized
+     with different specification objects constructor set ups.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case81
+     */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case81", {
         statics: {
             methods: {
+                /**
+                 * The test just checks whether the returned results from serializing
+                 and deserializing, matches the expected ones.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case81
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case81
+                 * @return  {void}
+                 */
                 TestConstructors: function () {
                     var $t;
                     var s = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
@@ -2315,29 +2332,37 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var o2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test), s);
 
                     var arr1 = System.Linq.Enumerable.from(o2).toArray();
-                    Bridge.Test.NUnit.Assert.AreEqual("bla1", arr1[System.Array.index(0, arr1)].Name);
-                    Bridge.Test.NUnit.Assert.AreEqual("bla2", arr1[System.Array.index(1, arr1)].Name);
+                    Bridge.Test.NUnit.Assert.AreEqual("bla1", arr1[System.Array.index(0, arr1)].Name, "Matching property name object's first entry can be deserialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla2", arr1[System.Array.index(1, arr1)].Name, "Matching property name object's second entry can be deserialized correctly.");
 
                     var d1 = new (Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test2))(System.Array.init([new Newtonsoft.Json.Tests.Issues.Case81.Test2("bla1"), new Newtonsoft.Json.Tests.Issues.Case81.Test2("bla2")], Newtonsoft.Json.Tests.Issues.Case81.Test2));
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(d1, s);
                     var d2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test2), s);
 
                     var arr2 = System.Linq.Enumerable.from(d2).toArray();
-                    Bridge.Test.NUnit.Assert.AreEqual("bla1", arr2[System.Array.index(0, arr2)].Name);
-                    Bridge.Test.NUnit.Assert.AreEqual("bla2", arr2[System.Array.index(1, arr2)].Name);
+                    Bridge.Test.NUnit.Assert.AreEqual("bla1", arr2[System.Array.index(0, arr2)].Name, "Mismatching property name object's first entry can be deserialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla2", arr2[System.Array.index(1, arr2)].Name, "Mismatching property name object's second entry can be deserialized correctly.");
 
                     var t1 = new (Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test3))(System.Array.init([($t = new Newtonsoft.Json.Tests.Issues.Case81.Test3(), $t.Name = "bla1", $t), ($t = new Newtonsoft.Json.Tests.Issues.Case81.Test3(), $t.Name = "bla2", $t)], Newtonsoft.Json.Tests.Issues.Case81.Test3));
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(t1, s);
                     var t2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test3), s);
 
                     var arr3 = System.Linq.Enumerable.from(t2).toArray();
-                    Bridge.Test.NUnit.Assert.AreEqual("bla1", arr3[System.Array.index(0, arr3)].Name);
-                    Bridge.Test.NUnit.Assert.AreEqual("bla2", arr3[System.Array.index(1, arr3)].Name);
+                    Bridge.Test.NUnit.Assert.AreEqual("bla1", arr3[System.Array.index(0, arr3)].Name, "Absent constructor parameter object's first entry can be deserialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla2", arr3[System.Array.index(1, arr3)].Name, "Absent constructor parameter object's second entry can be deserialized correctly.");
                 }
             }
         }
     });
 
+    /**
+     * Generics class to test the cases' classes above.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1
+     * @implements  System.Collections.Generic.IEnumerable$1
+     * @param   {Function}    [name]
+     */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1", function (T) { return {
         inherits: [System.Collections.Generic.IEnumerable$1(T)],
         fields: {
@@ -2427,6 +2452,13 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     }; });
 
+    /**
+     * Case 1: Object constructor's parameter name matches lowercase
+     the property name within the object.
+     *
+     * @private
+     * @class Newtonsoft.Json.Tests.Issues.Case81.Test
+     */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.Test", {
         props: {
             Name: null
@@ -2439,6 +2471,13 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * Case 2: Object constructor's parameter name differs from the
+     lowecased property name (name1 != lc(Name)).
+     *
+     * @private
+     * @class Newtonsoft.Json.Tests.Issues.Case81.Test2
+     */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.Test2", {
         props: {
             Name: null
@@ -2451,6 +2490,12 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * Case 3: Object has no constructor at all.
+     *
+     * @private
+     * @class Newtonsoft.Json.Tests.Issues.Case81.Test3
+     */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.Test3", {
         props: {
             Name: null
