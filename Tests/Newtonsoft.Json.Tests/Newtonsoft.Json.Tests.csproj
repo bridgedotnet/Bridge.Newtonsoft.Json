@@ -53,9 +53,12 @@
     <Compile Include="Issues\0100\Case052.cs" />
     <Compile Include="Issues\0100\Case063.cs" />
     <Compile Include="Issues\0100\Case067.cs" />
-    <Compile Include="Issues\0100\Case074.cs" />
-    <Compile Include="Issues\0100\Case072.cs" />
     <Compile Include="Issues\0100\Case068.cs" />
+    <Compile Include="Issues\0100\Case072.cs" />
+    <Compile Include="Issues\0100\Case074.cs" />
+    <Compile Include="Issues\0100\Case079.cs" />
+    <Compile Include="Issues\0100\Case081.cs" />
+    <Compile Include="Issues\0100\Case082.cs" />
     <Compile Include="Tests\ListOptimizationTests.cs" />
     <Compile Include="Tests\DeserializationTests.cs" />
     <Compile Include="Issues\Ported\N1134.cs" />
@@ -83,14 +86,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Bridge, Version=16.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Bridge.Core.16.6.0\lib\net40\Bridge.dll</HintPath>
+    <Reference Include="Bridge, Version=16.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Bridge.Core.16.7.0\lib\net40\Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="Bridge.Html5, Version=16.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Bridge.Html5.16.6.0\lib\net40\Bridge.Html5.dll</HintPath>
+    <Reference Include="Bridge.Html5, Version=16.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Bridge.Html5.16.7.0\lib\net40\Bridge.Html5.dll</HintPath>
     </Reference>
-    <Reference Include="Bridge.Test, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Bridge.Test.Core.1.1.0\lib\net40\Bridge.Test.dll</HintPath>
+    <Reference Include="Bridge.Test, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Bridge.Test.Core.1.2.0\lib\net40\Bridge.Test.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -106,7 +109,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Bridge.Min.16.6.0\build\Bridge.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Bridge.Min.16.6.0\build\Bridge.Min.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Bridge.Min.16.7.0\build\Bridge.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Bridge.Min.16.7.0\build\Bridge.Min.targets'))" />
   </Target>
-  <Import Project="..\..\packages\Bridge.Min.16.6.0\build\Bridge.Min.targets" Condition="Exists('..\..\packages\Bridge.Min.16.6.0\build\Bridge.Min.targets')" />
+  <Import Project="..\..\packages\Bridge.Min.16.7.0\build\Bridge.Min.targets" Condition="Exists('..\..\packages\Bridge.Min.16.7.0\build\Bridge.Min.targets')" />
 </Project>

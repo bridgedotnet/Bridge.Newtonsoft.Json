@@ -1,9 +1,9 @@
 /**
  * Newtonsoft.Json Test library
- * @version 1.4.0
+ * @version 1.5.0
  * @author Object.NET, Inc.
  * @copyright Copyright 2008-2017 Object.NET, Inc.
- * @compiler Bridge.NET 16.6.0
+ * @compiler Bridge.NET 16.7.0
  */
 Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     "use strict";
@@ -2107,6 +2107,47 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * This test consists in verifying the serialization of a string
+     representing true/false into a boolean accordingly.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case79
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case79", {
+        statics: {
+            methods: {
+                /**
+                 * The test will just manually create the serialized version of the 
+                 object and deserialize it, then verifying if the expected value
+                 is inferred.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case79
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case79
+                 * @return  {void}
+                 */
+                TestCustomDictionaryKey: function () {
+                    var serializedStringFalse = "{\"IsItReal\":\"false\"}";
+                    var serializedStringTrue = "{\"IsItReal\":\"true\"}";
+                    var deserializeFalse = Newtonsoft.Json.JsonConvert.DeserializeObject(serializedStringFalse, Newtonsoft.Json.Tests.Issues.Case79.SuperClass);
+
+                    var deserializeTrue = Newtonsoft.Json.JsonConvert.DeserializeObject(serializedStringTrue, Newtonsoft.Json.Tests.Issues.Case79.SuperClass);
+
+                    Bridge.Test.NUnit.Assert.False(deserializeFalse.IsItReal, "The \"false\" string is deserialized as boolean false.");
+                    Bridge.Test.NUnit.Assert.True(deserializeTrue.IsItReal, "The \"true\" string is deserialized as boolean true.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case79.SuperClass", {
+        props: {
+            IsItReal: false
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8", {
         statics: {
             methods: {
@@ -2261,6 +2302,259 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             Data: Bridge.getDefaultValue(T)
         }
     }; });
+
+    /**
+     * The test here consists in checking whether generics can be deserialized
+     with different specification objects constructor set ups.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case81
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case81", {
+        statics: {
+            methods: {
+                /**
+                 * The test just checks whether the returned results from serializing
+                 and deserializing, matches the expected ones.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case81
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case81
+                 * @return  {void}
+                 */
+                TestConstructors: function () {
+                    var $t;
+                    var s = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+
+                    var o1 = new (Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test))(System.Array.init([new Newtonsoft.Json.Tests.Issues.Case81.Test("bla1"), new Newtonsoft.Json.Tests.Issues.Case81.Test("bla2")], Newtonsoft.Json.Tests.Issues.Case81.Test));
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(o1, s);
+                    var o2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test), s);
+
+                    var arr1 = System.Linq.Enumerable.from(o2).toArray();
+                    Bridge.Test.NUnit.Assert.AreEqual("bla1", arr1[System.Array.index(0, arr1)].Name, "Matching property name object's first entry can be deserialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla2", arr1[System.Array.index(1, arr1)].Name, "Matching property name object's second entry can be deserialized correctly.");
+
+                    var d1 = new (Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test2))(System.Array.init([new Newtonsoft.Json.Tests.Issues.Case81.Test2("bla1"), new Newtonsoft.Json.Tests.Issues.Case81.Test2("bla2")], Newtonsoft.Json.Tests.Issues.Case81.Test2));
+                    json = Newtonsoft.Json.JsonConvert.SerializeObject(d1, s);
+                    var d2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test2), s);
+
+                    var arr2 = System.Linq.Enumerable.from(d2).toArray();
+                    Bridge.Test.NUnit.Assert.AreEqual("bla1", arr2[System.Array.index(0, arr2)].Name, "Mismatching property name object's first entry can be deserialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla2", arr2[System.Array.index(1, arr2)].Name, "Mismatching property name object's second entry can be deserialized correctly.");
+
+                    var t1 = new (Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test3))(System.Array.init([($t = new Newtonsoft.Json.Tests.Issues.Case81.Test3(), $t.Name = "bla1", $t), ($t = new Newtonsoft.Json.Tests.Issues.Case81.Test3(), $t.Name = "bla2", $t)], Newtonsoft.Json.Tests.Issues.Case81.Test3));
+                    json = Newtonsoft.Json.JsonConvert.SerializeObject(t1, s);
+                    var t2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test3), s);
+
+                    var arr3 = System.Linq.Enumerable.from(t2).toArray();
+                    Bridge.Test.NUnit.Assert.AreEqual("bla1", arr3[System.Array.index(0, arr3)].Name, "Absent constructor parameter object's first entry can be deserialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla2", arr3[System.Array.index(1, arr3)].Name, "Absent constructor parameter object's second entry can be deserialized correctly.");
+                }
+            }
+        }
+    });
+
+    /**
+     * Generics class to test the cases' classes above.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1
+     * @implements  System.Collections.Generic.IEnumerable$1
+     * @param   {Function}    [name]
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1", function (T) { return {
+        inherits: [System.Collections.Generic.IEnumerable$1(T)],
+        fields: {
+            _headIfAny: null
+        },
+        alias: ["getEnumerator", ["System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(T) + "$getEnumerator", "System$Collections$Generic$IEnumerable$1$getEnumerator"]],
+        ctors: {
+            ctor: function (values) {
+                var $t, $t1;
+                this.$initialize();
+                var node = null;
+                $t = Bridge.getEnumerator(System.Linq.Enumerable.from(values).reverse());
+                try {
+                    while ($t.moveNext()) {
+                        var value = $t.Current;
+                        node = ($t1 = new (Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1.Node(T))(), $t1.Count = ((((node == null) ? 0 : node.Count) + 1) | 0), $t1.Item = value, $t1.NextIfAny = node, $t1);
+                    }
+                } finally {
+                    if (Bridge.is($t, System.IDisposable)) {
+                        $t.System$IDisposable$dispose();
+                    }
+                }this._headIfAny = node;
+            }
+        },
+        methods: {
+            getEnumerator: function () {
+                var $step = 0,
+                    $jumpFromFinally,
+                    $returnValue,
+                    node,
+                    $async_e;
+
+                var $enumerator = new (Bridge.GeneratorEnumerator$1(T))(Bridge.fn.bind(this, function () {
+                    try {
+                        for (;;) {
+                            switch ($step) {
+                                case 0: {
+                                    node = this._headIfAny;
+                                    $step = 1;
+                                    continue;
+                                }
+                                case 1: {
+                                    if ( node != null ) {
+                                            $step = 2;
+                                            continue;
+                                        } 
+                                        $step = 4;
+                                        continue;
+                                }
+                                case 2: {
+                                    $enumerator.current = node.Item;
+                                        $step = 3;
+                                        return true;
+                                }
+                                case 3: {
+                                    node = node.NextIfAny;
+
+                                        $step = 1;
+                                        continue;
+                                }
+                                case 4: {
+
+                                }
+                                default: {
+                                    return false;
+                                }
+                            }
+                        }
+                    } catch($async_e1) {
+                        $async_e = System.Exception.create($async_e1);
+                        throw $async_e;
+                    }
+                }));
+                return $enumerator;
+            },
+            System$Collections$IEnumerable$getEnumerator: function () {
+                return this.getEnumerator();
+            }
+        }
+    }; });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1.Node", function (T) { return {
+        fields: {
+            Count: 0,
+            Item: Bridge.getDefaultValue(T),
+            NextIfAny: null
+        }
+    }; });
+
+    /**
+     * Case 1: Object constructor's parameter name matches lowercase
+     the property name within the object.
+     *
+     * @private
+     * @class Newtonsoft.Json.Tests.Issues.Case81.Test
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.Test", {
+        props: {
+            Name: null
+        },
+        ctors: {
+            ctor: function (name) {
+                this.$initialize();
+                this.Name = name;
+            }
+        }
+    });
+
+    /**
+     * Case 2: Object constructor's parameter name differs from the
+     lowecased property name (name1 != lc(Name)).
+     *
+     * @private
+     * @class Newtonsoft.Json.Tests.Issues.Case81.Test2
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.Test2", {
+        props: {
+            Name: null
+        },
+        ctors: {
+            ctor: function (name1) {
+                this.$initialize();
+                this.Name = name1;
+            }
+        }
+    });
+
+    /**
+     * Case 3: Object has no constructor at all.
+     *
+     * @private
+     * @class Newtonsoft.Json.Tests.Issues.Case81.Test3
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.Test3", {
+        props: {
+            Name: null
+        }
+    });
+
+    /**
+     * The test here consists in checking whether it is possible to
+     deserialize nullable variables.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case82
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case82", {
+        statics: {
+            methods: {
+                TestNullableDeserialization: function () {
+                    var $t;
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+                    var test = new Newtonsoft.Json.Tests.Issues.Case82.Test();
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(test, settings);
+                    test = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case82.Test, settings);
+
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.eq(test.IntID, 2147481147), "Nullable int can be deserialized.");
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.lifteq("equals", test.LowID, System.Int64([5,-2147483648])), "Nullable long with MinValue base can be deserialized.");
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.lifteq("equals", test.ID, System.Int64(3)), "Nullable long can be deserialized.");
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.lifteq("equals", test.HighID, System.Int64([-5001,2147483647])), "Nullable long with MaxValue base can be deserialized.");
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.eq(test.FltID, 2.5), "Nullable float can be deserialized.");
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.eq(test.DblID, 2.5), "Nullable double can be deserialized.");
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.eq(test.BytID, 8), "Nullable byte can be deserialized.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case82.Test", {
+        fields: {
+            IntID: null,
+            LowID: null,
+            ID: null,
+            HighID: null,
+            FltID: null,
+            DblID: null,
+            BytID: null
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                this.IntID = 2147481147;
+                this.LowID = System.Int64([5,-2147483648]);
+                this.ID = System.Int64(3);
+                this.HighID = System.Int64([-5001,2147483647]);
+                this.FltID = 2.5;
+                this.DblID = 2.5;
+                this.BytID = 8;
+            }
+        }
+    });
 
     Bridge.define("Newtonsoft.Json.Tests.JsonConstructorTests", {
         statics: {
@@ -2535,14 +2829,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 },
                 Int64Works: function () {
                     var value = System.Int64.MaxValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Int64.MaxValue.toNumber(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Int64.MaxValue.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
 
                     value = System.Int64.MinValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Int64.MinValue.toNumber(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Int64.MinValue.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
                 },
                 UInt64Works: function () {
                     var value = System.UInt64.MaxValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.UInt64.MaxValue.toNumber(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.UInt64.MaxValue.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
 
                     value = System.UInt64.MinValue;
                     Bridge.Test.NUnit.Assert.AreEqual(System.UInt64.MinValue.toNumber(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
