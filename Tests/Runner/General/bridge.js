@@ -10906,9 +10906,9 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             }
 
             arr.length = length;
-
+            var isFn = Bridge.isFunction(defvalue);
             for (var k = 0; k < length; k++) {
-                arr[k] = defvalue;
+                arr[k] = isFn ? defvalue() : defvalue;
             }
 
             if (initValues) {
@@ -15931,7 +15931,8 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
         },
 
         toChar: function (value, formatProvider, valueTypeCode) {
-            var typeCodes = scope.convert.typeCodes;
+            var typeCodes = scope.convert.typeCodes,
+                isChar = Bridge.is(value, System.Char);
 
             value = Bridge.unbox(value, true);
 
@@ -15951,7 +15952,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                 type = "string";
             }
 
-            if (valueTypeCode !== typeCodes.Object) {
+            if (valueTypeCode !== typeCodes.Object || isChar) {
                 switch (type) {
                     case "boolean":
                         scope.internal.throwInvalidCastEx(typeCodes.Boolean, typeCodes.Char);
