@@ -28,6 +28,10 @@ namespace Newtonsoft.Json.Tests.Issues
             public override string ToString() => Value.ToString();
         }
 
+        public class SimpleKey
+        {
+        }
+
         public static string Serialize<T>(T thing, bool alt)
         {
             if (alt)
@@ -49,6 +53,16 @@ namespace Newtonsoft.Json.Tests.Issues
 
             Assert.AreEqual("{\"Value\":1}", Serialize(key, false), "Object serialized correctly.");
             Assert.AreEqual("{\"1\":\"None\"}", Serialize(listingLevelNames, false), "Custom dictionary serialized correctly.");
+        }
+
+        [Test]
+        public static void TestSimpleDictionaryKey()
+        {
+            var key = new SimpleKey();
+            var listingLevelNames = new Dictionary<SimpleKey, string>();
+            listingLevelNames.Add(key, "None");
+
+            Assert.AreEqual("{\"Newtonsoft.Json.Tests.Issues.Case74+SimpleKey\":\"None\"}", Serialize(listingLevelNames, false), "Simple dictionary serialized correctly.");
         }
     }
 }

@@ -382,7 +382,7 @@
                         if (type === System.Globalization.CultureInfo) {
                             return returnRaw ? obj.name : Newtonsoft.Json.JsonConvert.stringify(obj.name, formatting);
                         } else if (type === System.Guid) {
-                            return returnRaw ? obj.toString() : Newtonsoft.Json.JsonConvert.stringify(obj.toString(), formatting);
+                            return returnRaw ? Bridge.toString(obj) : Newtonsoft.Json.JsonConvert.stringify(Bridge.toString(obj), formatting);
                         } else if (type === System.Uri) {
                             return returnRaw ? obj.getAbsoluteUri() : Newtonsoft.Json.JsonConvert.stringify(obj.getAbsoluteUri(), formatting);
                         } else if (type === System.Int64) {
@@ -425,7 +425,7 @@
                                     keyJson = Newtonsoft.Json.JsonConvert.SerializeObject(entr.key, formatting, settings, true, typeKey);
 
                                 if (typeof keyJson === 'object') {
-                                    keyJson = entr.key.toString();
+                                    keyJson = Bridge.toString(entr.key);
                                 }
 
                                 dict[keyJson] = Newtonsoft.Json.JsonConvert.SerializeObject(entr.value, formatting, settings, true, typeValue);
