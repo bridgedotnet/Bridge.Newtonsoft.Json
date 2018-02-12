@@ -121,6 +121,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     }; });
 
     Bridge.define("Demo25.NonNullList$1.Node", function (T) { return {
+        $kind: "nested class",
         fields: {
             Count: 0,
             Item: Bridge.getDefaultValue(T),
@@ -155,13 +156,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Case2.Class1", {
+        $kind: "nested class",
         props: {
             Prop1: 0
         }
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Case2.I1", {
-        $kind: "interface"
+        $kind: "nested interface"
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests", {
@@ -196,18 +198,18 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 Int64Works: function () {
                     var value = System.Int64(2147483647);
                     var intValue = 2147483647;
-                    Bridge.Test.NUnit.Assert.True(value.equals(Newtonsoft.Json.JsonConvert.DeserializeObject(intValue.toString(), System.Int64)));
+                    Bridge.Test.NUnit.Assert.True(value.equals(Newtonsoft.Json.JsonConvert.DeserializeObject(Bridge.toString(intValue), System.Int64)));
 
                     value = System.Int64.MinValue;
-                    Bridge.Test.NUnit.Assert.True(value.equals(Newtonsoft.Json.JsonConvert.DeserializeObject(System.Int64.MinValue.toString(), System.Int64)));
+                    Bridge.Test.NUnit.Assert.True(value.equals(Newtonsoft.Json.JsonConvert.DeserializeObject(Bridge.toString(System.Int64.MinValue), System.Int64)));
                 },
                 UInt64Works: function () {
                     var value = System.UInt64(2147483647);
                     var intValue = 2147483647;
-                    Bridge.Test.NUnit.Assert.True(value.equals(Newtonsoft.Json.JsonConvert.DeserializeObject(intValue.toString(), System.UInt64)));
+                    Bridge.Test.NUnit.Assert.True(value.equals(Newtonsoft.Json.JsonConvert.DeserializeObject(Bridge.toString(intValue), System.UInt64)));
 
                     value = System.UInt64.MinValue;
-                    Bridge.Test.NUnit.Assert.True(value.equals(Newtonsoft.Json.JsonConvert.DeserializeObject(System.UInt64.MinValue.toString(), System.UInt64)));
+                    Bridge.Test.NUnit.Assert.True(value.equals(Newtonsoft.Json.JsonConvert.DeserializeObject(Bridge.toString(System.UInt64.MinValue), System.UInt64)));
                 },
                 DecimalWorks: function () {
                     Bridge.Test.NUnit.Assert.True(System.Decimal.MinusOne.equalsT(Newtonsoft.Json.JsonConvert.DeserializeObject("-1", System.Decimal)));
@@ -331,8 +333,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(c.guidField.toByteArray(), jsonC.guidField.toByteArray(), "#2");
                     Bridge.Test.NUnit.Assert.AreEqual(c.typeField, jsonC.typeField, "#3");
                     Bridge.Test.NUnit.Assert.AreEqual(c.charField, jsonC.charField, "#4");
-                    Bridge.Test.NUnit.Assert.AreEqual(c.longField.toString(), jsonC.longField.toString(), "#5");
-                    Bridge.Test.NUnit.Assert.AreEqual(c.ulongField.toString(), jsonC.ulongField.toString(), "#6");
+                    Bridge.Test.NUnit.Assert.AreEqual(Bridge.toString(c.longField), Bridge.toString(jsonC.longField), "#5");
+                    Bridge.Test.NUnit.Assert.AreEqual(Bridge.toString(c.ulongField), Bridge.toString(jsonC.ulongField), "#6");
                     Bridge.Test.NUnit.Assert.AreEqual(c.decimalField.toString(), jsonC.decimalField.toString(), "#7");
 
                     System.Console.WriteLine(json);
@@ -556,6 +558,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.Address", {
+        $kind: "nested class",
         props: {
             City: null,
             Street: null
@@ -563,6 +566,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.Class1", {
+        $kind: "nested class",
         props: {
             Sub1: null,
             Sub2: null
@@ -570,18 +574,21 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.Class2", {
+        $kind: "nested class",
         props: {
             IntProp: 0
         }
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.Class3", {
+        $kind: "nested class",
         props: {
             StringProp: null
         }
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.ClassWithFields", {
+        $kind: "nested class",
         fields: {
             byteArrayField: null,
             guidField: null,
@@ -630,6 +637,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.ClassWithFieldsAndNoInit", {
+        $kind: "nested class",
         fields: {
             byteArrayField: null,
             guidField: null,
@@ -653,7 +661,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.E1", {
-        $kind: "enum",
+        $kind: "nested enum",
         statics: {
             fields: {
                 Item1: 0,
@@ -664,10 +672,11 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.INamedEntity", {
-        $kind: "interface"
+        $kind: "nested interface"
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.SubClass1", {
+        $kind: "nested class",
         props: {
             Owner: null,
             List1: null
@@ -675,6 +684,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.SubClass2", {
+        $kind: "nested class",
         props: {
             Owner: null,
             List1: null
@@ -682,6 +692,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.UriContainer", {
+        $kind: "nested class",
         props: {
             WebsiteUrl: null
         },
@@ -741,6 +752,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge1438.Foo", {
+        $kind: "nested class",
         props: {
             Value: 0
         },
@@ -774,6 +786,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge2641.Class1", {
+        $kind: "nested class",
         fields: {
             Field1: 0,
             field2: 0
@@ -799,6 +812,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge2679.Test1", {
+        $kind: "nested class",
         props: {
             Value: 0
         },
@@ -811,6 +825,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge2679.Test2$1", function (T) { return {
+        $kind: "nested class",
         props: {
             Value: Bridge.getDefaultValue(T)
         },
@@ -896,6 +911,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case10.ClassWithMissingProperty", {
+        $kind: "nested class",
         props: {
             Prop1: null,
             Prop2: null
@@ -937,6 +953,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14.Multiple$1", function (T) { return {
+        $kind: "nested class",
         props: {
             Done: false,
             Code: 0,
@@ -1041,6 +1058,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case16.Account", {
+        $kind: "nested class",
         props: {
             Email: null,
             Active: false,
@@ -1055,6 +1073,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case16.Person", {
+        $kind: "nested class",
         props: {
             Tag: 0,
             Name: null
@@ -1062,12 +1081,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case16.PopulateTestObject", {
+        $kind: "nested class",
         props: {
             Prop: System.Decimal(0.0)
         }
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case16.Session", {
+        $kind: "nested class",
         props: {
             Name: null,
             Date: null
@@ -1109,7 +1130,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case18.Enum1", {
-        $kind: "enum",
+        $kind: "nested enum",
         statics: {
             fields: {
                 Item1: 0,
@@ -1119,6 +1140,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case18.Test", {
+        $kind: "nested class",
         props: {
             A: null,
             B: false,
@@ -1152,7 +1174,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case22.TestEnum", {
-        $kind: "enum",
+        $kind: "nested enum",
         statics: {
             fields: {
                 Test1: 0,
@@ -1163,6 +1185,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case22.TestObj", {
+        $kind: "nested class",
         props: {
             A: 0,
             B: 0
@@ -1213,6 +1236,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case26.Product", {
+        $kind: "nested class",
         props: {
             Name: null,
             ExpiryDate: null,
@@ -1260,6 +1284,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case27.Product1", {
+        $kind: "nested class",
         props: {
             Name: null,
             Price: 0
@@ -1267,6 +1292,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case27.Product2", {
+        $kind: "nested class",
         fields: {
             Name: null,
             Price: 0
@@ -1300,6 +1326,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case34.Test1", {
+        $kind: "nested class",
         props: {
             GUID: null,
             IntProp: null
@@ -1350,6 +1377,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case4.MyList$1", function (T) { return {
         inherits: [System.Collections.Generic.IEnumerable$1(T)],
+        $kind: "nested class",
         fields: {
             _values: null
         },
@@ -1371,6 +1399,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     }; });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case4.MyString", {
+        $kind: "nested class",
         props: {
             Value: null
         },
@@ -1449,6 +1478,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case49.MyClass", {
+        $kind: "nested class",
         fields: {
             InField: 0,
             Member1: null
@@ -1515,6 +1545,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
      * @class Newtonsoft.Json.Tests.Issues.Case50.Person
      */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case50.Person", {
+        $kind: "nested class",
         fields: {
             _id: 0,
             _somethingElse: 0
@@ -1612,6 +1643,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case52.Person", {
+        $kind: "nested class",
         $literal: true,
         ctors: {
             ctor: function (value) {
@@ -1672,6 +1704,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case63.Product", {
+        $kind: "nested class",
         props: {
             Name: null,
             ExpiryDate: null,
@@ -1742,6 +1775,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
      * @class Newtonsoft.Json.Tests.Issues.Case67.Optional$1
      */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case67.Optional$1", function (T) { return {
+        $kind: "nested class",
         props: {
             Value: Bridge.getDefaultValue(T)
         },
@@ -1805,6 +1839,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
      */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1", function (T) { return {
         inherits: [System.Collections.Generic.IEnumerable$1(T)],
+        $kind: "nested class",
         statics: {
             fields: {
                 _empty: null
@@ -1906,6 +1941,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     }; });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1.Node", function (T) { return {
+        $kind: "nested class",
         fields: {
             Count: 0,
             Item: Bridge.getDefaultValue(T),
@@ -1920,6 +1956,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
      * @class Newtonsoft.Json.Tests.Issues.Case68.Test
      */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case68.Test", {
+        $kind: "nested class",
         props: {
             Name: null
         },
@@ -1990,6 +2027,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case72.Account", {
+        $kind: "nested class",
         props: {
             EmailAddress: null,
             Deleted: false,
@@ -2004,6 +2042,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case72.Vessel", {
+        $kind: "nested class",
         props: {
             Name: null,
             Class: null,
@@ -2012,6 +2051,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case72.Videogame", {
+        $kind: "nested class",
         props: {
             Name: null,
             ReleaseDate: null
@@ -2024,6 +2064,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case72.Videogame2", {
+        $kind: "nested class",
         props: {
             Name: null,
             ReleaseDate: null
@@ -2052,6 +2093,13 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     Bridge.Test.NUnit.Assert.AreEqual("{\"Value\":1}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.Newtonsoft.Json.Tests.Issues.Case74.MyKey, key, false), "Object serialized correctly.");
                     Bridge.Test.NUnit.Assert.AreEqual("{\"1\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String), listingLevelNames, false), "Custom dictionary serialized correctly.");
+                },
+                TestSimpleDictionaryKey: function () {
+                    var key = new Newtonsoft.Json.Tests.Issues.Case74.SimpleKey();
+                    var listingLevelNames = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.SimpleKey,System.String))();
+                    listingLevelNames.add(key, "None");
+
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Newtonsoft.Json.Tests.Issues.Case74+SimpleKey\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.SimpleKey,System.String), listingLevelNames, false), "Simple dictionary serialized correctly.");
                 }
             }
         }
@@ -2059,7 +2107,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case74.MyKey", {
         inherits: function () { return [System.IEquatable$1(Newtonsoft.Json.Tests.Issues.Case74.MyKey)]; },
-        $kind: "struct",
+        $kind: "nested struct",
         statics: {
             methods: {
                 op_Explicit$1: function (value) {
@@ -2101,10 +2149,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 return Bridge.getHashCode(this.Value);
             },
             toString: function () {
-                return this.Value.toString();
+                return Bridge.toString(this.Value);
             },
             $clone: function (to) { return this; }
         }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case74.SimpleKey", {
+        $kind: "nested class"
     });
 
     /**
@@ -2143,6 +2195,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case79.SuperClass", {
+        $kind: "nested class",
         props: {
             IsItReal: false
         }
@@ -2260,12 +2313,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$1", function (T) { return {
+        $kind: "nested class",
         fields: {
             Value: Bridge.getDefaultValue(T)
         }
     }; });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$2", function (T, K) { return {
+        $kind: "nested class",
         fields: {
             Value1: Bridge.getDefaultValue(T)
         },
@@ -2275,6 +2330,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     }; });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8.Container", {
+        $kind: "nested class",
         statics: {
             methods: {
                 Create: function (K, value) {
@@ -2286,18 +2342,21 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8.Container$1", function (T) { return {
+        $kind: "nested class",
         fields: {
             Item1: Bridge.getDefaultValue(T)
         }
     }; });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8.PageEditData", {
+        $kind: "nested class",
         props: {
             Data: 0
         }
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case8.PageEditData$1", function (T) { return {
+        $kind: "nested class",
         props: {
             Data: Bridge.getDefaultValue(T)
         }
@@ -2365,6 +2424,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
      */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1", function (T) { return {
         inherits: [System.Collections.Generic.IEnumerable$1(T)],
+        $kind: "nested class",
         fields: {
             _headIfAny: null
         },
@@ -2445,6 +2505,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     }; });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1.Node", function (T) { return {
+        $kind: "nested class",
         fields: {
             Count: 0,
             Item: Bridge.getDefaultValue(T),
@@ -2460,6 +2521,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
      * @class Newtonsoft.Json.Tests.Issues.Case81.Test
      */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.Test", {
+        $kind: "nested class",
         props: {
             Name: null
         },
@@ -2479,6 +2541,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
      * @class Newtonsoft.Json.Tests.Issues.Case81.Test2
      */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.Test2", {
+        $kind: "nested class",
         props: {
             Name: null
         },
@@ -2497,6 +2560,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
      * @class Newtonsoft.Json.Tests.Issues.Case81.Test3
      */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case81.Test3", {
+        $kind: "nested class",
         props: {
             Name: null
         }
@@ -2533,6 +2597,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case82.Test", {
+        $kind: "nested class",
         fields: {
             IntID: null,
             LowID: null,
@@ -2596,6 +2661,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.JsonConstructorTests.MultipleJsonConstructors", {
+        $kind: "nested class",
         ctors: {
             $ctor1: function (s) {
                 this.$initialize();
@@ -2607,6 +2673,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.JsonConstructorTests.MyOtherString", {
+        $kind: "nested class",
         statics: {
             props: {
                 Empty: null
@@ -2634,6 +2701,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.JsonConstructorTests.User", {
+        $kind: "nested class",
         props: {
             UserName: null,
             Enabled: false
@@ -2672,8 +2740,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var cloneAsArray = System.Linq.Enumerable.from(Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel), settings)).toArray();
 
                     Bridge.Test.NUnit.Assert.AreEqual(2, cloneAsArray.length, "Optimized deserialization length");
-                    Bridge.Test.NUnit.Assert.AreEqual(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, "Optimized deserialization index 0 data type");
-                    Bridge.Test.NUnit.Assert.AreEqual(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, "Optimized deserialization index 1 data type");
+                    Bridge.Test.NUnit.Assert.AreEqual(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, Bridge.getType(cloneAsArray[System.Array.index(0, cloneAsArray)], Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel), "Optimized deserialization index 0 data type");
+                    Bridge.Test.NUnit.Assert.AreEqual(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, Bridge.getType(cloneAsArray[System.Array.index(1, cloneAsArray)], Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel), "Optimized deserialization index 1 data type");
                 },
                 /**
                  * The optimization should NOT apply to this data since there are
@@ -2703,10 +2771,13 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
-    Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase");
+    Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase", {
+        $kind: "nested class"
+    });
 
     Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1", function (T) { return {
         inherits: [System.Collections.Generic.IEnumerable$1(T)],
+        $kind: "nested class",
         fields: {
             _headIfAny: null
         },
@@ -2798,6 +2869,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     }; });
 
     Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1.Node", function (T) { return {
+        $kind: "nested class",
         fields: {
             Count: 0,
             Item: Bridge.getDefaultValue(T),
@@ -2984,6 +3056,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.SerializationTests.Class1", {
+        $kind: "nested class",
         props: {
             Sub1: null,
             Sub2: null
@@ -2991,18 +3064,21 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.SerializationTests.Class2", {
+        $kind: "nested class",
         props: {
             IntProp: 0
         }
     });
 
     Bridge.define("Newtonsoft.Json.Tests.SerializationTests.Class3", {
+        $kind: "nested class",
         props: {
             StringProp: null
         }
     });
 
     Bridge.define("Newtonsoft.Json.Tests.SerializationTests.ClassWithFields", {
+        $kind: "nested class",
         fields: {
             byteArrayField: null,
             guidField: null,
@@ -3051,7 +3127,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.SerializationTests.E1", {
-        $kind: "enum",
+        $kind: "nested enum",
         statics: {
             fields: {
                 Item1: 0,
@@ -3062,6 +3138,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.SerializationTests.SubClass1", {
+        $kind: "nested class",
         props: {
             Owner: null,
             List1: null
@@ -3069,6 +3146,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.SerializationTests.SubClass2", {
+        $kind: "nested class",
         props: {
             Owner: null,
             List1: null
@@ -3088,7 +3166,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     if (ms === void 0) { ms = null; }
                     if (message === void 0) { message = null; }
                     Bridge.Test.NUnit.Assert.AreEqual(kind, System.DateTime.getKind(dt), (message || "") + "Kind");
-                    Bridge.Test.NUnit.Assert.AreEqual(ticks.toString(), System.DateTime.getTicks(dt).toString(), (message || "") + "Ticks");
+                    Bridge.Test.NUnit.Assert.AreEqual(Bridge.toString(ticks), Bridge.toString(System.DateTime.getTicks(dt)), (message || "") + "Ticks");
 
                     if (System.Nullable.hasValue(year)) {
                         Bridge.Test.NUnit.Assert.AreEqual(System.Nullable.getValue(year), System.DateTime.getYear(dt), (message || "") + "Year");
@@ -3121,7 +3199,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 AssertDate: function (expected, actual, message) {
                     if (message === void 0) { message = null; }
                     Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.getKind(expected), System.DateTime.getKind(actual), (message || "") + "Kind");
-                    Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.getTicks(expected).toString(), System.DateTime.getTicks(actual).toString(), (message || "") + "Ticks");
+                    Bridge.Test.NUnit.Assert.AreEqual(Bridge.toString(System.DateTime.getTicks(expected)), Bridge.toString(System.DateTime.getTicks(actual)), (message || "") + "Ticks");
 
                     Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.getYear(expected), System.DateTime.getYear(actual), (message || "") + "Year");
                     Bridge.Test.NUnit.Assert.AreEqual(System.DateTime.getMonth(expected), System.DateTime.getMonth(actual), (message || "") + "Month");
@@ -3157,12 +3235,12 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 AssertIsDecimalAndEqualTo$1: function (v, d, message) {
                     if (message === void 0) { message = null; }
                     Bridge.Test.NUnit.Assert.AreStrictEqual(true, Bridge.is(v, System.Decimal), message);
-                    Bridge.Test.NUnit.Assert.AreStrictEqual(System.Double.format(d), v.toString(), message);
+                    Bridge.Test.NUnit.Assert.AreStrictEqual(System.Double.format(d), Bridge.toString(v), message);
                 },
                 AssertIsDecimalAndEqualTo: function (v, d, message) {
                     if (message === void 0) { message = null; }
                     Bridge.Test.NUnit.Assert.AreStrictEqual(true, Bridge.is(v, System.Decimal), message);
-                    Bridge.Test.NUnit.Assert.AreStrictEqual(d.toString(), v.toString(), message);
+                    Bridge.Test.NUnit.Assert.AreStrictEqual(d.toString(), Bridge.toString(v), message);
                 }
             }
         }
@@ -3183,6 +3261,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     Bridge.define("TestCase67.SubClass");
 
     Bridge.define("TestCase67.SubClass.Optional$1", function (T) { return {
+        $kind: "nested class",
         props: {
             Value: Bridge.getDefaultValue(T)
         },
@@ -3209,6 +3288,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     Bridge.define("TestCase67.SubNameSpace.SubClass");
 
     Bridge.define("TestCase67.SubNameSpace.SubClass.Optional$1", function (T) { return {
+        $kind: "nested class",
         props: {
             Value: Bridge.getDefaultValue(T)
         },
@@ -3222,6 +3302,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Newtonsoft.Json.Tests.Case2.Class2", {
         inherits: [Newtonsoft.Json.Tests.Case2.Class1],
+        $kind: "nested class",
         props: {
             Prop1$1: 0
         }
@@ -3229,6 +3310,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Newtonsoft.Json.Tests.Case2.Class3", {
         inherits: [Newtonsoft.Json.Tests.Case2.I1],
+        $kind: "nested class",
         props: {
             Prop1: 0
         },
@@ -3237,6 +3319,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.Person", {
         inherits: [Newtonsoft.Json.Tests.DeserializationTests.INamedEntity],
+        $kind: "nested class",
         props: {
             Id: null,
             Name: null,
@@ -3263,10 +3346,12 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.AlternativeKeyValuePairDataModel", {
-        inherits: [Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase]
+        inherits: [Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase],
+        $kind: "nested class"
     });
 
     Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel", {
-        inherits: [Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase]
+        inherits: [Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase],
+        $kind: "nested class"
     });
 });

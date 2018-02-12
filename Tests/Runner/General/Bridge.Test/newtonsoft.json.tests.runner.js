@@ -60,6 +60,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             QUnit.test("#72 - TestJsonPropertyRequire", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case72.TestJsonPropertyRequire);
             QUnit.test("#72 - TestJsonPropertyNullValue", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case72.TestJsonPropertyNullValue);
             QUnit.test("#74 - TestCustomDictionaryKey", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case74.TestCustomDictionaryKey);
+            QUnit.test("#74 - TestSimpleDictionaryKey", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case74.TestSimpleDictionaryKey);
             QUnit.test("#79 - TestCustomDictionaryKey", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case79.TestCustomDictionaryKey);
             QUnit.test("#8 - TestGenericTypeHandling", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case8.TestGenericTypeHandling);
             QUnit.test("#8 - TestGenericTypeHandlingMoreGenericLevel", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case8.TestGenericTypeHandlingMoreGenericLevel);
@@ -107,6 +108,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Bridge1134", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Bridge1134)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestJsonArrayParse: function (assert) {
@@ -132,6 +134,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Bridge1438", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Bridge1438)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestJSONParse: function (assert) {
@@ -162,6 +165,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Bridge2641", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Bridge2641)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestJsonCamelCaseForFields: function (assert) {
@@ -187,6 +191,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Bridge2679", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Bridge2679)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestTypeNameHandling: function (assert) {
@@ -212,6 +217,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Bridge501", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Bridge501)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestUseCase: function (assert) {
@@ -237,6 +243,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case10", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case10)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestPropertiesWithSameReferenceValue: function (assert) {
@@ -262,6 +269,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case14", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case14)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestCaseInsensitiveMatch: function (assert) {
@@ -287,6 +295,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case16)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestPopulateObject: function (assert) {
@@ -337,6 +346,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case18", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case18)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestNullable: function (assert) {
@@ -362,6 +372,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case2", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Case2)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestMetadata: function (assert) {
@@ -387,6 +398,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case22", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case22)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestEnumJson: function (assert) {
@@ -412,6 +424,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case25", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case25)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestSerializerSettings: function (assert) {
@@ -437,6 +450,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case26", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case26)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestInvalidJson: function (assert) {
@@ -462,6 +476,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case27", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case27)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestValueTypeProperty: function (assert) {
@@ -492,6 +507,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case34", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case34)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestGuid: function (assert) {
@@ -517,6 +533,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case38", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case38)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestKeyValuePair: function (assert) {
@@ -542,6 +559,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case4", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case4)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestConstructorWithArgument: function (assert) {
@@ -572,6 +590,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case43", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case43)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestCultureInfo: function (assert) {
@@ -597,6 +616,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case49", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case49)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestInvalidSchema: function (assert) {
@@ -622,6 +642,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case50", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case50)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestDeserializationConstructor: function (assert) {
@@ -647,6 +668,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case52", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case52)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestObjectLiteral: function (assert) {
@@ -672,6 +694,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case63", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case63)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestJsonIgnore: function (assert) {
@@ -697,6 +720,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case67", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case67)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestTypeGenericSerialize: function (assert) {
@@ -722,6 +746,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case68", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case68)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestCustomIEnumerable: function (assert) {
@@ -747,6 +772,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case72", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case72)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestJsonProperty: function (assert) {
@@ -787,12 +813,18 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case74", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case74)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestCustomDictionaryKey: function (assert) {
                     var $t;
-                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case74).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case74, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestCustomDictionaryKey()", $t.Line = "43", $t));
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case74).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case74, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestCustomDictionaryKey()", $t.Line = "47", $t));
                     Newtonsoft.Json.Tests.Issues.Case74.TestCustomDictionaryKey();
+                },
+                TestSimpleDictionaryKey: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case74).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case74, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestSimpleDictionaryKey()", $t.Line = "58", $t));
+                    Newtonsoft.Json.Tests.Issues.Case74.TestSimpleDictionaryKey();
                 }
             }
         },
@@ -812,6 +844,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case79", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case79)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestCustomDictionaryKey: function (assert) {
@@ -837,6 +870,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case8", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case8)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestGenericTypeHandling: function (assert) {
@@ -877,6 +911,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case81", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case81)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestConstructors: function (assert) {
@@ -902,6 +937,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case82", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case82)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestNullableDeserialization: function (assert) {
@@ -927,6 +963,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.DeserializationTests", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.DeserializationTests)],
+        $kind: "nested class",
         statics: {
             methods: {
                 ByteArrayWorks: function (assert) {
@@ -1062,6 +1099,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.JsonConstructorTests", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.JsonConstructorTests)],
+        $kind: "nested class",
         statics: {
             methods: {
                 TestJsonConstructor: function (assert) {
@@ -1097,6 +1135,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.ListOptimizationTests", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.ListOptimizationTests)],
+        $kind: "nested class",
         statics: {
             methods: {
                 DeserializationWorks: function (assert) {
@@ -1127,6 +1166,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
 
     Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.SerializationTests", {
         inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.SerializationTests)],
+        $kind: "nested class",
         statics: {
             methods: {
                 ByteArrayWorks: function (assert) {
