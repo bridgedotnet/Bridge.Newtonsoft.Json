@@ -55,6 +55,10 @@ namespace Newtonsoft.Json.Tests.Issues
             Assert.AreEqual("{\"1\":\"None\"}", Serialize(listingLevelNames, false), "Custom dictionary serialized correctly.");
         }
 
+        /// <summary>
+        /// This tests another breaking approach when using dictionary with
+        /// simple/bare classes, as reported by bridgedotnet/Bridge#3376.
+        /// </summary>
         [Test]
         public static void TestSimpleDictionaryKey()
         {
