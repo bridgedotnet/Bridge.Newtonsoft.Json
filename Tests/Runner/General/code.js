@@ -2094,6 +2094,16 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual("{\"Value\":1}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.Newtonsoft.Json.Tests.Issues.Case74.MyKey, key, false), "Object serialized correctly.");
                     Bridge.Test.NUnit.Assert.AreEqual("{\"1\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String), listingLevelNames, false), "Custom dictionary serialized correctly.");
                 },
+                /**
+                 * This tests another breaking approach when using dictionary with
+                 simple/bare classes, as reported by bridgedotnet/Bridge#3376.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case74
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case74
+                 * @return  {void}
+                 */
                 TestSimpleDictionaryKey: function () {
                     var key = new Newtonsoft.Json.Tests.Issues.Case74.SimpleKey();
                     var listingLevelNames = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.SimpleKey,System.String))();
