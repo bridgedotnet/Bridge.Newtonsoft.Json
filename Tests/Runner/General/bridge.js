@@ -1,5 +1,5 @@
 /**
- * @version   : 16.7.2 - Bridge.NET
+ * @version   : 16.8.0 - Bridge.NET
  * @author    : Object.NET, Inc. http://bridge.net/
  * @copyright : Copyright 2008-2018 Object.NET, Inc. http://object.net/
  * @license   : See license.txt and https://github.com/bridgedotnet/Bridge/blob/master/LICENSE.md
@@ -3228,8 +3228,8 @@
     // @source systemAssemblyVersion.js
 
     Bridge.init(function () {
-        Bridge.SystemAssembly.version = "16.7.2";
-        Bridge.SystemAssembly.compiler = "16.7.2";
+        Bridge.SystemAssembly.version = "16.8.0";
+        Bridge.SystemAssembly.compiler = "16.8.0";
     });
 
     Bridge.define("Bridge.Utils.SystemAssemblyVersion");
@@ -12581,53 +12581,25 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             },
 
             getKeys: function () {
-                var keys = [];
-                var entry;
                 if (this.isSimpleKey) {
-                    keys = this.keys
-                } else {
-                    // FIXME: A single key may hold more than one values. So
-                    // when getting keys, should we return the repeated keys
-                    // when more than one value is bound to them, or return
-                    // just an array of unique keys?
-                    for (var i = 0; i < this.keys.length; i++) {
-                        entry = this.entries[this.keys[i]];
-
-                        // If we don't want to loop thru the entry, we should
-                        // at least throw an exception if there's more than one
-                        // element in a given key.
-                        if (entry.length != 1) {
-                            throw new System.Exception("The single dictionary key has more than one entries at key: " + this.keys[i]);
-                        }
-
-                        keys.push(entry[0].key);
-                    }
+                    return System.Array.init(this.keys, TKey);
                 }
 
-                return System.Array.init(keys, TKey);
+                return new (System.Collections.Generic.DictionaryCollection$1(TKey))(this, true);
             },
 
             getValues: function () {
-                var values = [];
-                var entry;
-
                 if (this.isSimpleKey) {
+                    var values = [];
+
                     for (var i = 0; i < this.keys.length; i++) {
                         values.push(this.entries[this.keys[i]].value);
                     }
-                } else {
-                    for (var i = 0; i < this.keys.length; i++) {
-                        entry = this.entries[this.keys[i]];
 
-                        if (entry.length != 1) {
-                            throw new System.Exception("The single dictionary value has more than one entries at key: " + this.keys[i]);
-                        }
-
-                        values.push(entry[0].value);
-                    }
+                    return System.Array.init(values, TValue);
                 }
 
-                return System.Array.init(values, TValue);
+                return new (System.Collections.Generic.DictionaryCollection$1(TValue))(this, false);
             },
 
             clear: function () {
