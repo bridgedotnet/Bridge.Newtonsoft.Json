@@ -12581,25 +12581,53 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             },
 
             getKeys: function () {
+                var keys = [];
+                var entry;
                 if (this.isSimpleKey) {
-                    return System.Array.init(this.keys, TKey);
+                    keys = this.keys
+                } else {
+                    // FIXME: A single key may hold more than one values. So
+                    // when getting keys, should we return the repeated keys
+                    // when more than one value is bound to them, or return
+                    // just an array of unique keys?
+                    for (var i = 0; i < this.keys.length; i++) {
+                        entry = this.entries[this.keys[i]];
+
+                        // If we don't want to loop thru the entry, we should
+                        // at least throw an exception if there's more than one
+                        // element in a given key.
+                        if (entry.length != 1) {
+                            throw new System.Exception("The single dictionary key has more than one entries at key: " + this.keys[i]);
+                        }
+
+                        keys.push(entry[0].key);
+                    }
                 }
 
-                return new (System.Collections.Generic.DictionaryCollection$1(TKey))(this, true);
+                return System.Array.init(keys, TKey);
             },
 
             getValues: function () {
-                if (this.isSimpleKey) {
-                    var values = [];
+                var values = [];
+                var entry;
 
+                if (this.isSimpleKey) {
                     for (var i = 0; i < this.keys.length; i++) {
                         values.push(this.entries[this.keys[i]].value);
                     }
+                } else {
+                    for (var i = 0; i < this.keys.length; i++) {
+                        entry = this.entries[this.keys[i]];
 
-                    return System.Array.init(values, TValue);
+                        if (entry.length != 1) {
+                            throw new System.Exception("The single dictionary value has more than one entries at key: " + this.keys[i]);
+                        }
+
+                        values.push(entry[0].value);
+                    }
                 }
 
-                return new (System.Collections.Generic.DictionaryCollection$1(TValue))(this, false);
+                return System.Array.init(values, TValue);
             },
 
             clear: function () {
@@ -14626,8 +14654,8 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                 return tcs.task;
             },
 
-            fromResult: function (result) {
-                var t = new System.Threading.Tasks.Task();
+            fromResult: function (result, T) {
+                var t = new (System.Threading.Tasks.Task$1(T || System.Object))();
 
                 t.status = System.Threading.Tasks.TaskStatus.ranToCompletion;
                 t.result = result;
@@ -30033,7 +30061,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
                 return n;
             },
             ReadToEndAsync: function () {
-                return System.Threading.Tasks.Task.fromResult(this.ReadToEnd());
+                return System.Threading.Tasks.Task.fromResult(this.ReadToEnd(), System.String);
             },
             ReadToEnd: function () {
 
