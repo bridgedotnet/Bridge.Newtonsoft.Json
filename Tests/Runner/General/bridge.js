@@ -32,7 +32,7 @@
                 throw new System.ArgumentNullException();
             }
 
-            var guardItem = Bridge.$toStringGuard[Bridge.$toStringGuard.length - 1];           
+            var guardItem = Bridge.$toStringGuard[Bridge.$toStringGuard.length - 1];
 
             if (instance.toString === Object.prototype.toString || guardItem && guardItem === instance) {
                 return Bridge.Reflection.getTypeFullName(instance);
@@ -968,7 +968,7 @@
                 }
             } else {
                 var t = Bridge.getType(to),
-					descriptors = t && t.$descriptors;
+                    descriptors = t && t.$descriptors;
 
                 if (from) {
                     for (key in from) {
@@ -5111,83 +5111,6 @@ Bridge.Reflection = {
 
     Bridge.Class.addExtend(System.Char, [System.IComparable$1(System.Char), System.IEquatable$1(System.Char)]);
 
-    // @source formattableString.js
-
-    Bridge.define("System.FormattableString", {
-        inherits: [System.IFormattable],
-        statics: {
-            methods: {
-                invariant: function (formattable) {
-                    return formattable.toString$1(System.Globalization.CultureInfo.invariantCulture);
-                }
-            }
-        },
-        methods: {
-            toString: function () {
-                return this.toString$1(System.Globalization.CultureInfo.getCurrentCulture());
-            },
-            System$IFormattable$format: function (format, formatProvider) {
-                return this.toString$1(formatProvider);
-            }
-        }
-    });
-
-    // @source formattableStringImpl.js
-
-    Bridge.define("System.FormattableStringImpl", {
-        inherits: [System.FormattableString],
-        fields: {
-            args: null,
-            format: null
-        },
-        props: {
-            ArgumentCount: {
-                get: function () {
-                    return this.args.length;
-                }
-            },
-            Format: {
-                get: function () {
-                    return this.format;
-                }
-            }
-        },
-        ctors: {
-            ctor: function (format, args) {
-                if (args === void 0) { args = []; }
-
-                this.$initialize();
-                System.FormattableString.ctor.call(this);
-                this.format = format;
-                this.args = args;
-            }
-        },
-        methods: {
-            getArgument: function (index) {
-                return this.args[System.Array.index(index, this.args)];
-            },
-            getArguments: function () {
-                return this.args;
-            },
-            toString$1: function (formatProvider) {
-                return System.String.formatProvider.apply(System.String, [formatProvider, this.format].concat(this.args));
-            }
-        }
-    });
-
-    // @source formattableStringFactory.js
-
-    Bridge.define("System.Runtime.CompilerServices.FormattableStringFactory", {
-        statics: {
-            methods: {
-                create: function (format, args) {
-                    if (args === void 0) { args = []; }
-                    return new System.FormattableStringImpl(format, args);
-                }
-            }
-        }
-    });
-
     // @source Exception.js
 
 Bridge.define("System.Exception", {
@@ -5718,7 +5641,7 @@ Bridge.define("System.Exception", {
         }
     });
 
-    // @source textInfo.js
+    // @source TextInfo.js
 
     Bridge.define("System.Globalization.TextInfo", {
         inherits: [System.ICloneable,System.Object],
@@ -8724,36 +8647,6 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
     System.Decimal.MinValue = System.Decimal("-79228162514264337593543950335");
     System.Decimal.MaxValue = System.Decimal("79228162514264337593543950335");
     System.Decimal.precision = 29;
-
-    // @source dayOfWeek.js
-
-    Bridge.define("System.DayOfWeek", {
-        $kind: "enum",
-        statics: {
-            fields: {
-                Sunday: 0,
-                Monday: 1,
-                Tuesday: 2,
-                Wednesday: 3,
-                Thursday: 4,
-                Friday: 5,
-                Saturday: 6
-            }
-        }
-    });
-
-    // @source dateTimeKind.js
-
-    Bridge.define("System.DateTimeKind", {
-        $kind: "enum",
-        statics: {
-            fields: {
-                Unspecified: 0,
-                Utc: 1,
-                Local: 2
-            }
-        }
-    });
 
     // @source Date.js
 
@@ -12193,26 +12086,26 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
         inherits: [System.Collections.IEnumerator, System.IDisposable],
 
         config: {
-			properties: {
-				Current: {
-					get: function () {
-						return this.getCurrent();
-					}
-				},
+            properties: {
+                Current: {
+                    get: function () {
+                        return this.getCurrent();
+                    }
+                },
 
-				Current$1: {
-				    get: function () {
-				        return this.getCurrent();
-				    }
-				}
-			},
-			
+                Current$1: {
+                    get: function () {
+                        return this.getCurrent();
+                    }
+                }
+            },
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
                 "reset", "System$Collections$IEnumerator$reset",
-				"dispose", "System$IDisposable$dispose",
-				"Current", "System$Collections$IEnumerator$Current"
+                "dispose", "System$IDisposable$dispose",
+                "Current", "System$Collections$IEnumerator$Current"
             ]
         },
 
@@ -12282,26 +12175,26 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
         },
 
         config: {
-			properties: {
-				Current: {
-					get: function () {
-						return this.getCurrent();
-					}
-				},
+            properties: {
+                Current: {
+                    get: function () {
+                        return this.getCurrent();
+                    }
+                },
 
-				Current$1: {
-				    get: function () {
-				        return this.getCurrent();
-				    }
-				}
-			},
-			
+                Current$1: {
+                    get: function () {
+                        return this.getCurrent();
+                    }
+                }
+            },
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
                 "reset", "System$Collections$IEnumerator$reset",
                 "dispose", "System$IDisposable$dispose",
-				"Current", "System$Collections$IEnumerator$Current"
+                "Current", "System$Collections$IEnumerator$Current"
             ]
         },
 
@@ -12909,106 +12802,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
         };
     });
 
-    // @source enumerator.js
-
-    Bridge.define("System.Collections.Generic.List$1.Enumerator", function (T) { return {
-        inherits: [System.Collections.Generic.IEnumerator$1(T),System.Collections.IEnumerator],
-        $kind: "nested struct",
-        statics: {
-            methods: {
-                getDefaultValue: function () { return new (System.Collections.Generic.List$1.Enumerator(T))(); }
-            }
-        },
-        fields: {
-            list: null,
-            index: 0,
-            version: 0,
-            current: Bridge.getDefaultValue(T)
-        },
-        props: {
-            Current: {
-                get: function () {
-                    return this.current;
-                }
-            },
-            System$Collections$IEnumerator$Current: {
-                get: function () {
-                    if (this.index === 0 || this.index === ((this.list._size + 1) | 0)) {
-                        throw new System.InvalidOperationException();
-                    }
-                    return this.Current;
-                }
-            }
-        },
-        alias: [
-            "dispose", "System$IDisposable$dispose",
-            "moveNext", "System$Collections$IEnumerator$moveNext",
-            "Current", ["System$Collections$Generic$IEnumerator$1$" + Bridge.getTypeAlias(T) + "$Current$1", "System$Collections$Generic$IEnumerator$1$Current$1"]
-        ],
-        ctors: {
-            $ctor1: function (list) {
-                this.$initialize();
-                this.list = list;
-                this.index = 0;
-                this.version = list._version;
-                this.current = Bridge.getDefaultValue(T);
-            },
-            ctor: function () {
-                this.$initialize();
-            }
-        },
-        methods: {
-            dispose: function () { },
-            moveNext: function () {
-
-                var localList = this.list;
-
-                if (this.version === localList._version && ((this.index >>> 0) < (localList._size >>> 0))) {
-                    this.current = localList._items[System.Array.index(this.index, localList._items)];
-                    this.index = (this.index + 1) | 0;
-                    return true;
-                }
-                return this.moveNextRare();
-            },
-            moveNextRare: function () {
-                if (this.version !== this.list._version) {
-                    throw new System.InvalidOperationException();
-                }
-
-                this.index = (this.list._size + 1) | 0;
-                this.current = Bridge.getDefaultValue(T);
-                return false;
-            },
-            System$Collections$IEnumerator$reset: function () {
-                if (this.version !== this.list._version) {
-                    throw new System.InvalidOperationException();
-                }
-
-                this.index = 0;
-                this.current = Bridge.getDefaultValue(T);
-            },
-            getHashCode: function () {
-                var h = Bridge.addHash([3788985113, this.list, this.index, this.version, this.current]);
-                return h;
-            },
-            equals: function (o) {
-                if (!Bridge.is(o, System.Collections.Generic.List$1.Enumerator(T))) {
-                    return false;
-                }
-                return Bridge.equals(this.list, o.list) && Bridge.equals(this.index, o.index) && Bridge.equals(this.version, o.version) && Bridge.equals(this.current, o.current);
-            },
-            $clone: function (to) {
-                var s = to || new (System.Collections.Generic.List$1.Enumerator(T))();
-                s.list = this.list;
-                s.index = this.index;
-                s.version = this.version;
-                s.current = this.current;
-                return s;
-            }
-        }
-    }; });
-
-    // @source list.js
+    // @source List.js
 
     Bridge.define("System.Collections.Generic.List$1", function (T) { return {
         inherits: [System.Collections.Generic.IList$1(T),System.Collections.IList,System.Collections.Generic.IReadOnlyList$1(T)],
@@ -13825,214 +13619,6 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
 
         return interfaceType ? Bridge.Reflection.getGenericArguments(interfaceType)[0] : null;
     };
-
-    // @source readOnlyCollection.js
-
-    Bridge.define("System.Collections.ObjectModel.ReadOnlyCollection$1", function (T) { return {
-        inherits: [System.Collections.Generic.IList$1(T),System.Collections.IList,System.Collections.Generic.IReadOnlyList$1(T)],
-        statics: {
-            methods: {
-                isCompatibleObject: function (value) {
-                    // Non-null values are fine.  Only accept nulls if T is a class or Nullable<U>.
-                    // Note that default(T) is not equal to null for value types except when T is Nullable<U>.
-                    return ((Bridge.is(value, T)) || (value == null && Bridge.getDefaultValue(T) == null));
-                }
-            }
-        },
-        fields: {
-            list: null
-        },
-        props: {
-            Count: {
-                get: function () {
-                    return System.Array.getCount(this.list, T);
-                }
-            },
-            System$Collections$ICollection$IsSynchronized: {
-                get: function () {
-                    return false;
-                }
-            },
-            System$Collections$ICollection$SyncRoot: {
-                get: function () {
-                    return this;
-                }
-            },
-            Items: {
-                get: function () {
-                    return this.list;
-                }
-            },
-            System$Collections$IList$IsFixedSize: {
-                get: function () {
-                    return true;
-                }
-            },
-            System$Collections$Generic$ICollection$1$IsReadOnly: {
-                get: function () {
-                    return true;
-                }
-            },
-            System$Collections$IList$IsReadOnly: {
-                get: function () {
-                    return true;
-                }
-            }
-        },
-        alias: [
-            "Count", "System$Collections$Generic$IReadOnlyCollection$1$" + Bridge.getTypeAlias(T) + "$Count",
-            "Count", "System$Collections$ICollection$Count",
-            "Count", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$Count",
-            "getItem", "System$Collections$Generic$IReadOnlyList$1$" + Bridge.getTypeAlias(T) + "$getItem",
-            "contains", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$contains",
-            "copyTo", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$copyTo",
-            "getEnumerator", ["System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(T) + "$getEnumerator", "System$Collections$Generic$IEnumerable$1$getEnumerator"],
-            "indexOf", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$indexOf",
-            "System$Collections$Generic$ICollection$1$IsReadOnly", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$IsReadOnly",
-            "System$Collections$Generic$IList$1$getItem", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$getItem",
-            "System$Collections$Generic$IList$1$setItem", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$setItem",
-            "System$Collections$Generic$ICollection$1$add", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$add",
-            "System$Collections$Generic$ICollection$1$clear", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$clear",
-            "System$Collections$Generic$IList$1$insert", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$insert",
-            "System$Collections$Generic$ICollection$1$remove", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$remove",
-            "System$Collections$Generic$IList$1$removeAt", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$removeAt"
-        ],
-        ctors: {
-            ctor: function (list) {
-                this.$initialize();
-                if (list == null) {
-                    throw new System.ArgumentNullException("list");
-                }
-                this.list = list;
-            }
-        },
-        methods: {
-            getItem: function (index) {
-                return System.Array.getItem(this.list, index, T);
-            },
-            System$Collections$Generic$IList$1$getItem: function (index) {
-                return System.Array.getItem(this.list, index, T);
-            },
-            System$Collections$Generic$IList$1$setItem: function (index, value) {
-                throw new System.NotSupportedException();
-            },
-            System$Collections$IList$getItem: function (index) {
-                return System.Array.getItem(this.list, index, T);
-            },
-            System$Collections$IList$setItem: function (index, value) {
-                throw new System.NotSupportedException();
-            },
-            contains: function (value) {
-                return System.Array.contains(this.list, value, T);
-            },
-            System$Collections$IList$contains: function (value) {
-                if (System.Collections.ObjectModel.ReadOnlyCollection$1(T).isCompatibleObject(value)) {
-                    return this.contains(Bridge.cast(Bridge.unbox(value), T));
-                }
-                return false;
-            },
-            copyTo: function (array, index) {
-                System.Array.copyTo(this.list, array, index, T);
-            },
-            System$Collections$ICollection$copyTo: function (array, index) {
-                if (array == null) {
-                    throw new System.ArgumentNullException("array");
-                }
-
-                if (System.Array.getRank(array) !== 1) {
-                    throw new System.ArgumentException("array");
-                }
-
-                if (System.Array.getLower(array, 0) !== 0) {
-                    throw new System.ArgumentException("array");
-                }
-
-                if (index < 0) {
-                    throw new System.ArgumentOutOfRangeException("index");
-                }
-
-                if (((array.length - index) | 0) < this.Count) {
-                    throw new System.ArgumentException();
-                }
-
-                var items = Bridge.as(array, System.Array.type(T));
-                if (items != null) {
-                    System.Array.copyTo(this.list, items, index, T);
-                } else {
-                    //
-                    // Catch the obvious case assignment will fail.
-                    // We can found all possible problems by doing the check though.
-                    // For example, if the element type of the Array is derived from T,
-                    // we can't figure out if we can successfully copy the element beforehand.
-                    //
-                    var targetType = (Bridge.getType(array).$elementType || null);
-                    var sourceType = T;
-                    if (!(Bridge.Reflection.isAssignableFrom(targetType, sourceType) || Bridge.Reflection.isAssignableFrom(sourceType, targetType))) {
-                        throw new System.ArgumentException();
-                    }
-
-                    //
-                    // We can't cast array of value type to object[], so we don't support
-                    // widening of primitive types here.
-                    //
-                    var objects = Bridge.as(array, System.Array.type(System.Object));
-                    if (objects == null) {
-                        throw new System.ArgumentException();
-                    }
-
-                    var count = System.Array.getCount(this.list, T);
-                    for (var i = 0; i < count; i = (i + 1) | 0) {
-                        objects[System.Array.index(Bridge.identity(index, (index = (index + 1) | 0)), objects)] = System.Array.getItem(this.list, i, T);
-                    }
-                }
-            },
-            getEnumerator: function () {
-                return Bridge.getEnumerator(this.list, T);
-            },
-            System$Collections$IEnumerable$getEnumerator: function () {
-                return Bridge.getEnumerator(Bridge.cast(this.list, System.Collections.IEnumerable));
-            },
-            indexOf: function (value) {
-                return System.Array.indexOf(this.list, value, 0, null, T);
-            },
-            System$Collections$IList$indexOf: function (value) {
-                if (System.Collections.ObjectModel.ReadOnlyCollection$1(T).isCompatibleObject(value)) {
-                    return this.indexOf(Bridge.cast(Bridge.unbox(value), T));
-                }
-                return -1;
-            },
-            System$Collections$Generic$ICollection$1$add: function (value) {
-                throw new System.NotSupportedException();
-            },
-            System$Collections$IList$add: function (value) {
-                throw new System.NotSupportedException();
-            },
-            System$Collections$Generic$ICollection$1$clear: function () {
-                throw new System.NotSupportedException();
-            },
-            System$Collections$IList$clear: function () {
-                throw new System.NotSupportedException();
-            },
-            System$Collections$Generic$IList$1$insert: function (index, value) {
-                throw new System.NotSupportedException();
-            },
-            System$Collections$IList$insert: function (index, value) {
-                throw new System.NotSupportedException();
-            },
-            System$Collections$Generic$ICollection$1$remove: function (value) {
-                throw new System.NotSupportedException();
-            },
-            System$Collections$IList$remove: function (value) {
-                throw new System.NotSupportedException();
-            },
-            System$Collections$Generic$IList$1$removeAt: function (index) {
-                throw new System.NotSupportedException();
-            },
-            System$Collections$IList$removeAt: function (index) {
-                throw new System.NotSupportedException();
-            }
-        }
-    }; });
 
     // @source String.js
 
@@ -15383,539 +14969,6 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
     };
 
     Bridge.Validation = validation;
-
-    // @source version.js
-
-    Bridge.define("System.Version", {
-        inherits: function () { return [System.ICloneable,System.IComparable$1(System.Version),System.IEquatable$1(System.Version)]; },
-        statics: {
-            fields: {
-                separatorsArray: 0,
-                ZERO_CHAR_VALUE: 0
-            },
-            ctors: {
-                init: function () {
-                    this.separatorsArray = 46;
-                    this.ZERO_CHAR_VALUE = 48;
-                }
-            },
-            methods: {
-                appendPositiveNumber: function (num, sb) {
-                    var index = sb.getLength();
-                    var reminder;
-
-                    do {
-                        reminder = num % 10;
-                        num = (Bridge.Int.div(num, 10)) | 0;
-                        sb.insert(index, String.fromCharCode(((((System.Version.ZERO_CHAR_VALUE + reminder) | 0)) & 65535)));
-                    } while (num > 0);
-                },
-                parse: function (input) {
-                    if (input == null) {
-                        throw new System.ArgumentNullException("input");
-                    }
-
-                    var r = { v : new System.Version.VersionResult() };
-                    r.v.init("input", true);
-                    if (!System.Version.tryParseVersion(input, r)) {
-                        throw r.v.getVersionParseException();
-                    }
-                    return r.v.m_parsedVersion;
-                },
-                tryParse: function (input, result) {
-                    var r = { v : new System.Version.VersionResult() };
-                    r.v.init("input", false);
-                    var b = System.Version.tryParseVersion(input, r);
-                    result.v = r.v.m_parsedVersion;
-                    return b;
-                },
-                tryParseVersion: function (version, result) {
-                    var major = { }, minor = { }, build = { }, revision = { };
-
-                    if (version == null) {
-                        result.v.setFailure(System.Version.ParseFailureKind.ArgumentNullException);
-
-                        return false;
-                    }
-
-                    var parsedComponents = System.String.split(version, [System.Version.separatorsArray].map(function(i) {{ return String.fromCharCode(i); }}));
-                    var parsedComponentsLength = parsedComponents.length;
-
-                    if ((parsedComponentsLength < 2) || (parsedComponentsLength > 4)) {
-                        result.v.setFailure(System.Version.ParseFailureKind.ArgumentException);
-                        return false;
-                    }
-
-                    if (!System.Version.tryParseComponent(parsedComponents[System.Array.index(0, parsedComponents)], "version", result, major)) {
-                        return false;
-                    }
-
-                    if (!System.Version.tryParseComponent(parsedComponents[System.Array.index(1, parsedComponents)], "version", result, minor)) {
-                        return false;
-                    }
-
-                    parsedComponentsLength = (parsedComponentsLength - 2) | 0;
-
-                    if (parsedComponentsLength > 0) {
-                        if (!System.Version.tryParseComponent(parsedComponents[System.Array.index(2, parsedComponents)], "build", result, build)) {
-                            return false;
-                        }
-
-                        parsedComponentsLength = (parsedComponentsLength - 1) | 0;
-
-                        if (parsedComponentsLength > 0) {
-                            if (!System.Version.tryParseComponent(parsedComponents[System.Array.index(3, parsedComponents)], "revision", result, revision)) {
-                                return false;
-                            } else {
-                                result.v.m_parsedVersion = new System.Version.$ctor3(major.v, minor.v, build.v, revision.v);
-                            }
-                        } else {
-                            result.v.m_parsedVersion = new System.Version.$ctor2(major.v, minor.v, build.v);
-                        }
-                    } else {
-                        result.v.m_parsedVersion = new System.Version.$ctor1(major.v, minor.v);
-                    }
-
-                    return true;
-                },
-                tryParseComponent: function (component, componentName, result, parsedComponent) {
-                    if (!System.Int32.tryParse(component, parsedComponent)) {
-                        result.v.setFailure$1(System.Version.ParseFailureKind.FormatException, component);
-                        return false;
-                    }
-
-                    if (parsedComponent.v < 0) {
-                        result.v.setFailure$1(System.Version.ParseFailureKind.ArgumentOutOfRangeException, componentName);
-                        return false;
-                    }
-
-                    return true;
-                },
-                op_Equality: function (v1, v2) {
-                    if (Bridge.referenceEquals(v1, null)) {
-                        return Bridge.referenceEquals(v2, null);
-                    }
-
-                    return v1.equalsT(v2);
-                },
-                op_Inequality: function (v1, v2) {
-                    return !(System.Version.op_Equality(v1, v2));
-                },
-                op_LessThan: function (v1, v2) {
-                    if (v1 == null) {
-                        throw new System.ArgumentNullException("v1");
-                    }
-
-                    return (v1.compareTo(v2) < 0);
-                },
-                op_LessThanOrEqual: function (v1, v2) {
-                    if (v1 == null) {
-                        throw new System.ArgumentNullException("v1");
-                    }
-
-                    return (v1.compareTo(v2) <= 0);
-                },
-                op_GreaterThan: function (v1, v2) {
-                    return (System.Version.op_LessThan(v2, v1));
-                },
-                op_GreaterThanOrEqual: function (v1, v2) {
-                    return (System.Version.op_LessThanOrEqual(v2, v1));
-                }
-            }
-        },
-        fields: {
-            _Major: 0,
-            _Minor: 0,
-            _Build: 0,
-            _Revision: 0
-        },
-        props: {
-            Major: {
-                get: function () {
-                    return this._Major;
-                }
-            },
-            Minor: {
-                get: function () {
-                    return this._Minor;
-                }
-            },
-            Build: {
-                get: function () {
-                    return this._Build;
-                }
-            },
-            Revision: {
-                get: function () {
-                    return this._Revision;
-                }
-            },
-            MajorRevision: {
-                get: function () {
-                    return Bridge.Int.sxs((this._Revision >> 16) & 65535);
-                }
-            },
-            MinorRevision: {
-                get: function () {
-                    return Bridge.Int.sxs((this._Revision & 65535) & 65535);
-                }
-            }
-        },
-        alias: [
-            "clone", "System$ICloneable$clone",
-            "compareTo", ["System$IComparable$1$System$Version$compareTo", "System$IComparable$1$compareTo"],
-            "equalsT", "System$IEquatable$1$System$Version$equalsT"
-        ],
-        ctors: {
-            init: function () {
-                this._Build = -1;
-                this._Revision = -1;
-            },
-            $ctor3: function (major, minor, build, revision) {
-                this.$initialize();
-                if (major < 0) {
-                    throw new System.ArgumentOutOfRangeException("major", "Cannot be < 0");
-                }
-
-                if (minor < 0) {
-                    throw new System.ArgumentOutOfRangeException("minor", "Cannot be < 0");
-                }
-
-                if (build < 0) {
-                    throw new System.ArgumentOutOfRangeException("build", "Cannot be < 0");
-                }
-
-                if (revision < 0) {
-                    throw new System.ArgumentOutOfRangeException("revision", "Cannot be < 0");
-                }
-
-                this._Major = major;
-                this._Minor = minor;
-                this._Build = build;
-                this._Revision = revision;
-            },
-            $ctor2: function (major, minor, build) {
-                this.$initialize();
-                if (major < 0) {
-                    throw new System.ArgumentOutOfRangeException("major", "Cannot be < 0");
-                }
-
-                if (minor < 0) {
-                    throw new System.ArgumentOutOfRangeException("minor", "Cannot be < 0");
-                }
-
-                if (build < 0) {
-                    throw new System.ArgumentOutOfRangeException("build", "Cannot be < 0");
-                }
-
-                this._Major = major;
-                this._Minor = minor;
-                this._Build = build;
-            },
-            $ctor1: function (major, minor) {
-                this.$initialize();
-                if (major < 0) {
-                    throw new System.ArgumentOutOfRangeException("major", "Cannot be < 0");
-                }
-
-                if (minor < 0) {
-                    throw new System.ArgumentOutOfRangeException("minor", "Cannot be < 0");
-                }
-
-                this._Major = major;
-                this._Minor = minor;
-            },
-            $ctor4: function (version) {
-                this.$initialize();
-                var v = System.Version.parse(version);
-                this._Major = v.Major;
-                this._Minor = v.Minor;
-                this._Build = v.Build;
-                this._Revision = v.Revision;
-            },
-            ctor: function () {
-                this.$initialize();
-                this._Major = 0;
-                this._Minor = 0;
-            }
-        },
-        methods: {
-            clone: function () {
-                var v = new System.Version.ctor();
-                v._Major = this._Major;
-                v._Minor = this._Minor;
-                v._Build = this._Build;
-                v._Revision = this._Revision;
-                return (v);
-            },
-            compareTo$1: function (version) {
-                if (version == null) {
-                    return 1;
-                }
-
-                var v = Bridge.as(version, System.Version);
-                if (System.Version.op_Equality(v, null)) {
-                    throw new System.ArgumentException("version should be of System.Version type");
-                }
-
-                if (this._Major !== v._Major) {
-                    if (this._Major > v._Major) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-
-                if (this._Minor !== v._Minor) {
-                    if (this._Minor > v._Minor) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-
-                if (this._Build !== v._Build) {
-                    if (this._Build > v._Build) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-
-                if (this._Revision !== v._Revision) {
-                    if (this._Revision > v._Revision) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-
-                return 0;
-            },
-            compareTo: function (value) {
-                if (System.Version.op_Equality(value, null)) {
-                    return 1;
-                }
-
-                if (this._Major !== value._Major) {
-                    if (this._Major > value._Major) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-
-                if (this._Minor !== value._Minor) {
-                    if (this._Minor > value._Minor) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-
-                if (this._Build !== value._Build) {
-                    if (this._Build > value._Build) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-
-                if (this._Revision !== value._Revision) {
-                    if (this._Revision > value._Revision) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-
-                return 0;
-            },
-            equals: function (obj) {
-                return this.equalsT(Bridge.as(obj, System.Version));
-            },
-            equalsT: function (obj) {
-                if (System.Version.op_Equality(obj, null)) {
-                    return false;
-                }
-
-                // check that major, minor, build & revision numbers match
-                if ((this._Major !== obj._Major) || (this._Minor !== obj._Minor) || (this._Build !== obj._Build) || (this._Revision !== obj._Revision)) {
-                    return false;
-                }
-
-                return true;
-            },
-            getHashCode: function () {
-                // Let's assume that most version numbers will be pretty small and just
-                // OR some lower order bits together.
-
-                var accumulator = 0;
-
-                accumulator = accumulator | ((this._Major & 15) << 28);
-                accumulator = accumulator | ((this._Minor & 255) << 20);
-                accumulator = accumulator | ((this._Build & 255) << 12);
-                accumulator = accumulator | (this._Revision & 4095);
-
-                return accumulator;
-            },
-            toString: function () {
-                if (this._Build === -1) {
-                    return (this.toString$1(2));
-                }
-                if (this._Revision === -1) {
-                    return (this.toString$1(3));
-                }
-                return (this.toString$1(4));
-            },
-            toString$1: function (fieldCount) {
-                var sb;
-                switch (fieldCount) {
-                    case 0: 
-                        return ("");
-                    case 1: 
-                        return (Bridge.toString(this._Major));
-                    case 2: 
-                        sb = new System.Text.StringBuilder();
-                        System.Version.appendPositiveNumber(this._Major, sb);
-                        sb.append(String.fromCharCode(46));
-                        System.Version.appendPositiveNumber(this._Minor, sb);
-                        return sb.toString();
-                    default: 
-                        if (this._Build === -1) {
-                            throw new System.ArgumentException("Build should be > 0 if fieldCount > 2", "fieldCount");
-                        }
-                        if (fieldCount === 3) {
-                            sb = new System.Text.StringBuilder();
-                            System.Version.appendPositiveNumber(this._Major, sb);
-                            sb.append(String.fromCharCode(46));
-                            System.Version.appendPositiveNumber(this._Minor, sb);
-                            sb.append(String.fromCharCode(46));
-                            System.Version.appendPositiveNumber(this._Build, sb);
-                            return sb.toString();
-                        }
-                        if (this._Revision === -1) {
-                            throw new System.ArgumentException("Revision should be > 0 if fieldCount > 3", "fieldCount");
-                        }
-                        if (fieldCount === 4) {
-                            sb = new System.Text.StringBuilder();
-                            System.Version.appendPositiveNumber(this._Major, sb);
-                            sb.append(String.fromCharCode(46));
-                            System.Version.appendPositiveNumber(this._Minor, sb);
-                            sb.append(String.fromCharCode(46));
-                            System.Version.appendPositiveNumber(this._Build, sb);
-                            sb.append(String.fromCharCode(46));
-                            System.Version.appendPositiveNumber(this._Revision, sb);
-                            return sb.toString();
-                        }
-                        throw new System.ArgumentException("Should be < 5", "fieldCount");
-                }
-            }
-        }
-    });
-
-    // @source parseFailureKind.js
-
-    Bridge.define("System.Version.ParseFailureKind", {
-        $kind: "nested enum",
-        statics: {
-            fields: {
-                ArgumentNullException: 0,
-                ArgumentException: 1,
-                ArgumentOutOfRangeException: 2,
-                FormatException: 3
-            }
-        }
-    });
-
-    // @source versionResult.js
-
-    Bridge.define("System.Version.VersionResult", {
-        $kind: "nested struct",
-        statics: {
-            methods: {
-                getDefaultValue: function () { return new System.Version.VersionResult(); }
-            }
-        },
-        fields: {
-            m_parsedVersion: null,
-            m_failure: 0,
-            m_exceptionArgument: null,
-            m_argumentName: null,
-            m_canThrow: false
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-            }
-        },
-        methods: {
-            init: function (argumentName, canThrow) {
-                this.m_canThrow = canThrow;
-                this.m_argumentName = argumentName;
-            },
-            setFailure: function (failure) {
-                this.setFailure$1(failure, "");
-            },
-            setFailure$1: function (failure, argument) {
-                this.m_failure = failure;
-                this.m_exceptionArgument = argument;
-                if (this.m_canThrow) {
-                    throw this.getVersionParseException();
-                }
-            },
-            getVersionParseException: function () {
-                switch (this.m_failure) {
-                    case System.Version.ParseFailureKind.ArgumentNullException: 
-                        return new System.ArgumentNullException(this.m_argumentName);
-                    case System.Version.ParseFailureKind.ArgumentException: 
-                        return new System.ArgumentException("VersionString");
-                    case System.Version.ParseFailureKind.ArgumentOutOfRangeException: 
-                        return new System.ArgumentOutOfRangeException(this.m_exceptionArgument, "Cannot be < 0");
-                    case System.Version.ParseFailureKind.FormatException: 
-                        // Regenerate the FormatException as would be thrown by Int32.Parse()
-                        try {
-                            System.Int32.parse(this.m_exceptionArgument);
-                        }
-                        catch ($e1) {
-                            $e1 = System.Exception.create($e1);
-                            var e;
-                            if (Bridge.is($e1, System.FormatException)) {
-                                e = $e1;
-                                return e;
-                            } else if (Bridge.is($e1, System.OverflowException)) {
-                                e = $e1;
-                                return e;
-                            } else {
-                                throw $e1;
-                            }
-                        }
-                        return new System.FormatException("InvalidString");
-                    default: 
-                        return new System.ArgumentException("VersionString");
-                }
-            },
-            getHashCode: function () {
-                var h = Bridge.addHash([5139482776, this.m_parsedVersion, this.m_failure, this.m_exceptionArgument, this.m_argumentName, this.m_canThrow]);
-                return h;
-            },
-            equals: function (o) {
-                if (!Bridge.is(o, System.Version.VersionResult)) {
-                    return false;
-                }
-                return Bridge.equals(this.m_parsedVersion, o.m_parsedVersion) && Bridge.equals(this.m_failure, o.m_failure) && Bridge.equals(this.m_exceptionArgument, o.m_exceptionArgument) && Bridge.equals(this.m_argumentName, o.m_argumentName) && Bridge.equals(this.m_canThrow, o.m_canThrow);
-            },
-            $clone: function (to) {
-                var s = to || new System.Version.VersionResult();
-                s.m_parsedVersion = this.m_parsedVersion;
-                s.m_failure = this.m_failure;
-                s.m_exceptionArgument = this.m_exceptionArgument;
-                s.m_argumentName = this.m_argumentName;
-                s.m_canThrow = this.m_canThrow;
-                return s;
-            }
-        }
-    });
 
     // @source Attribute.js
 
@@ -17928,19 +16981,19 @@ Bridge.assembly("System", {}, function ($asm, globals) {
         current: null,
 
         config: {
-			properties: {
-				Current: {
-					get: function () {
-						return this.getCurrent();
-					}
-				}
-			},
-			
+            properties: {
+                Current: {
+                    get: function () {
+                        return this.getCurrent();
+                    }
+                }
+            },
+
             alias: [
-				"getCurrent", "System$Collections$IEnumerator$getCurrent",
-				"moveNext", "System$Collections$IEnumerator$moveNext",
-				"reset", "System$Collections$IEnumerator$reset",
-				"Current", "System$Collections$IEnumerator$Current"
+                "getCurrent", "System$Collections$IEnumerator$getCurrent",
+                "moveNext", "System$Collections$IEnumerator$moveNext",
+                "reset", "System$Collections$IEnumerator$reset",
+                "Current", "System$Collections$IEnumerator$Current"
             ]
         },
 
@@ -17970,26 +17023,26 @@ Bridge.assembly("System", {}, function ($asm, globals) {
             current: null,
 
             config: {
-				properties: {
-					Current: {
-						get: function () {
-							return this.getCurrent();
-						}
-					},
-					
-					Current$1: {
-						get: function () {
-							return this.getCurrent();
-						}
-					}
-				},
+                properties: {
+                    Current: {
+                        get: function () {
+                            return this.getCurrent();
+                        }
+                    },
+
+                    Current$1: {
+                        get: function () {
+                            return this.getCurrent();
+                        }
+                    }
+                },
                 alias: [
-					"getCurrent", ["System$Collections$Generic$IEnumerator$1$" + Bridge.getTypeAlias(T) + "$getCurrent$1", "System$Collections$Generic$IEnumerator$1$getCurrent$1"],
-					"Current", ["System$Collections$Generic$IEnumerator$1$" + Bridge.getTypeAlias(T) + "$Current$1", "System$Collections$Generic$IEnumerator$1$Current$1"],
-					"Current", "System$Collections$IEnumerator$Current",
-					"dispose", "System$IDisposable$dispose",
-					"moveNext", "System$Collections$IEnumerator$moveNext",
-					"reset", "System$Collections$IEnumerator$reset"
+                    "getCurrent", ["System$Collections$Generic$IEnumerator$1$" + Bridge.getTypeAlias(T) + "$getCurrent$1", "System$Collections$Generic$IEnumerator$1$getCurrent$1"],
+                    "Current", ["System$Collections$Generic$IEnumerator$1$" + Bridge.getTypeAlias(T) + "$Current$1", "System$Collections$Generic$IEnumerator$1$Current$1"],
+                    "Current", "System$Collections$IEnumerator$Current",
+                    "dispose", "System$IDisposable$dispose",
+                    "moveNext", "System$Collections$IEnumerator$moveNext",
+                    "reset", "System$Collections$IEnumerator$reset"
                 ]
             },
 
@@ -18989,8 +18042,8 @@ Bridge.assembly("System", {}, function ($asm, globals) {
 
             return new IEnumerator(
                 function () {
-					enumerator = Bridge.getEnumerator(source);
-				},
+                    enumerator = Bridge.getEnumerator(source);
+                },
                 function () {
                     while (enumerator.moveNext()) {
                         var v = Bridge.as(enumerator.Current, type);
@@ -19001,8 +18054,8 @@ Bridge.assembly("System", {}, function ($asm, globals) {
                     return false;
                 },
                 function () {
-					Utils.dispose(enumerator);
-				});
+                    Utils.dispose(enumerator);
+                });
         });
     };
 
@@ -20222,10 +19275,10 @@ Bridge.assembly("System", {}, function ($asm, globals) {
                 function () { sourceEnumerator = source.getEnumerator(); },
                 function () {
                     if (enumerator == null) {
-	                    while (sourceEnumerator.moveNext()) {
-	                        if (q.length == count) q.shift();
-	                        q.push(sourceEnumerator.Current);
-	                    }
+                        while (sourceEnumerator.moveNext()) {
+                            if (q.length == count) q.shift();
+                            q.push(sourceEnumerator.Current);
+                        }
                         enumerator = Enumerable.from(q).getEnumerator();
                     }
                     return (enumerator.moveNext())
@@ -21004,570 +20057,6 @@ Bridge.assembly("System", {}, function ($asm, globals) {
     System.Linq.OrderedEnumerable$1 = OrderedEnumerable;
 })(Bridge.global);
 
-    // @source guid.js
-
-    Bridge.define("System.Guid", {
-        inherits: function () { return [System.IEquatable$1(System.Guid),System.IComparable$1(System.Guid),System.IFormattable]; },
-        $kind: "struct",
-        statics: {
-            fields: {
-                error1: null,
-                valid: null,
-                split: null,
-                nonFormat: null,
-                replace: null,
-                rnd: null,
-                empty: null
-            },
-            ctors: {
-                init: function () {
-                    this.empty = new System.Guid();
-                    this.error1 = "Byte array for GUID must be exactly {0} bytes long";
-                    this.valid = new System.Text.RegularExpressions.Regex.ctor("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", 1);
-                    this.split = new System.Text.RegularExpressions.Regex.ctor("^(.{8})(.{4})(.{4})(.{4})(.{12})$");
-                    this.nonFormat = new System.Text.RegularExpressions.Regex.ctor("^[{(]?([0-9a-f]{8})-?([0-9a-f]{4})-?([0-9a-f]{4})-?([0-9a-f]{4})-?([0-9a-f]{12})[)}]?$", 1);
-                    this.replace = new System.Text.RegularExpressions.Regex.ctor("-");
-                    this.rnd = new System.Random.ctor();
-                }
-            },
-            methods: {
-                parse: function (input) {
-                    return System.Guid.parseExact(input, null);
-                },
-                parseExact: function (input, format) {
-                    var r = new System.Guid.ctor();
-                    r.parseInternal(input, format, true);
-                    return r;
-                },
-                tryParse: function (input, result) {
-                    return System.Guid.tryParseExact(input, null, result);
-                },
-                tryParseExact: function (input, format, result) {
-                    result.v = new System.Guid.ctor();
-                    return result.v.parseInternal(input, format, false);
-                },
-                newGuid: function () {
-                    var a = System.Array.init(16, 0, System.Byte);
-
-                    System.Guid.rnd.nextBytes(a);
-
-                    a[System.Array.index(7, a)] = (a[System.Array.index(7, a)] & 15 | 64) & 255;
-                    a[System.Array.index(8, a)] = (a[System.Array.index(8, a)] & 191 | 128) & 255;
-
-                    return new System.Guid.$ctor1(a);
-                },
-                makeBinary: function (x) {
-                    return System.Int32.format((x & 255), "x2");
-                },
-                op_Equality: function (a, b) {
-                    if (Bridge.referenceEquals(a, null)) {
-                        return Bridge.referenceEquals(b, null);
-                    }
-
-                    return a.equalsT(b);
-                },
-                op_Inequality: function (a, b) {
-                    return !(System.Guid.op_Equality(a, b));
-                },
-                getDefaultValue: function () { return new System.Guid(); }
-            }
-        },
-        fields: {
-            _a: 0,
-            _b: 0,
-            _c: 0,
-            _d: 0,
-            _e: 0,
-            _f: 0,
-            _g: 0,
-            _h: 0,
-            _i: 0,
-            _j: 0,
-            _k: 0
-        },
-        alias: [
-            "equalsT", "System$IEquatable$1$System$Guid$equalsT",
-            "compareTo", ["System$IComparable$1$System$Guid$compareTo", "System$IComparable$1$compareTo"],
-            "format", "System$IFormattable$format"
-        ],
-        ctors: {
-            $ctor4: function (uuid) {
-                this.$initialize();
-                (new System.Guid.ctor()).$clone(this);
-
-                this.parseInternal(uuid, null, true);
-            },
-            $ctor1: function (b) {
-                this.$initialize();
-                if (b == null) {
-                    throw new System.ArgumentNullException("b");
-                }
-
-                if (b.length !== 16) {
-                    throw new System.ArgumentException(System.String.format(System.Guid.error1, [Bridge.box(16, System.Int32)]));
-                }
-
-                this._a = (b[System.Array.index(3, b)] << 24) | (b[System.Array.index(2, b)] << 16) | (b[System.Array.index(1, b)] << 8) | b[System.Array.index(0, b)];
-                this._b = Bridge.Int.sxs(((b[System.Array.index(5, b)] << 8) | b[System.Array.index(4, b)]) & 65535);
-                this._c = Bridge.Int.sxs(((b[System.Array.index(7, b)] << 8) | b[System.Array.index(6, b)]) & 65535);
-                this._d = b[System.Array.index(8, b)];
-                this._e = b[System.Array.index(9, b)];
-                this._f = b[System.Array.index(10, b)];
-                this._g = b[System.Array.index(11, b)];
-                this._h = b[System.Array.index(12, b)];
-                this._i = b[System.Array.index(13, b)];
-                this._j = b[System.Array.index(14, b)];
-                this._k = b[System.Array.index(15, b)];
-            },
-            $ctor5: function (a, b, c, d, e, f, g, h, i, j, k) {
-                this.$initialize();
-                this._a = a | 0;
-                this._b = Bridge.Int.sxs(b & 65535);
-                this._c = Bridge.Int.sxs(c & 65535);
-                this._d = d;
-                this._e = e;
-                this._f = f;
-                this._g = g;
-                this._h = h;
-                this._i = i;
-                this._j = j;
-                this._k = k;
-            },
-            $ctor3: function (a, b, c, d) {
-                this.$initialize();
-                if (d == null) {
-                    throw new System.ArgumentNullException("d");
-                }
-
-                if (d.length !== 8) {
-                    throw new System.ArgumentException(System.String.format(System.Guid.error1, [Bridge.box(8, System.Int32)]));
-                }
-
-                this._a = a;
-                this._b = b;
-                this._c = c;
-                this._d = d[System.Array.index(0, d)];
-                this._e = d[System.Array.index(1, d)];
-                this._f = d[System.Array.index(2, d)];
-                this._g = d[System.Array.index(3, d)];
-                this._h = d[System.Array.index(4, d)];
-                this._i = d[System.Array.index(5, d)];
-                this._j = d[System.Array.index(6, d)];
-                this._k = d[System.Array.index(7, d)];
-            },
-            $ctor2: function (a, b, c, d, e, f, g, h, i, j, k) {
-                this.$initialize();
-                this._a = a;
-                this._b = b;
-                this._c = c;
-                this._d = d;
-                this._e = e;
-                this._f = f;
-                this._g = g;
-                this._h = h;
-                this._i = i;
-                this._j = j;
-                this._k = k;
-            },
-            ctor: function () {
-                this.$initialize();
-            }
-        },
-        methods: {
-            getHashCode: function () {
-                return this._a ^ ((this._b << 16) | (this._c & 65535)) ^ ((this._f << 24) | this._k);
-            },
-            equals: function (o) {
-                if (!(Bridge.is(o, System.Guid))) {
-                    return false;
-                }
-
-                return this.equalsT(System.Nullable.getValue(Bridge.cast(Bridge.unbox(o), System.Guid)));
-            },
-            equalsT: function (o) {
-                if ((this._a !== o._a) || (this._b !== o._b) || (this._c !== o._c) || (this._d !== o._d) || (this._e !== o._e) || (this._f !== o._f) || (this._g !== o._g) || (this._h !== o._h) || (this._i !== o._i) || (this._j !== o._j) || (this._k !== o._k)) {
-                    return false;
-                }
-
-                return true;
-            },
-            compareTo: function (value) {
-                return System.String.compare(this.toString(), value.toString());
-            },
-            toString: function () {
-                return this.format$1(null);
-            },
-            toString$1: function (format) {
-                return this.format$1(format);
-            },
-            format: function (format, formatProvider) {
-                return this.format$1(format);
-            },
-            toByteArray: function () {
-                var g = System.Array.init(16, 0, System.Byte);
-
-                g[System.Array.index(0, g)] = this._a & 255;
-                g[System.Array.index(1, g)] = (this._a >> 8) & 255;
-                g[System.Array.index(2, g)] = (this._a >> 16) & 255;
-                g[System.Array.index(3, g)] = (this._a >> 24) & 255;
-                g[System.Array.index(4, g)] = this._b & 255;
-                g[System.Array.index(5, g)] = (this._b >> 8) & 255;
-                g[System.Array.index(6, g)] = this._c & 255;
-                g[System.Array.index(7, g)] = (this._c >> 8) & 255;
-                g[System.Array.index(8, g)] = this._d;
-                g[System.Array.index(9, g)] = this._e;
-                g[System.Array.index(10, g)] = this._f;
-                g[System.Array.index(11, g)] = this._g;
-                g[System.Array.index(12, g)] = this._h;
-                g[System.Array.index(13, g)] = this._i;
-                g[System.Array.index(14, g)] = this._j;
-                g[System.Array.index(15, g)] = this._k;
-
-                return g;
-            },
-            parseInternal: function (input, format, check) {
-                var r = null;
-
-                if (System.String.isNullOrEmpty(input)) {
-                    if (check) {
-                        throw new System.ArgumentNullException("input");
-                    }
-                    return false;
-                }
-
-                if (System.String.isNullOrEmpty(format)) {
-                    var m = System.Guid.nonFormat.match(input);
-
-                    if (m.getSuccess()) {
-                        var list = new (System.Collections.Generic.List$1(System.String)).ctor();
-                        for (var i = 1; i <= m.getGroups().getCount(); i = (i + 1) | 0) {
-                            if (m.getGroups().get(i).getSuccess()) {
-                                list.add(m.getGroups().get(i).getValue());
-                            }
-                        }
-
-                        r = list.toArray().join("-").toLowerCase();
-                    }
-                } else {
-                    format = format.toUpperCase();
-
-                    var p = false;
-
-                    if (Bridge.referenceEquals(format, "N")) {
-                        var m1 = System.Guid.split.match(input);
-
-                        if (m1.getSuccess()) {
-                            var list1 = new (System.Collections.Generic.List$1(System.String)).ctor();
-                            for (var i1 = 1; i1 <= m1.getGroups().getCount(); i1 = (i1 + 1) | 0) {
-                                if (m1.getGroups().get(i1).getSuccess()) {
-                                    list1.add(m1.getGroups().get(i1).getValue());
-                                }
-                            }
-
-                            p = true;
-                            input = list1.toArray().join("-");
-                        }
-                    } else if (Bridge.referenceEquals(format, "B") || Bridge.referenceEquals(format, "P")) {
-                        var b = Bridge.referenceEquals(format, "B") ? System.Array.init([123, 125], System.Char) : System.Array.init([40, 41], System.Char);
-
-                        if ((input.charCodeAt(0) === b[System.Array.index(0, b)]) && (input.charCodeAt(((input.length - 1) | 0)) === b[System.Array.index(1, b)])) {
-                            p = true;
-                            input = input.substr(1, ((input.length - 2) | 0));
-                        }
-                    } else {
-                        p = true;
-                    }
-
-                    if (p && System.Guid.valid.isMatch(input)) {
-                        r = input.toLowerCase();
-                    }
-                }
-
-                if (r != null) {
-                    this.fromString(r);
-                    return true;
-                }
-
-                if (check) {
-                    throw new System.FormatException("input is not in a recognized format");
-                }
-
-                return false;
-            },
-            format$1: function (format) {
-                var s = (System.UInt32.format((this._a >>> 0), "x8") || "") + (System.UInt16.format((this._b & 65535), "x4") || "") + (System.UInt16.format((this._c & 65535), "x4") || "");
-                s = (s || "") + ((System.Array.init([this._d, this._e, this._f, this._g, this._h, this._i, this._j, this._k], System.Byte)).map(System.Guid.makeBinary).join("") || "");
-
-                var m = System.Guid.split.match(s);
-                var list = new (System.Collections.Generic.List$1(System.String)).ctor();
-                for (var i = 1; i <= m.getGroups().getCount(); i = (i + 1) | 0) {
-                    if (m.getGroups().get(i).getSuccess()) {
-                        list.add(m.getGroups().get(i).getValue());
-                    }
-                }
-                s = list.toArray().join("-");
-
-                switch (format) {
-                    case "n": 
-                    case "N": 
-                        return System.Guid.replace.replace(s, "");
-                    case "b": 
-                    case "B": 
-                        return String.fromCharCode(123) + (s || "") + String.fromCharCode(125);
-                    case "p": 
-                    case "P": 
-                        return String.fromCharCode(40) + (s || "") + String.fromCharCode(41);
-                    default: 
-                        return s;
-                }
-            },
-            fromString: function (s) {
-                if (System.String.isNullOrEmpty(s)) {
-                    return;
-                }
-
-                s = System.Guid.replace.replace(s, "");
-
-                var r = System.Array.init(8, 0, System.Byte);
-
-                this._a = (System.UInt32.parse(s.substr(0, 8), 16)) | 0;
-                this._b = Bridge.Int.sxs((System.UInt16.parse(s.substr(8, 4), 16)) & 65535);
-                this._c = Bridge.Int.sxs((System.UInt16.parse(s.substr(12, 4), 16)) & 65535);
-                for (var i = 8; i < 16; i = (i + 1) | 0) {
-                    r[System.Array.index(((i - 8) | 0), r)] = System.Byte.parse(s.substr(Bridge.Int.mul(i, 2), 2), 16);
-                }
-
-                this._d = r[System.Array.index(0, r)];
-                this._e = r[System.Array.index(1, r)];
-                this._f = r[System.Array.index(2, r)];
-                this._g = r[System.Array.index(3, r)];
-                this._h = r[System.Array.index(4, r)];
-                this._i = r[System.Array.index(5, r)];
-                this._j = r[System.Array.index(6, r)];
-                this._k = r[System.Array.index(7, r)];
-            },
-            toJSON: function () {
-                return this.toString();
-            },
-            $clone: function (to) { return this; }
-        }
-    });
-
-    // @source environment.js
-
-    Bridge.define("System.Environment", {
-        statics: {
-            fields: {
-                variables: null
-            },
-            props: {
-                Location: {
-                    get: function () {
-                        var g = Bridge.global;
-
-                        if (g && g.location) {
-                            return g.location;
-                        }
-
-                        return null;
-                    }
-                },
-                CommandLine: {
-                    get: function () {
-                        return System.Environment.getCommandLineArgs().join(" ");
-                    }
-                },
-                CurrentDirectory: {
-                    get: function () {
-                        var l = System.Environment.Location;
-
-                        return l ? l.pathname : "";
-                    },
-                    set: function (value) {
-                        var l = System.Environment.Location;
-
-                        if (l) {
-                            l.pathname = value;
-                        }
-                    }
-                },
-                ExitCode: 0,
-                Is64BitOperatingSystem: {
-                    get: function () {
-                        var n = Bridge.global ? Bridge.global.navigator : null;
-
-                        if (n && (!Bridge.referenceEquals(n.userAgent.indexOf("WOW64"), -1) || !Bridge.referenceEquals(n.userAgent.indexOf("Win64"), -1))) {
-                            return true;
-                        }
-
-                        return false;
-                    }
-                },
-                ProcessorCount: {
-                    get: function () {
-                        var n = Bridge.global ? Bridge.global.navigator : null;
-
-                        if (n && n.hardwareConcurrency) {
-                            return n.hardwareConcurrency;
-                        }
-
-                        return 1;
-                    }
-                },
-                StackTrace: {
-                    get: function () {
-                        var err = new Error();
-                        var s = err.stack;
-
-                        if (!System.String.isNullOrEmpty(s)) {
-                            if (System.String.indexOf(s, "at") >= 0) {
-                                return s.substr(System.String.indexOf(s, "at"));
-                            }
-                        }
-
-                        return "";
-                    }
-                },
-                Version: {
-                    get: function () {
-                        var s = Bridge.SystemAssembly.compiler;
-
-                        var v = { };
-
-                        if (System.Version.tryParse(s, v)) {
-                            return v.v;
-                        }
-
-                        return new System.Version.ctor();
-                    }
-                }
-            },
-            ctors: {
-                init: function () {
-                    this.ExitCode = 0;
-                },
-                ctor: function () {
-                    System.Environment.variables = new (System.Collections.Generic.Dictionary$2(System.String,System.String))();
-                    System.Environment.patchDictionary(System.Environment.variables);
-                }
-            },
-            methods: {
-                patchDictionary: function (d) {
-                    d.noKeyCheck = true;
-
-                    return d;
-                },
-                exit: function (exitCode) {
-                    System.Environment.ExitCode = exitCode;
-                },
-                expandEnvironmentVariables: function (name) {
-                    var $t;
-                    if (name == null) {
-                        throw new System.ArgumentNullException(name);
-                    }
-
-                    // Case sensitive
-                    $t = Bridge.getEnumerator(System.Environment.variables);
-                    try {
-                        while ($t.moveNext()) {
-                            var pair = $t.Current;
-                            name = System.String.replaceAll(name, "%" + (pair.key || "") + "%", pair.value);
-                        }
-                    } finally {
-                        if (Bridge.is($t, System.IDisposable)) {
-                            $t.System$IDisposable$dispose();
-                        }
-                    }
-                    return name;
-                },
-                failFast: function (message) {
-                    throw new System.Exception(message);
-                },
-                failFast$1: function (message, exception) {
-                    throw new System.Exception(message, exception);
-                },
-                getCommandLineArgs: function () {
-                    var l = System.Environment.Location;
-
-                    if (l) {
-                        var args = new (System.Collections.Generic.List$1(System.String)).ctor();
-
-                        var path = l.pathname;
-
-                        if (!System.String.isNullOrEmpty(path)) {
-                            args.add(path);
-                        }
-
-                        var search = l.search;
-
-                        if (!System.String.isNullOrEmpty(search) && search.length > 1) {
-                            var query = System.String.split(search.substr(1), [38].map(function(i) {{ return String.fromCharCode(i); }}));
-
-                            for (var i = 0; i < query.length; i = (i + 1) | 0) {
-                                var param = System.String.split(query[System.Array.index(i, query)], [61].map(function(i) {{ return String.fromCharCode(i); }}));
-
-                                for (var j = 0; j < param.length; j = (j + 1) | 0) {
-                                    args.add(param[System.Array.index(j, param)]);
-                                }
-                            }
-                        }
-
-                        return args.toArray();
-                    }
-
-                    return System.Array.init(0, null, System.String);
-                },
-                getEnvironmentVariable: function (variable) {
-                    if (variable == null) {
-                        throw new System.ArgumentNullException("variable");
-                    }
-
-                    var r = { };
-
-                    if (System.Environment.variables.tryGetValue(variable.toLowerCase(), r)) {
-                        return r.v;
-                    }
-
-                    return null;
-                },
-                getEnvironmentVariable$1: function (variable, target) {
-                    return System.Environment.getEnvironmentVariable(variable);
-                },
-                getEnvironmentVariables: function () {
-                    return System.Environment.patchDictionary(new (System.Collections.Generic.Dictionary$2(System.String,System.String))(System.Environment.variables));
-                },
-                getEnvironmentVariables$1: function (target) {
-                    return System.Environment.getEnvironmentVariables();
-                },
-                getLogicalDrives: function () {
-                    return System.Array.init(0, null, System.String);
-                },
-                setEnvironmentVariable: function (variable, value) {
-                    if (variable == null) {
-                        throw new System.ArgumentNullException("variable");
-                    }
-
-                    if (System.String.isNullOrEmpty(variable) || System.String.startsWith(variable, String.fromCharCode(0)) || System.String.contains(variable,"=") || variable.length > 32767) {
-                        throw new System.ArgumentException("Incorrect variable (cannot be empty, contain zero character nor equal sign, be longer than 32767).");
-                    }
-
-                    variable = variable.toLowerCase();
-
-                    if (System.String.isNullOrEmpty(value)) {
-                        if (System.Environment.variables.containsKey(variable)) {
-                            System.Environment.variables.remove(variable);
-                        }
-                    } else {
-                        System.Environment.variables.set(variable, value);
-                    }
-                },
-                setEnvironmentVariable$1: function (variable, value, target) {
-                    System.Environment.setEnvironmentVariable(variable, value);
-                }
-            }
-        }
-    });
-
     // @source Regex.js
 
     Bridge.define("System.Text.RegularExpressions.Regex", {
@@ -22139,18 +20628,18 @@ Bridge.assembly("System", {}, function ($asm, globals) {
         },
 
         config: {
-			properties: {
-				Current: {
-					get: function () {
-						return this.getCurrent();
-					}
-				}
-			},
+            properties: {
+                Current: {
+                    get: function () {
+                        return this.getCurrent();
+                    }
+                }
+            },
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
                 "reset", "System$Collections$IEnumerator$reset",
-				"Current", "System$Collections$IEnumerator$Current"
+                "Current", "System$Collections$IEnumerator$Current"
             ]
         },
 
@@ -22407,19 +20896,19 @@ Bridge.assembly("System", {}, function ($asm, globals) {
         },
 
         config: {
-			properties: {
-				Current: {
-					get: function () {
-						return this.getCurrent();
-					}
-				}
-			},
-			
+            properties: {
+                Current: {
+                    get: function () {
+                        return this.getCurrent();
+                    }
+                }
+            },
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
                 "reset", "System$Collections$IEnumerator$reset",
-				"Current", "System$Collections$IEnumerator$Current"
+                "Current", "System$Collections$IEnumerator$Current"
             ]
         },
 
@@ -22783,19 +21272,19 @@ Bridge.assembly("System", {}, function ($asm, globals) {
         },
 
         config: {
-			properties: {
-				Current: {
-					get: function () {
-						return this.getCurrent();
-					}
-				}
-			},
-			
+            properties: {
+                Current: {
+                    get: function () {
+                        return this.getCurrent();
+                    }
+                }
+            },
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
                 "reset", "System$Collections$IEnumerator$reset",
-				"Current", "System$Collections$IEnumerator$Current"
+                "Current", "System$Collections$IEnumerator$Current"
             ]
         },
 
@@ -23146,7 +21635,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
     },
 
     ctor: function (culture) {
-		this.$initialize();
+        this.$initialize();
         this._culture = culture;
         this._caps = {};
     },
@@ -27376,5818 +25865,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     });
 
-    // @source encoding.js
-
-    Bridge.define("System.Text.Encoding", {
-        statics: {
-            fields: {
-                _encodings: null
-            },
-            props: {
-                Default: null,
-                Unicode: null,
-                ASCII: null,
-                BigEndianUnicode: null,
-                UTF7: null,
-                UTF8: null,
-                UTF32: null
-            },
-            ctors: {
-                init: function () {
-                    this.Default = new System.Text.UnicodeEncoding.$ctor1(false, true);
-                    this.Unicode = new System.Text.UnicodeEncoding.$ctor1(false, true);
-                    this.ASCII = new System.Text.ASCIIEncoding();
-                    this.BigEndianUnicode = new System.Text.UnicodeEncoding.$ctor1(true, true);
-                    this.UTF7 = new System.Text.UTF7Encoding.ctor();
-                    this.UTF8 = new System.Text.UTF8Encoding.ctor();
-                    this.UTF32 = new System.Text.UTF32Encoding.$ctor1(false, true);
-                }
-            },
-            methods: {
-                Convert: function (srcEncoding, dstEncoding, bytes) {
-                    return System.Text.Encoding.Convert$1(srcEncoding, dstEncoding, bytes, 0, bytes.length);
-                },
-                Convert$1: function (srcEncoding, dstEncoding, bytes, index, count) {
-                    if (srcEncoding == null || dstEncoding == null) {
-                        throw new System.ArgumentNullException(srcEncoding == null ? "srcEncoding" : "dstEncoding");
-                    }
-
-                    if (bytes == null) {
-                        throw new System.ArgumentNullException("bytes");
-                    }
-
-                    return dstEncoding.GetBytes(srcEncoding.GetChars$1(bytes, index, count));
-                },
-                GetEncoding: function (codepage) {
-                    switch (codepage) {
-                        case 1200: 
-                            return System.Text.Encoding.Unicode;
-                        case 20127: 
-                            return System.Text.Encoding.ASCII;
-                        case 1201: 
-                            return System.Text.Encoding.BigEndianUnicode;
-                        case 65000: 
-                            return System.Text.Encoding.UTF7;
-                        case 65001: 
-                            return System.Text.Encoding.UTF8;
-                        case 12000: 
-                            return System.Text.Encoding.UTF32;
-                    }
-                    throw new System.NotSupportedException();
-                },
-                GetEncoding$1: function (codepage) {
-                    switch (codepage) {
-                        case "utf-16": 
-                            return System.Text.Encoding.Unicode;
-                        case "us-ascii": 
-                            return System.Text.Encoding.ASCII;
-                        case "utf-16BE": 
-                            return System.Text.Encoding.BigEndianUnicode;
-                        case "utf-7": 
-                            return System.Text.Encoding.UTF7;
-                        case "utf-8": 
-                            return System.Text.Encoding.UTF8;
-                        case "utf-32": 
-                            return System.Text.Encoding.UTF32;
-                    }
-                    throw new System.NotSupportedException();
-                },
-                GetEncodings: function () {
-                    if (System.Text.Encoding._encodings != null) {
-                        return System.Text.Encoding._encodings;
-                    }
-                    System.Text.Encoding._encodings = System.Array.init(6, null, System.Text.EncodingInfo);
-                    var result = System.Text.Encoding._encodings;
-
-                    result[System.Array.index(0, result)] = new System.Text.EncodingInfo(20127, "us-ascii", "US-ASCII");
-                    result[System.Array.index(1, result)] = new System.Text.EncodingInfo(1200, "utf-16", "Unicode");
-                    result[System.Array.index(2, result)] = new System.Text.EncodingInfo(1201, "utf-16BE", "Unicode (Big-Endian)");
-                    result[System.Array.index(3, result)] = new System.Text.EncodingInfo(65000, "utf-7", "Unicode (UTF-7)");
-                    result[System.Array.index(4, result)] = new System.Text.EncodingInfo(65001, "utf-8", "Unicode (UTF-8)");
-                    result[System.Array.index(5, result)] = new System.Text.EncodingInfo(1200, "utf-32", "Unicode (UTF-32)");
-                    return result;
-                }
-            }
-        },
-        fields: {
-            _hasError: false,
-            fallbackCharacter: 0
-        },
-        props: {
-            CodePage: {
-                get: function () {
-                    return 0;
-                }
-            },
-            EncodingName: {
-                get: function () {
-                    return null;
-                }
-            }
-        },
-        ctors: {
-            init: function () {
-                this.fallbackCharacter = 63;
-            }
-        },
-        methods: {
-            Encode$1: function (chars, index, count) {
-                var writtenCount = { };
-                return this.Encode$3(System.String.fromCharArray(chars, index, count), null, 0, writtenCount);
-            },
-            Encode$5: function (s, index, count, outputBytes, outputIndex) {
-                var writtenBytes = { };
-                this.Encode$3(s.substr(index, count), outputBytes, outputIndex, writtenBytes);
-                return writtenBytes.v;
-            },
-            Encode$4: function (chars, index, count, outputBytes, outputIndex) {
-                var writtenBytes = { };
-                this.Encode$3(System.String.fromCharArray(chars, index, count), outputBytes, outputIndex, writtenBytes);
-                return writtenBytes.v;
-            },
-            Encode: function (chars) {
-                var count = { };
-                return this.Encode$3(System.String.fromCharArray(chars), null, 0, count);
-            },
-            Encode$2: function (str) {
-                var count = { };
-                return this.Encode$3(str, null, 0, count);
-            },
-            Decode$1: function (bytes, index, count) {
-                return this.Decode$2(bytes, index, count, null, 0);
-            },
-            Decode: function (bytes) {
-                return this.Decode$2(bytes, 0, bytes.length, null, 0);
-            },
-            GetByteCount: function (chars) {
-                return this.GetByteCount$1(chars, 0, chars.length);
-            },
-            GetByteCount$2: function (s) {
-                return this.Encode$2(s).length;
-            },
-            GetByteCount$1: function (chars, index, count) {
-                return this.Encode$1(chars, index, count).length;
-            },
-            GetBytes: function (chars) {
-                return this.GetBytes$1(chars, 0, chars.length);
-            },
-            GetBytes$1: function (chars, index, count) {
-                return this.Encode$2(System.String.fromCharArray(chars, index, count));
-            },
-            GetBytes$3: function (chars, charIndex, charCount, bytes, byteIndex) {
-                return this.Encode$4(chars, charIndex, charCount, bytes, byteIndex);
-            },
-            GetBytes$2: function (s) {
-                return this.Encode$2(s);
-            },
-            GetBytes$4: function (s, charIndex, charCount, bytes, byteIndex) {
-                return this.Encode$5(s, charIndex, charCount, bytes, byteIndex);
-            },
-            GetCharCount: function (bytes) {
-                return this.Decode(bytes).length;
-            },
-            GetCharCount$1: function (bytes, index, count) {
-                return this.Decode$1(bytes, index, count).length;
-            },
-            GetChars: function (bytes) {
-                var $t;
-                return ($t = this.Decode(bytes), System.String.toCharArray($t, 0, $t.length));
-            },
-            GetChars$1: function (bytes, index, count) {
-                var $t;
-                return ($t = this.Decode$1(bytes, index, count), System.String.toCharArray($t, 0, $t.length));
-            },
-            GetChars$2: function (bytes, byteIndex, byteCount, chars, charIndex) {
-                var s = this.Decode$1(bytes, byteIndex, byteCount);
-                var arr = System.String.toCharArray(s, 0, s.length);
-
-                if (chars.length < (((arr.length + charIndex) | 0))) {
-                    throw new System.ArgumentException(null, "chars");
-                }
-
-                for (var i = 0; i < arr.length; i = (i + 1) | 0) {
-                    chars[System.Array.index(((charIndex + i) | 0), chars)] = arr[System.Array.index(i, arr)];
-                }
-
-                return arr.length;
-            },
-            GetString: function (bytes) {
-                return this.Decode(bytes);
-            },
-            GetString$1: function (bytes, index, count) {
-                return this.Decode$1(bytes, index, count);
-            }
-        }
-    });
-
-    Bridge.define("System.Text.EncodingInfo", {
-        props: {
-            CodePage: 0,
-            Name: null,
-            DisplayName: null
-        },
-        ctors: {
-            ctor: function (codePage, name, displayName) {
-                var $t;
-                this.$initialize();
-                this.CodePage = codePage;
-                this.Name = name;
-                this.DisplayName = ($t = displayName, $t != null ? $t : name);
-            }
-        },
-        methods: {
-            GetEncoding: function () {
-                return System.Text.Encoding.GetEncoding(this.CodePage);
-            },
-            GetHashCode: function () {
-                return this.CodePage;
-            },
-            Equals: function (o) {
-                var that = Bridge.as(o, System.Text.EncodingInfo);
-                return System.Nullable.eq(this.CodePage, (that != null ? that.CodePage : null));
-            }
-        }
-    });
-
-    Bridge.define("System.Text.ASCIIEncoding", {
-        inherits: [System.Text.Encoding],
-        props: {
-            CodePage: {
-                get: function () {
-                    return 20127;
-                }
-            },
-            EncodingName: {
-                get: function () {
-                    return "US-ASCII";
-                }
-            }
-        },
-        methods: {
-            Encode$3: function (s, outputBytes, outputIndex, writtenBytes) {
-                var hasBuffer = outputBytes != null;
-
-                if (!hasBuffer) {
-                    outputBytes = System.Array.init(0, 0, System.Byte);
-                }
-
-                var recorded = 0;
-                for (var i = 0; i < s.length; i = (i + 1) | 0) {
-                    var ch = s.charCodeAt(i);
-                    var byteCode = (ch <= 127 ? ch : this.fallbackCharacter) & 255;
-
-                    if (hasBuffer) {
-                        if ((((i + outputIndex) | 0)) >= outputBytes.length) {
-                            throw new System.ArgumentException("bytes");
-                        }
-                        outputBytes[System.Array.index(((i + outputIndex) | 0), outputBytes)] = byteCode;
-                    } else {
-                        outputBytes.push(byteCode);
-                    }
-                    recorded = (recorded + 1) | 0;
-                }
-
-                writtenBytes.v = recorded;
-
-                if (hasBuffer) {
-                    return null;
-                }
-
-                return outputBytes;
-            },
-            Decode$2: function (bytes, index, count, chars, charIndex) {
-                var position = index;
-                var result = "";
-                var endpoint = (position + count) | 0;
-
-                for (; position < endpoint; position = (position + 1) | 0) {
-                    var byteCode = bytes[System.Array.index(position, bytes)];
-
-                    if (byteCode > 127) {
-                        result = (result || "") + String.fromCharCode(this.fallbackCharacter);
-                    } else {
-                        result = (result || "") + ((String.fromCharCode(byteCode)) || "");
-                    }
-                }
-
-                return result;
-            },
-            GetMaxByteCount: function (charCount) {
-                if (charCount < 0) {
-                    throw new System.ArgumentOutOfRangeException("charCount");
-                }
-
-                var byteCount = System.Int64(charCount).add(System.Int64(1));
-
-                if (byteCount.gt(System.Int64(2147483647))) {
-                    throw new System.ArgumentOutOfRangeException("charCount");
-                }
-
-                return System.Int64.clip32(byteCount);
-            },
-            GetMaxCharCount: function (byteCount) {
-                if (byteCount < 0) {
-                    throw new System.ArgumentOutOfRangeException("byteCount");
-                }
-
-                var charCount = System.Int64(byteCount);
-
-                if (charCount.gt(System.Int64(2147483647))) {
-                    throw new System.ArgumentOutOfRangeException("byteCount");
-                }
-
-                return System.Int64.clip32(charCount);
-            }
-        }
-    });
-
-    Bridge.define("System.Text.UnicodeEncoding", {
-        inherits: [System.Text.Encoding],
-        fields: {
-            bigEndian: false,
-            byteOrderMark: false,
-            throwOnInvalid: false
-        },
-        props: {
-            CodePage: {
-                get: function () {
-                    return this.bigEndian ? 1201 : 1200;
-                }
-            },
-            EncodingName: {
-                get: function () {
-                    return this.bigEndian ? "Unicode (Big-Endian)" : "Unicode";
-                }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                System.Text.UnicodeEncoding.$ctor1.call(this, false, true);
-            },
-            $ctor1: function (bigEndian, byteOrderMark) {
-                System.Text.UnicodeEncoding.$ctor2.call(this, bigEndian, byteOrderMark, false);
-            },
-            $ctor2: function (bigEndian, byteOrderMark, throwOnInvalidBytes) {
-                this.$initialize();
-                System.Text.Encoding.ctor.call(this);
-                this.bigEndian = bigEndian;
-                this.byteOrderMark = byteOrderMark;
-                this.throwOnInvalid = throwOnInvalidBytes;
-                this.fallbackCharacter = 65533;
-            }
-        },
-        methods: {
-            Encode$3: function (s, outputBytes, outputIndex, writtenBytes) {
-                var hasBuffer = outputBytes != null;
-                var recorded = 0;
-                var surrogate_1st = 0;
-                var fallbackCharacterCode = this.fallbackCharacter;
-
-                var write = function (ch) {
-                    if (hasBuffer) {
-                        if (outputIndex >= outputBytes.length) {
-                            throw new System.ArgumentException("bytes");
-                        }
-
-                        outputBytes[System.Array.index(Bridge.identity(outputIndex, (outputIndex = (outputIndex + 1) | 0)), outputBytes)] = ch;
-                    } else {
-                        outputBytes.push(ch);
-                    }
-                    recorded = (recorded + 1) | 0;
-                };
-
-                var writePair = function (a, b) {
-                    write(a);
-                    write(b);
-                };
-
-                var swap = $asm.$.System.Text.UnicodeEncoding.f1;
-
-                var fallback = Bridge.fn.bind(this, function () {
-                    if (this.throwOnInvalid) {
-                        throw new System.Exception("Invalid character in UTF16 text");
-                    }
-
-                    writePair((fallbackCharacterCode & 255), ((fallbackCharacterCode >> 8) & 255));
-                });
-
-                if (!hasBuffer) {
-                    outputBytes = System.Array.init(0, 0, System.Byte);
-                }
-
-                if (this.bigEndian) {
-                    fallbackCharacterCode = swap(fallbackCharacterCode);
-                }
-
-                for (var i = 0; i < s.length; i = (i + 1) | 0) {
-                    var ch = s.charCodeAt(i);
-
-                    if (surrogate_1st !== 0) {
-                        if (ch >= 56320 && ch <= 57343) {
-                            if (this.bigEndian) {
-                                surrogate_1st = swap(surrogate_1st);
-                                ch = swap(ch);
-                            }
-                            writePair((surrogate_1st & 255), ((surrogate_1st >> 8) & 255));
-                            writePair((ch & 255), ((ch >> 8) & 255));
-                            surrogate_1st = 0;
-                            continue;
-                        }
-                        fallback();
-                        surrogate_1st = 0;
-                    }
-
-                    if (55296 <= ch && ch <= 56319) {
-                        surrogate_1st = ch;
-                        continue;
-                    } else if (56320 <= ch && ch <= 57343) {
-                        fallback();
-                        surrogate_1st = 0;
-                        continue;
-                    }
-
-                    if (ch < 65536) {
-                        if (this.bigEndian) {
-                            ch = swap(ch);
-                        }
-                        writePair((ch & 255), ((ch >> 8) & 255));
-                    } else if (ch <= 1114111) {
-                        ch = ch - 0x10000; //?????
-
-                        var lowBits = ((ch & 1023) | 56320) & 65535;
-                        var highBits = (((ch >> 10) & 1023) | 55296) & 65535;
-
-                        if (this.bigEndian) {
-                            highBits = swap(highBits);
-                            lowBits = swap(lowBits);
-                        }
-                        writePair((highBits & 255), ((highBits >> 8) & 255));
-                        writePair((lowBits & 255), ((lowBits >> 8) & 255));
-                    } else {
-                        fallback();
-                    }
-                }
-
-                if (surrogate_1st !== 0) {
-                    fallback();
-                }
-
-                writtenBytes.v = recorded;
-
-                if (hasBuffer) {
-                    return null;
-                }
-
-                return outputBytes;
-            },
-            Decode$2: function (bytes, index, count, chars, charIndex) {
-                var position = index;
-                var result = "";
-                var endpoint = (position + count) | 0;
-                this._hasError = false;
-
-                var fallback = Bridge.fn.bind(this, function () {
-                    if (this.throwOnInvalid) {
-                        throw new System.Exception("Invalid character in UTF16 text");
-                    }
-
-                    result = (result || "") + String.fromCharCode(this.fallbackCharacter);
-                });
-
-                var swap = $asm.$.System.Text.UnicodeEncoding.f2;
-
-                var readPair = Bridge.fn.bind(this, function () {
-                    if ((((position + 2) | 0)) > endpoint) {
-                        position = (position + 2) | 0;
-                        return null;
-                    }
-
-                    var a = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
-                    var b = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
-
-                    var point = ((a << 8) | b) & 65535;
-                    if (!this.bigEndian) {
-                        point = swap(point);
-                    }
-
-                    return point;
-                });
-
-                while (position < endpoint) {
-                    var firstWord = readPair();
-
-                    if (!System.Nullable.hasValue(firstWord)) {
-                        fallback();
-                        this._hasError = true;
-                    } else if ((System.Nullable.lt(firstWord, 55296)) || (System.Nullable.gt(firstWord, 57343))) {
-                        result = (result || "") + ((System.String.fromCharCode(System.Nullable.getValue(firstWord))) || "");
-                    } else if ((System.Nullable.gte(firstWord, 55296)) && (System.Nullable.lte(firstWord, 56319))) {
-                        var end = position >= endpoint;
-                        var secondWord = readPair();
-                        if (end) {
-                            fallback();
-                            this._hasError = true;
-                        } else if (!System.Nullable.hasValue(secondWord)) {
-                            fallback();
-                            fallback();
-                        } else if ((System.Nullable.gte(secondWord, 56320)) && (System.Nullable.lte(secondWord, 57343))) {
-                            var highBits = System.Nullable.band(firstWord, 1023);
-                            var lowBits = System.Nullable.band(secondWord, 1023);
-
-                            var charCode = Bridge.Int.clip32(System.Nullable.add((System.Nullable.bor((System.Nullable.sl(highBits, 10)), lowBits)), 65536));
-
-                            result = (result || "") + ((System.String.fromCharCode(System.Nullable.getValue(charCode))) || "");
-                        } else {
-                            fallback();
-                            position = (position - 2) | 0;
-                        }
-                    } else {
-                        fallback();
-                    }
-                }
-
-                return result;
-            },
-            GetMaxByteCount: function (charCount) {
-                if (charCount < 0) {
-                    throw new System.ArgumentOutOfRangeException("charCount");
-                }
-
-                var byteCount = System.Int64(charCount).add(System.Int64(1));
-                byteCount = byteCount.shl(1);
-
-                if (byteCount.gt(System.Int64(2147483647))) {
-                    throw new System.ArgumentOutOfRangeException("charCount");
-                }
-
-                return System.Int64.clip32(byteCount);
-            },
-            GetMaxCharCount: function (byteCount) {
-                if (byteCount < 0) {
-                    throw new System.ArgumentOutOfRangeException("byteCount");
-                }
-
-                var charCount = System.Int64((byteCount >> 1)).add(System.Int64((byteCount & 1))).add(System.Int64(1));
-
-                if (charCount.gt(System.Int64(2147483647))) {
-                    throw new System.ArgumentOutOfRangeException("byteCount");
-                }
-
-                return System.Int64.clip32(charCount);
-            }
-        }
-    });
-
-    Bridge.ns("System.Text.UnicodeEncoding", $asm.$);
-
-    Bridge.apply($asm.$.System.Text.UnicodeEncoding, {
-        f1: function (ch) {
-            return ((((ch & 255) << 8) | ((ch >> 8) & 255)) & 65535);
-        },
-        f2: function (ch) {
-            return ((((ch & 255) << 8) | (((ch >> 8)) & 255)) & 65535);
-        }
-    });
-
-    Bridge.define("System.Text.UTF32Encoding", {
-        inherits: [System.Text.Encoding],
-        fields: {
-            bigEndian: false,
-            byteOrderMark: false,
-            throwOnInvalid: false
-        },
-        props: {
-            CodePage: {
-                get: function () {
-                    return this.bigEndian ? 1201 : 1200;
-                }
-            },
-            EncodingName: {
-                get: function () {
-                    return this.bigEndian ? "Unicode (UTF-32 Big-Endian)" : "Unicode (UTF-32)";
-                }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                System.Text.UTF32Encoding.$ctor2.call(this, false, true, false);
-            },
-            $ctor1: function (bigEndian, byteOrderMark) {
-                System.Text.UTF32Encoding.$ctor2.call(this, bigEndian, byteOrderMark, false);
-            },
-            $ctor2: function (bigEndian, byteOrderMark, throwOnInvalidBytes) {
-                this.$initialize();
-                System.Text.Encoding.ctor.call(this);
-                this.bigEndian = bigEndian;
-                this.byteOrderMark = byteOrderMark;
-                this.throwOnInvalid = throwOnInvalidBytes;
-                this.fallbackCharacter = 65533;
-            }
-        },
-        methods: {
-            ToCodePoints: function (str) {
-                var surrogate_1st = 0;
-                var unicode_codes = System.Array.init(0, 0, System.Char);
-                var fallback = Bridge.fn.bind(this, function () {
-                    if (this.throwOnInvalid) {
-                        throw new System.Exception("Invalid character in UTF32 text");
-                    }
-                    unicode_codes.push(this.fallbackCharacter);
-                });
-
-                for (var i = 0; i < str.length; i = (i + 1) | 0) {
-                    var utf16_code = str.charCodeAt(i);
-
-                    if (surrogate_1st !== 0) {
-                        if (utf16_code >= 56320 && utf16_code <= 57343) {
-                            var surrogate_2nd = utf16_code;
-                            var unicode_code = (((Bridge.Int.mul((((surrogate_1st - 55296) | 0)), (1024)) + (65536)) | 0) + (((surrogate_2nd - 56320) | 0))) | 0;
-                            unicode_codes.push(unicode_code);
-                        } else {
-                            fallback();
-                            i = (i - 1) | 0;
-                        }
-                        surrogate_1st = 0;
-                    } else if (utf16_code >= 55296 && utf16_code <= 56319) {
-                        surrogate_1st = utf16_code;
-                    } else if ((utf16_code >= 56320) && (utf16_code <= 57343)) {
-                        fallback();
-                    } else {
-                        unicode_codes.push(utf16_code);
-                    }
-                }
-
-                if (surrogate_1st !== 0) {
-                    fallback();
-                }
-
-                return unicode_codes;
-            },
-            Encode$3: function (s, outputBytes, outputIndex, writtenBytes) {
-                var hasBuffer = outputBytes != null;
-                var recorded = 0;
-
-                var write = function (ch) {
-                    if (hasBuffer) {
-                        if (outputIndex >= outputBytes.length) {
-                            throw new System.ArgumentException("bytes");
-                        }
-
-                        outputBytes[System.Array.index(Bridge.identity(outputIndex, (outputIndex = (outputIndex + 1) | 0)), outputBytes)] = ch;
-                    } else {
-                        outputBytes.push(ch);
-                    }
-                    recorded = (recorded + 1) | 0;
-                };
-
-                var write32 = Bridge.fn.bind(this, function (a) {
-                    var r = System.Array.init(4, 0, System.Byte);
-                    r[System.Array.index(0, r)] = (((a & 255) >>> 0));
-                    r[System.Array.index(1, r)] = ((((a & 65280) >>> 0)) >>> 8);
-                    r[System.Array.index(2, r)] = ((((a & 16711680) >>> 0)) >>> 16);
-                    r[System.Array.index(3, r)] = ((((a & 4278190080) >>> 0)) >>> 24);
-
-                    if (this.bigEndian) {
-                        r.reverse();
-                    }
-
-                    write(r[System.Array.index(0, r)]);
-                    write(r[System.Array.index(1, r)]);
-                    write(r[System.Array.index(2, r)]);
-                    write(r[System.Array.index(3, r)]);
-                });
-
-                if (!hasBuffer) {
-                    outputBytes = System.Array.init(0, 0, System.Byte);
-                }
-
-                var unicode_codes = this.ToCodePoints(s);
-                for (var i = 0; i < unicode_codes.length; i = (i + 1) | 0) {
-                    write32(unicode_codes[System.Array.index(i, unicode_codes)]);
-                }
-
-                writtenBytes.v = recorded;
-
-                if (hasBuffer) {
-                    return null;
-                }
-
-                return outputBytes;
-            },
-            Decode$2: function (bytes, index, count, chars, charIndex) {
-                var position = index;
-                var result = "";
-                var endpoint = (position + count) | 0;
-                this._hasError = false;
-
-                var fallback = Bridge.fn.bind(this, function () {
-                    if (this.throwOnInvalid) {
-                        throw new System.Exception("Invalid character in UTF32 text");
-                    }
-
-                    result = (result || "") + ((String.fromCharCode(this.fallbackCharacter)) || "");
-                });
-
-                var read32 = Bridge.fn.bind(this, function () {
-                    if ((((position + 4) | 0)) > endpoint) {
-                        position = (position + 4) | 0;
-                        return null;
-                    }
-
-                    var a = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
-                    var b = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
-                    var c = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
-                    var d = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
-
-                    if (this.bigEndian) {
-                        var tmp = b;
-                        b = c;
-                        c = tmp;
-
-                        tmp = a;
-                        a = d;
-                        d = tmp;
-                    }
-
-                    return ((d << 24) | (c << 16) | (b << 8) | a);
-                });
-
-                while (position < endpoint) {
-                    var unicode_code = read32();
-
-                    if (unicode_code == null) {
-                        fallback();
-                        this._hasError = true;
-                        continue;
-                    }
-
-                    if (System.Nullable.lt(unicode_code, 65536) || System.Nullable.gt(unicode_code, 1114111)) {
-                        if (System.Nullable.lt(unicode_code, 0) || System.Nullable.gt(unicode_code, 1114111) || (System.Nullable.gte(unicode_code, 55296) && System.Nullable.lte(unicode_code, 57343))) {
-                            fallback();
-                        } else {
-                            result = (result || "") + ((String.fromCharCode(unicode_code)) || "");
-                        }
-                    } else {
-                        result = (result || "") + ((String.fromCharCode((Bridge.Int.clipu32(System.Nullable.add((Bridge.Int.clipu32(Bridge.Int.div((Bridge.Int.clipu32(System.Nullable.sub(unicode_code, (65536)))), (1024)))), 55296))))) || "");
-                        result = (result || "") + ((String.fromCharCode((Bridge.Int.clipu32(System.Nullable.add((System.Nullable.mod(unicode_code, (1024))), 56320))))) || "");
-                    }
-                }
-
-                return result;
-            },
-            GetMaxByteCount: function (charCount) {
-                if (charCount < 0) {
-                    throw new System.ArgumentOutOfRangeException("charCount");
-                }
-
-                var byteCount = System.Int64(charCount).add(System.Int64(1));
-                byteCount = byteCount.mul(System.Int64(4));
-
-                if (byteCount.gt(System.Int64(2147483647))) {
-                    throw new System.ArgumentOutOfRangeException("charCount");
-                }
-
-                return System.Int64.clip32(byteCount);
-            },
-            GetMaxCharCount: function (byteCount) {
-                if (byteCount < 0) {
-                    throw new System.ArgumentOutOfRangeException("byteCount");
-                }
-
-                var charCount = (((Bridge.Int.div(byteCount, 2)) | 0) + 2) | 0;
-
-                if (charCount > 2147483647) {
-                    throw new System.ArgumentOutOfRangeException("byteCount");
-                }
-
-                return charCount;
-            }
-        }
-    });
-
-    Bridge.define("System.Text.UTF7Encoding", {
-        inherits: [System.Text.Encoding],
-        statics: {
-            methods: {
-                Escape: function (chars) {
-                    return chars.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-                }
-            }
-        },
-        fields: {
-            allowOptionals: false
-        },
-        props: {
-            CodePage: {
-                get: function () {
-                    return 65000;
-                }
-            },
-            EncodingName: {
-                get: function () {
-                    return "Unicode (UTF-7)";
-                }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                System.Text.UTF7Encoding.$ctor1.call(this, false);
-            },
-            $ctor1: function (allowOptionals) {
-                this.$initialize();
-                System.Text.Encoding.ctor.call(this);
-                this.allowOptionals = allowOptionals;
-                this.fallbackCharacter = 65533;
-            }
-        },
-        methods: {
-            Encode$3: function (s, outputBytes, outputIndex, writtenBytes) {
-                var setD = "A-Za-z0-9" + (System.Text.UTF7Encoding.Escape("'(),-./:?") || "");
-
-                var encode = $asm.$.System.Text.UTF7Encoding.f1;
-
-                var setO = System.Text.UTF7Encoding.Escape("!\"#$%&*;<=>@[]^_`{|}");
-                var setW = System.Text.UTF7Encoding.Escape(" \r\n\t");
-
-                s = s.replace(new RegExp("[^" + setW + setD + (this.allowOptionals ? setO : "") + "]+", 'g'), function(chunk) {return '+' + (chunk === '+' ? '' : encode(chunk)) + '-';});
-
-                var arr = System.String.toCharArray(s, 0, s.length);
-
-                if (outputBytes != null) {
-                    var recorded = 0;
-
-                    if (arr.length > (((outputBytes.length - outputIndex) | 0))) {
-                        throw new System.ArgumentException("bytes");
-                    }
-
-                    for (var j = 0; j < arr.length; j = (j + 1) | 0) {
-                        outputBytes[System.Array.index(((j + outputIndex) | 0), outputBytes)] = arr[System.Array.index(j, arr)];
-                        recorded = (recorded + 1) | 0;
-                    }
-
-                    writtenBytes.v = recorded;
-                    return null;
-                }
-
-                writtenBytes.v = arr.length;
-
-                return arr;
-            },
-            Decode$2: function (bytes, index, count, chars, charIndex) {
-                var _base64ToArrayBuffer = $asm.$.System.Text.UTF7Encoding.f2;
-
-                var decode = function (s) {
-                    var b = _base64ToArrayBuffer(s);
-                    var r = System.Array.init(0, 0, System.Char);
-                    for (var i = 0; i < b.length; ) {
-                        r.push(((b[System.Array.index(Bridge.identity(i, (i = (i + 1) | 0)), b)] << 8 | b[System.Array.index(Bridge.identity(i, (i = (i + 1) | 0)), b)]) & 65535));
-                    }
-                    return System.String.fromCharArray(r);
-                };
-
-                var str = System.String.fromCharArray(bytes, index, count);
-                return str.replace(/\+([A-Za-z0-9\/]*)-?/gi, function (_, chunk) {if (chunk === '') {return _ == '+-' ? '+' : '';}return decode(chunk);});
-            },
-            GetMaxByteCount: function (charCount) {
-                if (charCount < 0) {
-                    throw new System.ArgumentOutOfRangeException("charCount");
-                }
-
-                var byteCount = System.Int64(charCount).mul(System.Int64(3)).add(System.Int64(2));
-
-                if (byteCount.gt(System.Int64(2147483647))) {
-                    throw new System.ArgumentOutOfRangeException("charCount");
-                }
-
-                return System.Int64.clip32(byteCount);
-            },
-            GetMaxCharCount: function (byteCount) {
-                if (byteCount < 0) {
-                    throw new System.ArgumentOutOfRangeException("byteCount");
-                }
-
-                var charCount = byteCount;
-                if (charCount === 0) {
-                    charCount = 1;
-                }
-
-                return charCount | 0;
-            }
-        }
-    });
-
-    Bridge.ns("System.Text.UTF7Encoding", $asm.$);
-
-    Bridge.apply($asm.$.System.Text.UTF7Encoding, {
-        f1: function (str) {
-            var b = System.Array.init(Bridge.Int.mul(str.length, 2), 0, System.Byte);
-            var bi = 0;
-            for (var i = 0; i < str.length; i = (i + 1) | 0) {
-                var c = str.charCodeAt(i);
-                b[System.Array.index(Bridge.identity(bi, (bi = (bi + 1) | 0)), b)] = (c >> 8);
-                b[System.Array.index(Bridge.identity(bi, (bi = (bi + 1) | 0)), b)] = (c & 255);
-            }
-            var base64Str = System.Convert.toBase64String(b, null, null, null);
-            return base64Str.replace(/=+$/, '');
-        },
-        f2: function (base64) {
-            try {
-                var binary_string = window.atob(base64);
-                var len = binary_string.length;
-                var arr = System.Array.init(len, 0, System.Char);
-
-                if (len === 1 && binary_string.charCodeAt(0) === 0) {
-                    return System.Array.init(0, 0, System.Char);
-                }
-
-                for (var i = 0; i < len; i = (i + 1) | 0) {
-                    arr[System.Array.index(i, arr)] = binary_string.charCodeAt(i);
-                }
-                return arr;
-            }
-            catch ($e1) {
-                $e1 = System.Exception.create($e1);
-                return System.Array.init(0, 0, System.Char);
-            }
-        }
-    });
-
-    Bridge.define("System.Text.UTF8Encoding", {
-        inherits: [System.Text.Encoding],
-        fields: {
-            encoderShouldEmitUTF8Identifier: false,
-            throwOnInvalid: false
-        },
-        props: {
-            CodePage: {
-                get: function () {
-                    return 65001;
-                }
-            },
-            EncodingName: {
-                get: function () {
-                    return "Unicode (UTF-8)";
-                }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                System.Text.UTF8Encoding.$ctor1.call(this, false);
-            },
-            $ctor1: function (encoderShouldEmitUTF8Identifier) {
-                System.Text.UTF8Encoding.$ctor2.call(this, encoderShouldEmitUTF8Identifier, false);
-            },
-            $ctor2: function (encoderShouldEmitUTF8Identifier, throwOnInvalidBytes) {
-                this.$initialize();
-                System.Text.Encoding.ctor.call(this);
-                this.encoderShouldEmitUTF8Identifier = encoderShouldEmitUTF8Identifier;
-                this.throwOnInvalid = throwOnInvalidBytes;
-                this.fallbackCharacter = 65533;
-            }
-        },
-        methods: {
-            Encode$3: function (s, outputBytes, outputIndex, writtenBytes) {
-                var hasBuffer = outputBytes != null;
-                var record = 0;
-
-                var write = function (args) {
-                    var len = args.length;
-                    for (var j = 0; j < len; j = (j + 1) | 0) {
-                        var code = args[System.Array.index(j, args)];
-                        if (hasBuffer) {
-                            if (outputIndex >= outputBytes.length) {
-                                throw new System.ArgumentException("bytes");
-                            }
-
-                            outputBytes[System.Array.index(Bridge.identity(outputIndex, (outputIndex = (outputIndex + 1) | 0)), outputBytes)] = code;
-                        } else {
-                            outputBytes.push(code);
-                        }
-                        record = (record + 1) | 0;
-                    }
-                };
-
-                var fallback = Bridge.fn.bind(this, $asm.$.System.Text.UTF8Encoding.f1);
-
-                if (!hasBuffer) {
-                    outputBytes = System.Array.init(0, 0, System.Byte);
-                }
-
-                for (var i = 0; i < s.length; i = (i + 1) | 0) {
-                    var charcode = s.charCodeAt(i);
-
-                    if ((charcode >= 55296) && (charcode <= 56319)) {
-                        var next = s.charCodeAt(((i + 1) | 0));
-                        if (!((next >= 56320) && (next <= 57343))) {
-                            charcode = fallback();
-                        }
-                    } else if ((charcode >= 56320) && (charcode <= 57343)) {
-                        charcode = fallback();
-                    }
-
-                    if (charcode < 128) {
-                        write(System.Array.init([charcode], System.Byte));
-                    } else if (charcode < 2048) {
-                        write(System.Array.init([(192 | (charcode >> 6)), (128 | (charcode & 63))], System.Byte));
-                    } else if (charcode < 55296 || charcode >= 57344) {
-                        write(System.Array.init([(224 | (charcode >> 12)), (128 | ((charcode >> 6) & 63)), (128 | (charcode & 63))], System.Byte));
-                    } else {
-                        i = (i + 1) | 0;
-                        var code = (65536 + (((charcode & 1023) << 10) | (s.charCodeAt(i) & 1023))) | 0;
-                        write(System.Array.init([(240 | (code >> 18)), (128 | ((code >> 12) & 63)), (128 | ((code >> 6) & 63)), (128 | (code & 63))], System.Byte));
-                    }
-                }
-
-                writtenBytes.v = record;
-
-                if (hasBuffer) {
-                    return null;
-                }
-
-                return outputBytes;
-            },
-            Decode$2: function (bytes, index, count, chars, charIndex) {
-                this._hasError = false;
-                var position = index;
-                var result = "";
-                var surrogate1 = 0;
-                var addFallback = false;
-                var endpoint = (position + count) | 0;
-
-                for (; position < endpoint; position = (position + 1) | 0) {
-                    var accumulator = 0;
-                    var extraBytes = 0;
-                    var hasError = false;
-                    var firstByte = bytes[System.Array.index(position, bytes)];
-
-                    if (firstByte <= 127) {
-                        accumulator = firstByte;
-                    } else if ((firstByte & 64) === 0) {
-                        hasError = true;
-                    } else if ((firstByte & 224) === 192) {
-                        accumulator = firstByte & 31;
-                        extraBytes = 1;
-                    } else if ((firstByte & 240) === 224) {
-                        accumulator = firstByte & 15;
-                        extraBytes = 2;
-                    } else if ((firstByte & 248) === 240) {
-                        accumulator = firstByte & 7;
-                        extraBytes = 3;
-                    } else if ((firstByte & 252) === 248) {
-                        accumulator = firstByte & 3;
-                        extraBytes = 4;
-                        hasError = true;
-                    } else if ((firstByte & 254) === 252) {
-                        accumulator = firstByte & 3;
-                        extraBytes = 5;
-                        hasError = true;
-                    } else {
-                        accumulator = firstByte;
-                        hasError = false;
-                    }
-
-                    while (extraBytes > 0) {
-                        position = (position + 1) | 0;
-
-                        if (position >= endpoint) {
-                            hasError = true;
-                            break;
-                        }
-
-                        var extraByte = bytes[System.Array.index(position, bytes)];
-                        extraBytes = (extraBytes - 1) | 0;
-
-                        if ((extraByte & 192) !== 128) {
-                            position = (position - 1) | 0;
-                            hasError = true;
-                            break;
-                        }
-
-                        accumulator = (accumulator << 6) | (extraByte & 63);
-                    }
-
-                    /* if ((accumulator == 0xFFFE) || (accumulator == 0xFFFF)) {
-                       hasError = true;
-                    }*/
-
-                    var characters = null;
-                    addFallback = false;
-                    if (!hasError) {
-                        if (surrogate1 > 0 && !((accumulator >= 56320) && (accumulator <= 57343))) {
-                            hasError = true;
-                            surrogate1 = 0;
-                        } else if ((accumulator >= 55296) && (accumulator <= 56319)) {
-                            surrogate1 = accumulator & 65535;
-                        } else if ((accumulator >= 56320) && (accumulator <= 57343)) {
-                            hasError = true;
-                            addFallback = true;
-                            surrogate1 = 0;
-                        } else {
-                            characters = System.String.fromCharCode(accumulator);
-                            surrogate1 = 0;
-                        }
-                    }
-
-                    if (hasError) {
-                        if (this.throwOnInvalid) {
-                            throw new System.Exception("Invalid character in UTF8 text");
-                        }
-
-                        result = (result || "") + String.fromCharCode(this.fallbackCharacter);
-                        this._hasError = true;
-                    } else if (surrogate1 === 0) {
-                        result = (result || "") + (characters || "");
-                    }
-                }
-
-                if (surrogate1 > 0 || addFallback) {
-                    if (this.throwOnInvalid) {
-                        throw new System.Exception("Invalid character in UTF8 text");
-                    }
-
-                    if (result.length > 0 && result.charCodeAt(((result.length - 1) | 0)) === this.fallbackCharacter) {
-                        result = (result || "") + String.fromCharCode(this.fallbackCharacter);
-                    } else {
-                        result = (result || "") + (((this.fallbackCharacter + this.fallbackCharacter) | 0));
-                    }
-
-                    this._hasError = true;
-                }
-
-                return result;
-            },
-            GetMaxByteCount: function (charCount) {
-                if (charCount < 0) {
-                    throw new System.ArgumentOutOfRangeException("charCount");
-                }
-
-
-                var byteCount = System.Int64(charCount).add(System.Int64(1));
-                byteCount = byteCount.mul(System.Int64(3));
-
-                if (byteCount.gt(System.Int64(2147483647))) {
-                    throw new System.ArgumentOutOfRangeException("charCount");
-                }
-
-                return System.Int64.clip32(byteCount);
-            },
-            GetMaxCharCount: function (byteCount) {
-                if (byteCount < 0) {
-                    throw new System.ArgumentOutOfRangeException("byteCount");
-                }
-
-                var charCount = System.Int64(byteCount).add(System.Int64(1));
-
-                if (charCount.gt(System.Int64(2147483647))) {
-                    throw new System.ArgumentOutOfRangeException("byteCount");
-                }
-
-                return System.Int64.clip32(charCount);
-            }
-        }
-    });
-
-    Bridge.ns("System.Text.UTF8Encoding", $asm.$);
-
-    Bridge.apply($asm.$.System.Text.UTF8Encoding, {
-        f1: function () {
-            if (this.throwOnInvalid) {
-                throw new System.Exception("Invalid character in UTF8 text");
-            }
-
-            return this.fallbackCharacter;
-        }
-    });
-
-    // @source io.js
-
-    Bridge.define("System.IO.__Error", {
-        statics: {
-            methods: {
-                EndOfFile: function () {
-                    throw new System.IO.EndOfStreamException.$ctor1("IO.EOF_ReadBeyondEOF");
-                },
-                FileNotOpen: function () {
-                    throw new System.Exception("ObjectDisposed_FileClosed");
-                },
-                StreamIsClosed: function () {
-                    throw new System.Exception("ObjectDisposed_StreamClosed");
-                },
-                MemoryStreamNotExpandable: function () {
-                    throw new System.NotSupportedException("NotSupported_MemStreamNotExpandable");
-                },
-                ReaderClosed: function () {
-                    throw new System.Exception("ObjectDisposed_ReaderClosed");
-                },
-                ReadNotSupported: function () {
-                    throw new System.NotSupportedException("NotSupported_UnreadableStream");
-                },
-                SeekNotSupported: function () {
-                    throw new System.NotSupportedException("NotSupported_UnseekableStream");
-                },
-                WrongAsyncResult: function () {
-                    throw new System.ArgumentException("Arg_WrongAsyncResult");
-                },
-                EndReadCalledTwice: function () {
-                    // Should ideally be InvalidOperationExc but we can't maitain parity with Stream and FileStream without some work
-                    throw new System.ArgumentException("InvalidOperation_EndReadCalledMultiple");
-                },
-                EndWriteCalledTwice: function () {
-                    // Should ideally be InvalidOperationExc but we can't maintain parity with Stream and FileStream without some work
-                    throw new System.ArgumentException("InvalidOperation_EndWriteCalledMultiple");
-                },
-                WriteNotSupported: function () {
-                    throw new System.NotSupportedException("NotSupported_UnwritableStream");
-                },
-                WriterClosed: function () {
-                    throw new System.Exception("ObjectDisposed_WriterClosed");
-                }
-            }
-        }
-    });
-
-    Bridge.define("System.IO.BinaryReader", {
-        inherits: [System.IDisposable],
-        statics: {
-            fields: {
-                MaxCharBytesSize: 0
-            },
-            ctors: {
-                init: function () {
-                    this.MaxCharBytesSize = 128;
-                }
-            }
-        },
-        fields: {
-            m_stream: null,
-            m_buffer: null,
-            m_encoding: null,
-            m_charBytes: null,
-            m_singleChar: null,
-            m_charBuffer: null,
-            m_maxCharsSize: 0,
-            m_2BytesPerChar: false,
-            m_isMemoryStream: false,
-            m_leaveOpen: false,
-            lastCharsRead: 0
-        },
-        props: {
-            BaseStream: {
-                get: function () {
-                    return this.m_stream;
-                }
-            }
-        },
-        alias: ["Dispose", "System$IDisposable$dispose"],
-        ctors: {
-            init: function () {
-                this.lastCharsRead = 0;
-            },
-            ctor: function (input) {
-                System.IO.BinaryReader.$ctor2.call(this, input, new System.Text.UTF8Encoding.ctor(), false);
-            },
-            $ctor1: function (input, encoding) {
-                System.IO.BinaryReader.$ctor2.call(this, input, encoding, false);
-            },
-            $ctor2: function (input, encoding, leaveOpen) {
-                this.$initialize();
-                if (input == null) {
-                    throw new System.ArgumentNullException("input");
-                }
-                if (encoding == null) {
-                    throw new System.ArgumentNullException("encoding");
-                }
-                if (!input.CanRead) {
-                    throw new System.ArgumentException("Argument_StreamNotReadable");
-                }
-                this.m_stream = input;
-                this.m_encoding = encoding;
-                this.m_maxCharsSize = encoding.GetMaxCharCount(System.IO.BinaryReader.MaxCharBytesSize);
-                var minBufferSize = encoding.GetMaxByteCount(1); // max bytes per one char
-                if (minBufferSize < 23) {
-                    minBufferSize = 23;
-                }
-                this.m_buffer = System.Array.init(minBufferSize, 0, System.Byte);
-                // m_charBuffer and m_charBytes will be left null.
-
-                // For Encodings that always use 2 bytes per char (or more),
-                // special case them here to make Read() & Peek() faster.
-                this.m_2BytesPerChar = Bridge.is(encoding, System.Text.UnicodeEncoding);
-                // check if BinaryReader is based on MemoryStream, and keep this for it's life
-                // we cannot use "as" operator, since derived classes are not allowed
-                this.m_isMemoryStream = (Bridge.referenceEquals(Bridge.getType(this.m_stream), System.IO.MemoryStream));
-                this.m_leaveOpen = leaveOpen;
-
-            }
-        },
-        methods: {
-            Close: function () {
-                this.Dispose$1(true);
-            },
-            Dispose$1: function (disposing) {
-                if (disposing) {
-                    var copyOfStream = this.m_stream;
-                    this.m_stream = null;
-                    if (copyOfStream != null && !this.m_leaveOpen) {
-                        copyOfStream.Close();
-                    }
-                }
-                this.m_stream = null;
-                this.m_buffer = null;
-                this.m_encoding = null;
-                this.m_charBytes = null;
-                this.m_singleChar = null;
-                this.m_charBuffer = null;
-            },
-            Dispose: function () {
-                this.Dispose$1(true);
-            },
-            PeekChar: function () {
-
-                if (this.m_stream == null) {
-                    System.IO.__Error.FileNotOpen();
-                }
-
-                if (!this.m_stream.CanSeek) {
-                    return -1;
-                }
-                var origPos = this.m_stream.Position;
-                var ch = this.Read();
-                this.m_stream.Position = origPos;
-                return ch;
-            },
-            Read: function () {
-
-                if (this.m_stream == null) {
-                    System.IO.__Error.FileNotOpen();
-                }
-                return this.InternalReadOneChar();
-            },
-            Read$2: function (buffer, index, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
-                }
-                if (index < 0) {
-                    throw new System.ArgumentOutOfRangeException("index", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (((buffer.length - index) | 0) < count) {
-                    throw new System.ArgumentException("Argument_InvalidOffLen");
-                }
-
-                if (this.m_stream == null) {
-                    System.IO.__Error.FileNotOpen();
-                }
-
-                // SafeCritical: index and count have already been verified to be a valid range for the buffer
-                return this.InternalReadChars(buffer, index, count);
-            },
-            Read$1: function (buffer, index, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
-                }
-                if (index < 0) {
-                    throw new System.ArgumentOutOfRangeException("index", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (((buffer.length - index) | 0) < count) {
-                    throw new System.ArgumentException("Argument_InvalidOffLen");
-                }
-
-                if (this.m_stream == null) {
-                    System.IO.__Error.FileNotOpen();
-                }
-                return this.m_stream.Read(buffer, index, count);
-            },
-            ReadBoolean: function () {
-                this.FillBuffer(1);
-                return (this.m_buffer[System.Array.index(0, this.m_buffer)] !== 0);
-            },
-            ReadByte: function () {
-                // Inlined to avoid some method call overhead with FillBuffer.
-                if (this.m_stream == null) {
-                    System.IO.__Error.FileNotOpen();
-                }
-
-                var b = this.m_stream.ReadByte();
-                if (b === -1) {
-                    System.IO.__Error.EndOfFile();
-                }
-                return (b & 255);
-            },
-            ReadSByte: function () {
-                this.FillBuffer(1);
-                return Bridge.Int.sxb((this.m_buffer[System.Array.index(0, this.m_buffer)]) & 255);
-            },
-            ReadChar: function () {
-                var value = this.Read();
-                if (value === -1) {
-                    System.IO.__Error.EndOfFile();
-                }
-                return (value & 65535);
-            },
-            ReadInt16: function () {
-                this.FillBuffer(2);
-                return Bridge.Int.sxs((this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8) & 65535);
-            },
-            ReadUInt16: function () {
-                this.FillBuffer(2);
-                return ((this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8) & 65535);
-            },
-            ReadInt32: function () {
-                if (this.m_isMemoryStream) {
-                    if (this.m_stream == null) {
-                        System.IO.__Error.FileNotOpen();
-                    }
-                    // read directly from MemoryStream buffer
-                    var mStream = Bridge.as(this.m_stream, System.IO.MemoryStream);
-
-                    return mStream.InternalReadInt32();
-                } else {
-                    this.FillBuffer(4);
-                    return this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24;
-                }
-            },
-            ReadUInt32: function () {
-                this.FillBuffer(4);
-                return ((this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24) >>> 0);
-            },
-            ReadInt64: function () {
-                this.FillBuffer(8);
-                var lo = (this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24) >>> 0;
-                var hi = (this.m_buffer[System.Array.index(4, this.m_buffer)] | this.m_buffer[System.Array.index(5, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(6, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(7, this.m_buffer)] << 24) >>> 0;
-                return System.Int64.clip64(System.UInt64(hi)).shl(32).or(System.Int64(lo));
-            },
-            ReadUInt64: function () {
-                this.FillBuffer(8);
-                var lo = (this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24) >>> 0;
-                var hi = (this.m_buffer[System.Array.index(4, this.m_buffer)] | this.m_buffer[System.Array.index(5, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(6, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(7, this.m_buffer)] << 24) >>> 0;
-                return System.UInt64(hi).shl(32).or(System.UInt64(lo));
-            },
-            ReadSingle: function () {
-                this.FillBuffer(4);
-                var tmpBuffer = (this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24) >>> 0;
-                return System.BitConverter.toSingle(System.BitConverter.getBytes$8(tmpBuffer), 0);
-            },
-            ReadDouble: function () {
-                this.FillBuffer(8);
-                var lo = (this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24) >>> 0;
-                var hi = (this.m_buffer[System.Array.index(4, this.m_buffer)] | this.m_buffer[System.Array.index(5, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(6, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(7, this.m_buffer)] << 24) >>> 0;
-
-                var tmpBuffer = System.UInt64(hi).shl(32).or(System.UInt64(lo));
-                return System.BitConverter.toDouble(System.BitConverter.getBytes$9(tmpBuffer), 0);
-            },
-            ReadDecimal: function () {
-                this.FillBuffer(23);
-                try {
-                    return System.Decimal.fromBytes(this.m_buffer);
-                }
-                catch ($e1) {
-                    $e1 = System.Exception.create($e1);
-                    var e;
-                    if (Bridge.is($e1, System.ArgumentException)) {
-                        e = $e1;
-                        // ReadDecimal cannot leak out ArgumentException
-                        throw new System.IO.IOException.$ctor2("Arg_DecBitCtor", e);
-                    } else {
-                        throw $e1;
-                    }
-                }
-            },
-            ReadString: function () {
-
-                if (this.m_stream == null) {
-                    System.IO.__Error.FileNotOpen();
-                }
-
-                var currPos = 0;
-                var n;
-                var stringLength;
-                var readLength;
-                var charsRead;
-
-                // Length of the string in bytes, not chars
-                stringLength = this.Read7BitEncodedInt();
-                if (stringLength < 0) {
-                    throw new System.IO.IOException.$ctor1("IO.IO_InvalidStringLen_Len");
-                }
-
-                if (stringLength === 0) {
-                    return "";
-                }
-
-                if (this.m_charBytes == null) {
-                    this.m_charBytes = System.Array.init(System.IO.BinaryReader.MaxCharBytesSize, 0, System.Byte);
-                }
-
-                if (this.m_charBuffer == null) {
-                    this.m_charBuffer = System.Array.init(this.m_maxCharsSize, 0, System.Char);
-                }
-
-                var sb = null;
-                do {
-                    readLength = ((((stringLength - currPos) | 0)) > System.IO.BinaryReader.MaxCharBytesSize) ? System.IO.BinaryReader.MaxCharBytesSize : (((stringLength - currPos) | 0));
-
-                    n = this.m_stream.Read(this.m_charBytes, 0, readLength);
-                    if (n === 0) {
-                        System.IO.__Error.EndOfFile();
-                    }
-
-                    charsRead = this.m_encoding.GetChars$2(this.m_charBytes, 0, n, this.m_charBuffer, 0);
-
-                    if (currPos === 0 && n === stringLength) {
-                        return System.String.fromCharArray(this.m_charBuffer, 0, charsRead);
-                    }
-
-                    if (sb == null) {
-                        sb = new System.Text.StringBuilder("", stringLength);
-                    }
-
-                    for (var i = 0; i < charsRead; i = (i + 1) | 0) {
-                        sb.append(String.fromCharCode(this.m_charBuffer[System.Array.index(i, this.m_charBuffer)]));
-                    }
-
-                    currPos = (currPos + n) | 0;
-
-                } while (currPos < stringLength);
-
-                return sb.toString();
-            },
-            InternalReadChars: function (buffer, index, count) {
-
-                var charsRemaining = count;
-
-                if (this.m_charBytes == null) {
-                    this.m_charBytes = System.Array.init(System.IO.BinaryReader.MaxCharBytesSize, 0, System.Byte);
-                }
-
-                if (index < 0 || charsRemaining < 0 || ((index + charsRemaining) | 0) > buffer.length) {
-                    throw new System.ArgumentOutOfRangeException("charsRemaining");
-                }
-
-                while (charsRemaining > 0) {
-
-                    var ch = this.InternalReadOneChar(true);
-
-                    if (ch === -1) {
-                        break;
-                    }
-
-                    buffer[System.Array.index(index, buffer)] = ch & 65535;
-
-                    if (this.lastCharsRead === 2) {
-                        buffer[System.Array.index(((index = (index + 1) | 0)), buffer)] = this.m_singleChar[System.Array.index(1, this.m_singleChar)];
-                        charsRemaining = (charsRemaining - 1) | 0;
-                    }
-
-                    charsRemaining = (charsRemaining - 1) | 0;
-                    index = (index + 1) | 0;
-                }
-
-                // this should never fail
-
-                // we may have read fewer than the number of characters requested if end of stream reached
-                // or if the encoding makes the char count too big for the buffer (e.g. fallback sequence)
-                return (((count - charsRemaining) | 0));
-            },
-            InternalReadOneChar: function (allowSurrogate) {
-                if (allowSurrogate === void 0) { allowSurrogate = false; }
-                // I know having a separate InternalReadOneChar method seems a little
-                // redundant, but this makes a scenario like the security parser code
-                // 20% faster, in addition to the optimizations for UnicodeEncoding I
-                // put in InternalReadChars.
-                var charsRead = 0;
-                var numBytes = 0;
-                var posSav = System.Int64(0);
-
-                if (this.m_stream.CanSeek) {
-                    posSav = this.m_stream.Position;
-                }
-
-                if (this.m_charBytes == null) {
-                    this.m_charBytes = System.Array.init(System.IO.BinaryReader.MaxCharBytesSize, 0, System.Byte); //
-                }
-                if (this.m_singleChar == null) {
-                    this.m_singleChar = System.Array.init(2, 0, System.Char);
-                }
-
-                var addByte = false;
-                var internalPos = 0;
-                while (charsRead === 0) {
-                    numBytes = this.m_2BytesPerChar ? 2 : 1;
-
-                    if (Bridge.is(this.m_encoding, System.Text.UTF32Encoding)) {
-                        numBytes = 4;
-                    }
-
-                    if (addByte) {
-                        var r = this.m_stream.ReadByte();
-                        this.m_charBytes[System.Array.index(((internalPos = (internalPos + 1) | 0)), this.m_charBytes)] = r & 255;
-                        if (r === -1) {
-                            numBytes = 0;
-                        }
-
-                        if (numBytes === 2) {
-                            r = this.m_stream.ReadByte();
-                            this.m_charBytes[System.Array.index(((internalPos = (internalPos + 1) | 0)), this.m_charBytes)] = r & 255;
-                            if (r === -1) {
-                                numBytes = 1;
-                            }
-                        }
-                    } else {
-                        var r1 = this.m_stream.ReadByte();
-                        this.m_charBytes[System.Array.index(0, this.m_charBytes)] = r1 & 255;
-                        internalPos = 0;
-                        if (r1 === -1) {
-                            numBytes = 0;
-                        }
-
-                        if (numBytes === 2) {
-                            r1 = this.m_stream.ReadByte();
-                            this.m_charBytes[System.Array.index(1, this.m_charBytes)] = r1 & 255;
-                            if (r1 === -1) {
-                                numBytes = 1;
-                            }
-                            internalPos = 1;
-                        } else if (numBytes === 4) {
-                            r1 = this.m_stream.ReadByte();
-                            this.m_charBytes[System.Array.index(1, this.m_charBytes)] = r1 & 255;
-                            if (r1 === -1) {
-                                return -1;
-                            }
-
-                            r1 = this.m_stream.ReadByte();
-                            this.m_charBytes[System.Array.index(2, this.m_charBytes)] = r1 & 255;
-                            if (r1 === -1) {
-                                return -1;
-                            }
-
-                            r1 = this.m_stream.ReadByte();
-                            this.m_charBytes[System.Array.index(3, this.m_charBytes)] = r1 & 255;
-                            if (r1 === -1) {
-                                return -1;
-                            }
-
-                            internalPos = 3;
-                        }
-                    }
-
-
-                    if (numBytes === 0) {
-                        return -1;
-                    }
-
-                    addByte = false;
-                    try {
-                        charsRead = this.m_encoding.GetChars$2(this.m_charBytes, 0, ((internalPos + 1) | 0), this.m_singleChar, 0);
-
-                        if (!allowSurrogate && charsRead === 2) {
-                            throw new System.ArgumentException();
-                        }
-                    }
-                    catch ($e1) {
-                        $e1 = System.Exception.create($e1);
-                        // Handle surrogate char
-
-                        if (this.m_stream.CanSeek) {
-                            this.m_stream.Seek((posSav.sub(this.m_stream.Position)), System.IO.SeekOrigin.Current);
-                        }
-                        // else - we can't do much here
-
-                        throw $e1;
-                    }
-
-                    if (this.m_encoding._hasError) {
-                        charsRead = 0;
-                        addByte = true;
-                    }
-
-                    if (!allowSurrogate) {
-                    }
-                }
-
-                this.lastCharsRead = charsRead;
-
-                if (charsRead === 0) {
-                    return -1;
-                }
-
-                return this.m_singleChar[System.Array.index(0, this.m_singleChar)];
-            },
-            ReadChars: function (count) {
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (this.m_stream == null) {
-                    System.IO.__Error.FileNotOpen();
-                }
-
-                if (count === 0) {
-                    return System.Array.init(0, 0, System.Char);
-                }
-
-                // SafeCritical: we own the chars buffer, and therefore can guarantee that the index and count are valid
-                var chars = System.Array.init(count, 0, System.Char);
-                var n = this.InternalReadChars(chars, 0, count);
-                if (n !== count) {
-                    var copy = System.Array.init(n, 0, System.Char);
-                    System.Array.copy(chars, 0, copy, 0, Bridge.Int.mul(2, n)); // sizeof(char)
-                    chars = copy;
-                }
-
-                return chars;
-            },
-            ReadBytes: function (count) {
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (this.m_stream == null) {
-                    System.IO.__Error.FileNotOpen();
-                }
-
-                if (count === 0) {
-                    return System.Array.init(0, 0, System.Byte);
-                }
-
-                var result = System.Array.init(count, 0, System.Byte);
-
-                var numRead = 0;
-                do {
-                    var n = this.m_stream.Read(result, numRead, count);
-                    if (n === 0) {
-                        break;
-                    }
-                    numRead = (numRead + n) | 0;
-                    count = (count - n) | 0;
-                } while (count > 0);
-
-                if (numRead !== result.length) {
-                    // Trim array.  This should happen on EOF & possibly net streams.
-                    var copy = System.Array.init(numRead, 0, System.Byte);
-                    System.Array.copy(result, 0, copy, 0, numRead);
-                    result = copy;
-                }
-
-                return result;
-            },
-            FillBuffer: function (numBytes) {
-                if (this.m_buffer != null && (numBytes < 0 || numBytes > this.m_buffer.length)) {
-                    throw new System.ArgumentOutOfRangeException("numBytes", "ArgumentOutOfRange_BinaryReaderFillBuffer");
-                }
-                var bytesRead = 0;
-                var n = 0;
-
-                if (this.m_stream == null) {
-                    System.IO.__Error.FileNotOpen();
-                }
-
-                // Need to find a good threshold for calling ReadByte() repeatedly
-                // vs. calling Read(byte[], int, int) for both buffered & unbuffered
-                // streams.
-                if (numBytes === 1) {
-                    n = this.m_stream.ReadByte();
-                    if (n === -1) {
-                        System.IO.__Error.EndOfFile();
-                    }
-                    this.m_buffer[System.Array.index(0, this.m_buffer)] = n & 255;
-                    return;
-                }
-
-                do {
-                    n = this.m_stream.Read(this.m_buffer, bytesRead, ((numBytes - bytesRead) | 0));
-                    if (n === 0) {
-                        System.IO.__Error.EndOfFile();
-                    }
-                    bytesRead = (bytesRead + n) | 0;
-                } while (bytesRead < numBytes);
-            },
-            Read7BitEncodedInt: function () {
-                // Read out an Int32 7 bits at a time.  The high bit
-                // of the byte when on means to continue reading more bytes.
-                var count = 0;
-                var shift = 0;
-                var b;
-                do {
-                    // Check for a corrupted stream.  Read a max of 5 bytes.
-                    // In a future version, add a DataFormatException.
-                    if (shift === 35) {
-                        throw new System.FormatException("Format_Bad7BitInt32");
-                    }
-
-                    // ReadByte handles end of stream cases for us.
-                    b = this.ReadByte();
-                    count = count | ((b & 127) << shift);
-                    shift = (shift + 7) | 0;
-                } while ((b & 128) !== 0);
-                return count;
-            }
-        }
-    });
-
-    Bridge.define("System.IO.BinaryWriter", {
-        inherits: [System.IDisposable],
-        statics: {
-            fields: {
-                Null: null,
-                LargeByteBufferSize: 0
-            },
-            ctors: {
-                init: function () {
-                    this.Null = new System.IO.BinaryWriter.ctor();
-                    this.LargeByteBufferSize = 256;
-                }
-            }
-        },
-        fields: {
-            OutStream: null,
-            _buffer: null,
-            _encoding: null,
-            _leaveOpen: false,
-            _tmpOneCharBuffer: null
-        },
-        props: {
-            BaseStream: {
-                get: function () {
-                    this.Flush();
-                    return this.OutStream;
-                }
-            }
-        },
-        alias: ["Dispose", "System$IDisposable$dispose"],
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                this.OutStream = System.IO.Stream.Null;
-                this._buffer = System.Array.init(16, 0, System.Byte);
-                this._encoding = new System.Text.UTF8Encoding.$ctor2(false, true);
-            },
-            $ctor1: function (output) {
-                System.IO.BinaryWriter.$ctor3.call(this, output, new System.Text.UTF8Encoding.$ctor2(false, true), false);
-            },
-            $ctor2: function (output, encoding) {
-                System.IO.BinaryWriter.$ctor3.call(this, output, encoding, false);
-            },
-            $ctor3: function (output, encoding, leaveOpen) {
-                this.$initialize();
-                if (output == null) {
-                    throw new System.ArgumentNullException("output");
-                }
-                if (encoding == null) {
-                    throw new System.ArgumentNullException("encoding");
-                }
-                if (!output.CanWrite) {
-                    throw new System.ArgumentException("Argument_StreamNotWritable");
-                }
-
-                this.OutStream = output;
-                this._buffer = System.Array.init(16, 0, System.Byte);
-                this._encoding = encoding;
-                this._leaveOpen = leaveOpen;
-            }
-        },
-        methods: {
-            Close: function () {
-                this.Dispose$1(true);
-            },
-            Dispose$1: function (disposing) {
-                if (disposing) {
-                    if (this._leaveOpen) {
-                        this.OutStream.Flush();
-                    } else {
-                        this.OutStream.Close();
-                    }
-                }
-            },
-            Dispose: function () {
-                this.Dispose$1(true);
-            },
-            Flush: function () {
-                this.OutStream.Flush();
-            },
-            Seek: function (offset, origin) {
-                return this.OutStream.Seek(System.Int64(offset), origin);
-            },
-            Write: function (value) {
-                this._buffer[System.Array.index(0, this._buffer)] = (value ? 1 : 0) & 255;
-                this.OutStream.Write(this._buffer, 0, 1);
-            },
-            Write$1: function (value) {
-                this.OutStream.WriteByte(value);
-            },
-            Write$12: function (value) {
-                this.OutStream.WriteByte((value & 255));
-            },
-            Write$2: function (buffer) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer");
-                }
-                this.OutStream.Write(buffer, 0, buffer.length);
-            },
-            Write$3: function (buffer, index, count) {
-                this.OutStream.Write(buffer, index, count);
-            },
-            Write$4: function (ch) {
-                if (System.Char.isSurrogate(ch)) {
-                    throw new System.ArgumentException("Arg_SurrogatesNotAllowedAsSingleChar");
-                }
-
-                var numBytes = 0;
-                numBytes = this._encoding.GetBytes$3(System.Array.init([ch], System.Char), 0, 1, this._buffer, 0);
-
-                this.OutStream.Write(this._buffer, 0, numBytes);
-            },
-            Write$5: function (chars) {
-                if (chars == null) {
-                    throw new System.ArgumentNullException("chars");
-                }
-
-                var bytes = this._encoding.GetBytes$1(chars, 0, chars.length);
-                this.OutStream.Write(bytes, 0, bytes.length);
-            },
-            Write$6: function (chars, index, count) {
-                var bytes = this._encoding.GetBytes$1(chars, index, count);
-                this.OutStream.Write(bytes, 0, bytes.length);
-            },
-            Write$8: function (value) {
-                var TmpValue = System.Int64.clipu64(System.BitConverter.doubleToInt64Bits(value));
-                this._buffer[System.Array.index(0, this._buffer)] = System.Int64.clipu8(TmpValue);
-                this._buffer[System.Array.index(1, this._buffer)] = System.Int64.clipu8(TmpValue.shru(8));
-                this._buffer[System.Array.index(2, this._buffer)] = System.Int64.clipu8(TmpValue.shru(16));
-                this._buffer[System.Array.index(3, this._buffer)] = System.Int64.clipu8(TmpValue.shru(24));
-                this._buffer[System.Array.index(4, this._buffer)] = System.Int64.clipu8(TmpValue.shru(32));
-                this._buffer[System.Array.index(5, this._buffer)] = System.Int64.clipu8(TmpValue.shru(40));
-                this._buffer[System.Array.index(6, this._buffer)] = System.Int64.clipu8(TmpValue.shru(48));
-                this._buffer[System.Array.index(7, this._buffer)] = System.Int64.clipu8(TmpValue.shru(56));
-                this.OutStream.Write(this._buffer, 0, 8);
-            },
-            Write$7: function (value) {
-                var buf = value.getBytes();
-                this.OutStream.Write(buf, 0, 23);
-            },
-            Write$9: function (value) {
-                this._buffer[System.Array.index(0, this._buffer)] = value & 255;
-                this._buffer[System.Array.index(1, this._buffer)] = (value >> 8) & 255;
-                this.OutStream.Write(this._buffer, 0, 2);
-            },
-            Write$15: function (value) {
-                this._buffer[System.Array.index(0, this._buffer)] = value & 255;
-                this._buffer[System.Array.index(1, this._buffer)] = (value >> 8) & 255;
-                this.OutStream.Write(this._buffer, 0, 2);
-            },
-            Write$10: function (value) {
-                this._buffer[System.Array.index(0, this._buffer)] = value & 255;
-                this._buffer[System.Array.index(1, this._buffer)] = (value >> 8) & 255;
-                this._buffer[System.Array.index(2, this._buffer)] = (value >> 16) & 255;
-                this._buffer[System.Array.index(3, this._buffer)] = (value >> 24) & 255;
-                this.OutStream.Write(this._buffer, 0, 4);
-            },
-            Write$16: function (value) {
-                this._buffer[System.Array.index(0, this._buffer)] = value & 255;
-                this._buffer[System.Array.index(1, this._buffer)] = (value >>> 8) & 255;
-                this._buffer[System.Array.index(2, this._buffer)] = (value >>> 16) & 255;
-                this._buffer[System.Array.index(3, this._buffer)] = (value >>> 24) & 255;
-                this.OutStream.Write(this._buffer, 0, 4);
-            },
-            Write$11: function (value) {
-                this._buffer[System.Array.index(0, this._buffer)] = System.Int64.clipu8(value);
-                this._buffer[System.Array.index(1, this._buffer)] = System.Int64.clipu8(value.shr(8));
-                this._buffer[System.Array.index(2, this._buffer)] = System.Int64.clipu8(value.shr(16));
-                this._buffer[System.Array.index(3, this._buffer)] = System.Int64.clipu8(value.shr(24));
-                this._buffer[System.Array.index(4, this._buffer)] = System.Int64.clipu8(value.shr(32));
-                this._buffer[System.Array.index(5, this._buffer)] = System.Int64.clipu8(value.shr(40));
-                this._buffer[System.Array.index(6, this._buffer)] = System.Int64.clipu8(value.shr(48));
-                this._buffer[System.Array.index(7, this._buffer)] = System.Int64.clipu8(value.shr(56));
-                this.OutStream.Write(this._buffer, 0, 8);
-            },
-            Write$17: function (value) {
-                this._buffer[System.Array.index(0, this._buffer)] = System.Int64.clipu8(value);
-                this._buffer[System.Array.index(1, this._buffer)] = System.Int64.clipu8(value.shru(8));
-                this._buffer[System.Array.index(2, this._buffer)] = System.Int64.clipu8(value.shru(16));
-                this._buffer[System.Array.index(3, this._buffer)] = System.Int64.clipu8(value.shru(24));
-                this._buffer[System.Array.index(4, this._buffer)] = System.Int64.clipu8(value.shru(32));
-                this._buffer[System.Array.index(5, this._buffer)] = System.Int64.clipu8(value.shru(40));
-                this._buffer[System.Array.index(6, this._buffer)] = System.Int64.clipu8(value.shru(48));
-                this._buffer[System.Array.index(7, this._buffer)] = System.Int64.clipu8(value.shru(56));
-                this.OutStream.Write(this._buffer, 0, 8);
-            },
-            Write$13: function (value) {
-                var TmpValue = System.BitConverter.toUInt32(System.BitConverter.getBytes$6(value), 0);
-                this._buffer[System.Array.index(0, this._buffer)] = TmpValue & 255;
-                this._buffer[System.Array.index(1, this._buffer)] = (TmpValue >>> 8) & 255;
-                this._buffer[System.Array.index(2, this._buffer)] = (TmpValue >>> 16) & 255;
-                this._buffer[System.Array.index(3, this._buffer)] = (TmpValue >>> 24) & 255;
-                this.OutStream.Write(this._buffer, 0, 4);
-            },
-            Write$14: function (value) {
-                if (value == null) {
-                    throw new System.ArgumentNullException("value");
-                }
-
-                var buffer = this._encoding.GetBytes$2(value);
-                var len = buffer.length;
-                this.Write7BitEncodedInt(len);
-                this.OutStream.Write(buffer, 0, len);
-            },
-            Write7BitEncodedInt: function (value) {
-                // Write out an int 7 bits at a time.  The high bit of the byte,
-                // when on, tells reader to continue reading more bytes.
-                var v = value >>> 0; // support negative numbers
-                while (v >= 128) {
-                    this.Write$1(((((v | 128) >>> 0)) & 255));
-                    v = v >>> 7;
-                }
-                this.Write$1((v & 255));
-            }
-        }
-    });
-
-    Bridge.define("System.IO.Stream", {
-        inherits: [System.IDisposable],
-        statics: {
-            fields: {
-                Null: null,
-                _DefaultCopyBufferSize: 0
-            },
-            ctors: {
-                init: function () {
-                    this.Null = new System.IO.Stream.NullStream();
-                    this._DefaultCopyBufferSize = 81920;
-                }
-            },
-            methods: {
-                Synchronized: function (stream) {
-                    if (stream == null) {
-                        throw new System.ArgumentNullException("stream");
-                    }
-
-                    return stream;
-                },
-                BlockingEndRead: function (asyncResult) {
-
-                    return System.IO.Stream.SynchronousAsyncResult.EndRead(asyncResult);
-                },
-                BlockingEndWrite: function (asyncResult) {
-                    System.IO.Stream.SynchronousAsyncResult.EndWrite(asyncResult);
-                }
-            }
-        },
-        props: {
-            CanTimeout: {
-                get: function () {
-                    return false;
-                }
-            },
-            ReadTimeout: {
-                get: function () {
-                    throw new System.InvalidOperationException();
-                },
-                set: function (value) {
-                    throw new System.InvalidOperationException();
-                }
-            },
-            WriteTimeout: {
-                get: function () {
-                    throw new System.InvalidOperationException();
-                },
-                set: function (value) {
-                    throw new System.InvalidOperationException();
-                }
-            }
-        },
-        alias: ["Dispose", "System$IDisposable$dispose"],
-        methods: {
-            CopyTo: function (destination) {
-                if (destination == null) {
-                    throw new System.ArgumentNullException("destination");
-                }
-                if (!this.CanRead && !this.CanWrite) {
-                    throw new System.Exception();
-                }
-                if (!destination.CanRead && !destination.CanWrite) {
-                    throw new System.Exception("destination");
-                }
-                if (!this.CanRead) {
-                    throw new System.NotSupportedException();
-                }
-                if (!destination.CanWrite) {
-                    throw new System.NotSupportedException();
-                }
-
-                this.InternalCopyTo(destination, System.IO.Stream._DefaultCopyBufferSize);
-            },
-            CopyTo$1: function (destination, bufferSize) {
-                if (destination == null) {
-                    throw new System.ArgumentNullException("destination");
-                }
-                if (bufferSize <= 0) {
-                    throw new System.ArgumentOutOfRangeException("bufferSize");
-                }
-                if (!this.CanRead && !this.CanWrite) {
-                    throw new System.Exception();
-                }
-                if (!destination.CanRead && !destination.CanWrite) {
-                    throw new System.Exception("destination");
-                }
-                if (!this.CanRead) {
-                    throw new System.NotSupportedException();
-                }
-                if (!destination.CanWrite) {
-                    throw new System.NotSupportedException();
-                }
-
-                this.InternalCopyTo(destination, bufferSize);
-            },
-            InternalCopyTo: function (destination, bufferSize) {
-
-                var buffer = System.Array.init(bufferSize, 0, System.Byte);
-                var read;
-                while (((read = this.Read(buffer, 0, buffer.length))) !== 0) {
-                    destination.Write(buffer, 0, read);
-                }
-            },
-            Close: function () {
-                /* These are correct, but we'd have to fix PipeStream & NetworkStream very carefully.
-                Contract.Ensures(CanRead == false);
-                Contract.Ensures(CanWrite == false);
-                Contract.Ensures(CanSeek == false);
-                */
-
-                this.Dispose$1(true);
-            },
-            Dispose: function () {
-                /* These are correct, but we'd have to fix PipeStream & NetworkStream very carefully.
-                Contract.Ensures(CanRead == false);
-                Contract.Ensures(CanWrite == false);
-                Contract.Ensures(CanSeek == false);
-                */
-
-                this.Close();
-            },
-            Dispose$1: function (disposing) {
-                // Note: Never change this to call other virtual methods on Stream
-                // like Write, since the state on subclasses has already been
-                // torn down.  This is the last code to run on cleanup for a stream.
-            },
-            BeginRead: function (buffer, offset, count, callback, state) {
-                return this.BeginReadInternal(buffer, offset, count, callback, state, false);
-            },
-            BeginReadInternal: function (buffer, offset, count, callback, state, serializeAsynchronously) {
-                if (!this.CanRead) {
-                    System.IO.__Error.ReadNotSupported();
-                }
-
-                return this.BlockingBeginRead(buffer, offset, count, callback, state);
-            },
-            EndRead: function (asyncResult) {
-                if (asyncResult == null) {
-                    throw new System.ArgumentNullException("asyncResult");
-                }
-
-                return System.IO.Stream.BlockingEndRead(asyncResult);
-            },
-            BeginWrite: function (buffer, offset, count, callback, state) {
-                return this.BeginWriteInternal(buffer, offset, count, callback, state, false);
-            },
-            BeginWriteInternal: function (buffer, offset, count, callback, state, serializeAsynchronously) {
-                if (!this.CanWrite) {
-                    System.IO.__Error.WriteNotSupported();
-                }
-                return this.BlockingBeginWrite(buffer, offset, count, callback, state);
-            },
-            EndWrite: function (asyncResult) {
-                if (asyncResult == null) {
-                    throw new System.ArgumentNullException("asyncResult");
-                }
-
-                System.IO.Stream.BlockingEndWrite(asyncResult);
-            },
-            ReadByte: function () {
-
-                var oneByteArray = System.Array.init(1, 0, System.Byte);
-                var r = this.Read(oneByteArray, 0, 1);
-                if (r === 0) {
-                    return -1;
-                }
-                return oneByteArray[System.Array.index(0, oneByteArray)];
-            },
-            WriteByte: function (value) {
-                var oneByteArray = System.Array.init(1, 0, System.Byte);
-                oneByteArray[System.Array.index(0, oneByteArray)] = value;
-                this.Write(oneByteArray, 0, 1);
-            },
-            BlockingBeginRead: function (buffer, offset, count, callback, state) {
-
-                // To avoid a race with a stream's position pointer & generating ----
-                // conditions with internal buffer indexes in our own streams that
-                // don't natively support async IO operations when there are multiple
-                // async requests outstanding, we will block the application's main
-                // thread and do the IO synchronously.
-                // This can't perform well - use a different approach.
-                var asyncResult;
-                try {
-                    var numRead = this.Read(buffer, offset, count);
-                    asyncResult = new System.IO.Stream.SynchronousAsyncResult.$ctor1(numRead, state);
-                }
-                catch ($e1) {
-                    $e1 = System.Exception.create($e1);
-                    var ex;
-                    if (Bridge.is($e1, System.IO.IOException)) {
-                        ex = $e1;
-                        asyncResult = new System.IO.Stream.SynchronousAsyncResult.ctor(ex, state, false);
-                    } else {
-                        throw $e1;
-                    }
-                }
-
-                if (!Bridge.staticEquals(callback, null)) {
-                    callback(asyncResult);
-                }
-
-                return asyncResult;
-            },
-            BlockingBeginWrite: function (buffer, offset, count, callback, state) {
-
-                // To avoid a race with a stream's position pointer & generating ----
-                // conditions with internal buffer indexes in our own streams that
-                // don't natively support async IO operations when there are multiple
-                // async requests outstanding, we will block the application's main
-                // thread and do the IO synchronously.
-                // This can't perform well - use a different approach.
-                var asyncResult;
-                try {
-                    this.Write(buffer, offset, count);
-                    asyncResult = new System.IO.Stream.SynchronousAsyncResult.$ctor2(state);
-                }
-                catch ($e1) {
-                    $e1 = System.Exception.create($e1);
-                    var ex;
-                    if (Bridge.is($e1, System.IO.IOException)) {
-                        ex = $e1;
-                        asyncResult = new System.IO.Stream.SynchronousAsyncResult.ctor(ex, state, true);
-                    } else {
-                        throw $e1;
-                    }
-                }
-
-                if (!Bridge.staticEquals(callback, null)) {
-                    callback(asyncResult);
-                }
-
-                return asyncResult;
-            }
-        }
-    });
-
-    Bridge.define("System.IO.IOException", {
-        inherits: [System.Exception],
-        fields: {
-            _maybeFullPath: null
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                System.Exception.ctor.call(this, "Arg_IOException");
-            },
-            $ctor1: function (message) {
-                this.$initialize();
-                System.Exception.ctor.call(this, message);
-            },
-            $ctor3: function (message, hresult) {
-                this.$initialize();
-                System.Exception.ctor.call(this, message);
-            },
-            $ctor4: function (message, hresult, maybeFullPath) {
-                this.$initialize();
-                System.Exception.ctor.call(this, message);
-                this._maybeFullPath = maybeFullPath;
-            },
-            $ctor2: function (message, innerException) {
-                this.$initialize();
-                System.Exception.ctor.call(this, message, innerException);
-            }
-        }
-    });
-
-    Bridge.define("System.IO.File", {
-        statics: {
-            methods: {
-                OpenText: function (path) {
-                    if (path == null) {
-                        throw new System.ArgumentNullException("path");
-                    }
-                    return new System.IO.StreamReader.$ctor7(path);
-                },
-                OpenRead: function (path) {
-                    return new System.IO.FileStream.$ctor1(path, System.IO.FileMode.Open);
-                },
-                ReadAllText: function (path) {
-                    if (path == null) {
-                        throw new System.ArgumentNullException("path");
-                    }
-                    if (path.length === 0) {
-                        throw new System.ArgumentException("Argument_EmptyPath");
-                    }
-
-                    return System.IO.File.InternalReadAllText(path, System.Text.Encoding.UTF8, true);
-                },
-                ReadAllText$1: function (path, encoding) {
-                    if (path == null) {
-                        throw new System.ArgumentNullException("path");
-                    }
-                    if (encoding == null) {
-                        throw new System.ArgumentNullException("encoding");
-                    }
-                    if (path.length === 0) {
-                        throw new System.ArgumentException("Argument_EmptyPath");
-                    }
-
-                    return System.IO.File.InternalReadAllText(path, encoding, true);
-                },
-                InternalReadAllText: function (path, encoding, checkHost) {
-
-                    var sr = new System.IO.StreamReader.$ctor12(path, encoding, true, System.IO.StreamReader.DefaultBufferSize, checkHost);
-                    try {
-                        return sr.ReadToEnd();
-                    }
-                    finally {
-                        if (Bridge.hasValue(sr)) {
-                            sr.System$IDisposable$dispose();
-                        }
-                    }
-                },
-                ReadAllBytes: function (path) {
-                    return System.IO.File.InternalReadAllBytes(path, true);
-                },
-                InternalReadAllBytes: function (path, checkHost) {
-                    var bytes;
-                    var fs = new System.IO.FileStream.$ctor1(path, System.IO.FileMode.Open);
-                    try {
-                        // Do a blocking read
-                        var index = 0;
-                        var fileLength = fs.Length;
-                        if (fileLength.gt(System.Int64(2147483647))) {
-                            throw new System.IO.IOException.$ctor1("IO.IO_FileTooLong2GB");
-                        }
-                        var count = System.Int64.clip32(fileLength);
-                        bytes = System.Array.init(count, 0, System.Byte);
-                        while (count > 0) {
-                            var n = fs.Read(bytes, index, count);
-                            if (n === 0) {
-                                System.IO.__Error.EndOfFile();
-                            }
-                            index = (index + n) | 0;
-                            count = (count - n) | 0;
-                        }
-                    }
-                    finally {
-                        if (Bridge.hasValue(fs)) {
-                            fs.System$IDisposable$dispose();
-                        }
-                    }
-                    return bytes;
-                },
-                ReadAllLines: function (path) {
-                    if (path == null) {
-                        throw new System.ArgumentNullException("path");
-                    }
-                    if (path.length === 0) {
-                        throw new System.ArgumentException("Argument_EmptyPath");
-                    }
-
-                    return System.IO.File.InternalReadAllLines(path, System.Text.Encoding.UTF8);
-                },
-                ReadAllLines$1: function (path, encoding) {
-                    if (path == null) {
-                        throw new System.ArgumentNullException("path");
-                    }
-                    if (encoding == null) {
-                        throw new System.ArgumentNullException("encoding");
-                    }
-                    if (path.length === 0) {
-                        throw new System.ArgumentException("Argument_EmptyPath");
-                    }
-
-                    return System.IO.File.InternalReadAllLines(path, encoding);
-                },
-                InternalReadAllLines: function (path, encoding) {
-
-                    var line;
-                    var lines = new (System.Collections.Generic.List$1(System.String)).ctor();
-
-                    var sr = new System.IO.StreamReader.$ctor9(path, encoding);
-                    try {
-                        while (((line = sr.ReadLine())) != null) {
-                            lines.add(line);
-                        }
-                    }
-                    finally {
-                        if (Bridge.hasValue(sr)) {
-                            sr.System$IDisposable$dispose();
-                        }
-                    }
-
-                    return lines.toArray();
-                },
-                ReadLines: function (path) {
-                    if (path == null) {
-                        throw new System.ArgumentNullException("path");
-                    }
-                    if (path.length === 0) {
-                        throw new System.ArgumentException("Argument_EmptyPath", "path");
-                    }
-
-                    return System.IO.ReadLinesIterator.CreateIterator(path, System.Text.Encoding.UTF8);
-                },
-                ReadLines$1: function (path, encoding) {
-                    if (path == null) {
-                        throw new System.ArgumentNullException("path");
-                    }
-                    if (encoding == null) {
-                        throw new System.ArgumentNullException("encoding");
-                    }
-                    if (path.length === 0) {
-                        throw new System.ArgumentException("Argument_EmptyPath", "path");
-                    }
-
-                    return System.IO.ReadLinesIterator.CreateIterator(path, encoding);
-                }
-            }
-        }
-    });
-
-    Bridge.define("System.IO.FileMode", {
-        $kind: "enum",
-        statics: {
-            fields: {
-                CreateNew: 1,
-                Create: 2,
-                Open: 3,
-                OpenOrCreate: 4,
-                Truncate: 5,
-                Append: 6
-            }
-        }
-    });
-
-    Bridge.define("System.IO.Iterator$1", function (TSource) { return {
-        inherits: [System.Collections.Generic.IEnumerable$1(TSource),System.Collections.Generic.IEnumerator$1(TSource)],
-        fields: {
-            state: 0,
-            current: Bridge.getDefaultValue(TSource)
-        },
-        props: {
-            Current: {
-                get: function () {
-                    return this.current;
-                }
-            },
-            System$Collections$IEnumerator$Current: {
-                get: function () {
-                    return this.Current;
-                }
-            }
-        },
-        alias: [
-            "Current", ["System$Collections$Generic$IEnumerator$1$" + Bridge.getTypeAlias(TSource) + "$Current$1", "System$Collections$Generic$IEnumerator$1$Current$1"],
-            "Dispose", "System$IDisposable$dispose",
-            "GetEnumerator", ["System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(TSource) + "$getEnumerator", "System$Collections$Generic$IEnumerable$1$getEnumerator"]
-        ],
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-            }
-        },
-        methods: {
-            Dispose: function () {
-                this.Dispose$1(true);
-            },
-            Dispose$1: function (disposing) {
-                this.current = Bridge.getDefaultValue(TSource);
-                this.state = -1;
-            },
-            GetEnumerator: function () {
-                if (this.state === 0) {
-                    this.state = 1;
-                    return this;
-                }
-
-                var duplicate = this.Clone();
-                duplicate.state = 1;
-                return duplicate;
-            },
-            System$Collections$IEnumerable$getEnumerator: function () {
-                return this.GetEnumerator();
-            },
-            System$Collections$IEnumerator$reset: function () {
-                throw new System.NotSupportedException();
-            }
-        }
-    }; });
-
-    Bridge.define("System.IO.SeekOrigin", {
-        $kind: "enum",
-        statics: {
-            fields: {
-                Begin: 0,
-                Current: 1,
-                End: 2
-            }
-        }
-    });
-
-    Bridge.define("System.IO.Stream.SynchronousAsyncResult", {
-        inherits: [System.IAsyncResult],
-        $kind: "nested class",
-        statics: {
-            methods: {
-                EndRead: function (asyncResult) {
-
-                    var ar = Bridge.as(asyncResult, System.IO.Stream.SynchronousAsyncResult);
-                    if (ar == null || ar._isWrite) {
-                        System.IO.__Error.WrongAsyncResult();
-                    }
-
-                    if (ar._endXxxCalled) {
-                        System.IO.__Error.EndReadCalledTwice();
-                    }
-
-                    ar._endXxxCalled = true;
-
-                    ar.ThrowIfError();
-                    return ar._bytesRead;
-                },
-                EndWrite: function (asyncResult) {
-
-                    var ar = Bridge.as(asyncResult, System.IO.Stream.SynchronousAsyncResult);
-                    if (ar == null || !ar._isWrite) {
-                        System.IO.__Error.WrongAsyncResult();
-                    }
-
-                    if (ar._endXxxCalled) {
-                        System.IO.__Error.EndWriteCalledTwice();
-                    }
-
-                    ar._endXxxCalled = true;
-
-                    ar.ThrowIfError();
-                }
-            }
-        },
-        fields: {
-            _stateObject: null,
-            _isWrite: false,
-            _exceptionInfo: null,
-            _endXxxCalled: false,
-            _bytesRead: 0
-        },
-        props: {
-            IsCompleted: {
-                get: function () {
-                    return true;
-                }
-            },
-            AsyncState: {
-                get: function () {
-                    return this._stateObject;
-                }
-            },
-            CompletedSynchronously: {
-                get: function () {
-                    return true;
-                }
-            }
-        },
-        alias: [
-            "IsCompleted", "System$IAsyncResult$IsCompleted",
-            "AsyncState", "System$IAsyncResult$AsyncState",
-            "CompletedSynchronously", "System$IAsyncResult$CompletedSynchronously"
-        ],
-        ctors: {
-            $ctor1: function (bytesRead, asyncStateObject) {
-                this.$initialize();
-                this._bytesRead = bytesRead;
-                this._stateObject = asyncStateObject;
-                //_isWrite = false;
-            },
-            $ctor2: function (asyncStateObject) {
-                this.$initialize();
-                this._stateObject = asyncStateObject;
-                this._isWrite = true;
-            },
-            ctor: function (ex, asyncStateObject, isWrite) {
-                this.$initialize();
-                this._exceptionInfo = ex;
-                this._stateObject = asyncStateObject;
-                this._isWrite = isWrite;
-            }
-        },
-        methods: {
-            ThrowIfError: function () {
-                if (this._exceptionInfo != null) {
-                    throw this._exceptionInfo;
-                }
-            }
-        }
-    });
-
-    Bridge.define("System.IO.TextReader", {
-        inherits: [System.IDisposable],
-        statics: {
-            fields: {
-                Null: null
-            },
-            ctors: {
-                init: function () {
-                    this.Null = new System.IO.TextReader.NullTextReader();
-                }
-            },
-            methods: {
-                Synchronized: function (reader) {
-                    if (reader == null) {
-                        throw new System.ArgumentNullException("reader");
-                    }
-
-                    return reader;
-                }
-            }
-        },
-        alias: ["Dispose", "System$IDisposable$dispose"],
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-            }
-        },
-        methods: {
-            Close: function () {
-                this.Dispose$1(true);
-            },
-            Dispose: function () {
-                this.Dispose$1(true);
-            },
-            Dispose$1: function (disposing) { },
-            Peek: function () {
-
-                return -1;
-            },
-            Read: function () {
-                return -1;
-            },
-            Read$1: function (buffer, index, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer");
-                }
-                if (index < 0) {
-                    throw new System.ArgumentOutOfRangeException("index");
-                }
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count");
-                }
-                if (((buffer.length - index) | 0) < count) {
-                    throw new System.ArgumentException();
-                }
-
-                var n = 0;
-                do {
-                    var ch = this.Read();
-                    if (ch === -1) {
-                        break;
-                    }
-                    buffer[System.Array.index(((index + Bridge.identity(n, (n = (n + 1) | 0))) | 0), buffer)] = ch & 65535;
-                } while (n < count);
-                return n;
-            },
-            ReadToEndAsync: function () {
-                return System.Threading.Tasks.Task.fromResult(this.ReadToEnd(), System.String);
-            },
-            ReadToEnd: function () {
-
-                var chars = System.Array.init(4096, 0, System.Char);
-                var len;
-                var sb = new System.Text.StringBuilder("", 4096);
-                while (((len = this.Read$1(chars, 0, chars.length))) !== 0) {
-                    sb.append(System.String.fromCharArray(chars, 0, len));
-                }
-                return sb.toString();
-            },
-            ReadBlock: function (buffer, index, count) {
-
-                var i, n = 0;
-                do {
-                    n = (n + ((i = this.Read$1(buffer, ((index + n) | 0), ((count - n) | 0))))) | 0;
-                } while (i > 0 && n < count);
-                return n;
-            },
-            ReadLine: function () {
-                var sb = new System.Text.StringBuilder();
-                while (true) {
-                    var ch = this.Read();
-                    if (ch === -1) {
-                        break;
-                    }
-                    if (ch === 13 || ch === 10) {
-                        if (ch === 13 && this.Peek() === 10) {
-                            this.Read();
-                        }
-                        return sb.toString();
-                    }
-                    sb.append(String.fromCharCode((ch & 65535)));
-                }
-                if (sb.getLength() > 0) {
-                    return sb.toString();
-                }
-                return null;
-            }
-        }
-    });
-
-    Bridge.define("System.IO.TextWriter", {
-        inherits: [System.IDisposable],
-        statics: {
-            fields: {
-                Null: null,
-                InitialNewLine: null
-            },
-            ctors: {
-                init: function () {
-                    this.Null = new System.IO.TextWriter.NullTextWriter();
-                    this.InitialNewLine = "\r\n";
-                }
-            },
-            methods: {
-                Synchronized: function (writer) {
-                    if (writer == null) {
-                        throw new System.ArgumentNullException("writer");
-                    }
-
-                    return writer;
-                }
-            }
-        },
-        fields: {
-            CoreNewLine: null,
-            InternalFormatProvider: null
-        },
-        props: {
-            FormatProvider: {
-                get: function () {
-                    if (this.InternalFormatProvider == null) {
-                        return System.Globalization.CultureInfo.getCurrentCulture();
-                    } else {
-                        return this.InternalFormatProvider;
-                    }
-                }
-            },
-            NewLine: {
-                get: function () {
-                    return System.String.fromCharArray(this.CoreNewLine);
-                },
-                set: function (value) {
-                    if (value == null) {
-                        value = System.IO.TextWriter.InitialNewLine;
-                    }
-                    this.CoreNewLine = System.String.toCharArray(value, 0, value.length);
-                }
-            }
-        },
-        alias: ["Dispose", "System$IDisposable$dispose"],
-        ctors: {
-            init: function () {
-                this.CoreNewLine = System.Array.init([13, 10], System.Char);
-            },
-            ctor: function () {
-                this.$initialize();
-                this.InternalFormatProvider = null; // Ask for CurrentCulture all the time.
-            },
-            $ctor1: function (formatProvider) {
-                this.$initialize();
-                this.InternalFormatProvider = formatProvider;
-            }
-        },
-        methods: {
-            Close: function () {
-                this.Dispose$1(true);
-            },
-            Dispose$1: function (disposing) { },
-            Dispose: function () {
-                this.Dispose$1(true);
-            },
-            Flush: function () { },
-            Write$1: function (value) { },
-            Write$2: function (buffer) {
-                if (buffer != null) {
-                    this.Write$3(buffer, 0, buffer.length);
-                }
-            },
-            Write$3: function (buffer, index, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer");
-                }
-                if (index < 0) {
-                    throw new System.ArgumentOutOfRangeException("index");
-                }
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count");
-                }
-                if (((buffer.length - index) | 0) < count) {
-                    throw new System.ArgumentException();
-                }
-
-                for (var i = 0; i < count; i = (i + 1) | 0) {
-                    this.Write$1(buffer[System.Array.index(((index + i) | 0), buffer)]);
-                }
-            },
-            Write: function (value) {
-                this.Write$10(value ? System.Boolean.trueString : System.Boolean.falseString);
-            },
-            Write$6: function (value) {
-                this.Write$10(System.Int32.format(value, "G", this.FormatProvider));
-            },
-            Write$15: function (value) {
-                this.Write$10(System.UInt32.format(value, "G", this.FormatProvider));
-            },
-            Write$7: function (value) {
-                this.Write$10(value.format("G", this.FormatProvider));
-            },
-            Write$16: function (value) {
-                this.Write$10(value.format("G", this.FormatProvider));
-            },
-            Write$9: function (value) {
-                this.Write$10(System.Single.format(value, "G", this.FormatProvider));
-            },
-            Write$5: function (value) {
-                this.Write$10(System.Double.format(value, "G", this.FormatProvider));
-            },
-            Write$4: function (value) {
-                this.Write$10(Bridge.Int.format(value, "G", this.FormatProvider));
-            },
-            Write$10: function (value) {
-                if (value != null) {
-                    this.Write$2(System.String.toCharArray(value, 0, value.length));
-                }
-            },
-            Write$8: function (value) {
-                if (value != null) {
-                    var f = Bridge.as(value, System.IFormattable);
-                    if (f != null) {
-                        this.Write$10(Bridge.format(f, null, this.FormatProvider));
-                    } else {
-                        this.Write$10(Bridge.toString(value));
-                    }
-                }
-            },
-            Write$11: function (format, arg0) {
-                this.Write$10(System.String.formatProvider(this.FormatProvider, format, [arg0]));
-            },
-            Write$12: function (format, arg0, arg1) {
-                this.Write$10(System.String.formatProvider(this.FormatProvider, format, arg0, arg1));
-            },
-            Write$13: function (format, arg0, arg1, arg2) {
-                this.Write$10(System.String.formatProvider(this.FormatProvider, format, arg0, arg1, arg2));
-            },
-            Write$14: function (format, arg) {
-                if (arg === void 0) { arg = []; }
-                this.Write$10(System.String.formatProvider.apply(System.String, [this.FormatProvider, format].concat(arg)));
-            },
-            WriteLine: function () {
-                this.Write$2(this.CoreNewLine);
-            },
-            WriteLine$2: function (value) {
-                this.Write$1(value);
-                this.WriteLine();
-            },
-            WriteLine$3: function (buffer) {
-                this.Write$2(buffer);
-                this.WriteLine();
-            },
-            WriteLine$4: function (buffer, index, count) {
-                this.Write$3(buffer, index, count);
-                this.WriteLine();
-            },
-            WriteLine$1: function (value) {
-                this.Write(value);
-                this.WriteLine();
-            },
-            WriteLine$7: function (value) {
-                this.Write$6(value);
-                this.WriteLine();
-            },
-            WriteLine$16: function (value) {
-                this.Write$15(value);
-                this.WriteLine();
-            },
-            WriteLine$8: function (value) {
-                this.Write$7(value);
-                this.WriteLine();
-            },
-            WriteLine$17: function (value) {
-                this.Write$16(value);
-                this.WriteLine();
-            },
-            WriteLine$10: function (value) {
-                this.Write$9(value);
-                this.WriteLine();
-            },
-            WriteLine$6: function (value) {
-                this.Write$5(value);
-                this.WriteLine();
-            },
-            WriteLine$5: function (value) {
-                this.Write$4(value);
-                this.WriteLine();
-            },
-            WriteLine$11: function (value) {
-
-                if (value == null) {
-                    this.WriteLine();
-                } else {
-                    // We'd ideally like WriteLine to be atomic, in that one call
-                    // to WriteLine equals one call to the OS (ie, so writing to
-                    // console while simultaneously calling printf will guarantee we
-                    // write out a string and new line chars, without any interference).
-                    // Additionally, we need to call ToCharArray on Strings anyways,
-                    // so allocating a char[] here isn't any worse than what we were
-                    // doing anyways.  We do reduce the number of calls to the
-                    // backing store this way, potentially.
-                    var vLen = value.length;
-                    var nlLen = this.CoreNewLine.length;
-                    var chars = System.Array.init(((vLen + nlLen) | 0), 0, System.Char);
-                    System.String.copyTo(value, 0, chars, 0, vLen);
-                    // CoreNewLine will almost always be 2 chars, and possibly 1.
-                    if (nlLen === 2) {
-                        chars[System.Array.index(vLen, chars)] = this.CoreNewLine[System.Array.index(0, this.CoreNewLine)];
-                        chars[System.Array.index(((vLen + 1) | 0), chars)] = this.CoreNewLine[System.Array.index(1, this.CoreNewLine)];
-                    } else if (nlLen === 1) {
-                        chars[System.Array.index(vLen, chars)] = this.CoreNewLine[System.Array.index(0, this.CoreNewLine)];
-                    } else {
-                        System.Array.copy(this.CoreNewLine, 0, chars, Bridge.Int.mul(vLen, 2), Bridge.Int.mul(nlLen, 2));
-                    }
-                    this.Write$3(chars, 0, ((vLen + nlLen) | 0));
-                }
-                /* 
-                Write(value);  // We could call Write(String) on StreamWriter...
-                WriteLine();
-                */
-            },
-            WriteLine$9: function (value) {
-                if (value == null) {
-                    this.WriteLine();
-                } else {
-                    // Call WriteLine(value.ToString), not Write(Object), WriteLine().
-                    // This makes calls to WriteLine(Object) atomic.
-                    var f = Bridge.as(value, System.IFormattable);
-                    if (f != null) {
-                        this.WriteLine$11(Bridge.format(f, null, this.FormatProvider));
-                    } else {
-                        this.WriteLine$11(Bridge.toString(value));
-                    }
-                }
-            },
-            WriteLine$12: function (format, arg0) {
-                this.WriteLine$11(System.String.formatProvider(this.FormatProvider, format, [arg0]));
-            },
-            WriteLine$13: function (format, arg0, arg1) {
-                this.WriteLine$11(System.String.formatProvider(this.FormatProvider, format, arg0, arg1));
-            },
-            WriteLine$14: function (format, arg0, arg1, arg2) {
-                this.WriteLine$11(System.String.formatProvider(this.FormatProvider, format, arg0, arg1, arg2));
-            },
-            WriteLine$15: function (format, arg) {
-                if (arg === void 0) { arg = []; }
-                this.WriteLine$11(System.String.formatProvider.apply(System.String, [this.FormatProvider, format].concat(arg)));
-            }
-        }
-    });
-
-    Bridge.define("System.IO.BufferedStream", {
-        inherits: [System.IO.Stream],
-        statics: {
-            fields: {
-                _DefaultBufferSize: 0,
-                MaxShadowBufferSize: 0
-            },
-            ctors: {
-                init: function () {
-                    this._DefaultBufferSize = 4096;
-                    this.MaxShadowBufferSize = 81920;
-                }
-            }
-        },
-        fields: {
-            _stream: null,
-            _buffer: null,
-            _bufferSize: 0,
-            _readPos: 0,
-            _readLen: 0,
-            _writePos: 0
-        },
-        props: {
-            UnderlyingStream: {
-                get: function () {
-                    return this._stream;
-                }
-            },
-            BufferSize: {
-                get: function () {
-                    return this._bufferSize;
-                }
-            },
-            CanRead: {
-                get: function () {
-                    return this._stream != null && this._stream.CanRead;
-                }
-            },
-            CanWrite: {
-                get: function () {
-                    return this._stream != null && this._stream.CanWrite;
-                }
-            },
-            CanSeek: {
-                get: function () {
-                    return this._stream != null && this._stream.CanSeek;
-                }
-            },
-            Length: {
-                get: function () {
-                    this.EnsureNotClosed();
-
-                    if (this._writePos > 0) {
-                        this.FlushWrite();
-                    }
-
-                    return this._stream.Length;
-                }
-            },
-            Position: {
-                get: function () {
-                    this.EnsureNotClosed();
-                    this.EnsureCanSeek();
-
-                    return this._stream.Position.add(System.Int64((((((this._readPos - this._readLen) | 0) + this._writePos) | 0))));
-                },
-                set: function (value) {
-                    if (value.lt(System.Int64(0))) {
-                        throw new System.ArgumentOutOfRangeException("value");
-                    }
-
-                    this.EnsureNotClosed();
-                    this.EnsureCanSeek();
-
-                    if (this._writePos > 0) {
-                        this.FlushWrite();
-                    }
-
-                    this._readPos = 0;
-                    this._readLen = 0;
-                    this._stream.Seek(value, System.IO.SeekOrigin.Begin);
-                }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                System.IO.Stream.ctor.call(this);
-            },
-            $ctor1: function (stream) {
-                System.IO.BufferedStream.$ctor2.call(this, stream, System.IO.BufferedStream._DefaultBufferSize);
-            },
-            $ctor2: function (stream, bufferSize) {
-                this.$initialize();
-                System.IO.Stream.ctor.call(this);
-
-                if (stream == null) {
-                    throw new System.ArgumentNullException("stream");
-                }
-
-                if (bufferSize <= 0) {
-                    throw new System.ArgumentOutOfRangeException("bufferSize");
-                }
-
-                this._stream = stream;
-                this._bufferSize = bufferSize;
-
-                // Allocate _buffer on its first use - it will not be used if all reads
-                // & writes are greater than or equal to buffer size.
-
-                if (!this._stream.CanRead && !this._stream.CanWrite) {
-                    System.IO.__Error.StreamIsClosed();
-                }
-            }
-        },
-        methods: {
-            EnsureNotClosed: function () {
-
-                if (this._stream == null) {
-                    System.IO.__Error.StreamIsClosed();
-                }
-            },
-            EnsureCanSeek: function () {
-
-
-                if (!this._stream.CanSeek) {
-                    System.IO.__Error.SeekNotSupported();
-                }
-            },
-            EnsureCanRead: function () {
-
-
-                if (!this._stream.CanRead) {
-                    System.IO.__Error.ReadNotSupported();
-                }
-            },
-            EnsureCanWrite: function () {
-
-
-                if (!this._stream.CanWrite) {
-                    System.IO.__Error.WriteNotSupported();
-                }
-            },
-            EnsureShadowBufferAllocated: function () {
-
-
-                // Already have shadow buffer?
-                if (this._buffer.length !== this._bufferSize || this._bufferSize >= System.IO.BufferedStream.MaxShadowBufferSize) {
-                    return;
-                }
-
-                var shadowBuffer = System.Array.init(Math.min(((this._bufferSize + this._bufferSize) | 0), System.IO.BufferedStream.MaxShadowBufferSize), 0, System.Byte);
-                System.Array.copy(this._buffer, 0, shadowBuffer, 0, this._writePos);
-                this._buffer = shadowBuffer;
-            },
-            EnsureBufferAllocated: function () {
-
-
-                // BufferedStream is not intended for multi-threaded use, so no worries about the get/set ---- on _buffer.
-                if (this._buffer == null) {
-                    this._buffer = System.Array.init(this._bufferSize, 0, System.Byte);
-                }
-            },
-            Dispose$1: function (disposing) {
-
-                try {
-                    if (disposing && this._stream != null) {
-                        try {
-                            this.Flush();
-                        }
-                        finally {
-                            this._stream.Close();
-                        }
-                    }
-                }
-                finally {
-                    this._stream = null;
-                    this._buffer = null;
-
-                    // Call base.Dispose(bool) to cleanup async IO resources
-                    System.IO.Stream.prototype.Dispose$1.call(this, disposing);
-                }
-            },
-            Flush: function () {
-
-                this.EnsureNotClosed();
-
-                // Has WRITE data in the buffer:
-                if (this._writePos > 0) {
-
-                    this.FlushWrite();
-                    return;
-                }
-
-                // Has READ data in the buffer:
-                if (this._readPos < this._readLen) {
-
-                    // If the underlying stream is not seekable AND we have something in the read buffer, then FlushRead would throw.
-                    // We can either throw away the buffer resulting in data loss (!) or ignore the Flush.
-                    // (We cannot throw becasue it would be a breaking change.) We opt into ignoring the Flush in that situation.
-                    if (!this._stream.CanSeek) {
-                        return;
-                    }
-
-                    this.FlushRead();
-
-                    // User streams may have opted to throw from Flush if CanWrite is false (although the abstract Stream does not do so).
-                    // However, if we do not forward the Flush to the underlying stream, we may have problems when chaining several streams.
-                    // Let us make a best effort attempt:
-                    if (this._stream.CanWrite || Bridge.is(this._stream, System.IO.BufferedStream)) {
-                        this._stream.Flush();
-                    }
-
-                    return;
-                }
-
-                // We had no data in the buffer, but we still need to tell the underlying stream to flush.
-                if (this._stream.CanWrite || Bridge.is(this._stream, System.IO.BufferedStream)) {
-                    this._stream.Flush();
-                }
-
-                this._writePos = (this._readPos = (this._readLen = 0));
-            },
-            FlushRead: function () {
-
-
-                if (((this._readPos - this._readLen) | 0) !== 0) {
-                    this._stream.Seek(System.Int64(this._readPos - this._readLen), System.IO.SeekOrigin.Current);
-                }
-
-                this._readPos = 0;
-                this._readLen = 0;
-            },
-            ClearReadBufferBeforeWrite: function () {
-
-                // This is called by write methods to clear the read buffer.
-
-
-                // No READ data in the buffer:
-                if (this._readPos === this._readLen) {
-
-                    this._readPos = (this._readLen = 0);
-                    return;
-                }
-
-                // Must have READ data.
-
-                // If the underlying stream cannot seek, FlushRead would end up throwing NotSupported.
-                // However, since the user did not call a method that is intuitively expected to seek, a better message is in order.
-                // Ideally, we would throw an InvalidOperation here, but for backward compat we have to stick with NotSupported.
-                if (!this._stream.CanSeek) {
-                    throw new System.NotSupportedException();
-                }
-
-                this.FlushRead();
-            },
-            FlushWrite: function () {
-
-
-                this._stream.Write(this._buffer, 0, this._writePos);
-                this._writePos = 0;
-                this._stream.Flush();
-            },
-            ReadFromBuffer: function (array, offset, count) {
-
-                var readBytes = (this._readLen - this._readPos) | 0;
-
-                if (readBytes === 0) {
-                    return 0;
-                }
-
-
-                if (readBytes > count) {
-                    readBytes = count;
-                }
-
-                System.Array.copy(this._buffer, this._readPos, array, offset, readBytes);
-                this._readPos = (this._readPos + readBytes) | 0;
-
-                return readBytes;
-            },
-            ReadFromBuffer$1: function (array, offset, count, error) {
-
-                try {
-
-                    error.v = null;
-                    return this.ReadFromBuffer(array, offset, count);
-
-                }
-                catch (ex) {
-                    ex = System.Exception.create(ex);
-                    error.v = ex;
-                    return 0;
-                }
-            },
-            Read: function (array, offset, count) {
-
-                if (array == null) {
-                    throw new System.ArgumentNullException("array");
-                }
-                if (offset < 0) {
-                    throw new System.ArgumentOutOfRangeException("offset");
-                }
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count");
-                }
-                if (((array.length - offset) | 0) < count) {
-                    throw new System.ArgumentException();
-                }
-
-                this.EnsureNotClosed();
-                this.EnsureCanRead();
-
-                var bytesFromBuffer = this.ReadFromBuffer(array, offset, count);
-
-                // We may have read less than the number of bytes the user asked for, but that is part of the Stream contract.
-
-                // Reading again for more data may cause us to block if we're using a device with no clear end of file,
-                // such as a serial port or pipe. If we blocked here and this code was used with redirected pipes for a
-                // process's standard output, this can lead to deadlocks involving two processes.
-                // BUT - this is a breaking change.
-                // So: If we could not read all bytes the user asked for from the buffer, we will try once from the underlying
-                // stream thus ensuring the same blocking behaviour as if the underlying stream was not wrapped in this BufferedStream.
-                if (bytesFromBuffer === count) {
-                    return bytesFromBuffer;
-                }
-
-                var alreadySatisfied = bytesFromBuffer;
-                if (bytesFromBuffer > 0) {
-                    count = (count - bytesFromBuffer) | 0;
-                    offset = (offset + bytesFromBuffer) | 0;
-                }
-
-                // So the READ buffer is empty.
-                this._readPos = (this._readLen = 0);
-
-                // If there was anything in the WRITE buffer, clear it.
-                if (this._writePos > 0) {
-                    this.FlushWrite();
-                }
-
-                // If the requested read is larger than buffer size, avoid the buffer and still use a single read:
-                if (count >= this._bufferSize) {
-
-                    return ((this._stream.Read(array, offset, count) + alreadySatisfied) | 0);
-                }
-
-                // Ok. We can fill the buffer:
-                this.EnsureBufferAllocated();
-                this._readLen = this._stream.Read(this._buffer, 0, this._bufferSize);
-
-                bytesFromBuffer = this.ReadFromBuffer(array, offset, count);
-
-                // We may have read less than the number of bytes the user asked for, but that is part of the Stream contract.
-                // Reading again for more data may cause us to block if we're using a device with no clear end of stream,
-                // such as a serial port or pipe.  If we blocked here & this code was used with redirected pipes for a process's
-                // standard output, this can lead to deadlocks involving two processes. Additionally, translating one read on the
-                // BufferedStream to more than one read on the underlying Stream may defeat the whole purpose of buffering of the
-                // underlying reads are significantly more expensive.
-
-                return ((bytesFromBuffer + alreadySatisfied) | 0);
-            },
-            ReadByte: function () {
-
-                this.EnsureNotClosed();
-                this.EnsureCanRead();
-
-                if (this._readPos === this._readLen) {
-
-                    if (this._writePos > 0) {
-                        this.FlushWrite();
-                    }
-
-                    this.EnsureBufferAllocated();
-                    this._readLen = this._stream.Read(this._buffer, 0, this._bufferSize);
-                    this._readPos = 0;
-                }
-
-                if (this._readPos === this._readLen) {
-                    return -1;
-                }
-
-                var b = this._buffer[System.Array.index(Bridge.identity(this._readPos, (this._readPos = (this._readPos + 1) | 0)), this._buffer)];
-                return b;
-            },
-            WriteToBuffer: function (array, offset, count) {
-
-                var bytesToWrite = Math.min(((this._bufferSize - this._writePos) | 0), count.v);
-
-                if (bytesToWrite <= 0) {
-                    return;
-                }
-
-                this.EnsureBufferAllocated();
-                System.Array.copy(array, offset.v, this._buffer, this._writePos, bytesToWrite);
-
-                this._writePos = (this._writePos + bytesToWrite) | 0;
-                count.v = (count.v - bytesToWrite) | 0;
-                offset.v = (offset.v + bytesToWrite) | 0;
-            },
-            WriteToBuffer$1: function (array, offset, count, error) {
-
-                try {
-
-                    error.v = null;
-                    this.WriteToBuffer(array, offset, count);
-
-                }
-                catch (ex) {
-                    ex = System.Exception.create(ex);
-                    error.v = ex;
-                }
-            },
-            Write: function (array, offset, count) {
-                offset = {v:offset};
-                count = {v:count};
-
-                if (array == null) {
-                    throw new System.ArgumentNullException("array");
-                }
-                if (offset.v < 0) {
-                    throw new System.ArgumentOutOfRangeException("offset");
-                }
-                if (count.v < 0) {
-                    throw new System.ArgumentOutOfRangeException("count");
-                }
-                if (((array.length - offset.v) | 0) < count.v) {
-                    throw new System.ArgumentException();
-                }
-
-                this.EnsureNotClosed();
-                this.EnsureCanWrite();
-
-                if (this._writePos === 0) {
-                    this.ClearReadBufferBeforeWrite();
-                }
-
-                // We need to use the buffer, while avoiding unnecessary buffer usage / memory copies.
-                // We ASSUME that memory copies are much cheaper than writes to the underlying stream, so if an extra copy is
-                // guaranteed to reduce the number of writes, we prefer it.
-                // We pick a simple strategy that makes degenerate cases rare if our assumptions are right.
-                //
-                // For ever write, we use a simple heuristic (below) to decide whether to use the buffer.
-                // The heuristic has the desirable property (*) that if the specified user data can fit into the currently available
-                // buffer space without filling it up completely, the heuristic will always tell us to use the buffer. It will also
-                // tell us to use the buffer in cases where the current write would fill the buffer, but the remaining data is small
-                // enough such that subsequent operations can use the buffer again.
-                //
-                // Algorithm:
-                // Determine whether or not to buffer according to the heuristic (below).
-                // If we decided to use the buffer:
-                //     Copy as much user data as we can into the buffer.
-                //     If we consumed all data: We are finished.
-                //     Otherwise, write the buffer out.
-                //     Copy the rest of user data into the now cleared buffer (no need to write out the buffer again as the heuristic
-                //     will prevent it from being filled twice).
-                // If we decided not to use the buffer:
-                //     Can the data already in the buffer and current user data be combines to a single write
-                //     by allocating a "shadow" buffer of up to twice the size of _bufferSize (up to a limit to avoid LOH)?
-                //     Yes, it can:
-                //         Allocate a larger "shadow" buffer and ensure the buffered  data is moved there.
-                //         Copy user data to the shadow buffer.
-                //         Write shadow buffer to the underlying stream in a single operation.
-                //     No, it cannot (amount of data is still too large):
-                //         Write out any data possibly in the buffer.
-                //         Write out user data directly.
-                //
-                // Heuristic:
-                // If the subsequent write operation that follows the current write operation will result in a write to the
-                // underlying stream in case that we use the buffer in the current write, while it would not have if we avoided
-                // using the buffer in the current write (by writing current user data to the underlying stream directly), then we
-                // prefer to avoid using the buffer since the corresponding memory copy is wasted (it will not reduce the number
-                // of writes to the underlying stream, which is what we are optimising for).
-                // ASSUME that the next write will be for the same amount of bytes as the current write (most common case) and
-                // determine if it will cause a write to the underlying stream. If the next write is actually larger, our heuristic
-                // still yields the right behaviour, if the next write is actually smaller, we may making an unnecessary write to
-                // the underlying stream. However, this can only occur if the current write is larger than half the buffer size and
-                // we will recover after one iteration.
-                // We have:
-                //     useBuffer = (_writePos + count + count < _bufferSize + _bufferSize)
-                //
-                // Example with _bufferSize = 20, _writePos = 6, count = 10:
-                //
-                //     +---------------------------------------+---------------------------------------+
-                //     |             current buffer            | next iteration's "future" buffer      |
-                //     +---------------------------------------+---------------------------------------+
-                //     |0| | | | | | | | | |1| | | | | | | | | |2| | | | | | | | | |3| | | | | | | | | |
-                //     |0|1|2|3|4|5|6|7|8|9|0|1|2|3|4|5|6|7|8|9|0|1|2|3|4|5|6|7|8|9|0|1|2|3|4|5|6|7|8|9|
-                //     +-----------+-------------------+-------------------+---------------------------+
-                //     | _writePos |  current count    | assumed next count|avail buff after next write|
-                //     +-----------+-------------------+-------------------+---------------------------+
-                //
-                // A nice property (*) of this heuristic is that it will always succeed if the user data completely fits into the
-                // available buffer, i.e. if count < (_bufferSize - _writePos).
-
-
-                var totalUserBytes;
-                var useBuffer; // We do not expect buffer sizes big enough for an overflow, but if it happens, lets fail early:
-                totalUserBytes = Bridge.Int.check(this._writePos + count.v, System.Int32);
-                useBuffer = (Bridge.Int.check(totalUserBytes + count.v, System.Int32) < (Bridge.Int.check(this._bufferSize + this._bufferSize, System.Int32)));
-
-                if (useBuffer) {
-
-                    this.WriteToBuffer(array, offset, count);
-
-                    if (this._writePos < this._bufferSize) {
-
-                        return;
-                    }
-
-
-                    this._stream.Write(this._buffer, 0, this._writePos);
-                    this._writePos = 0;
-
-                    this.WriteToBuffer(array, offset, count);
-
-
-                } else { // if (!useBuffer)
-
-                    // Write out the buffer if necessary.
-                    if (this._writePos > 0) {
-
-
-                        // Try avoiding extra write to underlying stream by combining previously buffered data with current user data:
-                        if (totalUserBytes <= (((this._bufferSize + this._bufferSize) | 0)) && totalUserBytes <= System.IO.BufferedStream.MaxShadowBufferSize) {
-
-                            this.EnsureShadowBufferAllocated();
-                            System.Array.copy(array, offset.v, this._buffer, this._writePos, count.v);
-                            this._stream.Write(this._buffer, 0, totalUserBytes);
-                            this._writePos = 0;
-                            return;
-                        }
-
-                        this._stream.Write(this._buffer, 0, this._writePos);
-                        this._writePos = 0;
-                    }
-
-                    // Write out user data.
-                    this._stream.Write(array, offset.v, count.v);
-                }
-            },
-            WriteByte: function (value) {
-
-                this.EnsureNotClosed();
-
-                if (this._writePos === 0) {
-
-                    this.EnsureCanWrite();
-                    this.ClearReadBufferBeforeWrite();
-                    this.EnsureBufferAllocated();
-                }
-
-                // We should not be flushing here, but only writing to the underlying stream, but previous version flushed, so we keep this.
-                if (this._writePos >= ((this._bufferSize - 1) | 0)) {
-                    this.FlushWrite();
-                }
-
-                this._buffer[System.Array.index(Bridge.identity(this._writePos, (this._writePos = (this._writePos + 1) | 0)), this._buffer)] = value;
-
-            },
-            Seek: function (offset, origin) {
-
-                this.EnsureNotClosed();
-                this.EnsureCanSeek();
-
-                // If we have bytes in the WRITE buffer, flush them out, seek and be done.
-                if (this._writePos > 0) {
-
-                    // We should be only writing the buffer and not flushing,
-                    // but the previous version did flush and we stick to it for back-compat reasons.
-                    this.FlushWrite();
-                    return this._stream.Seek(offset, origin);
-                }
-
-                // The buffer is either empty or we have a buffered READ.
-
-                if (((this._readLen - this._readPos) | 0) > 0 && origin === System.IO.SeekOrigin.Current) {
-
-                    // If we have bytes in the READ buffer, adjust the seek offset to account for the resulting difference
-                    // between this stream's position and the underlying stream's position.
-                    offset = offset.sub(System.Int64((((this._readLen - this._readPos) | 0))));
-                }
-
-                var oldPos = this.Position;
-
-                var newPos = this._stream.Seek(offset, origin);
-
-                // If the seek destination is still within the data currently in the buffer, we want to keep the buffer data and continue using it.
-                // Otherwise we will throw away the buffer. This can only happen on READ, as we flushed WRITE data above.
-
-                // The offset of the new/updated seek pointer within _buffer:
-                this._readPos = System.Int64.clip32(newPos.sub((oldPos.sub(System.Int64(this._readPos)))));
-
-                // If the offset of the updated seek pointer in the buffer is still legal, then we can keep using the buffer:
-                if (0 <= this._readPos && this._readPos < this._readLen) {
-
-                    // Adjust the seek pointer of the underlying stream to reflect the amount of useful bytes in the read buffer:
-                    this._stream.Seek(System.Int64(this._readLen - this._readPos), System.IO.SeekOrigin.Current);
-
-                } else { // The offset of the updated seek pointer is not a legal offset. Loose the buffer.
-
-                    this._readPos = (this._readLen = 0);
-                }
-
-                return newPos;
-            },
-            SetLength: function (value) {
-
-                if (value.lt(System.Int64(0))) {
-                    throw new System.ArgumentOutOfRangeException("value");
-                }
-
-                this.EnsureNotClosed();
-                this.EnsureCanSeek();
-                this.EnsureCanWrite();
-
-                this.Flush();
-                this._stream.SetLength(value);
-            }
-        }
-    });
-
-    Bridge.define("System.IO.EndOfStreamException", {
-        inherits: [System.IO.IOException],
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                System.IO.IOException.$ctor1.call(this, "Arg_EndOfStreamException");
-            },
-            $ctor1: function (message) {
-                this.$initialize();
-                System.IO.IOException.$ctor1.call(this, message);
-            },
-            $ctor2: function (message, innerException) {
-                this.$initialize();
-                System.IO.IOException.$ctor2.call(this, message, innerException);
-            }
-        }
-    });
-
-    Bridge.define("System.IO.FileStream", {
-        inherits: [System.IO.Stream],
-        statics: {
-            methods: {
-                FromFile: function (file) {
-                    var completer = new System.Threading.Tasks.TaskCompletionSource();
-                    var fileReader = new FileReader();
-                    fileReader.onload = function () {
-                        completer.setResult(new System.IO.FileStream.ctor(fileReader.result, file.name));
-                    };
-                    fileReader.onerror = function (e) {
-                        completer.setException(new Bridge.ErrorException(Bridge.unbox(e).target.error.As()));
-                    };
-                    fileReader.readAsArrayBuffer(file);
-
-                    return completer.task;
-                },
-                ReadBytes: function (path) {
-                    if (Bridge.isNode) {
-                        var fs = require("fs");
-                        return Bridge.cast(fs.readFileSync(path), ArrayBuffer);
-                    } else {
-                        var req = new XMLHttpRequest();
-                        req.open("GET", path, false);
-                        req.overrideMimeType("text/plain; charset=binary-data");
-                        req.send(null);
-                        if (req.status !== 200) {
-                            throw new System.IO.IOException.$ctor1(System.String.format("Status of request to {0} returned status: {1}", path, Bridge.box(req.status, System.UInt16)));
-                        }
-                        var text = req.responseText;
-                        var resultArray = new Uint8Array(text.length);
-                        System.String.toCharArray(text, 0, text.length).forEach(function (v, index, array) {
-                                var $t;
-                                return ($t = (v & 255) & 255, resultArray[index] = $t, $t);
-                            });
-                        return resultArray.buffer;
-                    }
-                },
-                ReadBytesAsync: function (path) {
-                    var tcs = new System.Threading.Tasks.TaskCompletionSource();
-
-                    if (Bridge.isNode) {
-                        var fs = require("fs");
-                        fs.readFile(path, function (err, data) {
-                            if (err != null) {
-                                throw new System.IO.IOException.ctor();
-                            }
-
-                            tcs.setResult(data);
-                        });
-                    } else {
-                        var req = new XMLHttpRequest();
-                        req.open("GET", path, true);
-                        req.overrideMimeType("text/plain; charset=binary-data");
-                        req.send(null);
-
-                        req.onreadystatechange = function () {
-                            if (req.readyState !== 4) {
-                                return;
-                            }
-
-                            if (req.status !== 200) {
-                                throw new System.IO.IOException.$ctor1(System.String.format("Status of request to {0} returned status: {1}", path, Bridge.box(req.status, System.UInt16)));
-                            }
-
-                            var text = req.responseText;
-                            var resultArray = new Uint8Array(text.length);
-                            System.String.toCharArray(text, 0, text.length).forEach(function (v, index, array) {
-                                    var $t;
-                                    return ($t = (v & 255) & 255, resultArray[index] = $t, $t);
-                                });
-                            tcs.setResult(resultArray.buffer);
-                        };
-                    }
-
-                    return tcs.task;
-                }
-            }
-        },
-        fields: {
-            name: null,
-            _buffer: null
-        },
-        props: {
-            CanRead: {
-                get: function () {
-                    return true;
-                }
-            },
-            CanWrite: {
-                get: function () {
-                    return false;
-                }
-            },
-            CanSeek: {
-                get: function () {
-                    return false;
-                }
-            },
-            IsAsync: {
-                get: function () {
-                    return false;
-                }
-            },
-            Name: {
-                get: function () {
-                    return this.name;
-                }
-            },
-            Length: {
-                get: function () {
-                    return System.Int64(this.GetInternalBuffer().byteLength);
-                }
-            },
-            Position: System.Int64(0)
-        },
-        ctors: {
-            $ctor1: function (path, mode) {
-                this.$initialize();
-                System.IO.Stream.ctor.call(this);
-                this.name = path;
-            },
-            ctor: function (buffer, name) {
-                this.$initialize();
-                System.IO.Stream.ctor.call(this);
-                this._buffer = buffer;
-                this.name = name;
-            }
-        },
-        methods: {
-            Flush: function () { },
-            Seek: function (offset, origin) {
-                throw new System.NotImplementedException();
-            },
-            SetLength: function (value) {
-                throw new System.NotImplementedException();
-            },
-            Write: function (buffer, offset, count) {
-                throw new System.NotImplementedException();
-            },
-            GetInternalBuffer: function () {
-                if (this._buffer == null) {
-                    this._buffer = System.IO.FileStream.ReadBytes(this.name);
-
-                }
-
-                return this._buffer;
-            },
-            EnsureBufferAsync: function () {
-                var $step = 0,
-                    $task1, 
-                    $taskResult1, 
-                    $jumpFromFinally, 
-                    $tcs = new System.Threading.Tasks.TaskCompletionSource(), 
-                    $returnValue, 
-                    $async_e, 
-                    $asyncBody = Bridge.fn.bind(this, function () {
-                        try {
-                            for (;;) {
-                                $step = System.Array.min([0,1,2,3], $step);
-                                switch ($step) {
-                                    case 0: {
-                                        if (this._buffer == null) {
-                                            $step = 1;
-                                            continue;
-                                        } 
-                                        $step = 3;
-                                        continue;
-                                    }
-                                    case 1: {
-                                        $task1 = System.IO.FileStream.ReadBytesAsync(this.name);
-                                        $step = 2;
-                                        $task1.continueWith($asyncBody);
-                                        return;
-                                    }
-                                    case 2: {
-                                        $taskResult1 = $task1.getAwaitedResult();
-                                        this._buffer = $taskResult1;
-                                        $step = 3;
-                                        continue;
-                                    }
-                                    case 3: {
-                                        $tcs.setResult(null);
-                                        return;
-                                    }
-                                    default: {
-                                        $tcs.setResult(null);
-                                        return;
-                                    }
-                                }
-                            }
-                        } catch($async_e1) {
-                            $async_e = System.Exception.create($async_e1);
-                            $tcs.setException($async_e);
-                        }
-                    }, arguments);
-
-                $asyncBody();
-                return $tcs.task;
-            },
-            Read: function (buffer, offset, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer");
-                }
-
-                if (offset < 0) {
-                    throw new System.ArgumentOutOfRangeException("offset");
-                }
-
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count");
-                }
-
-                if ((((buffer.length - offset) | 0)) < count) {
-                    throw new System.ArgumentException();
-                }
-
-                var num = this.Length.sub(this.Position);
-                if (num.gt(System.Int64(count))) {
-                    num = System.Int64(count);
-                }
-
-                if (num.lte(System.Int64(0))) {
-                    return 0;
-                }
-
-                var byteBuffer = new Uint8Array(this.GetInternalBuffer());
-                if (num.gt(System.Int64(8))) {
-                    for (var n = 0; System.Int64(n).lt(num); n = (n + 1) | 0) {
-                        buffer[System.Array.index(((n + offset) | 0), buffer)] = byteBuffer[this.Position.add(System.Int64(n))];
-                    }
-                } else {
-                    var num1 = num;
-                    while (true) {
-                        var num2 = num1.sub(System.Int64(1));
-                        num1 = num2;
-                        if (num2.lt(System.Int64(0))) {
-                            break;
-                        }
-                        buffer[System.Array.index(System.Int64.toNumber(System.Int64(offset).add(num1)), buffer)] = byteBuffer[this.Position.add(num1)];
-                    }
-                }
-                this.Position = this.Position.add(num);
-                return System.Int64.clip32(num);
-            }
-        }
-    });
-
-    Bridge.define("System.IO.MemoryStream", {
-        inherits: [System.IO.Stream],
-        statics: {
-            fields: {
-                MemStreamMaxLength: 0
-            },
-            ctors: {
-                init: function () {
-                    this.MemStreamMaxLength = 2147483647;
-                }
-            }
-        },
-        fields: {
-            _buffer: null,
-            _origin: 0,
-            _position: 0,
-            _length: 0,
-            _capacity: 0,
-            _expandable: false,
-            _writable: false,
-            _exposable: false,
-            _isOpen: false
-        },
-        props: {
-            CanRead: {
-                get: function () {
-                    return this._isOpen;
-                }
-            },
-            CanSeek: {
-                get: function () {
-                    return this._isOpen;
-                }
-            },
-            CanWrite: {
-                get: function () {
-                    return this._writable;
-                }
-            },
-            Capacity: {
-                get: function () {
-                    if (!this._isOpen) {
-                        System.IO.__Error.StreamIsClosed();
-                    }
-                    return ((this._capacity - this._origin) | 0);
-                },
-                set: function (value) {
-                    // Only update the capacity if the MS is expandable and the value is different than the current capacity.
-                    // Special behavior if the MS isn't expandable: we don't throw if value is the same as the current capacity
-                    if (System.Int64(value).lt(this.Length)) {
-                        throw new System.ArgumentOutOfRangeException("value", "ArgumentOutOfRange_SmallCapacity");
-                    }
-
-                    if (!this._isOpen) {
-                        System.IO.__Error.StreamIsClosed();
-                    }
-                    if (!this._expandable && (value !== this.Capacity)) {
-                        System.IO.__Error.MemoryStreamNotExpandable();
-                    }
-
-                    // MemoryStream has this invariant: _origin > 0 => !expandable (see ctors)
-                    if (this._expandable && value !== this._capacity) {
-                        if (value > 0) {
-                            var newBuffer = System.Array.init(value, 0, System.Byte);
-                            if (this._length > 0) {
-                                System.Array.copy(this._buffer, 0, newBuffer, 0, this._length);
-                            }
-                            this._buffer = newBuffer;
-                        } else {
-                            this._buffer = null;
-                        }
-                        this._capacity = value;
-                    }
-                }
-            },
-            Length: {
-                get: function () {
-                    if (!this._isOpen) {
-                        System.IO.__Error.StreamIsClosed();
-                    }
-                    return System.Int64(this._length - this._origin);
-                }
-            },
-            Position: {
-                get: function () {
-                    if (!this._isOpen) {
-                        System.IO.__Error.StreamIsClosed();
-                    }
-                    return System.Int64(this._position - this._origin);
-                },
-                set: function (value) {
-                    if (value.lt(System.Int64(0))) {
-                        throw new System.ArgumentOutOfRangeException("value", "ArgumentOutOfRange_NeedNonNegNum");
-                    }
-
-                    if (!this._isOpen) {
-                        System.IO.__Error.StreamIsClosed();
-                    }
-
-                    if (value.gt(System.Int64(System.IO.MemoryStream.MemStreamMaxLength))) {
-                        throw new System.ArgumentOutOfRangeException("value", "ArgumentOutOfRange_StreamLength");
-                    }
-                    this._position = (this._origin + System.Int64.clip32(value)) | 0;
-                }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                System.IO.MemoryStream.$ctor6.call(this, 0);
-            },
-            $ctor6: function (capacity) {
-                this.$initialize();
-                System.IO.Stream.ctor.call(this);
-                if (capacity < 0) {
-                    throw new System.ArgumentOutOfRangeException("capacity", "ArgumentOutOfRange_NegativeCapacity");
-                }
-
-                this._buffer = System.Array.init(capacity, 0, System.Byte);
-                this._capacity = capacity;
-                this._expandable = true;
-                this._writable = true;
-                this._exposable = true;
-                this._origin = 0; // Must be 0 for byte[]'s created by MemoryStream
-                this._isOpen = true;
-            },
-            $ctor1: function (buffer) {
-                System.IO.MemoryStream.$ctor2.call(this, buffer, true);
-            },
-            $ctor2: function (buffer, writable) {
-                this.$initialize();
-                System.IO.Stream.ctor.call(this);
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
-                }
-                this._buffer = buffer;
-                this._length = (this._capacity = buffer.length);
-                this._writable = writable;
-                this._exposable = false;
-                this._origin = 0;
-                this._isOpen = true;
-            },
-            $ctor3: function (buffer, index, count) {
-                System.IO.MemoryStream.$ctor5.call(this, buffer, index, count, true, false);
-            },
-            $ctor4: function (buffer, index, count, writable) {
-                System.IO.MemoryStream.$ctor5.call(this, buffer, index, count, writable, false);
-            },
-            $ctor5: function (buffer, index, count, writable, publiclyVisible) {
-                this.$initialize();
-                System.IO.Stream.ctor.call(this);
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
-                }
-                if (index < 0) {
-                    throw new System.ArgumentOutOfRangeException("index", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (((buffer.length - index) | 0) < count) {
-                    throw new System.ArgumentException("Argument_InvalidOffLen");
-                }
-
-                this._buffer = buffer;
-                this._origin = (this._position = index);
-                this._length = (this._capacity = (index + count) | 0);
-                this._writable = writable;
-                this._exposable = publiclyVisible; // Can TryGetBuffer/GetBuffer return the array?
-                this._expandable = false;
-                this._isOpen = true;
-            }
-        },
-        methods: {
-            EnsureWriteable: function () {
-                if (!this.CanWrite) {
-                    System.IO.__Error.WriteNotSupported();
-                }
-            },
-            Dispose$1: function (disposing) {
-                try {
-                    if (disposing) {
-                        this._isOpen = false;
-                        this._writable = false;
-                        this._expandable = false;
-                    }
-                }
-                finally {
-                    // Call base.Close() to cleanup async IO resources
-                    System.IO.Stream.prototype.Dispose$1.call(this, disposing);
-                }
-            },
-            EnsureCapacity: function (value) {
-                // Check for overflow
-                if (value < 0) {
-                    throw new System.IO.IOException.$ctor1("IO.IO_StreamTooLong");
-                }
-                if (value > this._capacity) {
-                    var newCapacity = value;
-                    if (newCapacity < 256) {
-                        newCapacity = 256;
-                    }
-                    // We are ok with this overflowing since the next statement will deal
-                    // with the cases where _capacity*2 overflows.
-                    if (newCapacity < Bridge.Int.mul(this._capacity, 2)) {
-                        newCapacity = Bridge.Int.mul(this._capacity, 2);
-                    }
-                    // We want to expand the array up to Array.MaxArrayLengthOneDimensional
-                    // And we want to give the user the value that they asked for
-                    if ((((Bridge.Int.mul(this._capacity, 2))) >>> 0) > 2147483591) {
-                        newCapacity = value > 2147483591 ? value : 2147483591;
-                    }
-
-                    this.Capacity = newCapacity;
-                    return true;
-                }
-                return false;
-            },
-            Flush: function () { },
-            GetBuffer: function () {
-                if (!this._exposable) {
-                    throw new System.Exception("UnauthorizedAccess_MemStreamBuffer");
-                }
-                return this._buffer;
-            },
-            TryGetBuffer: function (buffer) {
-                if (!this._exposable) {
-                    buffer.v = Bridge.getDefaultValue(System.ArraySegment);
-                    return false;
-                }
-
-                buffer.v = new System.ArraySegment(this._buffer, this._origin, (((this._length - this._origin) | 0)));
-                return true;
-            },
-            InternalGetBuffer: function () {
-                return this._buffer;
-            },
-            InternalGetPosition: function () {
-                if (!this._isOpen) {
-                    System.IO.__Error.StreamIsClosed();
-                }
-                return this._position;
-            },
-            InternalReadInt32: function () {
-                if (!this._isOpen) {
-                    System.IO.__Error.StreamIsClosed();
-                }
-
-                var pos = ((this._position = (this._position + 4) | 0)); // use temp to avoid ----
-                if (pos > this._length) {
-                    this._position = this._length;
-                    System.IO.__Error.EndOfFile();
-                }
-                return this._buffer[System.Array.index(((pos - 4) | 0), this._buffer)] | this._buffer[System.Array.index(((pos - 3) | 0), this._buffer)] << 8 | this._buffer[System.Array.index(((pos - 2) | 0), this._buffer)] << 16 | this._buffer[System.Array.index(((pos - 1) | 0), this._buffer)] << 24;
-            },
-            InternalEmulateRead: function (count) {
-                if (!this._isOpen) {
-                    System.IO.__Error.StreamIsClosed();
-                }
-
-                var n = (this._length - this._position) | 0;
-                if (n > count) {
-                    n = count;
-                }
-                if (n < 0) {
-                    n = 0;
-                } // len is less than 2^31 -1.
-                this._position = (this._position + n) | 0;
-                return n;
-            },
-            Read: function (buffer, offset, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
-                }
-                if (offset < 0) {
-                    throw new System.ArgumentOutOfRangeException("offset", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (((buffer.length - offset) | 0) < count) {
-                    throw new System.ArgumentException("Argument_InvalidOffLen");
-                }
-
-                if (!this._isOpen) {
-                    System.IO.__Error.StreamIsClosed();
-                }
-
-                var n = (this._length - this._position) | 0;
-                if (n > count) {
-                    n = count;
-                }
-                if (n <= 0) {
-                    return 0;
-                } // len is less than 2^31 -1.
-
-                if (n <= 8) {
-                    var byteCount = n;
-                    while (((byteCount = (byteCount - 1) | 0)) >= 0) {
-                        buffer[System.Array.index(((offset + byteCount) | 0), buffer)] = this._buffer[System.Array.index(((this._position + byteCount) | 0), this._buffer)];
-                    }
-                } else {
-                    System.Array.copy(this._buffer, this._position, buffer, offset, n);
-                }
-                this._position = (this._position + n) | 0;
-
-                return n;
-            },
-            ReadByte: function () {
-                if (!this._isOpen) {
-                    System.IO.__Error.StreamIsClosed();
-                }
-
-                if (this._position >= this._length) {
-                    return -1;
-                }
-
-                return this._buffer[System.Array.index(Bridge.identity(this._position, (this._position = (this._position + 1) | 0)), this._buffer)];
-            },
-            Seek: function (offset, loc) {
-                if (!this._isOpen) {
-                    System.IO.__Error.StreamIsClosed();
-                }
-
-                if (offset.gt(System.Int64(System.IO.MemoryStream.MemStreamMaxLength))) {
-                    throw new System.ArgumentOutOfRangeException("offset", "ArgumentOutOfRange_StreamLength");
-                }
-                switch (loc) {
-                    case System.IO.SeekOrigin.Begin: 
-                        {
-                            var tempPosition = ((this._origin + System.Int64.clip32(offset)) | 0);
-                            if (offset.lt(System.Int64(0)) || tempPosition < this._origin) {
-                                throw new System.IO.IOException.$ctor1("IO.IO_SeekBeforeBegin");
-                            }
-                            this._position = tempPosition;
-                            break;
-                        }
-                    case System.IO.SeekOrigin.Current: 
-                        {
-                            var tempPosition1 = ((this._position + System.Int64.clip32(offset)) | 0);
-                            if (System.Int64(this._position).add(offset).lt(System.Int64(this._origin)) || tempPosition1 < this._origin) {
-                                throw new System.IO.IOException.$ctor1("IO.IO_SeekBeforeBegin");
-                            }
-                            this._position = tempPosition1;
-                            break;
-                        }
-                    case System.IO.SeekOrigin.End: 
-                        {
-                            var tempPosition2 = ((this._length + System.Int64.clip32(offset)) | 0);
-                            if (System.Int64(this._length).add(offset).lt(System.Int64(this._origin)) || tempPosition2 < this._origin) {
-                                throw new System.IO.IOException.$ctor1("IO.IO_SeekBeforeBegin");
-                            }
-                            this._position = tempPosition2;
-                            break;
-                        }
-                    default: 
-                        throw new System.ArgumentException("Argument_InvalidSeekOrigin");
-                }
-
-                return System.Int64(this._position);
-            },
-            SetLength: function (value) {
-                if (value.lt(System.Int64(0)) || value.gt(System.Int64(2147483647))) {
-                    throw new System.ArgumentOutOfRangeException("value", "ArgumentOutOfRange_StreamLength");
-                }
-                this.EnsureWriteable();
-
-                // Origin wasn't publicly exposed above. // Check parameter validation logic in this method if this fails.
-                if (value.gt(System.Int64((((2147483647 - this._origin) | 0))))) {
-                    throw new System.ArgumentOutOfRangeException("value", "ArgumentOutOfRange_StreamLength");
-                }
-
-                var newLength = (this._origin + System.Int64.clip32(value)) | 0;
-                var allocatedNewArray = this.EnsureCapacity(newLength);
-                if (!allocatedNewArray && newLength > this._length) {
-                    System.Array.fill(this._buffer, 0, this._length, ((newLength - this._length) | 0));
-                }
-                this._length = newLength;
-                if (this._position > newLength) {
-                    this._position = newLength;
-                }
-
-            },
-            ToArray: function () {
-                var copy = System.Array.init(((this._length - this._origin) | 0), 0, System.Byte);
-                System.Array.copy(this._buffer, this._origin, copy, 0, ((this._length - this._origin) | 0));
-                return copy;
-            },
-            Write: function (buffer, offset, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
-                }
-                if (offset < 0) {
-                    throw new System.ArgumentOutOfRangeException("offset", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (((buffer.length - offset) | 0) < count) {
-                    throw new System.ArgumentException("Argument_InvalidOffLen");
-                }
-
-                if (!this._isOpen) {
-                    System.IO.__Error.StreamIsClosed();
-                }
-                this.EnsureWriteable();
-
-                var i = (this._position + count) | 0;
-                // Check for overflow
-                if (i < 0) {
-                    throw new System.IO.IOException.$ctor1("IO.IO_StreamTooLong");
-                }
-
-                if (i > this._length) {
-                    var mustZero = this._position > this._length;
-                    if (i > this._capacity) {
-                        var allocatedNewArray = this.EnsureCapacity(i);
-                        if (allocatedNewArray) {
-                            mustZero = false;
-                        }
-                    }
-                    if (mustZero) {
-                        System.Array.fill(this._buffer, 0, this._length, ((i - this._length) | 0));
-                    }
-                    this._length = i;
-                }
-                if ((count <= 8) && (!Bridge.referenceEquals(buffer, this._buffer))) {
-                    var byteCount = count;
-                    while (((byteCount = (byteCount - 1) | 0)) >= 0) {
-                        this._buffer[System.Array.index(((this._position + byteCount) | 0), this._buffer)] = buffer[System.Array.index(((offset + byteCount) | 0), buffer)];
-                    }
-                } else {
-                    System.Array.copy(buffer, offset, this._buffer, this._position, count);
-                }
-                this._position = i;
-
-            },
-            WriteByte: function (value) {
-                if (!this._isOpen) {
-                    System.IO.__Error.StreamIsClosed();
-                }
-                this.EnsureWriteable();
-
-                if (this._position >= this._length) {
-                    var newLength = (this._position + 1) | 0;
-                    var mustZero = this._position > this._length;
-                    if (newLength >= this._capacity) {
-                        var allocatedNewArray = this.EnsureCapacity(newLength);
-                        if (allocatedNewArray) {
-                            mustZero = false;
-                        }
-                    }
-                    if (mustZero) {
-                        System.Array.fill(this._buffer, 0, this._length, ((this._position - this._length) | 0));
-                    }
-                    this._length = newLength;
-                }
-                this._buffer[System.Array.index(Bridge.identity(this._position, (this._position = (this._position + 1) | 0)), this._buffer)] = value;
-
-            },
-            WriteTo: function (stream) {
-                if (stream == null) {
-                    throw new System.ArgumentNullException("stream", "ArgumentNull_Stream");
-                }
-
-                if (!this._isOpen) {
-                    System.IO.__Error.StreamIsClosed();
-                }
-                stream.Write(this._buffer, this._origin, ((this._length - this._origin) | 0));
-            }
-        }
-    });
-
-    Bridge.define("System.IO.ReadLinesIterator", {
-        inherits: [System.IO.Iterator$1(System.String)],
-        statics: {
-            methods: {
-                CreateIterator: function (path, encoding) {
-                    return System.IO.ReadLinesIterator.CreateIterator$1(path, encoding, null);
-                },
-                CreateIterator$1: function (path, encoding, reader) {
-                    return new System.IO.ReadLinesIterator(path, encoding, reader || new System.IO.StreamReader.$ctor9(path, encoding));
-                }
-            }
-        },
-        fields: {
-            _path: null,
-            _encoding: null,
-            _reader: null
-        },
-        alias: ["MoveNext", "System$Collections$IEnumerator$moveNext"],
-        ctors: {
-            ctor: function (path, encoding, reader) {
-                this.$initialize();
-                System.IO.Iterator$1(System.String).ctor.call(this);
-
-                this._path = path;
-                this._encoding = encoding;
-                this._reader = reader;
-            }
-        },
-        methods: {
-            MoveNext: function () {
-                if (this._reader != null) {
-                    this.current = this._reader.ReadLine();
-                    if (this.current != null) {
-                        return true;
-                    }
-
-                    // To maintain 4.0 behavior we Dispose
-                    // after reading to the end of the reader.
-                    this.Dispose();
-                }
-
-                return false;
-            },
-            Clone: function () {
-                // NOTE: To maintain the same behavior with the previous yield-based
-                // iterator in 4.0, we have all the IEnumerator<T> instances share the same
-                // underlying reader. If we have already been disposed, _reader will be null,
-                // which will cause CreateIterator to simply new up a new instance to start up
-                // a new iteration. Dev10 Bugs 904764 has been filed to fix this in next side-
-                // by-side release.
-                return System.IO.ReadLinesIterator.CreateIterator$1(this._path, this._encoding, this._reader);
-            },
-            Dispose$1: function (disposing) {
-                try {
-                    if (disposing) {
-                        if (this._reader != null) {
-                            this._reader.Dispose();
-                        }
-                    }
-                }
-                finally {
-                    this._reader = null;
-                    System.IO.Iterator$1(System.String).prototype.Dispose$1.call(this, disposing);
-                }
-            }
-        }
-    });
-
-    Bridge.define("System.IO.Stream.NullStream", {
-        inherits: [System.IO.Stream],
-        $kind: "nested class",
-        props: {
-            CanRead: {
-                get: function () {
-                    return true;
-                }
-            },
-            CanWrite: {
-                get: function () {
-                    return true;
-                }
-            },
-            CanSeek: {
-                get: function () {
-                    return true;
-                }
-            },
-            Length: {
-                get: function () {
-                    return System.Int64(0);
-                }
-            },
-            Position: {
-                get: function () {
-                    return System.Int64(0);
-                },
-                set: function (value) { }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                System.IO.Stream.ctor.call(this);
-            }
-        },
-        methods: {
-            Dispose$1: function (disposing) {
-                // Do nothing - we don't want NullStream singleton (static) to be closable
-            },
-            Flush: function () { },
-            BeginRead: function (buffer, offset, count, callback, state) {
-                if (!this.CanRead) {
-                    System.IO.__Error.ReadNotSupported();
-                }
-
-                return this.BlockingBeginRead(buffer, offset, count, callback, state);
-            },
-            EndRead: function (asyncResult) {
-                if (asyncResult == null) {
-                    throw new System.ArgumentNullException("asyncResult");
-                }
-
-                return System.IO.Stream.BlockingEndRead(asyncResult);
-            },
-            BeginWrite: function (buffer, offset, count, callback, state) {
-                if (!this.CanWrite) {
-                    System.IO.__Error.WriteNotSupported();
-                }
-
-                return this.BlockingBeginWrite(buffer, offset, count, callback, state);
-            },
-            EndWrite: function (asyncResult) {
-                if (asyncResult == null) {
-                    throw new System.ArgumentNullException("asyncResult");
-                }
-
-                System.IO.Stream.BlockingEndWrite(asyncResult);
-            },
-            Read: function (buffer, offset, count) {
-                return 0;
-            },
-            ReadByte: function () {
-                return -1;
-            },
-            Write: function (buffer, offset, count) { },
-            WriteByte: function (value) { },
-            Seek: function (offset, origin) {
-                return System.Int64(0);
-            },
-            SetLength: function (length) { }
-        }
-    });
-
-    Bridge.define("System.IO.StreamReader", {
-        inherits: [System.IO.TextReader],
-        statics: {
-            fields: {
-                Null: null,
-                DefaultFileStreamBufferSize: 0,
-                MinBufferSize: 0
-            },
-            props: {
-                DefaultBufferSize: {
-                    get: function () {
-                        return 1024;
-                    }
-                }
-            },
-            ctors: {
-                init: function () {
-                    this.Null = new System.IO.StreamReader.NullStreamReader();
-                    this.DefaultFileStreamBufferSize = 4096;
-                    this.MinBufferSize = 128;
-                }
-            }
-        },
-        fields: {
-            stream: null,
-            encoding: null,
-            byteBuffer: null,
-            charBuffer: null,
-            charPos: 0,
-            charLen: 0,
-            byteLen: 0,
-            bytePos: 0,
-            _maxCharsPerBuffer: 0,
-            _detectEncoding: false,
-            _isBlocked: false,
-            _closable: false
-        },
-        props: {
-            CurrentEncoding: {
-                get: function () {
-                    return this.encoding;
-                }
-            },
-            BaseStream: {
-                get: function () {
-                    return this.stream;
-                }
-            },
-            LeaveOpen: {
-                get: function () {
-                    return !this._closable;
-                }
-            },
-            EndOfStream: {
-                get: function () {
-                    if (this.stream == null) {
-                        System.IO.__Error.ReaderClosed();
-                    }
-
-
-                    if (this.charPos < this.charLen) {
-                        return false;
-                    }
-
-                    // This may block on pipes!
-                    var numRead = this.ReadBuffer();
-                    return numRead === 0;
-                }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                System.IO.TextReader.ctor.call(this);
-            },
-            $ctor1: function (stream) {
-                System.IO.StreamReader.$ctor2.call(this, stream, true);
-            },
-            $ctor2: function (stream, detectEncodingFromByteOrderMarks) {
-                System.IO.StreamReader.$ctor6.call(this, stream, System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks, System.IO.StreamReader.DefaultBufferSize, false);
-            },
-            $ctor3: function (stream, encoding) {
-                System.IO.StreamReader.$ctor6.call(this, stream, encoding, true, System.IO.StreamReader.DefaultBufferSize, false);
-            },
-            $ctor4: function (stream, encoding, detectEncodingFromByteOrderMarks) {
-                System.IO.StreamReader.$ctor6.call(this, stream, encoding, detectEncodingFromByteOrderMarks, System.IO.StreamReader.DefaultBufferSize, false);
-            },
-            $ctor5: function (stream, encoding, detectEncodingFromByteOrderMarks, bufferSize) {
-                System.IO.StreamReader.$ctor6.call(this, stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, false);
-            },
-            $ctor6: function (stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen) {
-                this.$initialize();
-                System.IO.TextReader.ctor.call(this);
-                if (stream == null || encoding == null) {
-                    throw new System.ArgumentNullException((stream == null ? "stream" : "encoding"));
-                }
-                if (!stream.CanRead) {
-                    throw new System.ArgumentException();
-                }
-                if (bufferSize <= 0) {
-                    throw new System.ArgumentOutOfRangeException("bufferSize");
-                }
-
-                this.Init$1(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen);
-            },
-            $ctor7: function (path) {
-                System.IO.StreamReader.$ctor8.call(this, path, true);
-            },
-            $ctor8: function (path, detectEncodingFromByteOrderMarks) {
-                System.IO.StreamReader.$ctor11.call(this, path, System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks, System.IO.StreamReader.DefaultBufferSize);
-            },
-            $ctor9: function (path, encoding) {
-                System.IO.StreamReader.$ctor11.call(this, path, encoding, true, System.IO.StreamReader.DefaultBufferSize);
-            },
-            $ctor10: function (path, encoding, detectEncodingFromByteOrderMarks) {
-                System.IO.StreamReader.$ctor11.call(this, path, encoding, detectEncodingFromByteOrderMarks, System.IO.StreamReader.DefaultBufferSize);
-            },
-            $ctor11: function (path, encoding, detectEncodingFromByteOrderMarks, bufferSize) {
-                System.IO.StreamReader.$ctor12.call(this, path, encoding, detectEncodingFromByteOrderMarks, bufferSize, true);
-            },
-            $ctor12: function (path, encoding, detectEncodingFromByteOrderMarks, bufferSize, checkHost) {
-                this.$initialize();
-                System.IO.TextReader.ctor.call(this);
-                // Don't open a Stream before checking for invalid arguments,
-                // or we'll create a FileStream on disk and we won't close it until
-                // the finalizer runs, causing problems for applications.
-                if (path == null || encoding == null) {
-                    throw new System.ArgumentNullException((path == null ? "path" : "encoding"));
-                }
-                if (path.length === 0) {
-                    throw new System.ArgumentException();
-                }
-                if (bufferSize <= 0) {
-                    throw new System.ArgumentOutOfRangeException("bufferSize");
-                }
-
-                var stream = new System.IO.FileStream.$ctor1(path, System.IO.FileMode.Open);
-                this.Init$1(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, false);
-            }
-        },
-        methods: {
-            Init$1: function (stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen) {
-                this.stream = stream;
-                this.encoding = encoding;
-                if (bufferSize < System.IO.StreamReader.MinBufferSize) {
-                    bufferSize = System.IO.StreamReader.MinBufferSize;
-                }
-                this.byteBuffer = System.Array.init(bufferSize, 0, System.Byte);
-                this._maxCharsPerBuffer = encoding.GetMaxCharCount(bufferSize);
-                this.charBuffer = System.Array.init(this._maxCharsPerBuffer, 0, System.Char);
-                this.byteLen = 0;
-                this.bytePos = 0;
-                this._detectEncoding = detectEncodingFromByteOrderMarks;
-                this._isBlocked = false;
-                this._closable = !leaveOpen;
-            },
-            Init: function (stream) {
-                this.stream = stream;
-                this._closable = true;
-            },
-            Close: function () {
-                this.Dispose$1(true);
-            },
-            Dispose$1: function (disposing) {
-                // Dispose of our resources if this StreamReader is closable.
-                // Note that Console.In should be left open.
-                try {
-                    // Note that Stream.Close() can potentially throw here. So we need to
-                    // ensure cleaning up internal resources, inside the finally block.
-                    if (!this.LeaveOpen && disposing && (this.stream != null)) {
-                        this.stream.Close();
-                    }
-                }
-                finally {
-                    if (!this.LeaveOpen && (this.stream != null)) {
-                        this.stream = null;
-                        this.encoding = null;
-                        this.byteBuffer = null;
-                        this.charBuffer = null;
-                        this.charPos = 0;
-                        this.charLen = 0;
-                        System.IO.TextReader.prototype.Dispose$1.call(this, disposing);
-                    }
-                }
-            },
-            DiscardBufferedData: function () {
-
-                this.byteLen = 0;
-                this.charLen = 0;
-                this.charPos = 0;
-                this._isBlocked = false;
-            },
-            Peek: function () {
-                if (this.stream == null) {
-                    System.IO.__Error.ReaderClosed();
-                }
-
-                if (this.charPos === this.charLen) {
-                    if (this._isBlocked || this.ReadBuffer() === 0) {
-                        return -1;
-                    }
-                }
-                return this.charBuffer[System.Array.index(this.charPos, this.charBuffer)];
-            },
-            Read: function () {
-                if (this.stream == null) {
-                    System.IO.__Error.ReaderClosed();
-                }
-
-
-                if (this.charPos === this.charLen) {
-                    if (this.ReadBuffer() === 0) {
-                        return -1;
-                    }
-                }
-                var result = this.charBuffer[System.Array.index(this.charPos, this.charBuffer)];
-                this.charPos = (this.charPos + 1) | 0;
-                return result;
-            },
-            Read$1: function (buffer, index, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer");
-                }
-                if (index < 0 || count < 0) {
-                    throw new System.ArgumentOutOfRangeException((index < 0 ? "index" : "count"));
-                }
-                if (((buffer.length - index) | 0) < count) {
-                    throw new System.ArgumentException();
-                }
-
-                if (this.stream == null) {
-                    System.IO.__Error.ReaderClosed();
-                }
-
-
-                var charsRead = 0;
-                // As a perf optimization, if we had exactly one buffer's worth of
-                // data read in, let's try writing directly to the user's buffer.
-                var readToUserBuffer = { v : false };
-                while (count > 0) {
-                    var n = (this.charLen - this.charPos) | 0;
-                    if (n === 0) {
-                        n = this.ReadBuffer$1(buffer, ((index + charsRead) | 0), count, readToUserBuffer);
-                    }
-                    if (n === 0) {
-                        break;
-                    } // We're at EOF
-                    if (n > count) {
-                        n = count;
-                    }
-                    if (!readToUserBuffer.v) {
-                        System.Array.copy(this.charBuffer, this.charPos, buffer, (((index + charsRead) | 0)), n);
-                        this.charPos = (this.charPos + n) | 0;
-                    }
-                    charsRead = (charsRead + n) | 0;
-                    count = (count - n) | 0;
-                    // This function shouldn't block for an indefinite amount of time,
-                    // or reading from a network stream won't work right.  If we got
-                    // fewer bytes than we requested, then we want to break right here.
-                    if (this._isBlocked) {
-                        break;
-                    }
-                }
-
-                return charsRead;
-            },
-            ReadToEndAsync: function () {
-                var $step = 0,
-                    $task1, 
-                    $task2, 
-                    $taskResult2, 
-                    $jumpFromFinally, 
-                    $tcs = new System.Threading.Tasks.TaskCompletionSource(), 
-                    $returnValue, 
-                    $async_e, 
-                    $asyncBody = Bridge.fn.bind(this, function () {
-                        try {
-                            for (;;) {
-                                $step = System.Array.min([0,1,2,3,4], $step);
-                                switch ($step) {
-                                    case 0: {
-                                        if (Bridge.is(this.stream, System.IO.FileStream)) {
-                                            $step = 1;
-                                            continue;
-                                        } 
-                                        $step = 3;
-                                        continue;
-                                    }
-                                    case 1: {
-                                        $task1 = this.stream.EnsureBufferAsync();
-                                        $step = 2;
-                                        $task1.continueWith($asyncBody);
-                                        return;
-                                    }
-                                    case 2: {
-                                        $task1.getAwaitedResult();
-                                        $step = 3;
-                                        continue;
-                                    }
-                                    case 3: {
-                                        $task2 = System.IO.TextReader.prototype.ReadToEndAsync.call(this);
-                                        $step = 4;
-                                        $task2.continueWith($asyncBody);
-                                        return;
-                                    }
-                                    case 4: {
-                                        $taskResult2 = $task2.getAwaitedResult();
-                                        $tcs.setResult($taskResult2);
-                                        return;
-                                    }
-                                    default: {
-                                        $tcs.setResult(null);
-                                        return;
-                                    }
-                                }
-                            }
-                        } catch($async_e1) {
-                            $async_e = System.Exception.create($async_e1);
-                            $tcs.setException($async_e);
-                        }
-                    }, arguments);
-
-                $asyncBody();
-                return $tcs.task;
-            },
-            ReadToEnd: function () {
-                if (this.stream == null) {
-                    System.IO.__Error.ReaderClosed();
-                }
-
-                // Call ReadBuffer, then pull data out of charBuffer.
-                var sb = new System.Text.StringBuilder("", ((this.charLen - this.charPos) | 0));
-                do {
-                    sb.append(System.String.fromCharArray(this.charBuffer, this.charPos, ((this.charLen - this.charPos) | 0)));
-                    this.charPos = this.charLen; // Note we consumed these characters
-                    this.ReadBuffer();
-                } while (this.charLen > 0);
-                return sb.toString();
-            },
-            ReadBlock: function (buffer, index, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer");
-                }
-                if (index < 0 || count < 0) {
-                    throw new System.ArgumentOutOfRangeException((index < 0 ? "index" : "count"));
-                }
-                if (((buffer.length - index) | 0) < count) {
-                    throw new System.ArgumentException();
-                }
-
-                if (this.stream == null) {
-                    System.IO.__Error.ReaderClosed();
-                }
-
-                return System.IO.TextReader.prototype.ReadBlock.call(this, buffer, index, count);
-            },
-            CompressBuffer: function (n) {
-                System.Array.copy(this.byteBuffer, n, this.byteBuffer, 0, ((this.byteLen - n) | 0));
-                this.byteLen = (this.byteLen - n) | 0;
-            },
-            DetectEncoding: function () {
-                if (this.byteLen < 2) {
-                    return;
-                }
-                this._detectEncoding = false;
-                var changedEncoding = false;
-                if (this.byteBuffer[System.Array.index(0, this.byteBuffer)] === 254 && this.byteBuffer[System.Array.index(1, this.byteBuffer)] === 255) {
-                    // Big Endian Unicode
-
-                    this.encoding = new System.Text.UnicodeEncoding.$ctor1(true, true);
-                    this.CompressBuffer(2);
-                    changedEncoding = true;
-                } else if (this.byteBuffer[System.Array.index(0, this.byteBuffer)] === 255 && this.byteBuffer[System.Array.index(1, this.byteBuffer)] === 254) {
-                    // Little Endian Unicode, or possibly little endian UTF32
-                    if (this.byteLen < 4 || this.byteBuffer[System.Array.index(2, this.byteBuffer)] !== 0 || this.byteBuffer[System.Array.index(3, this.byteBuffer)] !== 0) {
-                        this.encoding = new System.Text.UnicodeEncoding.$ctor1(false, true);
-                        this.CompressBuffer(2);
-                        changedEncoding = true;
-                    } else {
-                        this.encoding = new System.Text.UTF32Encoding.$ctor1(false, true);
-                        this.CompressBuffer(4);
-                        changedEncoding = true;
-                    }
-                } else if (this.byteLen >= 3 && this.byteBuffer[System.Array.index(0, this.byteBuffer)] === 239 && this.byteBuffer[System.Array.index(1, this.byteBuffer)] === 187 && this.byteBuffer[System.Array.index(2, this.byteBuffer)] === 191) {
-                    // UTF-8
-                    this.encoding = System.Text.Encoding.UTF8;
-                    this.CompressBuffer(3);
-                    changedEncoding = true;
-                } else if (this.byteLen >= 4 && this.byteBuffer[System.Array.index(0, this.byteBuffer)] === 0 && this.byteBuffer[System.Array.index(1, this.byteBuffer)] === 0 && this.byteBuffer[System.Array.index(2, this.byteBuffer)] === 254 && this.byteBuffer[System.Array.index(3, this.byteBuffer)] === 255) {
-                    // Big Endian UTF32
-                    this.encoding = new System.Text.UTF32Encoding.$ctor1(true, true);
-                    this.CompressBuffer(4);
-                    changedEncoding = true;
-                } else if (this.byteLen === 2) {
-                    this._detectEncoding = true;
-                }
-                // Note: in the future, if we change this algorithm significantly,
-                // we can support checking for the preamble of the given encoding.
-
-                if (changedEncoding) {
-                    this._maxCharsPerBuffer = this.encoding.GetMaxCharCount(this.byteBuffer.length);
-                    this.charBuffer = System.Array.init(this._maxCharsPerBuffer, 0, System.Char);
-                }
-            },
-            IsPreamble: function () {
-                return false;
-            },
-            ReadBuffer: function () {
-                this.charLen = 0;
-                this.charPos = 0;
-
-                this.byteLen = 0;
-                do {
-                    this.byteLen = this.stream.Read(this.byteBuffer, 0, this.byteBuffer.length);
-
-                    if (this.byteLen === 0) {
-                        return this.charLen;
-                    }
-
-                    // _isBlocked == whether we read fewer bytes than we asked for.
-                    // Note we must check it here because CompressBuffer or
-                    // DetectEncoding will change byteLen.
-                    this._isBlocked = (this.byteLen < this.byteBuffer.length);
-
-                    // Check for preamble before detect encoding. This is not to override the
-                    // user suppplied Encoding for the one we implicitly detect. The user could
-                    // customize the encoding which we will loose, such as ThrowOnError on UTF8
-                    if (this.IsPreamble()) {
-                        continue;
-                    }
-
-                    // If we're supposed to detect the encoding and haven't done so yet,
-                    // do it.  Note this may need to be called more than once.
-                    if (this._detectEncoding && this.byteLen >= 2) {
-                        this.DetectEncoding();
-                    }
-
-                    this.charLen = (this.charLen + (this.encoding.GetChars$2(this.byteBuffer, 0, this.byteLen, this.charBuffer, this.charLen))) | 0;
-                } while (this.charLen === 0);
-                //Console.WriteLine("ReadBuffer called.  chars: "+charLen);
-                return this.charLen;
-            },
-            ReadBuffer$1: function (userBuffer, userOffset, desiredChars, readToUserBuffer) {
-                this.charLen = 0;
-                this.charPos = 0;
-
-                this.byteLen = 0;
-
-                var charsRead = 0;
-
-                // As a perf optimization, we can decode characters DIRECTLY into a
-                // user's char[].  We absolutely must not write more characters
-                // into the user's buffer than they asked for.  Calculating
-                // encoding.GetMaxCharCount(byteLen) each time is potentially very
-                // expensive - instead, cache the number of chars a full buffer's
-                // worth of data may produce.  Yes, this makes the perf optimization
-                // less aggressive, in that all reads that asked for fewer than AND
-                // returned fewer than _maxCharsPerBuffer chars won't get the user
-                // buffer optimization.  This affects reads where the end of the
-                // Stream comes in the middle somewhere, and when you ask for
-                // fewer chars than your buffer could produce.
-                readToUserBuffer.v = desiredChars >= this._maxCharsPerBuffer;
-
-                do {
-
-
-                    this.byteLen = this.stream.Read(this.byteBuffer, 0, this.byteBuffer.length);
-
-
-                    if (this.byteLen === 0) {
-                        break;
-                    }
-
-                    // _isBlocked == whether we read fewer bytes than we asked for.
-                    // Note we must check it here because CompressBuffer or
-                    // DetectEncoding will change byteLen.
-                    this._isBlocked = (this.byteLen < this.byteBuffer.length);
-
-                    // Check for preamble before detect encoding. This is not to override the
-                    // user suppplied Encoding for the one we implicitly detect. The user could
-                    // customize the encoding which we will loose, such as ThrowOnError on UTF8
-                    // Note: we don't need to recompute readToUserBuffer optimization as IsPreamble
-                    // doesn't change the encoding or affect _maxCharsPerBuffer
-                    if (this.IsPreamble()) {
-                        continue;
-                    }
-
-                    // On the first call to ReadBuffer, if we're supposed to detect the encoding, do it.
-                    if (this._detectEncoding && this.byteLen >= 2) {
-                        this.DetectEncoding();
-                        // DetectEncoding changes some buffer state.  Recompute this.
-                        readToUserBuffer.v = desiredChars >= this._maxCharsPerBuffer;
-                    }
-
-                    this.charPos = 0;
-                    if (readToUserBuffer.v) {
-                        charsRead = (charsRead + (this.encoding.GetChars$2(this.byteBuffer, 0, this.byteLen, userBuffer, ((userOffset + charsRead) | 0)))) | 0;
-                        this.charLen = 0; // StreamReader's buffer is empty.
-                    } else {
-                        charsRead = this.encoding.GetChars$2(this.byteBuffer, 0, this.byteLen, this.charBuffer, charsRead);
-                        this.charLen = (this.charLen + charsRead) | 0; // Number of chars in StreamReader's buffer.
-                    }
-                } while (charsRead === 0);
-
-                this._isBlocked = !!(this._isBlocked & charsRead < desiredChars);
-
-                //Console.WriteLine("ReadBuffer: charsRead: "+charsRead+"  readToUserBuffer: "+readToUserBuffer);
-                return charsRead;
-            },
-            ReadLine: function () {
-                if (this.stream == null) {
-                    System.IO.__Error.ReaderClosed();
-                }
-
-                if (this.charPos === this.charLen) {
-                    if (this.ReadBuffer() === 0) {
-                        return null;
-                    }
-                }
-
-                var sb = null;
-                do {
-                    var i = this.charPos;
-                    do {
-                        var ch = this.charBuffer[System.Array.index(i, this.charBuffer)];
-                        // Note the following common line feed chars:
-                        // \n - UNIX   \r\n - DOS   \r - Mac
-                        if (ch === 13 || ch === 10) {
-                            var s;
-                            if (sb != null) {
-                                sb.append(System.String.fromCharArray(this.charBuffer, this.charPos, ((i - this.charPos) | 0)));
-                                s = sb.toString();
-                            } else {
-                                s = System.String.fromCharArray(this.charBuffer, this.charPos, ((i - this.charPos) | 0));
-                            }
-                            this.charPos = (i + 1) | 0;
-                            if (ch === 13 && (this.charPos < this.charLen || this.ReadBuffer() > 0)) {
-                                if (this.charBuffer[System.Array.index(this.charPos, this.charBuffer)] === 10) {
-                                    this.charPos = (this.charPos + 1) | 0;
-                                }
-                            }
-                            return s;
-                        }
-                        i = (i + 1) | 0;
-                    } while (i < this.charLen);
-                    i = (this.charLen - this.charPos) | 0;
-                    if (sb == null) {
-                        sb = new System.Text.StringBuilder("", ((i + 80) | 0));
-                    }
-                    sb.append(System.String.fromCharArray(this.charBuffer, this.charPos, i));
-                } while (this.ReadBuffer() > 0);
-                return sb.toString();
-            }
-        }
-    });
-
-    Bridge.define("System.IO.StreamWriter", {
-        inherits: [System.IO.TextWriter],
-        statics: {
-            fields: {
-                DefaultBufferSize: 0,
-                DefaultFileStreamBufferSize: 0,
-                MinBufferSize: 0,
-                Null: null,
-                _UTF8NoBOM: null
-            },
-            props: {
-                UTF8NoBOM: {
-                    get: function () {
-                        if (System.IO.StreamWriter._UTF8NoBOM == null) {
-                            // No need for double lock - we just want to avoid extra
-                            // allocations in the common case.
-                            var noBOM = new System.Text.UTF8Encoding.$ctor2(false, true);
-                            System.IO.StreamWriter._UTF8NoBOM = noBOM;
-                        }
-                        return System.IO.StreamWriter._UTF8NoBOM;
-                    }
-                }
-            },
-            ctors: {
-                init: function () {
-                    this.DefaultBufferSize = 1024;
-                    this.DefaultFileStreamBufferSize = 4096;
-                    this.MinBufferSize = 128;
-                    this.Null = new System.IO.StreamWriter.$ctor4(System.IO.Stream.Null, new System.Text.UTF8Encoding.$ctor2(false, true), System.IO.StreamWriter.MinBufferSize, true);
-                }
-            }
-        },
-        fields: {
-            stream: null,
-            encoding: null,
-            byteBuffer: null,
-            charBuffer: null,
-            charPos: 0,
-            charLen: 0,
-            autoFlush: false,
-            haveWrittenPreamble: false,
-            closable: false
-        },
-        props: {
-            AutoFlush: {
-                get: function () {
-                    return this.autoFlush;
-                },
-                set: function (value) {
-                    this.autoFlush = value;
-                    if (value) {
-                        this.Flush$1(true, false);
-                    }
-                }
-            },
-            BaseStream: {
-                get: function () {
-                    return this.stream;
-                }
-            },
-            LeaveOpen: {
-                get: function () {
-                    return !this.closable;
-                }
-            },
-            HaveWrittenPreamble: {
-                set: function (value) {
-                    this.haveWrittenPreamble = value;
-                }
-            },
-            Encoding: {
-                get: function () {
-                    return this.encoding;
-                }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                System.IO.TextWriter.$ctor1.call(this, null); // Ask for CurrentCulture all the time
-            },
-            $ctor1: function (stream) {
-                System.IO.StreamWriter.$ctor4.call(this, stream, System.IO.StreamWriter.UTF8NoBOM, System.IO.StreamWriter.DefaultBufferSize, false);
-            },
-            $ctor2: function (stream, encoding) {
-                System.IO.StreamWriter.$ctor4.call(this, stream, encoding, System.IO.StreamWriter.DefaultBufferSize, false);
-            },
-            $ctor3: function (stream, encoding, bufferSize) {
-                System.IO.StreamWriter.$ctor4.call(this, stream, encoding, bufferSize, false);
-            },
-            $ctor4: function (stream, encoding, bufferSize, leaveOpen) {
-                this.$initialize();
-                System.IO.TextWriter.$ctor1.call(this, null);
-                if (stream == null || encoding == null) {
-                    throw new System.ArgumentNullException((stream == null ? "stream" : "encoding"));
-                }
-                if (!stream.CanWrite) {
-                    throw new System.ArgumentException("Argument_StreamNotWritable");
-                }
-                if (bufferSize <= 0) {
-                    throw new System.ArgumentOutOfRangeException("bufferSize", "ArgumentOutOfRange_NeedPosNum");
-                }
-
-                this.Init(stream, encoding, bufferSize, leaveOpen);
-            },
-            $ctor5: function (path) {
-                System.IO.StreamWriter.$ctor8.call(this, path, false, System.IO.StreamWriter.UTF8NoBOM, System.IO.StreamWriter.DefaultBufferSize);
-            },
-            $ctor6: function (path, append) {
-                System.IO.StreamWriter.$ctor8.call(this, path, append, System.IO.StreamWriter.UTF8NoBOM, System.IO.StreamWriter.DefaultBufferSize);
-            },
-            $ctor7: function (path, append, encoding) {
-                System.IO.StreamWriter.$ctor8.call(this, path, append, encoding, System.IO.StreamWriter.DefaultBufferSize);
-            },
-            $ctor8: function (path, append, encoding, bufferSize) {
-                System.IO.StreamWriter.$ctor9.call(this, path, append, encoding, bufferSize, true);
-            },
-            $ctor9: function (path, append, encoding, bufferSize, checkHost) {
-                this.$initialize();
-                System.IO.TextWriter.$ctor1.call(this, null);
-                throw new System.NotSupportedException();
-            }
-        },
-        methods: {
-            Init: function (streamArg, encodingArg, bufferSize, shouldLeaveOpen) {
-                this.stream = streamArg;
-                this.encoding = encodingArg;
-                if (bufferSize < System.IO.StreamWriter.MinBufferSize) {
-                    bufferSize = System.IO.StreamWriter.MinBufferSize;
-                }
-                this.charBuffer = System.Array.init(bufferSize, 0, System.Char);
-                this.byteBuffer = System.Array.init(this.encoding.GetMaxByteCount(bufferSize), 0, System.Byte);
-                this.charLen = bufferSize;
-                // If we're appending to a Stream that already has data, don't write
-                // the preamble.
-                if (this.stream.CanSeek && this.stream.Position.gt(System.Int64(0))) {
-                    this.haveWrittenPreamble = true;
-                }
-                this.closable = !shouldLeaveOpen;
-            },
-            Close: function () {
-                this.Dispose$1(true);
-            },
-            Dispose$1: function (disposing) {
-                try {
-                    // We need to flush any buffered data if we are being closed/disposed.
-                    // Also, we never close the handles for stdout & friends.  So we can safely
-                    // write any buffered data to those streams even during finalization, which
-                    // is generally the right thing to do.
-                    if (this.stream != null) {
-                        // Note: flush on the underlying stream can throw (ex., low disk space)
-                        if (disposing) {
-                            this.Flush$1(true, true);
-                        }
-                    }
-                }
-                finally {
-                    // Dispose of our resources if this StreamWriter is closable.
-                    // Note: Console.Out and other such non closable streamwriters should be left alone
-                    if (!this.LeaveOpen && this.stream != null) {
-                        try {
-                            // Attempt to close the stream even if there was an IO error from Flushing.
-                            // Note that Stream.Close() can potentially throw here (may or may not be
-                            // due to the same Flush error). In this case, we still need to ensure
-                            // cleaning up internal resources, hence the finally block.
-                            if (disposing) {
-                                this.stream.Close();
-                            }
-                        }
-                        finally {
-                            this.stream = null;
-                            this.byteBuffer = null;
-                            this.charBuffer = null;
-                            this.encoding = null;
-                            this.charLen = 0;
-                            System.IO.TextWriter.prototype.Dispose$1.call(this, disposing);
-                        }
-                    }
-                }
-            },
-            Flush: function () {
-                this.Flush$1(true, true);
-            },
-            Flush$1: function (flushStream, flushEncoder) {
-                // flushEncoder should be true at the end of the file and if
-                // the user explicitly calls Flush (though not if AutoFlush is true).
-                // This is required to flush any dangling characters from our UTF-7
-                // and UTF-8 encoders.
-                if (this.stream == null) {
-                    System.IO.__Error.WriterClosed();
-                }
-
-                // Perf boost for Flush on non-dirty writers.
-                if (this.charPos === 0 && (!flushStream && !flushEncoder)) {
-                    return;
-                }
-
-                /* if (!haveWrittenPreamble) {
-                   haveWrittenPreamble = true;
-                   byte[] preamble = encoding.GetPreamble();
-                   if (preamble.Length > 0)
-                       stream.Write(preamble, 0, preamble.Length);
-                }*/
-
-                var count = this.encoding.GetBytes$3(this.charBuffer, 0, this.charPos, this.byteBuffer, 0);
-                this.charPos = 0;
-                if (count > 0) {
-                    this.stream.Write(this.byteBuffer, 0, count);
-                }
-                // By definition, calling Flush should flush the stream, but this is
-                // only necessary if we passed in true for flushStream.  The Web
-                // Services guys have some perf tests where flushing needlessly hurts.
-                if (flushStream) {
-                    this.stream.Flush();
-                }
-            },
-            Write$1: function (value) {
-                if (this.charPos === this.charLen) {
-                    this.Flush$1(false, false);
-                }
-                this.charBuffer[System.Array.index(this.charPos, this.charBuffer)] = value;
-                this.charPos = (this.charPos + 1) | 0;
-                if (this.autoFlush) {
-                    this.Flush$1(true, false);
-                }
-            },
-            Write$2: function (buffer) {
-                // This may be faster than the one with the index & count since it
-                // has to do less argument checking.
-                if (buffer == null) {
-                    return;
-                }
-
-                var index = 0;
-                var count = buffer.length;
-                while (count > 0) {
-                    if (this.charPos === this.charLen) {
-                        this.Flush$1(false, false);
-                    }
-                    var n = (this.charLen - this.charPos) | 0;
-                    if (n > count) {
-                        n = count;
-                    }
-                    System.Array.copy(buffer, index, this.charBuffer, this.charPos, n);
-                    this.charPos = (this.charPos + n) | 0;
-                    index = (index + n) | 0;
-                    count = (count - n) | 0;
-                }
-                if (this.autoFlush) {
-                    this.Flush$1(true, false);
-                }
-            },
-            Write$3: function (buffer, index, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
-                }
-                if (index < 0) {
-                    throw new System.ArgumentOutOfRangeException("index", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
-                }
-                if (((buffer.length - index) | 0) < count) {
-                    throw new System.ArgumentException("Argument_InvalidOffLen");
-                }
-
-                while (count > 0) {
-                    if (this.charPos === this.charLen) {
-                        this.Flush$1(false, false);
-                    }
-                    var n = (this.charLen - this.charPos) | 0;
-                    if (n > count) {
-                        n = count;
-                    }
-                    System.Array.copy(buffer, index, this.charBuffer, this.charPos, n);
-                    this.charPos = (this.charPos + n) | 0;
-                    index = (index + n) | 0;
-                    count = (count - n) | 0;
-                }
-                if (this.autoFlush) {
-                    this.Flush$1(true, false);
-                }
-            },
-            Write$10: function (value) {
-                if (value != null) {
-                    var count = value.length;
-                    var index = 0;
-                    while (count > 0) {
-                        if (this.charPos === this.charLen) {
-                            this.Flush$1(false, false);
-                        }
-                        var n = (this.charLen - this.charPos) | 0;
-                        if (n > count) {
-                            n = count;
-                        }
-                        System.String.copyTo(value, index, this.charBuffer, this.charPos, n);
-                        this.charPos = (this.charPos + n) | 0;
-                        index = (index + n) | 0;
-                        count = (count - n) | 0;
-                    }
-                    if (this.autoFlush) {
-                        this.Flush$1(true, false);
-                    }
-                }
-            }
-        }
-    });
-
-    Bridge.define("System.IO.StringReader", {
-        inherits: [System.IO.TextReader],
-        fields: {
-            _s: null,
-            _pos: 0,
-            _length: 0
-        },
-        ctors: {
-            ctor: function (s) {
-                this.$initialize();
-                System.IO.TextReader.ctor.call(this);
-                if (s == null) {
-                    throw new System.ArgumentNullException("s");
-                }
-                this._s = s;
-                this._length = s == null ? 0 : s.length;
-            }
-        },
-        methods: {
-            Close: function () {
-                this.Dispose$1(true);
-            },
-            Dispose$1: function (disposing) {
-                this._s = null;
-                this._pos = 0;
-                this._length = 0;
-                System.IO.TextReader.prototype.Dispose$1.call(this, disposing);
-            },
-            Peek: function () {
-                if (this._s == null) {
-                    System.IO.__Error.ReaderClosed();
-                }
-                if (this._pos === this._length) {
-                    return -1;
-                }
-                return this._s.charCodeAt(this._pos);
-            },
-            Read: function () {
-                if (this._s == null) {
-                    System.IO.__Error.ReaderClosed();
-                }
-                if (this._pos === this._length) {
-                    return -1;
-                }
-                return this._s.charCodeAt(Bridge.identity(this._pos, (this._pos = (this._pos + 1) | 0)));
-            },
-            Read$1: function (buffer, index, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer");
-                }
-                if (index < 0) {
-                    throw new System.ArgumentOutOfRangeException("index");
-                }
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count");
-                }
-                if (((buffer.length - index) | 0) < count) {
-                    throw new System.ArgumentException();
-                }
-                if (this._s == null) {
-                    System.IO.__Error.ReaderClosed();
-                }
-
-                var n = (this._length - this._pos) | 0;
-                if (n > 0) {
-                    if (n > count) {
-                        n = count;
-                    }
-                    System.String.copyTo(this._s, this._pos, buffer, index, n);
-                    this._pos = (this._pos + n) | 0;
-                }
-                return n;
-            },
-            ReadToEnd: function () {
-                if (this._s == null) {
-                    System.IO.__Error.ReaderClosed();
-                }
-                var s;
-                if (this._pos === 0) {
-                    s = this._s;
-                } else {
-                    s = this._s.substr(this._pos, ((this._length - this._pos) | 0));
-                }
-                this._pos = this._length;
-                return s;
-            },
-            ReadLine: function () {
-                if (this._s == null) {
-                    System.IO.__Error.ReaderClosed();
-                }
-                var i = this._pos;
-                while (i < this._length) {
-                    var ch = this._s.charCodeAt(i);
-                    if (ch === 13 || ch === 10) {
-                        var result = this._s.substr(this._pos, ((i - this._pos) | 0));
-                        this._pos = (i + 1) | 0;
-                        if (ch === 13 && this._pos < this._length && this._s.charCodeAt(this._pos) === 10) {
-                            this._pos = (this._pos + 1) | 0;
-                        }
-                        return result;
-                    }
-                    i = (i + 1) | 0;
-                }
-                if (i > this._pos) {
-                    var result1 = this._s.substr(this._pos, ((i - this._pos) | 0));
-                    this._pos = i;
-                    return result1;
-                }
-                return null;
-            }
-        }
-    });
-
-    Bridge.define("System.IO.StringWriter", {
-        inherits: [System.IO.TextWriter],
-        statics: {
-            fields: {
-                m_encoding: null
-            }
-        },
-        fields: {
-            _sb: null,
-            _isOpen: false
-        },
-        props: {
-            Encoding: {
-                get: function () {
-                    if (System.IO.StringWriter.m_encoding == null) {
-                        System.IO.StringWriter.m_encoding = new System.Text.UnicodeEncoding.$ctor1(false, false);
-                    }
-                    return System.IO.StringWriter.m_encoding;
-                }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                System.IO.StringWriter.$ctor3.call(this, new System.Text.StringBuilder(), System.Globalization.CultureInfo.getCurrentCulture());
-            },
-            $ctor1: function (formatProvider) {
-                System.IO.StringWriter.$ctor3.call(this, new System.Text.StringBuilder(), formatProvider);
-            },
-            $ctor2: function (sb) {
-                System.IO.StringWriter.$ctor3.call(this, sb, System.Globalization.CultureInfo.getCurrentCulture());
-            },
-            $ctor3: function (sb, formatProvider) {
-                this.$initialize();
-                System.IO.TextWriter.$ctor1.call(this, formatProvider);
-                if (sb == null) {
-                    throw new System.ArgumentNullException("sb");
-                }
-                this._sb = sb;
-                this._isOpen = true;
-            }
-        },
-        methods: {
-            Close: function () {
-                this.Dispose$1(true);
-            },
-            Dispose$1: function (disposing) {
-                // Do not destroy _sb, so that we can extract this after we are
-                // done writing (similar to MemoryStream's GetBuffer & ToArray methods)
-                this._isOpen = false;
-                System.IO.TextWriter.prototype.Dispose$1.call(this, disposing);
-            },
-            GetStringBuilder: function () {
-                return this._sb;
-            },
-            Write$1: function (value) {
-                if (!this._isOpen) {
-                    System.IO.__Error.WriterClosed();
-                }
-                this._sb.append(String.fromCharCode(value));
-            },
-            Write$3: function (buffer, index, count) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer");
-                }
-                if (index < 0) {
-                    throw new System.ArgumentOutOfRangeException("index");
-                }
-                if (count < 0) {
-                    throw new System.ArgumentOutOfRangeException("count");
-                }
-                if (((buffer.length - index) | 0) < count) {
-                    throw new System.ArgumentException();
-                }
-
-                if (!this._isOpen) {
-                    System.IO.__Error.WriterClosed();
-                }
-
-                this._sb.append(System.String.fromCharArray(buffer, index, count));
-            },
-            Write$10: function (value) {
-                if (!this._isOpen) {
-                    System.IO.__Error.WriterClosed();
-                }
-                if (value != null) {
-                    this._sb.append(value);
-                }
-            },
-            ToString: function () {
-                return this._sb.toString();
-            }
-        }
-    });
-
-    Bridge.define("System.IO.TextReader.NullTextReader", {
-        inherits: [System.IO.TextReader],
-        $kind: "nested class",
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                System.IO.TextReader.ctor.call(this);
-            }
-        },
-        methods: {
-            Read$1: function (buffer, index, count) {
-                return 0;
-            },
-            ReadLine: function () {
-                return null;
-            }
-        }
-    });
-
-    Bridge.define("System.IO.TextWriter.NullTextWriter", {
-        inherits: [System.IO.TextWriter],
-        $kind: "nested class",
-        props: {
-            Encoding: {
-                get: function () {
-                    return System.Text.Encoding.Default;
-                }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                System.IO.TextWriter.$ctor1.call(this, System.Globalization.CultureInfo.invariantCulture);
-            }
-        },
-        methods: {
-            Write$3: function (buffer, index, count) { },
-            Write$10: function (value) { },
-            WriteLine: function () { },
-            WriteLine$11: function (value) { },
-            WriteLine$9: function (value) { }
-        }
-    });
-
-    Bridge.define("System.IO.StreamReader.NullStreamReader", {
-        inherits: [System.IO.StreamReader],
-        $kind: "nested class",
-        props: {
-            BaseStream: {
-                get: function () {
-                    return System.IO.Stream.Null;
-                }
-            },
-            CurrentEncoding: {
-                get: function () {
-                    return System.Text.Encoding.Unicode;
-                }
-            }
-        },
-        ctors: {
-            ctor: function () {
-                this.$initialize();
-                System.IO.StreamReader.ctor.call(this);
-                this.Init(System.IO.Stream.Null);
-            }
-        },
-        methods: {
-            Dispose$1: function (disposing) {
-                // Do nothing - this is essentially unclosable.
-            },
-            Peek: function () {
-                return -1;
-            },
-            Read: function () {
-                return -1;
-            },
-            Read$1: function (buffer, index, count) {
-                return 0;
-            },
-            ReadLine: function () {
-                return null;
-            },
-            ReadToEnd: function () {
-                return "";
-            },
-            ReadBuffer: function () {
-                return 0;
-            }
-        }
-    });
-
-    // @source random.js
-
-    Bridge.define("System.Random", {
-        statics: {
-            fields: {
-                MBIG: 0,
-                MSEED: 0,
-                MZ: 0
-            },
-            ctors: {
-                init: function () {
-                    this.MBIG = 2147483647;
-                    this.MSEED = 161803398;
-                    this.MZ = 0;
-                }
-            }
-        },
-        fields: {
-            inext: 0,
-            inextp: 0,
-            seedArray: null
-        },
-        ctors: {
-            init: function () {
-                this.seedArray = System.Array.init(56, 0, System.Int32);
-            },
-            ctor: function () {
-                System.Random.$ctor1.call(this, System.Int64.clip32(System.DateTime.getTicks(System.DateTime.getNow())));
-            },
-            $ctor1: function (seed) {
-                this.$initialize();
-                var ii;
-                var mj, mk;
-
-                //Initialize our Seed array.
-                //This algorithm comes from Numerical Recipes in C (2nd Ed.)
-                var subtraction = (seed === -2147483648) ? 2147483647 : Math.abs(seed);
-                mj = (System.Random.MSEED - subtraction) | 0;
-                this.seedArray[System.Array.index(55, this.seedArray)] = mj;
-                mk = 1;
-                for (var i = 1; i < 55; i = (i + 1) | 0) { //Apparently the range [1..55] is special (Knuth) and so we're wasting the 0'th position.
-                    ii = (Bridge.Int.mul(21, i)) % 55;
-                    this.seedArray[System.Array.index(ii, this.seedArray)] = mk;
-                    mk = (mj - mk) | 0;
-                    if (mk < 0) {
-                        mk = (mk + System.Random.MBIG) | 0;
-                    }
-                    mj = this.seedArray[System.Array.index(ii, this.seedArray)];
-                }
-                for (var k = 1; k < 5; k = (k + 1) | 0) {
-                    for (var i1 = 1; i1 < 56; i1 = (i1 + 1) | 0) {
-                        this.seedArray[System.Array.index(i1, this.seedArray)] = (this.seedArray[System.Array.index(i1, this.seedArray)] - this.seedArray[System.Array.index(((1 + (((i1 + 30) | 0)) % 55) | 0), this.seedArray)]) | 0;
-                        if (this.seedArray[System.Array.index(i1, this.seedArray)] < 0) {
-                            this.seedArray[System.Array.index(i1, this.seedArray)] = (this.seedArray[System.Array.index(i1, this.seedArray)] + System.Random.MBIG) | 0;
-                        }
-                    }
-                }
-                this.inext = 0;
-                this.inextp = 21;
-                seed = 1;
-            }
-        },
-        methods: {
-            sample: function () {
-                //Including this division at the end gives us significantly improved
-                //random number distribution.
-                return (this.internalSample() * (4.6566128752457969E-10));
-            },
-            internalSample: function () {
-                var retVal;
-                var locINext = this.inext;
-                var locINextp = this.inextp;
-
-                if (((locINext = (locINext + 1) | 0)) >= 56) {
-                    locINext = 1;
-                }
-
-                if (((locINextp = (locINextp + 1) | 0)) >= 56) {
-                    locINextp = 1;
-                }
-
-                retVal = (this.seedArray[System.Array.index(locINext, this.seedArray)] - this.seedArray[System.Array.index(locINextp, this.seedArray)]) | 0;
-
-                if (retVal === System.Random.MBIG) {
-                    retVal = (retVal - 1) | 0;
-                }
-
-                if (retVal < 0) {
-                    retVal = (retVal + System.Random.MBIG) | 0;
-                }
-
-                this.seedArray[System.Array.index(locINext, this.seedArray)] = retVal;
-
-                this.inext = locINext;
-                this.inextp = locINextp;
-
-                return retVal;
-            },
-            next: function () {
-                return this.internalSample();
-            },
-            next$2: function (minValue, maxValue) {
-                if (minValue > maxValue) {
-                    throw new System.ArgumentOutOfRangeException("minValue", "'minValue' cannot be greater than maxValue.");
-                }
-
-                var range = System.Int64(maxValue).sub(System.Int64(minValue));
-                if (range.lte(System.Int64(2147483647))) {
-                    return (((Bridge.Int.clip32((this.sample() * System.Int64.toNumber(range))) + minValue) | 0));
-                } else {
-                    return System.Int64.clip32(Bridge.Int.clip64((this.getSampleForLargeRange() * System.Int64.toNumber(range))).add(System.Int64(minValue)));
-                }
-            },
-            next$1: function (maxValue) {
-                if (maxValue < 0) {
-                    throw new System.ArgumentOutOfRangeException("maxValue", "'maxValue' must be greater than zero.");
-                }
-                return Bridge.Int.clip32(this.sample() * maxValue);
-            },
-            getSampleForLargeRange: function () {
-                // The distribution of double value returned by Sample
-                // is not distributed well enough for a large range.
-                // If we use Sample for a range [Int32.MinValue..Int32.MaxValue)
-                // We will end up getting even numbers only.
-
-                var result = this.internalSample();
-                // Note we can't use addition here. The distribution will be bad if we do that.
-                var negative = (this.internalSample() % 2 === 0) ? true : false; // decide the sign based on second sample
-                if (negative) {
-                    result = (-result) | 0;
-                }
-                var d = result;
-                d += (2147483646); // get a number in range [0 .. 2 * Int32MaxValue - 1)
-                d /= 4294967293;
-                return d;
-            },
-            nextDouble: function () {
-                return this.sample();
-            },
-            nextBytes: function (buffer) {
-                if (buffer == null) {
-                    throw new System.ArgumentNullException("buffer");
-                }
-                for (var i = 0; i < buffer.length; i = (i + 1) | 0) {
-                    buffer[System.Array.index(i, buffer)] = (this.internalSample() % (256)) & 255;
-                }
-            }
-        }
-    });
-
-    // @source bitConverter.js
+    // @source BitConverter.js
 
     Bridge.define("System.BitConverter", {
         statics: {
@@ -33355,6 +26033,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
                     var chArray = System.Array.init(chArrayLength, 0, System.Char);
                     var i = 0;
                     var index = startIndex;
+
                     for (i = 0; i < chArrayLength; i = (i + 3) | 0) {
                         var b = value[System.Array.index(Bridge.identity(index, (index = (index + 1) | 0)), value)];
                         chArray[System.Array.index(i, chArray)] = System.BitConverter.getHexValue(((Bridge.Int.div(b, 16)) | 0));
@@ -33483,218 +26162,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     });
 
-    // @source timer.js
-
-    Bridge.define("System.Threading.Timer", {
-        inherits: [System.IDisposable],
-        statics: {
-            fields: {
-                MAX_SUPPORTED_TIMEOUT: 0,
-                EXC_LESS: null,
-                EXC_MORE: null,
-                EXC_DISPOSED: null
-            },
-            ctors: {
-                init: function () {
-                    this.MAX_SUPPORTED_TIMEOUT = 4294967294;
-                    this.EXC_LESS = "Number must be either non-negative and less than or equal to Int32.MaxValue or -1.";
-                    this.EXC_MORE = "Time-out interval must be less than 2^32-2.";
-                    this.EXC_DISPOSED = "The timer has been already disposed.";
-                }
-            }
-        },
-        fields: {
-            dueTime: System.Int64(0),
-            period: System.Int64(0),
-            timerCallback: null,
-            state: null,
-            id: null,
-            disposed: false
-        },
-        alias: ["dispose", "System$IDisposable$dispose"],
-        ctors: {
-            $ctor1: function (callback, state, dueTime, period) {
-                this.$initialize();
-                this.timerSetup(callback, state, System.Int64(dueTime), System.Int64(period));
-            },
-            $ctor3: function (callback, state, dueTime, period) {
-                this.$initialize();
-                var dueTm = Bridge.Int.clip64(dueTime.getTotalMilliseconds());
-                var periodTm = Bridge.Int.clip64(period.getTotalMilliseconds());
-
-                this.timerSetup(callback, state, dueTm, periodTm);
-            },
-            $ctor4: function (callback, state, dueTime, period) {
-                this.$initialize();
-                this.timerSetup(callback, state, System.Int64(dueTime), System.Int64(period));
-            },
-            $ctor2: function (callback, state, dueTime, period) {
-                this.$initialize();
-                this.timerSetup(callback, state, dueTime, period);
-            },
-            ctor: function (callback) {
-                this.$initialize();
-                var dueTime = -1; // we want timer to be registered, but not activated.  Requires caller to call
-                var period = -1; // Change after a timer instance is created.  This is to avoid the potential
-                // for a timer to be fired before the returned value is assigned to the variable,
-                // potentially causing the callback to reference a bogus value (if passing the timer to the callback).
-
-                this.timerSetup(callback, this, System.Int64(dueTime), System.Int64(period));
-            }
-        },
-        methods: {
-            timerSetup: function (callback, state, dueTime, period) {
-                if (this.disposed) {
-                    throw new System.InvalidOperationException(System.Threading.Timer.EXC_DISPOSED);
-                }
-
-                if (Bridge.staticEquals(callback, null)) {
-                    throw new System.ArgumentNullException("TimerCallback");
-                }
-
-                if (dueTime.lt(System.Int64(-1))) {
-                    throw new System.ArgumentOutOfRangeException("dueTime", System.Threading.Timer.EXC_LESS);
-                }
-                if (period.lt(System.Int64(-1))) {
-                    throw new System.ArgumentOutOfRangeException("period", System.Threading.Timer.EXC_LESS);
-                }
-                if (dueTime.gt(System.Int64(System.Threading.Timer.MAX_SUPPORTED_TIMEOUT))) {
-                    throw new System.ArgumentOutOfRangeException("dueTime", System.Threading.Timer.EXC_MORE);
-                }
-                if (period.gt(System.Int64(System.Threading.Timer.MAX_SUPPORTED_TIMEOUT))) {
-                    throw new System.ArgumentOutOfRangeException("period", System.Threading.Timer.EXC_MORE);
-                }
-
-                this.dueTime = dueTime;
-                this.period = period;
-
-                this.state = state;
-                this.timerCallback = callback;
-
-                return this.runTimer(this.dueTime);
-            },
-            handleCallback: function () {
-                if (this.disposed) {
-                    return;
-                }
-
-                if (!Bridge.staticEquals(this.timerCallback, null)) {
-                    var myId = this.id;
-                    this.timerCallback(this.state);
-
-                    // timerCallback may call Change(). To prevent double call we can check if timer changed
-                    if (System.Nullable.eq(this.id, myId)) {
-                        this.runTimer(this.period, false);
-                    }
-                }
-            },
-            runTimer: function (period, checkDispose) {
-                if (checkDispose === void 0) { checkDispose = true; }
-                if (checkDispose && this.disposed) {
-                    throw new System.InvalidOperationException(System.Threading.Timer.EXC_DISPOSED);
-                }
-
-                if (period.ne(System.Int64(-1)) && !this.disposed) {
-                    var p = period.toNumber();
-                    this.id = Bridge.global.setTimeout(Bridge.fn.cacheBind(this, this.handleCallback), p);
-                    return true;
-                }
-
-                return false;
-            },
-            change: function (dueTime, period) {
-                return this.changeTimer(System.Int64(dueTime), System.Int64(period));
-            },
-            change$2: function (dueTime, period) {
-                return this.changeTimer(Bridge.Int.clip64(dueTime.getTotalMilliseconds()), Bridge.Int.clip64(period.getTotalMilliseconds()));
-            },
-            change$3: function (dueTime, period) {
-                return this.changeTimer(System.Int64(dueTime), System.Int64(period));
-            },
-            change$1: function (dueTime, period) {
-                return this.changeTimer(dueTime, period);
-            },
-            changeTimer: function (dueTime, period) {
-                this.clearTimeout();
-                return this.timerSetup(this.timerCallback, this.state, dueTime, period);
-            },
-            clearTimeout: function () {
-                if (System.Nullable.hasValue(this.id)) {
-                    Bridge.global.clearTimeout(System.Nullable.getValue(this.id));
-                    this.id = null;
-                }
-            },
-            dispose: function () {
-                this.clearTimeout();
-                this.disposed = true;
-            }
-        }
-    });
-
-    // @source console.js
-
-    Bridge.define("System.Console", {
-        statics: {
-            methods: {
-                Write: function (value) {
-                    var con = Bridge.global.console;
-
-                    if (con && con.log) {
-                        con.log(!Bridge.isDefined(Bridge.unbox(value)) ? "" : Bridge.unbox(value));
-                    }
-                },
-                WriteLine: function (value) {
-                    var con = Bridge.global.console;
-
-                    if (con && con.log) {
-                        con.log(!Bridge.isDefined(Bridge.unbox(value)) ? "" : Bridge.unbox(value));
-                    }
-                },
-                TransformChars: function (buffer, all, index, count) {
-                    if (all !== 1) {
-                        if (buffer == null) {
-                            throw new System.ArgumentNullException("buffer");
-                        }
-
-                        if (index < 0) {
-                            throw new System.ArgumentOutOfRangeException("index", "less than zero");
-                        }
-
-                        if (count < 0) {
-                            throw new System.ArgumentOutOfRangeException("count", "less than zero");
-                        }
-
-                        if (((index + count) | 0) > buffer.length) {
-                            throw new System.ArgumentException("index plus count specify a position that is not within buffer.");
-                        }
-                    }
-
-                    var s = "";
-                    if (buffer != null) {
-                        if (all === 1) {
-                            index = 0;
-                            count = buffer.length;
-                        }
-
-                        for (var i = index; i < ((index + count) | 0); i = (i + 1) | 0) {
-                            s = (s || "") + String.fromCharCode(buffer[System.Array.index(i, buffer)]);
-                        }
-                    }
-
-                    return s;
-                },
-                Clear: function () {
-                    var con = Bridge.global.console;
-
-                    if (con && con.clear) {
-                        con.clear();
-                    }
-                }
-            }
-        }
-    });
-
-    // @source bitArray.js
+    // @source BitArray.js
 
     Bridge.define("System.Collections.BitArray", {
         inherits: [System.Collections.ICollection,System.ICloneable],
@@ -34038,7 +26506,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     });
 
-    // @source bitArrayEnumeratorSimple.js
+    // @source BitArrayEnumeratorSimple.js
 
     Bridge.define("System.Collections.BitArray.BitArrayEnumeratorSimple", {
         inherits: [System.Collections.IEnumerator],
@@ -34099,7 +26567,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     });
 
-    // @source bitHelper.js
+    // @source BitHelper.js
 
     Bridge.define("System.Collections.Generic.BitHelper", {
         statics: {
@@ -34149,7 +26617,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     });
 
-    // @source enumerableHelpers.js
+    // @source EnumerableHelpers.js
 
     Bridge.define("Bridge.Collections.EnumerableHelpers", {
         statics: {
@@ -34220,7 +26688,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     });
 
-    // @source hashSet.js
+    // @source HashSet.js
 
     Bridge.define("System.Collections.Generic.HashSet$1", function (T) { return {
         inherits: [System.Collections.Generic.ICollection$1(T),System.Collections.Generic.ISet$1(T)],
@@ -35016,7 +27484,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     }; });
 
-    // @source elementCount.js
+    // @source ElementCount.js
 
     Bridge.define("System.Collections.Generic.HashSet$1.ElementCount", function (T) { return {
         $kind: "nested struct",
@@ -35054,7 +27522,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     }; });
 
-    // @source enumerator.js
+    // @source Enumerator.js
 
     Bridge.define("System.Collections.Generic.HashSet$1.Enumerator", function (T) { return {
         inherits: [System.Collections.Generic.IEnumerator$1(T)],
@@ -35149,7 +27617,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     }; });
 
-    // @source slot.js
+    // @source Slot.js
 
     Bridge.define("System.Collections.Generic.HashSet$1.Slot", function (T) { return {
         $kind: "nested struct",
@@ -35189,7 +27657,106 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     }; });
 
-    // @source queue.js
+    // @source Enumerator.js
+
+    Bridge.define("System.Collections.Generic.List$1.Enumerator", function (T) { return {
+        inherits: [System.Collections.Generic.IEnumerator$1(T),System.Collections.IEnumerator],
+        $kind: "nested struct",
+        statics: {
+            methods: {
+                getDefaultValue: function () { return new (System.Collections.Generic.List$1.Enumerator(T))(); }
+            }
+        },
+        fields: {
+            list: null,
+            index: 0,
+            version: 0,
+            current: Bridge.getDefaultValue(T)
+        },
+        props: {
+            Current: {
+                get: function () {
+                    return this.current;
+                }
+            },
+            System$Collections$IEnumerator$Current: {
+                get: function () {
+                    if (this.index === 0 || this.index === ((this.list._size + 1) | 0)) {
+                        throw new System.InvalidOperationException();
+                    }
+                    return this.Current;
+                }
+            }
+        },
+        alias: [
+            "dispose", "System$IDisposable$dispose",
+            "moveNext", "System$Collections$IEnumerator$moveNext",
+            "Current", ["System$Collections$Generic$IEnumerator$1$" + Bridge.getTypeAlias(T) + "$Current$1", "System$Collections$Generic$IEnumerator$1$Current$1"]
+        ],
+        ctors: {
+            $ctor1: function (list) {
+                this.$initialize();
+                this.list = list;
+                this.index = 0;
+                this.version = list._version;
+                this.current = Bridge.getDefaultValue(T);
+            },
+            ctor: function () {
+                this.$initialize();
+            }
+        },
+        methods: {
+            dispose: function () { },
+            moveNext: function () {
+
+                var localList = this.list;
+
+                if (this.version === localList._version && ((this.index >>> 0) < (localList._size >>> 0))) {
+                    this.current = localList._items[System.Array.index(this.index, localList._items)];
+                    this.index = (this.index + 1) | 0;
+                    return true;
+                }
+                return this.moveNextRare();
+            },
+            moveNextRare: function () {
+                if (this.version !== this.list._version) {
+                    throw new System.InvalidOperationException();
+                }
+
+                this.index = (this.list._size + 1) | 0;
+                this.current = Bridge.getDefaultValue(T);
+                return false;
+            },
+            System$Collections$IEnumerator$reset: function () {
+                if (this.version !== this.list._version) {
+                    throw new System.InvalidOperationException();
+                }
+
+                this.index = 0;
+                this.current = Bridge.getDefaultValue(T);
+            },
+            getHashCode: function () {
+                var h = Bridge.addHash([3788985113, this.list, this.index, this.version, this.current]);
+                return h;
+            },
+            equals: function (o) {
+                if (!Bridge.is(o, System.Collections.Generic.List$1.Enumerator(T))) {
+                    return false;
+                }
+                return Bridge.equals(this.list, o.list) && Bridge.equals(this.index, o.index) && Bridge.equals(this.version, o.version) && Bridge.equals(this.current, o.current);
+            },
+            $clone: function (to) {
+                var s = to || new (System.Collections.Generic.List$1.Enumerator(T))();
+                s.list = this.list;
+                s.index = this.index;
+                s.version = this.version;
+                s.current = this.current;
+                return s;
+            }
+        }
+    }; });
+
+    // @source Queue.js
 
     Bridge.define("System.Collections.Generic.Queue$1", function (T) { return {
         inherits: [System.Collections.Generic.IEnumerable$1(T),System.Collections.ICollection],
@@ -35464,7 +28031,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     }; });
 
-    // @source enumerator.js
+    // @source Enumerator.js
 
     Bridge.define("System.Collections.Generic.Queue$1.Enumerator", function (T) { return {
         inherits: [System.Collections.Generic.IEnumerator$1(T),System.Collections.IEnumerator],
@@ -35569,7 +28136,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     }; });
 
-    // @source stack.js
+    // @source Stack.js
 
     Bridge.define("System.Collections.Generic.Stack$1", function (T) { return {
         inherits: [System.Collections.Generic.IEnumerable$1(T),System.Collections.ICollection],
@@ -35773,7 +28340,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     }; });
 
-    // @source enumerator.js
+    // @source Enumerator.js
 
     Bridge.define("System.Collections.Generic.Stack$1.Enumerator", function (T) { return {
         inherits: [System.Collections.Generic.IEnumerator$1(T),System.Collections.IEnumerator],
@@ -35888,7 +28455,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     }; });
 
-    // @source hashHelpers.js
+    // @source HashHelpers.js
 
     Bridge.define("System.Collections.HashHelpers", {
         statics: {
@@ -36021,7 +28588,215 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     });
 
-    // @source browsableAttribute.js
+    // @source ReadOnlyCollection.js
+
+    Bridge.define("System.Collections.ObjectModel.ReadOnlyCollection$1", function (T) { return {
+        inherits: [System.Collections.Generic.IList$1(T),System.Collections.IList,System.Collections.Generic.IReadOnlyList$1(T)],
+        statics: {
+            methods: {
+                isCompatibleObject: function (value) {
+                    // Non-null values are fine.  Only accept nulls if T is a class or Nullable<U>.
+                    // Note that default(T) is not equal to null for value types except when T is Nullable<U>.
+                    return ((Bridge.is(value, T)) || (value == null && Bridge.getDefaultValue(T) == null));
+                }
+            }
+        },
+        fields: {
+            list: null
+        },
+        props: {
+            Count: {
+                get: function () {
+                    return System.Array.getCount(this.list, T);
+                }
+            },
+            System$Collections$ICollection$IsSynchronized: {
+                get: function () {
+                    return false;
+                }
+            },
+            System$Collections$ICollection$SyncRoot: {
+                get: function () {
+                    return this;
+                }
+            },
+            Items: {
+                get: function () {
+                    return this.list;
+                }
+            },
+            System$Collections$IList$IsFixedSize: {
+                get: function () {
+                    return true;
+                }
+            },
+            System$Collections$Generic$ICollection$1$IsReadOnly: {
+                get: function () {
+                    return true;
+                }
+            },
+            System$Collections$IList$IsReadOnly: {
+                get: function () {
+                    return true;
+                }
+            }
+        },
+        alias: [
+            "Count", "System$Collections$Generic$IReadOnlyCollection$1$" + Bridge.getTypeAlias(T) + "$Count",
+            "Count", "System$Collections$ICollection$Count",
+            "Count", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$Count",
+            "getItem", "System$Collections$Generic$IReadOnlyList$1$" + Bridge.getTypeAlias(T) + "$getItem",
+            "contains", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$contains",
+            "copyTo", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$copyTo",
+            "getEnumerator", ["System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(T) + "$getEnumerator", "System$Collections$Generic$IEnumerable$1$getEnumerator"],
+            "indexOf", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$indexOf",
+            "System$Collections$Generic$ICollection$1$IsReadOnly", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$IsReadOnly",
+            "System$Collections$Generic$IList$1$getItem", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$getItem",
+            "System$Collections$Generic$IList$1$setItem", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$setItem",
+            "System$Collections$Generic$ICollection$1$add", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$add",
+            "System$Collections$Generic$ICollection$1$clear", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$clear",
+            "System$Collections$Generic$IList$1$insert", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$insert",
+            "System$Collections$Generic$ICollection$1$remove", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$remove",
+            "System$Collections$Generic$IList$1$removeAt", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$removeAt"
+        ],
+        ctors: {
+            ctor: function (list) {
+                this.$initialize();
+                if (list == null) {
+                    throw new System.ArgumentNullException("list");
+                }
+                this.list = list;
+            }
+        },
+        methods: {
+            getItem: function (index) {
+                return System.Array.getItem(this.list, index, T);
+            },
+            System$Collections$Generic$IList$1$getItem: function (index) {
+                return System.Array.getItem(this.list, index, T);
+            },
+            System$Collections$Generic$IList$1$setItem: function (index, value) {
+                throw new System.NotSupportedException();
+            },
+            System$Collections$IList$getItem: function (index) {
+                return System.Array.getItem(this.list, index, T);
+            },
+            System$Collections$IList$setItem: function (index, value) {
+                throw new System.NotSupportedException();
+            },
+            contains: function (value) {
+                return System.Array.contains(this.list, value, T);
+            },
+            System$Collections$IList$contains: function (value) {
+                if (System.Collections.ObjectModel.ReadOnlyCollection$1(T).isCompatibleObject(value)) {
+                    return this.contains(Bridge.cast(Bridge.unbox(value), T));
+                }
+                return false;
+            },
+            copyTo: function (array, index) {
+                System.Array.copyTo(this.list, array, index, T);
+            },
+            System$Collections$ICollection$copyTo: function (array, index) {
+                if (array == null) {
+                    throw new System.ArgumentNullException("array");
+                }
+
+                if (System.Array.getRank(array) !== 1) {
+                    throw new System.ArgumentException("array");
+                }
+
+                if (System.Array.getLower(array, 0) !== 0) {
+                    throw new System.ArgumentException("array");
+                }
+
+                if (index < 0) {
+                    throw new System.ArgumentOutOfRangeException("index");
+                }
+
+                if (((array.length - index) | 0) < this.Count) {
+                    throw new System.ArgumentException();
+                }
+
+                var items = Bridge.as(array, System.Array.type(T));
+                if (items != null) {
+                    System.Array.copyTo(this.list, items, index, T);
+                } else {
+                    //
+                    // Catch the obvious case assignment will fail.
+                    // We can found all possible problems by doing the check though.
+                    // For example, if the element type of the Array is derived from T,
+                    // we can't figure out if we can successfully copy the element beforehand.
+                    //
+                    var targetType = (Bridge.getType(array).$elementType || null);
+                    var sourceType = T;
+                    if (!(Bridge.Reflection.isAssignableFrom(targetType, sourceType) || Bridge.Reflection.isAssignableFrom(sourceType, targetType))) {
+                        throw new System.ArgumentException();
+                    }
+
+                    //
+                    // We can't cast array of value type to object[], so we don't support
+                    // widening of primitive types here.
+                    //
+                    var objects = Bridge.as(array, System.Array.type(System.Object));
+                    if (objects == null) {
+                        throw new System.ArgumentException();
+                    }
+
+                    var count = System.Array.getCount(this.list, T);
+                    for (var i = 0; i < count; i = (i + 1) | 0) {
+                        objects[System.Array.index(Bridge.identity(index, (index = (index + 1) | 0)), objects)] = System.Array.getItem(this.list, i, T);
+                    }
+                }
+            },
+            getEnumerator: function () {
+                return Bridge.getEnumerator(this.list, T);
+            },
+            System$Collections$IEnumerable$getEnumerator: function () {
+                return Bridge.getEnumerator(Bridge.cast(this.list, System.Collections.IEnumerable));
+            },
+            indexOf: function (value) {
+                return System.Array.indexOf(this.list, value, 0, null, T);
+            },
+            System$Collections$IList$indexOf: function (value) {
+                if (System.Collections.ObjectModel.ReadOnlyCollection$1(T).isCompatibleObject(value)) {
+                    return this.indexOf(Bridge.cast(Bridge.unbox(value), T));
+                }
+                return -1;
+            },
+            System$Collections$Generic$ICollection$1$add: function (value) {
+                throw new System.NotSupportedException();
+            },
+            System$Collections$IList$add: function (value) {
+                throw new System.NotSupportedException();
+            },
+            System$Collections$Generic$ICollection$1$clear: function () {
+                throw new System.NotSupportedException();
+            },
+            System$Collections$IList$clear: function () {
+                throw new System.NotSupportedException();
+            },
+            System$Collections$Generic$IList$1$insert: function (index, value) {
+                throw new System.NotSupportedException();
+            },
+            System$Collections$IList$insert: function (index, value) {
+                throw new System.NotSupportedException();
+            },
+            System$Collections$Generic$ICollection$1$remove: function (value) {
+                throw new System.NotSupportedException();
+            },
+            System$Collections$IList$remove: function (value) {
+                throw new System.NotSupportedException();
+            },
+            System$Collections$Generic$IList$1$removeAt: function (index) {
+                throw new System.NotSupportedException();
+            },
+            System$Collections$IList$removeAt: function (index) {
+                throw new System.NotSupportedException();
+            }
+        }
+    }; });
+
+    // @source BrowsableAttribute.js
 
     Bridge.define("System.ComponentModel.BrowsableAttribute", {
         inherits: [System.Attribute],
@@ -36075,7 +28850,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
         }
     });
 
-    // @source defaultValueAttribute.js
+    // @source DefaultValueAttribute.js
 
     Bridge.define("System.ComponentModel.DefaultValueAttribute", {
         inherits: [System.Attribute],
@@ -36118,6 +28893,7293 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
             },
             setValue: function (value) {
                 this.value = value;
+            }
+        }
+    });
+
+    // @source Console.js
+
+    Bridge.define("System.Console", {
+        statics: {
+            methods: {
+                Write: function (value) {
+                    var con = Bridge.global.console;
+
+                    if (con && con.log) {
+                        con.log(!Bridge.isDefined(Bridge.unbox(value)) ? "" : Bridge.unbox(value));
+                    }
+                },
+                WriteLine: function (value) {
+                    var con = Bridge.global.console;
+
+                    if (con && con.log) {
+                        con.log(!Bridge.isDefined(Bridge.unbox(value)) ? "" : Bridge.unbox(value));
+                    }
+                },
+                TransformChars: function (buffer, all, index, count) {
+                    if (all !== 1) {
+                        if (buffer == null) {
+                            throw new System.ArgumentNullException("buffer");
+                        }
+
+                        if (index < 0) {
+                            throw new System.ArgumentOutOfRangeException("index", "less than zero");
+                        }
+
+                        if (count < 0) {
+                            throw new System.ArgumentOutOfRangeException("count", "less than zero");
+                        }
+
+                        if (((index + count) | 0) > buffer.length) {
+                            throw new System.ArgumentException("index plus count specify a position that is not within buffer.");
+                        }
+                    }
+
+                    var s = "";
+                    if (buffer != null) {
+                        if (all === 1) {
+                            index = 0;
+                            count = buffer.length;
+                        }
+
+                        for (var i = index; i < ((index + count) | 0); i = (i + 1) | 0) {
+                            s = (s || "") + String.fromCharCode(buffer[System.Array.index(i, buffer)]);
+                        }
+                    }
+
+                    return s;
+                },
+                Clear: function () {
+                    var con = Bridge.global.console;
+
+                    if (con && con.clear) {
+                        con.clear();
+                    }
+                }
+            }
+        }
+    });
+
+    // @source DateTimeKind.js
+
+    Bridge.define("System.DateTimeKind", {
+        $kind: "enum",
+        statics: {
+            fields: {
+                Unspecified: 0,
+                Utc: 1,
+                Local: 2
+            }
+        }
+    });
+
+    // @source DayOfWeek.js
+
+    Bridge.define("System.DayOfWeek", {
+        $kind: "enum",
+        statics: {
+            fields: {
+                Sunday: 0,
+                Monday: 1,
+                Tuesday: 2,
+                Wednesday: 3,
+                Thursday: 4,
+                Friday: 5,
+                Saturday: 6
+            }
+        }
+    });
+
+    // @source Environment.js
+
+    Bridge.define("System.Environment", {
+        statics: {
+            fields: {
+                variables: null
+            },
+            props: {
+                Location: {
+                    get: function () {
+                        var g = Bridge.global;
+
+                        if (g && g.location) {
+                            return g.location;
+                        }
+
+                        return null;
+                    }
+                },
+                CommandLine: {
+                    get: function () {
+                        return System.Environment.getCommandLineArgs().join(" ");
+                    }
+                },
+                CurrentDirectory: {
+                    get: function () {
+                        var l = System.Environment.Location;
+
+                        return l ? l.pathname : "";
+                    },
+                    set: function (value) {
+                        var l = System.Environment.Location;
+
+                        if (l) {
+                            l.pathname = value;
+                        }
+                    }
+                },
+                ExitCode: 0,
+                Is64BitOperatingSystem: {
+                    get: function () {
+                        var n = Bridge.global ? Bridge.global.navigator : null;
+
+                        if (n && (!Bridge.referenceEquals(n.userAgent.indexOf("WOW64"), -1) || !Bridge.referenceEquals(n.userAgent.indexOf("Win64"), -1))) {
+                            return true;
+                        }
+
+                        return false;
+                    }
+                },
+                ProcessorCount: {
+                    get: function () {
+                        var n = Bridge.global ? Bridge.global.navigator : null;
+
+                        if (n && n.hardwareConcurrency) {
+                            return n.hardwareConcurrency;
+                        }
+
+                        return 1;
+                    }
+                },
+                StackTrace: {
+                    get: function () {
+                        var err = new Error();
+                        var s = err.stack;
+
+                        if (!System.String.isNullOrEmpty(s)) {
+                            if (System.String.indexOf(s, "at") >= 0) {
+                                return s.substr(System.String.indexOf(s, "at"));
+                            }
+                        }
+
+                        return "";
+                    }
+                },
+                Version: {
+                    get: function () {
+                        var s = Bridge.SystemAssembly.compiler;
+
+                        var v = { };
+
+                        if (System.Version.tryParse(s, v)) {
+                            return v.v;
+                        }
+
+                        return new System.Version.ctor();
+                    }
+                }
+            },
+            ctors: {
+                init: function () {
+                    this.ExitCode = 0;
+                },
+                ctor: function () {
+                    System.Environment.variables = new (System.Collections.Generic.Dictionary$2(System.String,System.String))();
+                    System.Environment.patchDictionary(System.Environment.variables);
+                }
+            },
+            methods: {
+                patchDictionary: function (d) {
+                    d.noKeyCheck = true;
+
+                    return d;
+                },
+                exit: function (exitCode) {
+                    System.Environment.ExitCode = exitCode;
+                },
+                expandEnvironmentVariables: function (name) {
+                    var $t;
+                    if (name == null) {
+                        throw new System.ArgumentNullException(name);
+                    }
+
+                    // Case sensitive
+                    $t = Bridge.getEnumerator(System.Environment.variables);
+                    try {
+                        while ($t.moveNext()) {
+                            var pair = $t.Current;
+                            name = System.String.replaceAll(name, "%" + (pair.key || "") + "%", pair.value);
+                        }
+                    } finally {
+                        if (Bridge.is($t, System.IDisposable)) {
+                            $t.System$IDisposable$dispose();
+                        }
+                    }
+                    return name;
+                },
+                failFast: function (message) {
+                    throw new System.Exception(message);
+                },
+                failFast$1: function (message, exception) {
+                    throw new System.Exception(message, exception);
+                },
+                getCommandLineArgs: function () {
+                    var l = System.Environment.Location;
+
+                    if (l) {
+                        var args = new (System.Collections.Generic.List$1(System.String)).ctor();
+
+                        var path = l.pathname;
+
+                        if (!System.String.isNullOrEmpty(path)) {
+                            args.add(path);
+                        }
+
+                        var search = l.search;
+
+                        if (!System.String.isNullOrEmpty(search) && search.length > 1) {
+                            var query = System.String.split(search.substr(1), [38].map(function(i) {{ return String.fromCharCode(i); }}));
+
+                            for (var i = 0; i < query.length; i = (i + 1) | 0) {
+                                var param = System.String.split(query[System.Array.index(i, query)], [61].map(function(i) {{ return String.fromCharCode(i); }}));
+
+                                for (var j = 0; j < param.length; j = (j + 1) | 0) {
+                                    args.add(param[System.Array.index(j, param)]);
+                                }
+                            }
+                        }
+
+                        return args.toArray();
+                    }
+
+                    return System.Array.init(0, null, System.String);
+                },
+                getEnvironmentVariable: function (variable) {
+                    if (variable == null) {
+                        throw new System.ArgumentNullException("variable");
+                    }
+
+                    var r = { };
+
+                    if (System.Environment.variables.tryGetValue(variable.toLowerCase(), r)) {
+                        return r.v;
+                    }
+
+                    return null;
+                },
+                getEnvironmentVariable$1: function (variable, target) {
+                    return System.Environment.getEnvironmentVariable(variable);
+                },
+                getEnvironmentVariables: function () {
+                    return System.Environment.patchDictionary(new (System.Collections.Generic.Dictionary$2(System.String,System.String))(System.Environment.variables));
+                },
+                getEnvironmentVariables$1: function (target) {
+                    return System.Environment.getEnvironmentVariables();
+                },
+                getLogicalDrives: function () {
+                    return System.Array.init(0, null, System.String);
+                },
+                setEnvironmentVariable: function (variable, value) {
+                    if (variable == null) {
+                        throw new System.ArgumentNullException("variable");
+                    }
+
+                    if (System.String.isNullOrEmpty(variable) || System.String.startsWith(variable, String.fromCharCode(0)) || System.String.contains(variable,"=") || variable.length > 32767) {
+                        throw new System.ArgumentException("Incorrect variable (cannot be empty, contain zero character nor equal sign, be longer than 32767).");
+                    }
+
+                    variable = variable.toLowerCase();
+
+                    if (System.String.isNullOrEmpty(value)) {
+                        if (System.Environment.variables.containsKey(variable)) {
+                            System.Environment.variables.remove(variable);
+                        }
+                    } else {
+                        System.Environment.variables.set(variable, value);
+                    }
+                },
+                setEnvironmentVariable$1: function (variable, value, target) {
+                    System.Environment.setEnvironmentVariable(variable, value);
+                }
+            }
+        }
+    });
+
+    // @source FormattableString.js
+
+    Bridge.define("System.FormattableString", {
+        inherits: [System.IFormattable],
+        statics: {
+            methods: {
+                invariant: function (formattable) {
+                    return formattable.toString$1(System.Globalization.CultureInfo.invariantCulture);
+                }
+            }
+        },
+        methods: {
+            toString: function () {
+                return this.toString$1(System.Globalization.CultureInfo.getCurrentCulture());
+            },
+            System$IFormattable$format: function (format, formatProvider) {
+                return this.toString$1(formatProvider);
+            }
+        }
+    });
+
+    // @source FormattableStringImpl.js
+
+    Bridge.define("System.FormattableStringImpl", {
+        inherits: [System.FormattableString],
+        fields: {
+            args: null,
+            format: null
+        },
+        props: {
+            ArgumentCount: {
+                get: function () {
+                    return this.args.length;
+                }
+            },
+            Format: {
+                get: function () {
+                    return this.format;
+                }
+            }
+        },
+        ctors: {
+            ctor: function (format, args) {
+                if (args === void 0) { args = []; }
+
+                this.$initialize();
+                System.FormattableString.ctor.call(this);
+                this.format = format;
+                this.args = args;
+            }
+        },
+        methods: {
+            getArgument: function (index) {
+                return this.args[System.Array.index(index, this.args)];
+            },
+            getArguments: function () {
+                return this.args;
+            },
+            toString$1: function (formatProvider) {
+                return System.String.formatProvider.apply(System.String, [formatProvider, this.format].concat(this.args));
+            }
+        }
+    });
+
+    // @source Guid.js
+
+    Bridge.define("System.Guid", {
+        inherits: function () { return [System.IEquatable$1(System.Guid),System.IComparable$1(System.Guid),System.IFormattable]; },
+        $kind: "struct",
+        statics: {
+            fields: {
+                error1: null,
+                valid: null,
+                split: null,
+                nonFormat: null,
+                replace: null,
+                rnd: null,
+                empty: null
+            },
+            ctors: {
+                init: function () {
+                    this.empty = new System.Guid();
+                    this.error1 = "Byte array for GUID must be exactly {0} bytes long";
+                    this.valid = new System.Text.RegularExpressions.Regex.ctor("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", 1);
+                    this.split = new System.Text.RegularExpressions.Regex.ctor("^(.{8})(.{4})(.{4})(.{4})(.{12})$");
+                    this.nonFormat = new System.Text.RegularExpressions.Regex.ctor("^[{(]?([0-9a-f]{8})-?([0-9a-f]{4})-?([0-9a-f]{4})-?([0-9a-f]{4})-?([0-9a-f]{12})[)}]?$", 1);
+                    this.replace = new System.Text.RegularExpressions.Regex.ctor("-");
+                    this.rnd = new System.Random.ctor();
+                }
+            },
+            methods: {
+                parse: function (input) {
+                    return System.Guid.parseExact(input, null);
+                },
+                parseExact: function (input, format) {
+                    var r = new System.Guid.ctor();
+                    r.parseInternal(input, format, true);
+                    return r;
+                },
+                tryParse: function (input, result) {
+                    return System.Guid.tryParseExact(input, null, result);
+                },
+                tryParseExact: function (input, format, result) {
+                    result.v = new System.Guid.ctor();
+                    return result.v.parseInternal(input, format, false);
+                },
+                newGuid: function () {
+                    var a = System.Array.init(16, 0, System.Byte);
+
+                    System.Guid.rnd.nextBytes(a);
+
+                    a[System.Array.index(7, a)] = (a[System.Array.index(7, a)] & 15 | 64) & 255;
+                    a[System.Array.index(8, a)] = (a[System.Array.index(8, a)] & 191 | 128) & 255;
+
+                    return new System.Guid.$ctor1(a);
+                },
+                makeBinary: function (x) {
+                    return System.Int32.format((x & 255), "x2");
+                },
+                op_Equality: function (a, b) {
+                    if (Bridge.referenceEquals(a, null)) {
+                        return Bridge.referenceEquals(b, null);
+                    }
+
+                    return a.equalsT(b);
+                },
+                op_Inequality: function (a, b) {
+                    return !(System.Guid.op_Equality(a, b));
+                },
+                getDefaultValue: function () { return new System.Guid(); }
+            }
+        },
+        fields: {
+            _a: 0,
+            _b: 0,
+            _c: 0,
+            _d: 0,
+            _e: 0,
+            _f: 0,
+            _g: 0,
+            _h: 0,
+            _i: 0,
+            _j: 0,
+            _k: 0
+        },
+        alias: [
+            "equalsT", "System$IEquatable$1$System$Guid$equalsT",
+            "compareTo", ["System$IComparable$1$System$Guid$compareTo", "System$IComparable$1$compareTo"],
+            "format", "System$IFormattable$format"
+        ],
+        ctors: {
+            $ctor4: function (uuid) {
+                this.$initialize();
+                (new System.Guid.ctor()).$clone(this);
+
+                this.parseInternal(uuid, null, true);
+            },
+            $ctor1: function (b) {
+                this.$initialize();
+                if (b == null) {
+                    throw new System.ArgumentNullException("b");
+                }
+
+                if (b.length !== 16) {
+                    throw new System.ArgumentException(System.String.format(System.Guid.error1, [Bridge.box(16, System.Int32)]));
+                }
+
+                this._a = (b[System.Array.index(3, b)] << 24) | (b[System.Array.index(2, b)] << 16) | (b[System.Array.index(1, b)] << 8) | b[System.Array.index(0, b)];
+                this._b = Bridge.Int.sxs(((b[System.Array.index(5, b)] << 8) | b[System.Array.index(4, b)]) & 65535);
+                this._c = Bridge.Int.sxs(((b[System.Array.index(7, b)] << 8) | b[System.Array.index(6, b)]) & 65535);
+                this._d = b[System.Array.index(8, b)];
+                this._e = b[System.Array.index(9, b)];
+                this._f = b[System.Array.index(10, b)];
+                this._g = b[System.Array.index(11, b)];
+                this._h = b[System.Array.index(12, b)];
+                this._i = b[System.Array.index(13, b)];
+                this._j = b[System.Array.index(14, b)];
+                this._k = b[System.Array.index(15, b)];
+            },
+            $ctor5: function (a, b, c, d, e, f, g, h, i, j, k) {
+                this.$initialize();
+                this._a = a | 0;
+                this._b = Bridge.Int.sxs(b & 65535);
+                this._c = Bridge.Int.sxs(c & 65535);
+                this._d = d;
+                this._e = e;
+                this._f = f;
+                this._g = g;
+                this._h = h;
+                this._i = i;
+                this._j = j;
+                this._k = k;
+            },
+            $ctor3: function (a, b, c, d) {
+                this.$initialize();
+                if (d == null) {
+                    throw new System.ArgumentNullException("d");
+                }
+
+                if (d.length !== 8) {
+                    throw new System.ArgumentException(System.String.format(System.Guid.error1, [Bridge.box(8, System.Int32)]));
+                }
+
+                this._a = a;
+                this._b = b;
+                this._c = c;
+                this._d = d[System.Array.index(0, d)];
+                this._e = d[System.Array.index(1, d)];
+                this._f = d[System.Array.index(2, d)];
+                this._g = d[System.Array.index(3, d)];
+                this._h = d[System.Array.index(4, d)];
+                this._i = d[System.Array.index(5, d)];
+                this._j = d[System.Array.index(6, d)];
+                this._k = d[System.Array.index(7, d)];
+            },
+            $ctor2: function (a, b, c, d, e, f, g, h, i, j, k) {
+                this.$initialize();
+                this._a = a;
+                this._b = b;
+                this._c = c;
+                this._d = d;
+                this._e = e;
+                this._f = f;
+                this._g = g;
+                this._h = h;
+                this._i = i;
+                this._j = j;
+                this._k = k;
+            },
+            ctor: function () {
+                this.$initialize();
+            }
+        },
+        methods: {
+            getHashCode: function () {
+                return this._a ^ ((this._b << 16) | (this._c & 65535)) ^ ((this._f << 24) | this._k);
+            },
+            equals: function (o) {
+                if (!(Bridge.is(o, System.Guid))) {
+                    return false;
+                }
+
+                return this.equalsT(System.Nullable.getValue(Bridge.cast(Bridge.unbox(o), System.Guid)));
+            },
+            equalsT: function (o) {
+                if ((this._a !== o._a) || (this._b !== o._b) || (this._c !== o._c) || (this._d !== o._d) || (this._e !== o._e) || (this._f !== o._f) || (this._g !== o._g) || (this._h !== o._h) || (this._i !== o._i) || (this._j !== o._j) || (this._k !== o._k)) {
+                    return false;
+                }
+
+                return true;
+            },
+            compareTo: function (value) {
+                return System.String.compare(this.toString(), value.toString());
+            },
+            toString: function () {
+                return this.format$1(null);
+            },
+            toString$1: function (format) {
+                return this.format$1(format);
+            },
+            format: function (format, formatProvider) {
+                return this.format$1(format);
+            },
+            toByteArray: function () {
+                var g = System.Array.init(16, 0, System.Byte);
+
+                g[System.Array.index(0, g)] = this._a & 255;
+                g[System.Array.index(1, g)] = (this._a >> 8) & 255;
+                g[System.Array.index(2, g)] = (this._a >> 16) & 255;
+                g[System.Array.index(3, g)] = (this._a >> 24) & 255;
+                g[System.Array.index(4, g)] = this._b & 255;
+                g[System.Array.index(5, g)] = (this._b >> 8) & 255;
+                g[System.Array.index(6, g)] = this._c & 255;
+                g[System.Array.index(7, g)] = (this._c >> 8) & 255;
+                g[System.Array.index(8, g)] = this._d;
+                g[System.Array.index(9, g)] = this._e;
+                g[System.Array.index(10, g)] = this._f;
+                g[System.Array.index(11, g)] = this._g;
+                g[System.Array.index(12, g)] = this._h;
+                g[System.Array.index(13, g)] = this._i;
+                g[System.Array.index(14, g)] = this._j;
+                g[System.Array.index(15, g)] = this._k;
+
+                return g;
+            },
+            parseInternal: function (input, format, check) {
+                var r = null;
+
+                if (System.String.isNullOrEmpty(input)) {
+                    if (check) {
+                        throw new System.ArgumentNullException("input");
+                    }
+                    return false;
+                }
+
+                if (System.String.isNullOrEmpty(format)) {
+                    var m = System.Guid.nonFormat.match(input);
+
+                    if (m.getSuccess()) {
+                        var list = new (System.Collections.Generic.List$1(System.String)).ctor();
+                        for (var i = 1; i <= m.getGroups().getCount(); i = (i + 1) | 0) {
+                            if (m.getGroups().get(i).getSuccess()) {
+                                list.add(m.getGroups().get(i).getValue());
+                            }
+                        }
+
+                        r = list.toArray().join("-").toLowerCase();
+                    }
+                } else {
+                    format = format.toUpperCase();
+
+                    var p = false;
+
+                    if (Bridge.referenceEquals(format, "N")) {
+                        var m1 = System.Guid.split.match(input);
+
+                        if (m1.getSuccess()) {
+                            var list1 = new (System.Collections.Generic.List$1(System.String)).ctor();
+                            for (var i1 = 1; i1 <= m1.getGroups().getCount(); i1 = (i1 + 1) | 0) {
+                                if (m1.getGroups().get(i1).getSuccess()) {
+                                    list1.add(m1.getGroups().get(i1).getValue());
+                                }
+                            }
+
+                            p = true;
+                            input = list1.toArray().join("-");
+                        }
+                    } else if (Bridge.referenceEquals(format, "B") || Bridge.referenceEquals(format, "P")) {
+                        var b = Bridge.referenceEquals(format, "B") ? System.Array.init([123, 125], System.Char) : System.Array.init([40, 41], System.Char);
+
+                        if ((input.charCodeAt(0) === b[System.Array.index(0, b)]) && (input.charCodeAt(((input.length - 1) | 0)) === b[System.Array.index(1, b)])) {
+                            p = true;
+                            input = input.substr(1, ((input.length - 2) | 0));
+                        }
+                    } else {
+                        p = true;
+                    }
+
+                    if (p && System.Guid.valid.isMatch(input)) {
+                        r = input.toLowerCase();
+                    }
+                }
+
+                if (r != null) {
+                    this.fromString(r);
+                    return true;
+                }
+
+                if (check) {
+                    throw new System.FormatException("input is not in a recognized format");
+                }
+
+                return false;
+            },
+            format$1: function (format) {
+                var s = (System.UInt32.format((this._a >>> 0), "x8") || "") + (System.UInt16.format((this._b & 65535), "x4") || "") + (System.UInt16.format((this._c & 65535), "x4") || "");
+                s = (s || "") + ((System.Array.init([this._d, this._e, this._f, this._g, this._h, this._i, this._j, this._k], System.Byte)).map(System.Guid.makeBinary).join("") || "");
+
+                var m = System.Guid.split.match(s);
+                var list = new (System.Collections.Generic.List$1(System.String)).ctor();
+                for (var i = 1; i <= m.getGroups().getCount(); i = (i + 1) | 0) {
+                    if (m.getGroups().get(i).getSuccess()) {
+                        list.add(m.getGroups().get(i).getValue());
+                    }
+                }
+                s = list.toArray().join("-");
+
+                switch (format) {
+                    case "n": 
+                    case "N": 
+                        return System.Guid.replace.replace(s, "");
+                    case "b": 
+                    case "B": 
+                        return String.fromCharCode(123) + (s || "") + String.fromCharCode(125);
+                    case "p": 
+                    case "P": 
+                        return String.fromCharCode(40) + (s || "") + String.fromCharCode(41);
+                    default: 
+                        return s;
+                }
+            },
+            fromString: function (s) {
+                if (System.String.isNullOrEmpty(s)) {
+                    return;
+                }
+
+                s = System.Guid.replace.replace(s, "");
+
+                var r = System.Array.init(8, 0, System.Byte);
+
+                this._a = (System.UInt32.parse(s.substr(0, 8), 16)) | 0;
+                this._b = Bridge.Int.sxs((System.UInt16.parse(s.substr(8, 4), 16)) & 65535);
+                this._c = Bridge.Int.sxs((System.UInt16.parse(s.substr(12, 4), 16)) & 65535);
+                for (var i = 8; i < 16; i = (i + 1) | 0) {
+                    r[System.Array.index(((i - 8) | 0), r)] = System.Byte.parse(s.substr(Bridge.Int.mul(i, 2), 2), 16);
+                }
+
+                this._d = r[System.Array.index(0, r)];
+                this._e = r[System.Array.index(1, r)];
+                this._f = r[System.Array.index(2, r)];
+                this._g = r[System.Array.index(3, r)];
+                this._h = r[System.Array.index(4, r)];
+                this._i = r[System.Array.index(5, r)];
+                this._j = r[System.Array.index(6, r)];
+                this._k = r[System.Array.index(7, r)];
+            },
+            toJSON: function () {
+                return this.toString();
+            },
+            $clone: function (to) { return this; }
+        }
+    });
+
+    // @source BinaryReader.js
+
+    Bridge.define("System.IO.BinaryReader", {
+        inherits: [System.IDisposable],
+        statics: {
+            fields: {
+                MaxCharBytesSize: 0
+            },
+            ctors: {
+                init: function () {
+                    this.MaxCharBytesSize = 128;
+                }
+            }
+        },
+        fields: {
+            m_stream: null,
+            m_buffer: null,
+            m_encoding: null,
+            m_charBytes: null,
+            m_singleChar: null,
+            m_charBuffer: null,
+            m_maxCharsSize: 0,
+            m_2BytesPerChar: false,
+            m_isMemoryStream: false,
+            m_leaveOpen: false,
+            lastCharsRead: 0
+        },
+        props: {
+            BaseStream: {
+                get: function () {
+                    return this.m_stream;
+                }
+            }
+        },
+        alias: ["Dispose", "System$IDisposable$dispose"],
+        ctors: {
+            init: function () {
+                this.lastCharsRead = 0;
+            },
+            ctor: function (input) {
+                System.IO.BinaryReader.$ctor2.call(this, input, new System.Text.UTF8Encoding.ctor(), false);
+            },
+            $ctor1: function (input, encoding) {
+                System.IO.BinaryReader.$ctor2.call(this, input, encoding, false);
+            },
+            $ctor2: function (input, encoding, leaveOpen) {
+                this.$initialize();
+                if (input == null) {
+                    throw new System.ArgumentNullException("input");
+                }
+                if (encoding == null) {
+                    throw new System.ArgumentNullException("encoding");
+                }
+                if (!input.CanRead) {
+                    throw new System.ArgumentException("Argument_StreamNotReadable");
+                }
+                this.m_stream = input;
+                this.m_encoding = encoding;
+                this.m_maxCharsSize = encoding.GetMaxCharCount(System.IO.BinaryReader.MaxCharBytesSize);
+                var minBufferSize = encoding.GetMaxByteCount(1); // max bytes per one char
+                if (minBufferSize < 23) {
+                    minBufferSize = 23;
+                }
+                this.m_buffer = System.Array.init(minBufferSize, 0, System.Byte);
+                // m_charBuffer and m_charBytes will be left null.
+
+                // For Encodings that always use 2 bytes per char (or more),
+                // special case them here to make Read() & Peek() faster.
+                this.m_2BytesPerChar = Bridge.is(encoding, System.Text.UnicodeEncoding);
+                // check if BinaryReader is based on MemoryStream, and keep this for it's life
+                // we cannot use "as" operator, since derived classes are not allowed
+                this.m_isMemoryStream = (Bridge.referenceEquals(Bridge.getType(this.m_stream), System.IO.MemoryStream));
+                this.m_leaveOpen = leaveOpen;
+
+            }
+        },
+        methods: {
+            Close: function () {
+                this.Dispose$1(true);
+            },
+            Dispose$1: function (disposing) {
+                if (disposing) {
+                    var copyOfStream = this.m_stream;
+                    this.m_stream = null;
+                    if (copyOfStream != null && !this.m_leaveOpen) {
+                        copyOfStream.Close();
+                    }
+                }
+                this.m_stream = null;
+                this.m_buffer = null;
+                this.m_encoding = null;
+                this.m_charBytes = null;
+                this.m_singleChar = null;
+                this.m_charBuffer = null;
+            },
+            Dispose: function () {
+                this.Dispose$1(true);
+            },
+            PeekChar: function () {
+
+                if (this.m_stream == null) {
+                    System.IO.__Error.FileNotOpen();
+                }
+
+                if (!this.m_stream.CanSeek) {
+                    return -1;
+                }
+                var origPos = this.m_stream.Position;
+                var ch = this.Read();
+                this.m_stream.Position = origPos;
+                return ch;
+            },
+            Read: function () {
+
+                if (this.m_stream == null) {
+                    System.IO.__Error.FileNotOpen();
+                }
+                return this.InternalReadOneChar();
+            },
+            Read$2: function (buffer, index, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
+                }
+                if (index < 0) {
+                    throw new System.ArgumentOutOfRangeException("index", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (((buffer.length - index) | 0) < count) {
+                    throw new System.ArgumentException("Argument_InvalidOffLen");
+                }
+
+                if (this.m_stream == null) {
+                    System.IO.__Error.FileNotOpen();
+                }
+
+                // SafeCritical: index and count have already been verified to be a valid range for the buffer
+                return this.InternalReadChars(buffer, index, count);
+            },
+            Read$1: function (buffer, index, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
+                }
+                if (index < 0) {
+                    throw new System.ArgumentOutOfRangeException("index", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (((buffer.length - index) | 0) < count) {
+                    throw new System.ArgumentException("Argument_InvalidOffLen");
+                }
+
+                if (this.m_stream == null) {
+                    System.IO.__Error.FileNotOpen();
+                }
+                return this.m_stream.Read(buffer, index, count);
+            },
+            ReadBoolean: function () {
+                this.FillBuffer(1);
+                return (this.m_buffer[System.Array.index(0, this.m_buffer)] !== 0);
+            },
+            ReadByte: function () {
+                // Inlined to avoid some method call overhead with FillBuffer.
+                if (this.m_stream == null) {
+                    System.IO.__Error.FileNotOpen();
+                }
+
+                var b = this.m_stream.ReadByte();
+                if (b === -1) {
+                    System.IO.__Error.EndOfFile();
+                }
+                return (b & 255);
+            },
+            ReadSByte: function () {
+                this.FillBuffer(1);
+                return Bridge.Int.sxb((this.m_buffer[System.Array.index(0, this.m_buffer)]) & 255);
+            },
+            ReadChar: function () {
+                var value = this.Read();
+                if (value === -1) {
+                    System.IO.__Error.EndOfFile();
+                }
+                return (value & 65535);
+            },
+            ReadInt16: function () {
+                this.FillBuffer(2);
+                return Bridge.Int.sxs((this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8) & 65535);
+            },
+            ReadUInt16: function () {
+                this.FillBuffer(2);
+                return ((this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8) & 65535);
+            },
+            ReadInt32: function () {
+                if (this.m_isMemoryStream) {
+                    if (this.m_stream == null) {
+                        System.IO.__Error.FileNotOpen();
+                    }
+                    // read directly from MemoryStream buffer
+                    var mStream = Bridge.as(this.m_stream, System.IO.MemoryStream);
+
+                    return mStream.InternalReadInt32();
+                } else {
+                    this.FillBuffer(4);
+                    return this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24;
+                }
+            },
+            ReadUInt32: function () {
+                this.FillBuffer(4);
+                return ((this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24) >>> 0);
+            },
+            ReadInt64: function () {
+                this.FillBuffer(8);
+                var lo = (this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24) >>> 0;
+                var hi = (this.m_buffer[System.Array.index(4, this.m_buffer)] | this.m_buffer[System.Array.index(5, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(6, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(7, this.m_buffer)] << 24) >>> 0;
+                return System.Int64.clip64(System.UInt64(hi)).shl(32).or(System.Int64(lo));
+            },
+            ReadUInt64: function () {
+                this.FillBuffer(8);
+                var lo = (this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24) >>> 0;
+                var hi = (this.m_buffer[System.Array.index(4, this.m_buffer)] | this.m_buffer[System.Array.index(5, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(6, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(7, this.m_buffer)] << 24) >>> 0;
+                return System.UInt64(hi).shl(32).or(System.UInt64(lo));
+            },
+            ReadSingle: function () {
+                this.FillBuffer(4);
+                var tmpBuffer = (this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24) >>> 0;
+                return System.BitConverter.toSingle(System.BitConverter.getBytes$8(tmpBuffer), 0);
+            },
+            ReadDouble: function () {
+                this.FillBuffer(8);
+                var lo = (this.m_buffer[System.Array.index(0, this.m_buffer)] | this.m_buffer[System.Array.index(1, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(2, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(3, this.m_buffer)] << 24) >>> 0;
+                var hi = (this.m_buffer[System.Array.index(4, this.m_buffer)] | this.m_buffer[System.Array.index(5, this.m_buffer)] << 8 | this.m_buffer[System.Array.index(6, this.m_buffer)] << 16 | this.m_buffer[System.Array.index(7, this.m_buffer)] << 24) >>> 0;
+
+                var tmpBuffer = System.UInt64(hi).shl(32).or(System.UInt64(lo));
+                return System.BitConverter.toDouble(System.BitConverter.getBytes$9(tmpBuffer), 0);
+            },
+            ReadDecimal: function () {
+                this.FillBuffer(23);
+                try {
+                    return System.Decimal.fromBytes(this.m_buffer);
+                }
+                catch ($e1) {
+                    $e1 = System.Exception.create($e1);
+                    var e;
+                    if (Bridge.is($e1, System.ArgumentException)) {
+                        e = $e1;
+                        // ReadDecimal cannot leak out ArgumentException
+                        throw new System.IO.IOException.$ctor2("Arg_DecBitCtor", e);
+                    } else {
+                        throw $e1;
+                    }
+                }
+            },
+            ReadString: function () {
+
+                if (this.m_stream == null) {
+                    System.IO.__Error.FileNotOpen();
+                }
+
+                var currPos = 0;
+                var n;
+                var stringLength;
+                var readLength;
+                var charsRead;
+
+                // Length of the string in bytes, not chars
+                stringLength = this.Read7BitEncodedInt();
+                if (stringLength < 0) {
+                    throw new System.IO.IOException.$ctor1("IO.IO_InvalidStringLen_Len");
+                }
+
+                if (stringLength === 0) {
+                    return "";
+                }
+
+                if (this.m_charBytes == null) {
+                    this.m_charBytes = System.Array.init(System.IO.BinaryReader.MaxCharBytesSize, 0, System.Byte);
+                }
+
+                if (this.m_charBuffer == null) {
+                    this.m_charBuffer = System.Array.init(this.m_maxCharsSize, 0, System.Char);
+                }
+
+                var sb = null;
+                do {
+                    readLength = ((((stringLength - currPos) | 0)) > System.IO.BinaryReader.MaxCharBytesSize) ? System.IO.BinaryReader.MaxCharBytesSize : (((stringLength - currPos) | 0));
+
+                    n = this.m_stream.Read(this.m_charBytes, 0, readLength);
+                    if (n === 0) {
+                        System.IO.__Error.EndOfFile();
+                    }
+
+                    charsRead = this.m_encoding.GetChars$2(this.m_charBytes, 0, n, this.m_charBuffer, 0);
+
+                    if (currPos === 0 && n === stringLength) {
+                        return System.String.fromCharArray(this.m_charBuffer, 0, charsRead);
+                    }
+
+                    if (sb == null) {
+                        sb = new System.Text.StringBuilder("", stringLength);
+                    }
+
+                    for (var i = 0; i < charsRead; i = (i + 1) | 0) {
+                        sb.append(String.fromCharCode(this.m_charBuffer[System.Array.index(i, this.m_charBuffer)]));
+                    }
+
+                    currPos = (currPos + n) | 0;
+
+                } while (currPos < stringLength);
+
+                return sb.toString();
+            },
+            InternalReadChars: function (buffer, index, count) {
+
+                var charsRemaining = count;
+
+                if (this.m_charBytes == null) {
+                    this.m_charBytes = System.Array.init(System.IO.BinaryReader.MaxCharBytesSize, 0, System.Byte);
+                }
+
+                if (index < 0 || charsRemaining < 0 || ((index + charsRemaining) | 0) > buffer.length) {
+                    throw new System.ArgumentOutOfRangeException("charsRemaining");
+                }
+
+                while (charsRemaining > 0) {
+
+                    var ch = this.InternalReadOneChar(true);
+
+                    if (ch === -1) {
+                        break;
+                    }
+
+                    buffer[System.Array.index(index, buffer)] = ch & 65535;
+
+                    if (this.lastCharsRead === 2) {
+                        buffer[System.Array.index(((index = (index + 1) | 0)), buffer)] = this.m_singleChar[System.Array.index(1, this.m_singleChar)];
+                        charsRemaining = (charsRemaining - 1) | 0;
+                    }
+
+                    charsRemaining = (charsRemaining - 1) | 0;
+                    index = (index + 1) | 0;
+                }
+
+                // this should never fail
+
+                // we may have read fewer than the number of characters requested if end of stream reached
+                // or if the encoding makes the char count too big for the buffer (e.g. fallback sequence)
+                return (((count - charsRemaining) | 0));
+            },
+            InternalReadOneChar: function (allowSurrogate) {
+                if (allowSurrogate === void 0) { allowSurrogate = false; }
+                // I know having a separate InternalReadOneChar method seems a little
+                // redundant, but this makes a scenario like the security parser code
+                // 20% faster, in addition to the optimizations for UnicodeEncoding I
+                // put in InternalReadChars.
+                var charsRead = 0;
+                var numBytes = 0;
+                var posSav = System.Int64(0);
+
+                if (this.m_stream.CanSeek) {
+                    posSav = this.m_stream.Position;
+                }
+
+                if (this.m_charBytes == null) {
+                    this.m_charBytes = System.Array.init(System.IO.BinaryReader.MaxCharBytesSize, 0, System.Byte); //
+                }
+                if (this.m_singleChar == null) {
+                    this.m_singleChar = System.Array.init(2, 0, System.Char);
+                }
+
+                var addByte = false;
+                var internalPos = 0;
+                while (charsRead === 0) {
+                    numBytes = this.m_2BytesPerChar ? 2 : 1;
+
+                    if (Bridge.is(this.m_encoding, System.Text.UTF32Encoding)) {
+                        numBytes = 4;
+                    }
+
+                    if (addByte) {
+                        var r = this.m_stream.ReadByte();
+                        this.m_charBytes[System.Array.index(((internalPos = (internalPos + 1) | 0)), this.m_charBytes)] = r & 255;
+                        if (r === -1) {
+                            numBytes = 0;
+                        }
+
+                        if (numBytes === 2) {
+                            r = this.m_stream.ReadByte();
+                            this.m_charBytes[System.Array.index(((internalPos = (internalPos + 1) | 0)), this.m_charBytes)] = r & 255;
+                            if (r === -1) {
+                                numBytes = 1;
+                            }
+                        }
+                    } else {
+                        var r1 = this.m_stream.ReadByte();
+                        this.m_charBytes[System.Array.index(0, this.m_charBytes)] = r1 & 255;
+                        internalPos = 0;
+                        if (r1 === -1) {
+                            numBytes = 0;
+                        }
+
+                        if (numBytes === 2) {
+                            r1 = this.m_stream.ReadByte();
+                            this.m_charBytes[System.Array.index(1, this.m_charBytes)] = r1 & 255;
+                            if (r1 === -1) {
+                                numBytes = 1;
+                            }
+                            internalPos = 1;
+                        } else if (numBytes === 4) {
+                            r1 = this.m_stream.ReadByte();
+                            this.m_charBytes[System.Array.index(1, this.m_charBytes)] = r1 & 255;
+                            if (r1 === -1) {
+                                return -1;
+                            }
+
+                            r1 = this.m_stream.ReadByte();
+                            this.m_charBytes[System.Array.index(2, this.m_charBytes)] = r1 & 255;
+                            if (r1 === -1) {
+                                return -1;
+                            }
+
+                            r1 = this.m_stream.ReadByte();
+                            this.m_charBytes[System.Array.index(3, this.m_charBytes)] = r1 & 255;
+                            if (r1 === -1) {
+                                return -1;
+                            }
+
+                            internalPos = 3;
+                        }
+                    }
+
+
+                    if (numBytes === 0) {
+                        return -1;
+                    }
+
+                    addByte = false;
+                    try {
+                        charsRead = this.m_encoding.GetChars$2(this.m_charBytes, 0, ((internalPos + 1) | 0), this.m_singleChar, 0);
+
+                        if (!allowSurrogate && charsRead === 2) {
+                            throw new System.ArgumentException();
+                        }
+                    }
+                    catch ($e1) {
+                        $e1 = System.Exception.create($e1);
+                        // Handle surrogate char
+
+                        if (this.m_stream.CanSeek) {
+                            this.m_stream.Seek((posSav.sub(this.m_stream.Position)), System.IO.SeekOrigin.Current);
+                        }
+                        // else - we can't do much here
+
+                        throw $e1;
+                    }
+
+                    if (this.m_encoding._hasError) {
+                        charsRead = 0;
+                        addByte = true;
+                    }
+
+                    if (!allowSurrogate) {
+                    }
+                }
+
+                this.lastCharsRead = charsRead;
+
+                if (charsRead === 0) {
+                    return -1;
+                }
+
+                return this.m_singleChar[System.Array.index(0, this.m_singleChar)];
+            },
+            ReadChars: function (count) {
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (this.m_stream == null) {
+                    System.IO.__Error.FileNotOpen();
+                }
+
+                if (count === 0) {
+                    return System.Array.init(0, 0, System.Char);
+                }
+
+                // SafeCritical: we own the chars buffer, and therefore can guarantee that the index and count are valid
+                var chars = System.Array.init(count, 0, System.Char);
+                var n = this.InternalReadChars(chars, 0, count);
+                if (n !== count) {
+                    var copy = System.Array.init(n, 0, System.Char);
+                    System.Array.copy(chars, 0, copy, 0, Bridge.Int.mul(2, n)); // sizeof(char)
+                    chars = copy;
+                }
+
+                return chars;
+            },
+            ReadBytes: function (count) {
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (this.m_stream == null) {
+                    System.IO.__Error.FileNotOpen();
+                }
+
+                if (count === 0) {
+                    return System.Array.init(0, 0, System.Byte);
+                }
+
+                var result = System.Array.init(count, 0, System.Byte);
+
+                var numRead = 0;
+                do {
+                    var n = this.m_stream.Read(result, numRead, count);
+                    if (n === 0) {
+                        break;
+                    }
+                    numRead = (numRead + n) | 0;
+                    count = (count - n) | 0;
+                } while (count > 0);
+
+                if (numRead !== result.length) {
+                    // Trim array.  This should happen on EOF & possibly net streams.
+                    var copy = System.Array.init(numRead, 0, System.Byte);
+                    System.Array.copy(result, 0, copy, 0, numRead);
+                    result = copy;
+                }
+
+                return result;
+            },
+            FillBuffer: function (numBytes) {
+                if (this.m_buffer != null && (numBytes < 0 || numBytes > this.m_buffer.length)) {
+                    throw new System.ArgumentOutOfRangeException("numBytes", "ArgumentOutOfRange_BinaryReaderFillBuffer");
+                }
+                var bytesRead = 0;
+                var n = 0;
+
+                if (this.m_stream == null) {
+                    System.IO.__Error.FileNotOpen();
+                }
+
+                // Need to find a good threshold for calling ReadByte() repeatedly
+                // vs. calling Read(byte[], int, int) for both buffered & unbuffered
+                // streams.
+                if (numBytes === 1) {
+                    n = this.m_stream.ReadByte();
+                    if (n === -1) {
+                        System.IO.__Error.EndOfFile();
+                    }
+                    this.m_buffer[System.Array.index(0, this.m_buffer)] = n & 255;
+                    return;
+                }
+
+                do {
+                    n = this.m_stream.Read(this.m_buffer, bytesRead, ((numBytes - bytesRead) | 0));
+                    if (n === 0) {
+                        System.IO.__Error.EndOfFile();
+                    }
+                    bytesRead = (bytesRead + n) | 0;
+                } while (bytesRead < numBytes);
+            },
+            Read7BitEncodedInt: function () {
+                // Read out an Int32 7 bits at a time.  The high bit
+                // of the byte when on means to continue reading more bytes.
+                var count = 0;
+                var shift = 0;
+                var b;
+                do {
+                    // Check for a corrupted stream.  Read a max of 5 bytes.
+                    // In a future version, add a DataFormatException.
+                    if (shift === 35) {
+                        throw new System.FormatException("Format_Bad7BitInt32");
+                    }
+
+                    // ReadByte handles end of stream cases for us.
+                    b = this.ReadByte();
+                    count = count | ((b & 127) << shift);
+                    shift = (shift + 7) | 0;
+                } while ((b & 128) !== 0);
+                return count;
+            }
+        }
+    });
+
+    // @source BinaryWriter.js
+
+    Bridge.define("System.IO.BinaryWriter", {
+        inherits: [System.IDisposable],
+        statics: {
+            fields: {
+                Null: null,
+                LargeByteBufferSize: 0
+            },
+            ctors: {
+                init: function () {
+                    this.Null = new System.IO.BinaryWriter.ctor();
+                    this.LargeByteBufferSize = 256;
+                }
+            }
+        },
+        fields: {
+            OutStream: null,
+            _buffer: null,
+            _encoding: null,
+            _leaveOpen: false,
+            _tmpOneCharBuffer: null
+        },
+        props: {
+            BaseStream: {
+                get: function () {
+                    this.Flush();
+                    return this.OutStream;
+                }
+            }
+        },
+        alias: ["Dispose", "System$IDisposable$dispose"],
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                this.OutStream = System.IO.Stream.Null;
+                this._buffer = System.Array.init(16, 0, System.Byte);
+                this._encoding = new System.Text.UTF8Encoding.$ctor2(false, true);
+            },
+            $ctor1: function (output) {
+                System.IO.BinaryWriter.$ctor3.call(this, output, new System.Text.UTF8Encoding.$ctor2(false, true), false);
+            },
+            $ctor2: function (output, encoding) {
+                System.IO.BinaryWriter.$ctor3.call(this, output, encoding, false);
+            },
+            $ctor3: function (output, encoding, leaveOpen) {
+                this.$initialize();
+                if (output == null) {
+                    throw new System.ArgumentNullException("output");
+                }
+                if (encoding == null) {
+                    throw new System.ArgumentNullException("encoding");
+                }
+                if (!output.CanWrite) {
+                    throw new System.ArgumentException("Argument_StreamNotWritable");
+                }
+
+                this.OutStream = output;
+                this._buffer = System.Array.init(16, 0, System.Byte);
+                this._encoding = encoding;
+                this._leaveOpen = leaveOpen;
+            }
+        },
+        methods: {
+            Close: function () {
+                this.Dispose$1(true);
+            },
+            Dispose$1: function (disposing) {
+                if (disposing) {
+                    if (this._leaveOpen) {
+                        this.OutStream.Flush();
+                    } else {
+                        this.OutStream.Close();
+                    }
+                }
+            },
+            Dispose: function () {
+                this.Dispose$1(true);
+            },
+            Flush: function () {
+                this.OutStream.Flush();
+            },
+            Seek: function (offset, origin) {
+                return this.OutStream.Seek(System.Int64(offset), origin);
+            },
+            Write: function (value) {
+                this._buffer[System.Array.index(0, this._buffer)] = (value ? 1 : 0) & 255;
+                this.OutStream.Write(this._buffer, 0, 1);
+            },
+            Write$1: function (value) {
+                this.OutStream.WriteByte(value);
+            },
+            Write$12: function (value) {
+                this.OutStream.WriteByte((value & 255));
+            },
+            Write$2: function (buffer) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer");
+                }
+                this.OutStream.Write(buffer, 0, buffer.length);
+            },
+            Write$3: function (buffer, index, count) {
+                this.OutStream.Write(buffer, index, count);
+            },
+            Write$4: function (ch) {
+                if (System.Char.isSurrogate(ch)) {
+                    throw new System.ArgumentException("Arg_SurrogatesNotAllowedAsSingleChar");
+                }
+
+                var numBytes = 0;
+                numBytes = this._encoding.GetBytes$3(System.Array.init([ch], System.Char), 0, 1, this._buffer, 0);
+
+                this.OutStream.Write(this._buffer, 0, numBytes);
+            },
+            Write$5: function (chars) {
+                if (chars == null) {
+                    throw new System.ArgumentNullException("chars");
+                }
+
+                var bytes = this._encoding.GetBytes$1(chars, 0, chars.length);
+                this.OutStream.Write(bytes, 0, bytes.length);
+            },
+            Write$6: function (chars, index, count) {
+                var bytes = this._encoding.GetBytes$1(chars, index, count);
+                this.OutStream.Write(bytes, 0, bytes.length);
+            },
+            Write$8: function (value) {
+                var TmpValue = System.Int64.clipu64(System.BitConverter.doubleToInt64Bits(value));
+                this._buffer[System.Array.index(0, this._buffer)] = System.Int64.clipu8(TmpValue);
+                this._buffer[System.Array.index(1, this._buffer)] = System.Int64.clipu8(TmpValue.shru(8));
+                this._buffer[System.Array.index(2, this._buffer)] = System.Int64.clipu8(TmpValue.shru(16));
+                this._buffer[System.Array.index(3, this._buffer)] = System.Int64.clipu8(TmpValue.shru(24));
+                this._buffer[System.Array.index(4, this._buffer)] = System.Int64.clipu8(TmpValue.shru(32));
+                this._buffer[System.Array.index(5, this._buffer)] = System.Int64.clipu8(TmpValue.shru(40));
+                this._buffer[System.Array.index(6, this._buffer)] = System.Int64.clipu8(TmpValue.shru(48));
+                this._buffer[System.Array.index(7, this._buffer)] = System.Int64.clipu8(TmpValue.shru(56));
+                this.OutStream.Write(this._buffer, 0, 8);
+            },
+            Write$7: function (value) {
+                var buf = value.getBytes();
+                this.OutStream.Write(buf, 0, 23);
+            },
+            Write$9: function (value) {
+                this._buffer[System.Array.index(0, this._buffer)] = value & 255;
+                this._buffer[System.Array.index(1, this._buffer)] = (value >> 8) & 255;
+                this.OutStream.Write(this._buffer, 0, 2);
+            },
+            Write$15: function (value) {
+                this._buffer[System.Array.index(0, this._buffer)] = value & 255;
+                this._buffer[System.Array.index(1, this._buffer)] = (value >> 8) & 255;
+                this.OutStream.Write(this._buffer, 0, 2);
+            },
+            Write$10: function (value) {
+                this._buffer[System.Array.index(0, this._buffer)] = value & 255;
+                this._buffer[System.Array.index(1, this._buffer)] = (value >> 8) & 255;
+                this._buffer[System.Array.index(2, this._buffer)] = (value >> 16) & 255;
+                this._buffer[System.Array.index(3, this._buffer)] = (value >> 24) & 255;
+                this.OutStream.Write(this._buffer, 0, 4);
+            },
+            Write$16: function (value) {
+                this._buffer[System.Array.index(0, this._buffer)] = value & 255;
+                this._buffer[System.Array.index(1, this._buffer)] = (value >>> 8) & 255;
+                this._buffer[System.Array.index(2, this._buffer)] = (value >>> 16) & 255;
+                this._buffer[System.Array.index(3, this._buffer)] = (value >>> 24) & 255;
+                this.OutStream.Write(this._buffer, 0, 4);
+            },
+            Write$11: function (value) {
+                this._buffer[System.Array.index(0, this._buffer)] = System.Int64.clipu8(value);
+                this._buffer[System.Array.index(1, this._buffer)] = System.Int64.clipu8(value.shr(8));
+                this._buffer[System.Array.index(2, this._buffer)] = System.Int64.clipu8(value.shr(16));
+                this._buffer[System.Array.index(3, this._buffer)] = System.Int64.clipu8(value.shr(24));
+                this._buffer[System.Array.index(4, this._buffer)] = System.Int64.clipu8(value.shr(32));
+                this._buffer[System.Array.index(5, this._buffer)] = System.Int64.clipu8(value.shr(40));
+                this._buffer[System.Array.index(6, this._buffer)] = System.Int64.clipu8(value.shr(48));
+                this._buffer[System.Array.index(7, this._buffer)] = System.Int64.clipu8(value.shr(56));
+                this.OutStream.Write(this._buffer, 0, 8);
+            },
+            Write$17: function (value) {
+                this._buffer[System.Array.index(0, this._buffer)] = System.Int64.clipu8(value);
+                this._buffer[System.Array.index(1, this._buffer)] = System.Int64.clipu8(value.shru(8));
+                this._buffer[System.Array.index(2, this._buffer)] = System.Int64.clipu8(value.shru(16));
+                this._buffer[System.Array.index(3, this._buffer)] = System.Int64.clipu8(value.shru(24));
+                this._buffer[System.Array.index(4, this._buffer)] = System.Int64.clipu8(value.shru(32));
+                this._buffer[System.Array.index(5, this._buffer)] = System.Int64.clipu8(value.shru(40));
+                this._buffer[System.Array.index(6, this._buffer)] = System.Int64.clipu8(value.shru(48));
+                this._buffer[System.Array.index(7, this._buffer)] = System.Int64.clipu8(value.shru(56));
+                this.OutStream.Write(this._buffer, 0, 8);
+            },
+            Write$13: function (value) {
+                var TmpValue = System.BitConverter.toUInt32(System.BitConverter.getBytes$6(value), 0);
+                this._buffer[System.Array.index(0, this._buffer)] = TmpValue & 255;
+                this._buffer[System.Array.index(1, this._buffer)] = (TmpValue >>> 8) & 255;
+                this._buffer[System.Array.index(2, this._buffer)] = (TmpValue >>> 16) & 255;
+                this._buffer[System.Array.index(3, this._buffer)] = (TmpValue >>> 24) & 255;
+                this.OutStream.Write(this._buffer, 0, 4);
+            },
+            Write$14: function (value) {
+                if (value == null) {
+                    throw new System.ArgumentNullException("value");
+                }
+
+                var buffer = this._encoding.GetBytes$2(value);
+                var len = buffer.length;
+                this.Write7BitEncodedInt(len);
+                this.OutStream.Write(buffer, 0, len);
+            },
+            Write7BitEncodedInt: function (value) {
+                // Write out an int 7 bits at a time.  The high bit of the byte,
+                // when on, tells reader to continue reading more bytes.
+                var v = value >>> 0; // support negative numbers
+                while (v >= 128) {
+                    this.Write$1(((((v | 128) >>> 0)) & 255));
+                    v = v >>> 7;
+                }
+                this.Write$1((v & 255));
+            }
+        }
+    });
+
+    // @source Stream.js
+
+    Bridge.define("System.IO.Stream", {
+        inherits: [System.IDisposable],
+        statics: {
+            fields: {
+                Null: null,
+                _DefaultCopyBufferSize: 0
+            },
+            ctors: {
+                init: function () {
+                    this.Null = new System.IO.Stream.NullStream();
+                    this._DefaultCopyBufferSize = 81920;
+                }
+            },
+            methods: {
+                Synchronized: function (stream) {
+                    if (stream == null) {
+                        throw new System.ArgumentNullException("stream");
+                    }
+
+                    return stream;
+                },
+                BlockingEndRead: function (asyncResult) {
+
+                    return System.IO.Stream.SynchronousAsyncResult.EndRead(asyncResult);
+                },
+                BlockingEndWrite: function (asyncResult) {
+                    System.IO.Stream.SynchronousAsyncResult.EndWrite(asyncResult);
+                }
+            }
+        },
+        props: {
+            CanTimeout: {
+                get: function () {
+                    return false;
+                }
+            },
+            ReadTimeout: {
+                get: function () {
+                    throw new System.InvalidOperationException();
+                },
+                set: function (value) {
+                    throw new System.InvalidOperationException();
+                }
+            },
+            WriteTimeout: {
+                get: function () {
+                    throw new System.InvalidOperationException();
+                },
+                set: function (value) {
+                    throw new System.InvalidOperationException();
+                }
+            }
+        },
+        alias: ["Dispose", "System$IDisposable$dispose"],
+        methods: {
+            CopyTo: function (destination) {
+                if (destination == null) {
+                    throw new System.ArgumentNullException("destination");
+                }
+                if (!this.CanRead && !this.CanWrite) {
+                    throw new System.Exception();
+                }
+                if (!destination.CanRead && !destination.CanWrite) {
+                    throw new System.Exception("destination");
+                }
+                if (!this.CanRead) {
+                    throw new System.NotSupportedException();
+                }
+                if (!destination.CanWrite) {
+                    throw new System.NotSupportedException();
+                }
+
+                this.InternalCopyTo(destination, System.IO.Stream._DefaultCopyBufferSize);
+            },
+            CopyTo$1: function (destination, bufferSize) {
+                if (destination == null) {
+                    throw new System.ArgumentNullException("destination");
+                }
+                if (bufferSize <= 0) {
+                    throw new System.ArgumentOutOfRangeException("bufferSize");
+                }
+                if (!this.CanRead && !this.CanWrite) {
+                    throw new System.Exception();
+                }
+                if (!destination.CanRead && !destination.CanWrite) {
+                    throw new System.Exception("destination");
+                }
+                if (!this.CanRead) {
+                    throw new System.NotSupportedException();
+                }
+                if (!destination.CanWrite) {
+                    throw new System.NotSupportedException();
+                }
+
+                this.InternalCopyTo(destination, bufferSize);
+            },
+            InternalCopyTo: function (destination, bufferSize) {
+
+                var buffer = System.Array.init(bufferSize, 0, System.Byte);
+                var read;
+                while (((read = this.Read(buffer, 0, buffer.length))) !== 0) {
+                    destination.Write(buffer, 0, read);
+                }
+            },
+            Close: function () {
+                /* These are correct, but we'd have to fix PipeStream & NetworkStream very carefully.
+                Contract.Ensures(CanRead == false);
+                Contract.Ensures(CanWrite == false);
+                Contract.Ensures(CanSeek == false);
+                */
+
+                this.Dispose$1(true);
+            },
+            Dispose: function () {
+                /* These are correct, but we'd have to fix PipeStream & NetworkStream very carefully.
+                Contract.Ensures(CanRead == false);
+                Contract.Ensures(CanWrite == false);
+                Contract.Ensures(CanSeek == false);
+                */
+
+                this.Close();
+            },
+            Dispose$1: function (disposing) {
+                // Note: Never change this to call other virtual methods on Stream
+                // like Write, since the state on subclasses has already been
+                // torn down.  This is the last code to run on cleanup for a stream.
+            },
+            BeginRead: function (buffer, offset, count, callback, state) {
+                return this.BeginReadInternal(buffer, offset, count, callback, state, false);
+            },
+            BeginReadInternal: function (buffer, offset, count, callback, state, serializeAsynchronously) {
+                if (!this.CanRead) {
+                    System.IO.__Error.ReadNotSupported();
+                }
+
+                return this.BlockingBeginRead(buffer, offset, count, callback, state);
+            },
+            EndRead: function (asyncResult) {
+                if (asyncResult == null) {
+                    throw new System.ArgumentNullException("asyncResult");
+                }
+
+                return System.IO.Stream.BlockingEndRead(asyncResult);
+            },
+            BeginWrite: function (buffer, offset, count, callback, state) {
+                return this.BeginWriteInternal(buffer, offset, count, callback, state, false);
+            },
+            BeginWriteInternal: function (buffer, offset, count, callback, state, serializeAsynchronously) {
+                if (!this.CanWrite) {
+                    System.IO.__Error.WriteNotSupported();
+                }
+                return this.BlockingBeginWrite(buffer, offset, count, callback, state);
+            },
+            EndWrite: function (asyncResult) {
+                if (asyncResult == null) {
+                    throw new System.ArgumentNullException("asyncResult");
+                }
+
+                System.IO.Stream.BlockingEndWrite(asyncResult);
+            },
+            ReadByte: function () {
+
+                var oneByteArray = System.Array.init(1, 0, System.Byte);
+                var r = this.Read(oneByteArray, 0, 1);
+                if (r === 0) {
+                    return -1;
+                }
+                return oneByteArray[System.Array.index(0, oneByteArray)];
+            },
+            WriteByte: function (value) {
+                var oneByteArray = System.Array.init(1, 0, System.Byte);
+                oneByteArray[System.Array.index(0, oneByteArray)] = value;
+                this.Write(oneByteArray, 0, 1);
+            },
+            BlockingBeginRead: function (buffer, offset, count, callback, state) {
+
+                // To avoid a race with a stream's position pointer & generating ----
+                // conditions with internal buffer indexes in our own streams that
+                // don't natively support async IO operations when there are multiple
+                // async requests outstanding, we will block the application's main
+                // thread and do the IO synchronously.
+                // This can't perform well - use a different approach.
+                var asyncResult;
+                try {
+                    var numRead = this.Read(buffer, offset, count);
+                    asyncResult = new System.IO.Stream.SynchronousAsyncResult.$ctor1(numRead, state);
+                }
+                catch ($e1) {
+                    $e1 = System.Exception.create($e1);
+                    var ex;
+                    if (Bridge.is($e1, System.IO.IOException)) {
+                        ex = $e1;
+                        asyncResult = new System.IO.Stream.SynchronousAsyncResult.ctor(ex, state, false);
+                    } else {
+                        throw $e1;
+                    }
+                }
+
+                if (!Bridge.staticEquals(callback, null)) {
+                    callback(asyncResult);
+                }
+
+                return asyncResult;
+            },
+            BlockingBeginWrite: function (buffer, offset, count, callback, state) {
+
+                // To avoid a race with a stream's position pointer & generating ----
+                // conditions with internal buffer indexes in our own streams that
+                // don't natively support async IO operations when there are multiple
+                // async requests outstanding, we will block the application's main
+                // thread and do the IO synchronously.
+                // This can't perform well - use a different approach.
+                var asyncResult;
+                try {
+                    this.Write(buffer, offset, count);
+                    asyncResult = new System.IO.Stream.SynchronousAsyncResult.$ctor2(state);
+                }
+                catch ($e1) {
+                    $e1 = System.Exception.create($e1);
+                    var ex;
+                    if (Bridge.is($e1, System.IO.IOException)) {
+                        ex = $e1;
+                        asyncResult = new System.IO.Stream.SynchronousAsyncResult.ctor(ex, state, true);
+                    } else {
+                        throw $e1;
+                    }
+                }
+
+                if (!Bridge.staticEquals(callback, null)) {
+                    callback(asyncResult);
+                }
+
+                return asyncResult;
+            }
+        }
+    });
+
+    // @source BufferedStream.js
+
+    Bridge.define("System.IO.BufferedStream", {
+        inherits: [System.IO.Stream],
+        statics: {
+            fields: {
+                _DefaultBufferSize: 0,
+                MaxShadowBufferSize: 0
+            },
+            ctors: {
+                init: function () {
+                    this._DefaultBufferSize = 4096;
+                    this.MaxShadowBufferSize = 81920;
+                }
+            }
+        },
+        fields: {
+            _stream: null,
+            _buffer: null,
+            _bufferSize: 0,
+            _readPos: 0,
+            _readLen: 0,
+            _writePos: 0
+        },
+        props: {
+            UnderlyingStream: {
+                get: function () {
+                    return this._stream;
+                }
+            },
+            BufferSize: {
+                get: function () {
+                    return this._bufferSize;
+                }
+            },
+            CanRead: {
+                get: function () {
+                    return this._stream != null && this._stream.CanRead;
+                }
+            },
+            CanWrite: {
+                get: function () {
+                    return this._stream != null && this._stream.CanWrite;
+                }
+            },
+            CanSeek: {
+                get: function () {
+                    return this._stream != null && this._stream.CanSeek;
+                }
+            },
+            Length: {
+                get: function () {
+                    this.EnsureNotClosed();
+
+                    if (this._writePos > 0) {
+                        this.FlushWrite();
+                    }
+
+                    return this._stream.Length;
+                }
+            },
+            Position: {
+                get: function () {
+                    this.EnsureNotClosed();
+                    this.EnsureCanSeek();
+
+                    return this._stream.Position.add(System.Int64((((((this._readPos - this._readLen) | 0) + this._writePos) | 0))));
+                },
+                set: function (value) {
+                    if (value.lt(System.Int64(0))) {
+                        throw new System.ArgumentOutOfRangeException("value");
+                    }
+
+                    this.EnsureNotClosed();
+                    this.EnsureCanSeek();
+
+                    if (this._writePos > 0) {
+                        this.FlushWrite();
+                    }
+
+                    this._readPos = 0;
+                    this._readLen = 0;
+                    this._stream.Seek(value, System.IO.SeekOrigin.Begin);
+                }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                System.IO.Stream.ctor.call(this);
+            },
+            $ctor1: function (stream) {
+                System.IO.BufferedStream.$ctor2.call(this, stream, System.IO.BufferedStream._DefaultBufferSize);
+            },
+            $ctor2: function (stream, bufferSize) {
+                this.$initialize();
+                System.IO.Stream.ctor.call(this);
+
+                if (stream == null) {
+                    throw new System.ArgumentNullException("stream");
+                }
+
+                if (bufferSize <= 0) {
+                    throw new System.ArgumentOutOfRangeException("bufferSize");
+                }
+
+                this._stream = stream;
+                this._bufferSize = bufferSize;
+
+                // Allocate _buffer on its first use - it will not be used if all reads
+                // & writes are greater than or equal to buffer size.
+
+                if (!this._stream.CanRead && !this._stream.CanWrite) {
+                    System.IO.__Error.StreamIsClosed();
+                }
+            }
+        },
+        methods: {
+            EnsureNotClosed: function () {
+
+                if (this._stream == null) {
+                    System.IO.__Error.StreamIsClosed();
+                }
+            },
+            EnsureCanSeek: function () {
+
+
+                if (!this._stream.CanSeek) {
+                    System.IO.__Error.SeekNotSupported();
+                }
+            },
+            EnsureCanRead: function () {
+
+
+                if (!this._stream.CanRead) {
+                    System.IO.__Error.ReadNotSupported();
+                }
+            },
+            EnsureCanWrite: function () {
+
+
+                if (!this._stream.CanWrite) {
+                    System.IO.__Error.WriteNotSupported();
+                }
+            },
+            EnsureShadowBufferAllocated: function () {
+
+
+                // Already have shadow buffer?
+                if (this._buffer.length !== this._bufferSize || this._bufferSize >= System.IO.BufferedStream.MaxShadowBufferSize) {
+                    return;
+                }
+
+                var shadowBuffer = System.Array.init(Math.min(((this._bufferSize + this._bufferSize) | 0), System.IO.BufferedStream.MaxShadowBufferSize), 0, System.Byte);
+                System.Array.copy(this._buffer, 0, shadowBuffer, 0, this._writePos);
+                this._buffer = shadowBuffer;
+            },
+            EnsureBufferAllocated: function () {
+
+
+                // BufferedStream is not intended for multi-threaded use, so no worries about the get/set ---- on _buffer.
+                if (this._buffer == null) {
+                    this._buffer = System.Array.init(this._bufferSize, 0, System.Byte);
+                }
+            },
+            Dispose$1: function (disposing) {
+
+                try {
+                    if (disposing && this._stream != null) {
+                        try {
+                            this.Flush();
+                        }
+                        finally {
+                            this._stream.Close();
+                        }
+                    }
+                }
+                finally {
+                    this._stream = null;
+                    this._buffer = null;
+
+                    // Call base.Dispose(bool) to cleanup async IO resources
+                    System.IO.Stream.prototype.Dispose$1.call(this, disposing);
+                }
+            },
+            Flush: function () {
+
+                this.EnsureNotClosed();
+
+                // Has WRITE data in the buffer:
+                if (this._writePos > 0) {
+
+                    this.FlushWrite();
+                    return;
+                }
+
+                // Has READ data in the buffer:
+                if (this._readPos < this._readLen) {
+
+                    // If the underlying stream is not seekable AND we have something in the read buffer, then FlushRead would throw.
+                    // We can either throw away the buffer resulting in data loss (!) or ignore the Flush.
+                    // (We cannot throw becasue it would be a breaking change.) We opt into ignoring the Flush in that situation.
+                    if (!this._stream.CanSeek) {
+                        return;
+                    }
+
+                    this.FlushRead();
+
+                    // User streams may have opted to throw from Flush if CanWrite is false (although the abstract Stream does not do so).
+                    // However, if we do not forward the Flush to the underlying stream, we may have problems when chaining several streams.
+                    // Let us make a best effort attempt:
+                    if (this._stream.CanWrite || Bridge.is(this._stream, System.IO.BufferedStream)) {
+                        this._stream.Flush();
+                    }
+
+                    return;
+                }
+
+                // We had no data in the buffer, but we still need to tell the underlying stream to flush.
+                if (this._stream.CanWrite || Bridge.is(this._stream, System.IO.BufferedStream)) {
+                    this._stream.Flush();
+                }
+
+                this._writePos = (this._readPos = (this._readLen = 0));
+            },
+            FlushRead: function () {
+
+
+                if (((this._readPos - this._readLen) | 0) !== 0) {
+                    this._stream.Seek(System.Int64(this._readPos - this._readLen), System.IO.SeekOrigin.Current);
+                }
+
+                this._readPos = 0;
+                this._readLen = 0;
+            },
+            ClearReadBufferBeforeWrite: function () {
+
+                // This is called by write methods to clear the read buffer.
+
+
+                // No READ data in the buffer:
+                if (this._readPos === this._readLen) {
+
+                    this._readPos = (this._readLen = 0);
+                    return;
+                }
+
+                // Must have READ data.
+
+                // If the underlying stream cannot seek, FlushRead would end up throwing NotSupported.
+                // However, since the user did not call a method that is intuitively expected to seek, a better message is in order.
+                // Ideally, we would throw an InvalidOperation here, but for backward compat we have to stick with NotSupported.
+                if (!this._stream.CanSeek) {
+                    throw new System.NotSupportedException();
+                }
+
+                this.FlushRead();
+            },
+            FlushWrite: function () {
+
+
+                this._stream.Write(this._buffer, 0, this._writePos);
+                this._writePos = 0;
+                this._stream.Flush();
+            },
+            ReadFromBuffer: function (array, offset, count) {
+
+                var readBytes = (this._readLen - this._readPos) | 0;
+
+                if (readBytes === 0) {
+                    return 0;
+                }
+
+
+                if (readBytes > count) {
+                    readBytes = count;
+                }
+
+                System.Array.copy(this._buffer, this._readPos, array, offset, readBytes);
+                this._readPos = (this._readPos + readBytes) | 0;
+
+                return readBytes;
+            },
+            ReadFromBuffer$1: function (array, offset, count, error) {
+
+                try {
+
+                    error.v = null;
+                    return this.ReadFromBuffer(array, offset, count);
+
+                }
+                catch (ex) {
+                    ex = System.Exception.create(ex);
+                    error.v = ex;
+                    return 0;
+                }
+            },
+            Read: function (array, offset, count) {
+
+                if (array == null) {
+                    throw new System.ArgumentNullException("array");
+                }
+                if (offset < 0) {
+                    throw new System.ArgumentOutOfRangeException("offset");
+                }
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count");
+                }
+                if (((array.length - offset) | 0) < count) {
+                    throw new System.ArgumentException();
+                }
+
+                this.EnsureNotClosed();
+                this.EnsureCanRead();
+
+                var bytesFromBuffer = this.ReadFromBuffer(array, offset, count);
+
+                // We may have read less than the number of bytes the user asked for, but that is part of the Stream contract.
+
+                // Reading again for more data may cause us to block if we're using a device with no clear end of file,
+                // such as a serial port or pipe. If we blocked here and this code was used with redirected pipes for a
+                // process's standard output, this can lead to deadlocks involving two processes.
+                // BUT - this is a breaking change.
+                // So: If we could not read all bytes the user asked for from the buffer, we will try once from the underlying
+                // stream thus ensuring the same blocking behaviour as if the underlying stream was not wrapped in this BufferedStream.
+                if (bytesFromBuffer === count) {
+                    return bytesFromBuffer;
+                }
+
+                var alreadySatisfied = bytesFromBuffer;
+                if (bytesFromBuffer > 0) {
+                    count = (count - bytesFromBuffer) | 0;
+                    offset = (offset + bytesFromBuffer) | 0;
+                }
+
+                // So the READ buffer is empty.
+                this._readPos = (this._readLen = 0);
+
+                // If there was anything in the WRITE buffer, clear it.
+                if (this._writePos > 0) {
+                    this.FlushWrite();
+                }
+
+                // If the requested read is larger than buffer size, avoid the buffer and still use a single read:
+                if (count >= this._bufferSize) {
+
+                    return ((this._stream.Read(array, offset, count) + alreadySatisfied) | 0);
+                }
+
+                // Ok. We can fill the buffer:
+                this.EnsureBufferAllocated();
+                this._readLen = this._stream.Read(this._buffer, 0, this._bufferSize);
+
+                bytesFromBuffer = this.ReadFromBuffer(array, offset, count);
+
+                // We may have read less than the number of bytes the user asked for, but that is part of the Stream contract.
+                // Reading again for more data may cause us to block if we're using a device with no clear end of stream,
+                // such as a serial port or pipe.  If we blocked here & this code was used with redirected pipes for a process's
+                // standard output, this can lead to deadlocks involving two processes. Additionally, translating one read on the
+                // BufferedStream to more than one read on the underlying Stream may defeat the whole purpose of buffering of the
+                // underlying reads are significantly more expensive.
+
+                return ((bytesFromBuffer + alreadySatisfied) | 0);
+            },
+            ReadByte: function () {
+
+                this.EnsureNotClosed();
+                this.EnsureCanRead();
+
+                if (this._readPos === this._readLen) {
+
+                    if (this._writePos > 0) {
+                        this.FlushWrite();
+                    }
+
+                    this.EnsureBufferAllocated();
+                    this._readLen = this._stream.Read(this._buffer, 0, this._bufferSize);
+                    this._readPos = 0;
+                }
+
+                if (this._readPos === this._readLen) {
+                    return -1;
+                }
+
+                var b = this._buffer[System.Array.index(Bridge.identity(this._readPos, (this._readPos = (this._readPos + 1) | 0)), this._buffer)];
+                return b;
+            },
+            WriteToBuffer: function (array, offset, count) {
+
+                var bytesToWrite = Math.min(((this._bufferSize - this._writePos) | 0), count.v);
+
+                if (bytesToWrite <= 0) {
+                    return;
+                }
+
+                this.EnsureBufferAllocated();
+                System.Array.copy(array, offset.v, this._buffer, this._writePos, bytesToWrite);
+
+                this._writePos = (this._writePos + bytesToWrite) | 0;
+                count.v = (count.v - bytesToWrite) | 0;
+                offset.v = (offset.v + bytesToWrite) | 0;
+            },
+            WriteToBuffer$1: function (array, offset, count, error) {
+
+                try {
+
+                    error.v = null;
+                    this.WriteToBuffer(array, offset, count);
+
+                }
+                catch (ex) {
+                    ex = System.Exception.create(ex);
+                    error.v = ex;
+                }
+            },
+            Write: function (array, offset, count) {
+                offset = {v:offset};
+                count = {v:count};
+
+                if (array == null) {
+                    throw new System.ArgumentNullException("array");
+                }
+                if (offset.v < 0) {
+                    throw new System.ArgumentOutOfRangeException("offset");
+                }
+                if (count.v < 0) {
+                    throw new System.ArgumentOutOfRangeException("count");
+                }
+                if (((array.length - offset.v) | 0) < count.v) {
+                    throw new System.ArgumentException();
+                }
+
+                this.EnsureNotClosed();
+                this.EnsureCanWrite();
+
+                if (this._writePos === 0) {
+                    this.ClearReadBufferBeforeWrite();
+                }
+
+                // We need to use the buffer, while avoiding unnecessary buffer usage / memory copies.
+                // We ASSUME that memory copies are much cheaper than writes to the underlying stream, so if an extra copy is
+                // guaranteed to reduce the number of writes, we prefer it.
+                // We pick a simple strategy that makes degenerate cases rare if our assumptions are right.
+                //
+                // For ever write, we use a simple heuristic (below) to decide whether to use the buffer.
+                // The heuristic has the desirable property (*) that if the specified user data can fit into the currently available
+                // buffer space without filling it up completely, the heuristic will always tell us to use the buffer. It will also
+                // tell us to use the buffer in cases where the current write would fill the buffer, but the remaining data is small
+                // enough such that subsequent operations can use the buffer again.
+                //
+                // Algorithm:
+                // Determine whether or not to buffer according to the heuristic (below).
+                // If we decided to use the buffer:
+                //     Copy as much user data as we can into the buffer.
+                //     If we consumed all data: We are finished.
+                //     Otherwise, write the buffer out.
+                //     Copy the rest of user data into the now cleared buffer (no need to write out the buffer again as the heuristic
+                //     will prevent it from being filled twice).
+                // If we decided not to use the buffer:
+                //     Can the data already in the buffer and current user data be combines to a single write
+                //     by allocating a "shadow" buffer of up to twice the size of _bufferSize (up to a limit to avoid LOH)?
+                //     Yes, it can:
+                //         Allocate a larger "shadow" buffer and ensure the buffered  data is moved there.
+                //         Copy user data to the shadow buffer.
+                //         Write shadow buffer to the underlying stream in a single operation.
+                //     No, it cannot (amount of data is still too large):
+                //         Write out any data possibly in the buffer.
+                //         Write out user data directly.
+                //
+                // Heuristic:
+                // If the subsequent write operation that follows the current write operation will result in a write to the
+                // underlying stream in case that we use the buffer in the current write, while it would not have if we avoided
+                // using the buffer in the current write (by writing current user data to the underlying stream directly), then we
+                // prefer to avoid using the buffer since the corresponding memory copy is wasted (it will not reduce the number
+                // of writes to the underlying stream, which is what we are optimising for).
+                // ASSUME that the next write will be for the same amount of bytes as the current write (most common case) and
+                // determine if it will cause a write to the underlying stream. If the next write is actually larger, our heuristic
+                // still yields the right behaviour, if the next write is actually smaller, we may making an unnecessary write to
+                // the underlying stream. However, this can only occur if the current write is larger than half the buffer size and
+                // we will recover after one iteration.
+                // We have:
+                //     useBuffer = (_writePos + count + count < _bufferSize + _bufferSize)
+                //
+                // Example with _bufferSize = 20, _writePos = 6, count = 10:
+                //
+                //     +---------------------------------------+---------------------------------------+
+                //     |             current buffer            | next iteration's "future" buffer      |
+                //     +---------------------------------------+---------------------------------------+
+                //     |0| | | | | | | | | |1| | | | | | | | | |2| | | | | | | | | |3| | | | | | | | | |
+                //     |0|1|2|3|4|5|6|7|8|9|0|1|2|3|4|5|6|7|8|9|0|1|2|3|4|5|6|7|8|9|0|1|2|3|4|5|6|7|8|9|
+                //     +-----------+-------------------+-------------------+---------------------------+
+                //     | _writePos |  current count    | assumed next count|avail buff after next write|
+                //     +-----------+-------------------+-------------------+---------------------------+
+                //
+                // A nice property (*) of this heuristic is that it will always succeed if the user data completely fits into the
+                // available buffer, i.e. if count < (_bufferSize - _writePos).
+
+
+                var totalUserBytes;
+                var useBuffer; // We do not expect buffer sizes big enough for an overflow, but if it happens, lets fail early:
+                totalUserBytes = Bridge.Int.check(this._writePos + count.v, System.Int32);
+                useBuffer = (Bridge.Int.check(totalUserBytes + count.v, System.Int32) < (Bridge.Int.check(this._bufferSize + this._bufferSize, System.Int32)));
+
+                if (useBuffer) {
+
+                    this.WriteToBuffer(array, offset, count);
+
+                    if (this._writePos < this._bufferSize) {
+
+                        return;
+                    }
+
+
+                    this._stream.Write(this._buffer, 0, this._writePos);
+                    this._writePos = 0;
+
+                    this.WriteToBuffer(array, offset, count);
+
+
+                } else { // if (!useBuffer)
+
+                    // Write out the buffer if necessary.
+                    if (this._writePos > 0) {
+
+
+                        // Try avoiding extra write to underlying stream by combining previously buffered data with current user data:
+                        if (totalUserBytes <= (((this._bufferSize + this._bufferSize) | 0)) && totalUserBytes <= System.IO.BufferedStream.MaxShadowBufferSize) {
+
+                            this.EnsureShadowBufferAllocated();
+                            System.Array.copy(array, offset.v, this._buffer, this._writePos, count.v);
+                            this._stream.Write(this._buffer, 0, totalUserBytes);
+                            this._writePos = 0;
+                            return;
+                        }
+
+                        this._stream.Write(this._buffer, 0, this._writePos);
+                        this._writePos = 0;
+                    }
+
+                    // Write out user data.
+                    this._stream.Write(array, offset.v, count.v);
+                }
+            },
+            WriteByte: function (value) {
+
+                this.EnsureNotClosed();
+
+                if (this._writePos === 0) {
+
+                    this.EnsureCanWrite();
+                    this.ClearReadBufferBeforeWrite();
+                    this.EnsureBufferAllocated();
+                }
+
+                // We should not be flushing here, but only writing to the underlying stream, but previous version flushed, so we keep this.
+                if (this._writePos >= ((this._bufferSize - 1) | 0)) {
+                    this.FlushWrite();
+                }
+
+                this._buffer[System.Array.index(Bridge.identity(this._writePos, (this._writePos = (this._writePos + 1) | 0)), this._buffer)] = value;
+
+            },
+            Seek: function (offset, origin) {
+
+                this.EnsureNotClosed();
+                this.EnsureCanSeek();
+
+                // If we have bytes in the WRITE buffer, flush them out, seek and be done.
+                if (this._writePos > 0) {
+
+                    // We should be only writing the buffer and not flushing,
+                    // but the previous version did flush and we stick to it for back-compat reasons.
+                    this.FlushWrite();
+                    return this._stream.Seek(offset, origin);
+                }
+
+                // The buffer is either empty or we have a buffered READ.
+
+                if (((this._readLen - this._readPos) | 0) > 0 && origin === System.IO.SeekOrigin.Current) {
+
+                    // If we have bytes in the READ buffer, adjust the seek offset to account for the resulting difference
+                    // between this stream's position and the underlying stream's position.
+                    offset = offset.sub(System.Int64((((this._readLen - this._readPos) | 0))));
+                }
+
+                var oldPos = this.Position;
+
+                var newPos = this._stream.Seek(offset, origin);
+
+                // If the seek destination is still within the data currently in the buffer, we want to keep the buffer data and continue using it.
+                // Otherwise we will throw away the buffer. This can only happen on READ, as we flushed WRITE data above.
+
+                // The offset of the new/updated seek pointer within _buffer:
+                this._readPos = System.Int64.clip32(newPos.sub((oldPos.sub(System.Int64(this._readPos)))));
+
+                // If the offset of the updated seek pointer in the buffer is still legal, then we can keep using the buffer:
+                if (0 <= this._readPos && this._readPos < this._readLen) {
+
+                    // Adjust the seek pointer of the underlying stream to reflect the amount of useful bytes in the read buffer:
+                    this._stream.Seek(System.Int64(this._readLen - this._readPos), System.IO.SeekOrigin.Current);
+
+                } else { // The offset of the updated seek pointer is not a legal offset. Loose the buffer.
+
+                    this._readPos = (this._readLen = 0);
+                }
+
+                return newPos;
+            },
+            SetLength: function (value) {
+
+                if (value.lt(System.Int64(0))) {
+                    throw new System.ArgumentOutOfRangeException("value");
+                }
+
+                this.EnsureNotClosed();
+                this.EnsureCanSeek();
+                this.EnsureCanWrite();
+
+                this.Flush();
+                this._stream.SetLength(value);
+            }
+        }
+    });
+
+    // @source IOException.js
+
+    Bridge.define("System.IO.IOException", {
+        inherits: [System.Exception],
+        fields: {
+            _maybeFullPath: null
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                System.Exception.ctor.call(this, "Arg_IOException");
+            },
+            $ctor1: function (message) {
+                this.$initialize();
+                System.Exception.ctor.call(this, message);
+            },
+            $ctor3: function (message, hresult) {
+                this.$initialize();
+                System.Exception.ctor.call(this, message);
+            },
+            $ctor4: function (message, hresult, maybeFullPath) {
+                this.$initialize();
+                System.Exception.ctor.call(this, message);
+                this._maybeFullPath = maybeFullPath;
+            },
+            $ctor2: function (message, innerException) {
+                this.$initialize();
+                System.Exception.ctor.call(this, message, innerException);
+            }
+        }
+    });
+
+    // @source EndOfStreamException.js
+
+    Bridge.define("System.IO.EndOfStreamException", {
+        inherits: [System.IO.IOException],
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                System.IO.IOException.$ctor1.call(this, "Arg_EndOfStreamException");
+            },
+            $ctor1: function (message) {
+                this.$initialize();
+                System.IO.IOException.$ctor1.call(this, message);
+            },
+            $ctor2: function (message, innerException) {
+                this.$initialize();
+                System.IO.IOException.$ctor2.call(this, message, innerException);
+            }
+        }
+    });
+
+    // @source File.js
+
+    Bridge.define("System.IO.File", {
+        statics: {
+            methods: {
+                OpenText: function (path) {
+                    if (path == null) {
+                        throw new System.ArgumentNullException("path");
+                    }
+                    return new System.IO.StreamReader.$ctor7(path);
+                },
+                OpenRead: function (path) {
+                    return new System.IO.FileStream.$ctor1(path, System.IO.FileMode.Open);
+                },
+                ReadAllText: function (path) {
+                    if (path == null) {
+                        throw new System.ArgumentNullException("path");
+                    }
+                    if (path.length === 0) {
+                        throw new System.ArgumentException("Argument_EmptyPath");
+                    }
+
+                    return System.IO.File.InternalReadAllText(path, System.Text.Encoding.UTF8, true);
+                },
+                ReadAllText$1: function (path, encoding) {
+                    if (path == null) {
+                        throw new System.ArgumentNullException("path");
+                    }
+                    if (encoding == null) {
+                        throw new System.ArgumentNullException("encoding");
+                    }
+                    if (path.length === 0) {
+                        throw new System.ArgumentException("Argument_EmptyPath");
+                    }
+
+                    return System.IO.File.InternalReadAllText(path, encoding, true);
+                },
+                InternalReadAllText: function (path, encoding, checkHost) {
+
+                    var sr = new System.IO.StreamReader.$ctor12(path, encoding, true, System.IO.StreamReader.DefaultBufferSize, checkHost);
+                    try {
+                        return sr.ReadToEnd();
+                    }
+                    finally {
+                        if (Bridge.hasValue(sr)) {
+                            sr.System$IDisposable$dispose();
+                        }
+                    }
+                },
+                ReadAllBytes: function (path) {
+                    return System.IO.File.InternalReadAllBytes(path, true);
+                },
+                InternalReadAllBytes: function (path, checkHost) {
+                    var bytes;
+                    var fs = new System.IO.FileStream.$ctor1(path, System.IO.FileMode.Open);
+                    try {
+                        // Do a blocking read
+                        var index = 0;
+                        var fileLength = fs.Length;
+                        if (fileLength.gt(System.Int64(2147483647))) {
+                            throw new System.IO.IOException.$ctor1("IO.IO_FileTooLong2GB");
+                        }
+                        var count = System.Int64.clip32(fileLength);
+                        bytes = System.Array.init(count, 0, System.Byte);
+                        while (count > 0) {
+                            var n = fs.Read(bytes, index, count);
+                            if (n === 0) {
+                                System.IO.__Error.EndOfFile();
+                            }
+                            index = (index + n) | 0;
+                            count = (count - n) | 0;
+                        }
+                    }
+                    finally {
+                        if (Bridge.hasValue(fs)) {
+                            fs.System$IDisposable$dispose();
+                        }
+                    }
+                    return bytes;
+                },
+                ReadAllLines: function (path) {
+                    if (path == null) {
+                        throw new System.ArgumentNullException("path");
+                    }
+                    if (path.length === 0) {
+                        throw new System.ArgumentException("Argument_EmptyPath");
+                    }
+
+                    return System.IO.File.InternalReadAllLines(path, System.Text.Encoding.UTF8);
+                },
+                ReadAllLines$1: function (path, encoding) {
+                    if (path == null) {
+                        throw new System.ArgumentNullException("path");
+                    }
+                    if (encoding == null) {
+                        throw new System.ArgumentNullException("encoding");
+                    }
+                    if (path.length === 0) {
+                        throw new System.ArgumentException("Argument_EmptyPath");
+                    }
+
+                    return System.IO.File.InternalReadAllLines(path, encoding);
+                },
+                InternalReadAllLines: function (path, encoding) {
+
+                    var line;
+                    var lines = new (System.Collections.Generic.List$1(System.String)).ctor();
+
+                    var sr = new System.IO.StreamReader.$ctor9(path, encoding);
+                    try {
+                        while (((line = sr.ReadLine())) != null) {
+                            lines.add(line);
+                        }
+                    }
+                    finally {
+                        if (Bridge.hasValue(sr)) {
+                            sr.System$IDisposable$dispose();
+                        }
+                    }
+
+                    return lines.toArray();
+                },
+                ReadLines: function (path) {
+                    if (path == null) {
+                        throw new System.ArgumentNullException("path");
+                    }
+                    if (path.length === 0) {
+                        throw new System.ArgumentException("Argument_EmptyPath", "path");
+                    }
+
+                    return System.IO.ReadLinesIterator.CreateIterator(path, System.Text.Encoding.UTF8);
+                },
+                ReadLines$1: function (path, encoding) {
+                    if (path == null) {
+                        throw new System.ArgumentNullException("path");
+                    }
+                    if (encoding == null) {
+                        throw new System.ArgumentNullException("encoding");
+                    }
+                    if (path.length === 0) {
+                        throw new System.ArgumentException("Argument_EmptyPath", "path");
+                    }
+
+                    return System.IO.ReadLinesIterator.CreateIterator(path, encoding);
+                }
+            }
+        }
+    });
+
+    // @source FileMode.js
+
+    Bridge.define("System.IO.FileMode", {
+        $kind: "enum",
+        statics: {
+            fields: {
+                CreateNew: 1,
+                Create: 2,
+                Open: 3,
+                OpenOrCreate: 4,
+                Truncate: 5,
+                Append: 6
+            }
+        }
+    });
+
+    // @source FileStream.js
+
+    Bridge.define("System.IO.FileStream", {
+        inherits: [System.IO.Stream],
+        statics: {
+            methods: {
+                FromFile: function (file) {
+                    var completer = new System.Threading.Tasks.TaskCompletionSource();
+                    var fileReader = new FileReader();
+                    fileReader.onload = function () {
+                        completer.setResult(new System.IO.FileStream.ctor(fileReader.result, file.name));
+                    };
+                    fileReader.onerror = function (e) {
+                        completer.setException(new Bridge.ErrorException(Bridge.unbox(e).target.error.As()));
+                    };
+                    fileReader.readAsArrayBuffer(file);
+
+                    return completer.task;
+                },
+                ReadBytes: function (path) {
+                    if (Bridge.isNode) {
+                        var fs = require("fs");
+                        return Bridge.cast(fs.readFileSync(path), ArrayBuffer);
+                    } else {
+                        var req = new XMLHttpRequest();
+                        req.open("GET", path, false);
+                        req.overrideMimeType("text/plain; charset=binary-data");
+                        req.send(null);
+                        if (req.status !== 200) {
+                            throw new System.IO.IOException.$ctor1(System.String.concat("Status of request to " + (path || "") + " returned status: ", req.status));
+                        }
+
+                        var text = req.responseText;
+                        var resultArray = new Uint8Array(text.length);
+                        System.String.toCharArray(text, 0, text.length).forEach(function (v, index, array) {
+                                var $t;
+                                return ($t = (v & 255) & 255, resultArray[index] = $t, $t);
+                            });
+                        return resultArray.buffer;
+                    }
+                },
+                ReadBytesAsync: function (path) {
+                    var tcs = new System.Threading.Tasks.TaskCompletionSource();
+
+                    if (Bridge.isNode) {
+                        var fs = require("fs");
+                        fs.readFile(path, function (err, data) {
+                            if (err != null) {
+                                throw new System.IO.IOException.ctor();
+                            }
+
+                            tcs.setResult(data);
+                        });
+                    } else {
+                        var req = new XMLHttpRequest();
+                        req.open("GET", path, true);
+                        req.overrideMimeType("text/plain; charset=binary-data");
+                        req.send(null);
+
+                        req.onreadystatechange = function () {
+                        if (req.readyState !== 4) {
+                            return;
+                        }
+
+                        if (req.status !== 200) {
+                            throw new System.IO.IOException.$ctor1(System.String.concat("Status of request to " + (path || "") + " returned status: ", req.status));
+                        }
+
+                        var text = req.responseText;
+                        var resultArray = new Uint8Array(text.length);
+                        System.String.toCharArray(text, 0, text.length).forEach(function (v, index, array) {
+                                var $t;
+                                return ($t = (v & 255) & 255, resultArray[index] = $t, $t);
+                            });
+                        tcs.setResult(resultArray.buffer);
+                        };
+                    }
+
+                    return tcs.task;
+                }
+            }
+        },
+        fields: {
+            name: null,
+            _buffer: null
+        },
+        props: {
+            CanRead: {
+                get: function () {
+                    return true;
+                }
+            },
+            CanWrite: {
+                get: function () {
+                    return false;
+                }
+            },
+            CanSeek: {
+                get: function () {
+                    return false;
+                }
+            },
+            IsAsync: {
+                get: function () {
+                    return false;
+                }
+            },
+            Name: {
+                get: function () {
+                    return this.name;
+                }
+            },
+            Length: {
+                get: function () {
+                    return System.Int64(this.GetInternalBuffer().byteLength);
+                }
+            },
+            Position: System.Int64(0)
+        },
+        ctors: {
+            $ctor1: function (path, mode) {
+                this.$initialize();
+                System.IO.Stream.ctor.call(this);
+                this.name = path;
+            },
+            ctor: function (buffer, name) {
+                this.$initialize();
+                System.IO.Stream.ctor.call(this);
+                this._buffer = buffer;
+                this.name = name;
+            }
+        },
+        methods: {
+            Flush: function () { },
+            Seek: function (offset, origin) {
+                throw new System.NotImplementedException();
+            },
+            SetLength: function (value) {
+                throw new System.NotImplementedException();
+            },
+            Write: function (buffer, offset, count) {
+                throw new System.NotImplementedException();
+            },
+            GetInternalBuffer: function () {
+                if (this._buffer == null) {
+                    this._buffer = System.IO.FileStream.ReadBytes(this.name);
+
+                }
+
+                return this._buffer;
+            },
+            EnsureBufferAsync: function () {
+                var $step = 0,
+                    $task1, 
+                    $taskResult1, 
+                    $jumpFromFinally, 
+                    $tcs = new System.Threading.Tasks.TaskCompletionSource(), 
+                    $returnValue, 
+                    $async_e, 
+                    $asyncBody = Bridge.fn.bind(this, function () {
+                        try {
+                            for (;;) {
+                                $step = System.Array.min([0,1,2,3], $step);
+                                switch ($step) {
+                                    case 0: {
+                                        if (this._buffer == null) {
+                                            $step = 1;
+                                            continue;
+                                        } 
+                                        $step = 3;
+                                        continue;
+                                    }
+                                    case 1: {
+                                        $task1 = System.IO.FileStream.ReadBytesAsync(this.name);
+                                        $step = 2;
+                                        $task1.continueWith($asyncBody);
+                                        return;
+                                    }
+                                    case 2: {
+                                        $taskResult1 = $task1.getAwaitedResult();
+                                        this._buffer = $taskResult1;
+                                        $step = 3;
+                                        continue;
+                                    }
+                                    case 3: {
+                                        $tcs.setResult(null);
+                                        return;
+                                    }
+                                    default: {
+                                        $tcs.setResult(null);
+                                        return;
+                                    }
+                                }
+                            }
+                        } catch($async_e1) {
+                            $async_e = System.Exception.create($async_e1);
+                            $tcs.setException($async_e);
+                        }
+                    }, arguments);
+
+                $asyncBody();
+                return $tcs.task;
+            },
+            Read: function (buffer, offset, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer");
+                }
+
+                if (offset < 0) {
+                    throw new System.ArgumentOutOfRangeException("offset");
+                }
+
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count");
+                }
+
+                if ((((buffer.length - offset) | 0)) < count) {
+                    throw new System.ArgumentException();
+                }
+
+                var num = this.Length.sub(this.Position);
+                if (num.gt(System.Int64(count))) {
+                    num = System.Int64(count);
+                }
+
+                if (num.lte(System.Int64(0))) {
+                    return 0;
+                }
+
+                var byteBuffer = new Uint8Array(this.GetInternalBuffer());
+                if (num.gt(System.Int64(8))) {
+                    for (var n = 0; System.Int64(n).lt(num); n = (n + 1) | 0) {
+                        buffer[System.Array.index(((n + offset) | 0), buffer)] = byteBuffer[this.Position.add(System.Int64(n))];
+                    }
+                } else {
+                    var num1 = num;
+                    while (true) {
+                        var num2 = num1.sub(System.Int64(1));
+                        num1 = num2;
+                        if (num2.lt(System.Int64(0))) {
+                            break;
+                        }
+                        buffer[System.Array.index(System.Int64.toNumber(System.Int64(offset).add(num1)), buffer)] = byteBuffer[this.Position.add(num1)];
+                    }
+                }
+                this.Position = this.Position.add(num);
+                return System.Int64.clip32(num);
+            }
+        }
+    });
+
+    // @source Iterator.js
+
+    Bridge.define("System.IO.Iterator$1", function (TSource) { return {
+        inherits: [System.Collections.Generic.IEnumerable$1(TSource),System.Collections.Generic.IEnumerator$1(TSource)],
+        fields: {
+            state: 0,
+            current: Bridge.getDefaultValue(TSource)
+        },
+        props: {
+            Current: {
+                get: function () {
+                    return this.current;
+                }
+            },
+            System$Collections$IEnumerator$Current: {
+                get: function () {
+                    return this.Current;
+                }
+            }
+        },
+        alias: [
+            "Current", ["System$Collections$Generic$IEnumerator$1$" + Bridge.getTypeAlias(TSource) + "$Current$1", "System$Collections$Generic$IEnumerator$1$Current$1"],
+            "Dispose", "System$IDisposable$dispose",
+            "GetEnumerator", ["System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(TSource) + "$getEnumerator", "System$Collections$Generic$IEnumerable$1$getEnumerator"]
+        ],
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+            }
+        },
+        methods: {
+            Dispose: function () {
+                this.Dispose$1(true);
+            },
+            Dispose$1: function (disposing) {
+                this.current = Bridge.getDefaultValue(TSource);
+                this.state = -1;
+            },
+            GetEnumerator: function () {
+                if (this.state === 0) {
+                    this.state = 1;
+                    return this;
+                }
+
+                var duplicate = this.Clone();
+                duplicate.state = 1;
+                return duplicate;
+            },
+            System$Collections$IEnumerable$getEnumerator: function () {
+                return this.GetEnumerator();
+            },
+            System$Collections$IEnumerator$reset: function () {
+                throw new System.NotSupportedException();
+            }
+        }
+    }; });
+
+    // @source MemoryStream.js
+
+    Bridge.define("System.IO.MemoryStream", {
+        inherits: [System.IO.Stream],
+        statics: {
+            fields: {
+                MemStreamMaxLength: 0
+            },
+            ctors: {
+                init: function () {
+                    this.MemStreamMaxLength = 2147483647;
+                }
+            }
+        },
+        fields: {
+            _buffer: null,
+            _origin: 0,
+            _position: 0,
+            _length: 0,
+            _capacity: 0,
+            _expandable: false,
+            _writable: false,
+            _exposable: false,
+            _isOpen: false
+        },
+        props: {
+            CanRead: {
+                get: function () {
+                    return this._isOpen;
+                }
+            },
+            CanSeek: {
+                get: function () {
+                    return this._isOpen;
+                }
+            },
+            CanWrite: {
+                get: function () {
+                    return this._writable;
+                }
+            },
+            Capacity: {
+                get: function () {
+                    if (!this._isOpen) {
+                        System.IO.__Error.StreamIsClosed();
+                    }
+                    return ((this._capacity - this._origin) | 0);
+                },
+                set: function (value) {
+                    // Only update the capacity if the MS is expandable and the value is different than the current capacity.
+                    // Special behavior if the MS isn't expandable: we don't throw if value is the same as the current capacity
+                    if (System.Int64(value).lt(this.Length)) {
+                        throw new System.ArgumentOutOfRangeException("value", "ArgumentOutOfRange_SmallCapacity");
+                    }
+
+                    if (!this._isOpen) {
+                        System.IO.__Error.StreamIsClosed();
+                    }
+                    if (!this._expandable && (value !== this.Capacity)) {
+                        System.IO.__Error.MemoryStreamNotExpandable();
+                    }
+
+                    // MemoryStream has this invariant: _origin > 0 => !expandable (see ctors)
+                    if (this._expandable && value !== this._capacity) {
+                        if (value > 0) {
+                            var newBuffer = System.Array.init(value, 0, System.Byte);
+                            if (this._length > 0) {
+                                System.Array.copy(this._buffer, 0, newBuffer, 0, this._length);
+                            }
+                            this._buffer = newBuffer;
+                        } else {
+                            this._buffer = null;
+                        }
+                        this._capacity = value;
+                    }
+                }
+            },
+            Length: {
+                get: function () {
+                    if (!this._isOpen) {
+                        System.IO.__Error.StreamIsClosed();
+                    }
+                    return System.Int64(this._length - this._origin);
+                }
+            },
+            Position: {
+                get: function () {
+                    if (!this._isOpen) {
+                        System.IO.__Error.StreamIsClosed();
+                    }
+                    return System.Int64(this._position - this._origin);
+                },
+                set: function (value) {
+                    if (value.lt(System.Int64(0))) {
+                        throw new System.ArgumentOutOfRangeException("value", "ArgumentOutOfRange_NeedNonNegNum");
+                    }
+
+                    if (!this._isOpen) {
+                        System.IO.__Error.StreamIsClosed();
+                    }
+
+                    if (value.gt(System.Int64(System.IO.MemoryStream.MemStreamMaxLength))) {
+                        throw new System.ArgumentOutOfRangeException("value", "ArgumentOutOfRange_StreamLength");
+                    }
+                    this._position = (this._origin + System.Int64.clip32(value)) | 0;
+                }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                System.IO.MemoryStream.$ctor6.call(this, 0);
+            },
+            $ctor6: function (capacity) {
+                this.$initialize();
+                System.IO.Stream.ctor.call(this);
+                if (capacity < 0) {
+                    throw new System.ArgumentOutOfRangeException("capacity", "ArgumentOutOfRange_NegativeCapacity");
+                }
+
+                this._buffer = System.Array.init(capacity, 0, System.Byte);
+                this._capacity = capacity;
+                this._expandable = true;
+                this._writable = true;
+                this._exposable = true;
+                this._origin = 0; // Must be 0 for byte[]'s created by MemoryStream
+                this._isOpen = true;
+            },
+            $ctor1: function (buffer) {
+                System.IO.MemoryStream.$ctor2.call(this, buffer, true);
+            },
+            $ctor2: function (buffer, writable) {
+                this.$initialize();
+                System.IO.Stream.ctor.call(this);
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
+                }
+                this._buffer = buffer;
+                this._length = (this._capacity = buffer.length);
+                this._writable = writable;
+                this._exposable = false;
+                this._origin = 0;
+                this._isOpen = true;
+            },
+            $ctor3: function (buffer, index, count) {
+                System.IO.MemoryStream.$ctor5.call(this, buffer, index, count, true, false);
+            },
+            $ctor4: function (buffer, index, count, writable) {
+                System.IO.MemoryStream.$ctor5.call(this, buffer, index, count, writable, false);
+            },
+            $ctor5: function (buffer, index, count, writable, publiclyVisible) {
+                this.$initialize();
+                System.IO.Stream.ctor.call(this);
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
+                }
+                if (index < 0) {
+                    throw new System.ArgumentOutOfRangeException("index", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (((buffer.length - index) | 0) < count) {
+                    throw new System.ArgumentException("Argument_InvalidOffLen");
+                }
+
+                this._buffer = buffer;
+                this._origin = (this._position = index);
+                this._length = (this._capacity = (index + count) | 0);
+                this._writable = writable;
+                this._exposable = publiclyVisible; // Can TryGetBuffer/GetBuffer return the array?
+                this._expandable = false;
+                this._isOpen = true;
+            }
+        },
+        methods: {
+            EnsureWriteable: function () {
+                if (!this.CanWrite) {
+                    System.IO.__Error.WriteNotSupported();
+                }
+            },
+            Dispose$1: function (disposing) {
+                try {
+                    if (disposing) {
+                        this._isOpen = false;
+                        this._writable = false;
+                        this._expandable = false;
+                    }
+                }
+                finally {
+                    // Call base.Close() to cleanup async IO resources
+                    System.IO.Stream.prototype.Dispose$1.call(this, disposing);
+                }
+            },
+            EnsureCapacity: function (value) {
+                // Check for overflow
+                if (value < 0) {
+                    throw new System.IO.IOException.$ctor1("IO.IO_StreamTooLong");
+                }
+                if (value > this._capacity) {
+                    var newCapacity = value;
+                    if (newCapacity < 256) {
+                        newCapacity = 256;
+                    }
+                    // We are ok with this overflowing since the next statement will deal
+                    // with the cases where _capacity*2 overflows.
+                    if (newCapacity < Bridge.Int.mul(this._capacity, 2)) {
+                        newCapacity = Bridge.Int.mul(this._capacity, 2);
+                    }
+                    // We want to expand the array up to Array.MaxArrayLengthOneDimensional
+                    // And we want to give the user the value that they asked for
+                    if ((((Bridge.Int.mul(this._capacity, 2))) >>> 0) > 2147483591) {
+                        newCapacity = value > 2147483591 ? value : 2147483591;
+                    }
+
+                    this.Capacity = newCapacity;
+                    return true;
+                }
+                return false;
+            },
+            Flush: function () { },
+            GetBuffer: function () {
+                if (!this._exposable) {
+                    throw new System.Exception("UnauthorizedAccess_MemStreamBuffer");
+                }
+                return this._buffer;
+            },
+            TryGetBuffer: function (buffer) {
+                if (!this._exposable) {
+                    buffer.v = Bridge.getDefaultValue(System.ArraySegment);
+                    return false;
+                }
+
+                buffer.v = new System.ArraySegment(this._buffer, this._origin, (((this._length - this._origin) | 0)));
+                return true;
+            },
+            InternalGetBuffer: function () {
+                return this._buffer;
+            },
+            InternalGetPosition: function () {
+                if (!this._isOpen) {
+                    System.IO.__Error.StreamIsClosed();
+                }
+                return this._position;
+            },
+            InternalReadInt32: function () {
+                if (!this._isOpen) {
+                    System.IO.__Error.StreamIsClosed();
+                }
+
+                var pos = ((this._position = (this._position + 4) | 0)); // use temp to avoid ----
+                if (pos > this._length) {
+                    this._position = this._length;
+                    System.IO.__Error.EndOfFile();
+                }
+                return this._buffer[System.Array.index(((pos - 4) | 0), this._buffer)] | this._buffer[System.Array.index(((pos - 3) | 0), this._buffer)] << 8 | this._buffer[System.Array.index(((pos - 2) | 0), this._buffer)] << 16 | this._buffer[System.Array.index(((pos - 1) | 0), this._buffer)] << 24;
+            },
+            InternalEmulateRead: function (count) {
+                if (!this._isOpen) {
+                    System.IO.__Error.StreamIsClosed();
+                }
+
+                var n = (this._length - this._position) | 0;
+                if (n > count) {
+                    n = count;
+                }
+                if (n < 0) {
+                    n = 0;
+                } // len is less than 2^31 -1.
+                this._position = (this._position + n) | 0;
+                return n;
+            },
+            Read: function (buffer, offset, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
+                }
+                if (offset < 0) {
+                    throw new System.ArgumentOutOfRangeException("offset", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (((buffer.length - offset) | 0) < count) {
+                    throw new System.ArgumentException("Argument_InvalidOffLen");
+                }
+
+                if (!this._isOpen) {
+                    System.IO.__Error.StreamIsClosed();
+                }
+
+                var n = (this._length - this._position) | 0;
+                if (n > count) {
+                    n = count;
+                }
+                if (n <= 0) {
+                    return 0;
+                } // len is less than 2^31 -1.
+
+                if (n <= 8) {
+                    var byteCount = n;
+                    while (((byteCount = (byteCount - 1) | 0)) >= 0) {
+                        buffer[System.Array.index(((offset + byteCount) | 0), buffer)] = this._buffer[System.Array.index(((this._position + byteCount) | 0), this._buffer)];
+                    }
+                } else {
+                    System.Array.copy(this._buffer, this._position, buffer, offset, n);
+                }
+                this._position = (this._position + n) | 0;
+
+                return n;
+            },
+            ReadByte: function () {
+                if (!this._isOpen) {
+                    System.IO.__Error.StreamIsClosed();
+                }
+
+                if (this._position >= this._length) {
+                    return -1;
+                }
+
+                return this._buffer[System.Array.index(Bridge.identity(this._position, (this._position = (this._position + 1) | 0)), this._buffer)];
+            },
+            Seek: function (offset, loc) {
+                if (!this._isOpen) {
+                    System.IO.__Error.StreamIsClosed();
+                }
+
+                if (offset.gt(System.Int64(System.IO.MemoryStream.MemStreamMaxLength))) {
+                    throw new System.ArgumentOutOfRangeException("offset", "ArgumentOutOfRange_StreamLength");
+                }
+                switch (loc) {
+                    case System.IO.SeekOrigin.Begin: 
+                        {
+                            var tempPosition = ((this._origin + System.Int64.clip32(offset)) | 0);
+                            if (offset.lt(System.Int64(0)) || tempPosition < this._origin) {
+                                throw new System.IO.IOException.$ctor1("IO.IO_SeekBeforeBegin");
+                            }
+                            this._position = tempPosition;
+                            break;
+                        }
+                    case System.IO.SeekOrigin.Current: 
+                        {
+                            var tempPosition1 = ((this._position + System.Int64.clip32(offset)) | 0);
+                            if (System.Int64(this._position).add(offset).lt(System.Int64(this._origin)) || tempPosition1 < this._origin) {
+                                throw new System.IO.IOException.$ctor1("IO.IO_SeekBeforeBegin");
+                            }
+                            this._position = tempPosition1;
+                            break;
+                        }
+                    case System.IO.SeekOrigin.End: 
+                        {
+                            var tempPosition2 = ((this._length + System.Int64.clip32(offset)) | 0);
+                            if (System.Int64(this._length).add(offset).lt(System.Int64(this._origin)) || tempPosition2 < this._origin) {
+                                throw new System.IO.IOException.$ctor1("IO.IO_SeekBeforeBegin");
+                            }
+                            this._position = tempPosition2;
+                            break;
+                        }
+                    default: 
+                        throw new System.ArgumentException("Argument_InvalidSeekOrigin");
+                }
+
+                return System.Int64(this._position);
+            },
+            SetLength: function (value) {
+                if (value.lt(System.Int64(0)) || value.gt(System.Int64(2147483647))) {
+                    throw new System.ArgumentOutOfRangeException("value", "ArgumentOutOfRange_StreamLength");
+                }
+                this.EnsureWriteable();
+
+                // Origin wasn't publicly exposed above. // Check parameter validation logic in this method if this fails.
+                if (value.gt(System.Int64((((2147483647 - this._origin) | 0))))) {
+                    throw new System.ArgumentOutOfRangeException("value", "ArgumentOutOfRange_StreamLength");
+                }
+
+                var newLength = (this._origin + System.Int64.clip32(value)) | 0;
+                var allocatedNewArray = this.EnsureCapacity(newLength);
+                if (!allocatedNewArray && newLength > this._length) {
+                    System.Array.fill(this._buffer, 0, this._length, ((newLength - this._length) | 0));
+                }
+                this._length = newLength;
+                if (this._position > newLength) {
+                    this._position = newLength;
+                }
+
+            },
+            ToArray: function () {
+                var copy = System.Array.init(((this._length - this._origin) | 0), 0, System.Byte);
+                System.Array.copy(this._buffer, this._origin, copy, 0, ((this._length - this._origin) | 0));
+                return copy;
+            },
+            Write: function (buffer, offset, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
+                }
+                if (offset < 0) {
+                    throw new System.ArgumentOutOfRangeException("offset", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (((buffer.length - offset) | 0) < count) {
+                    throw new System.ArgumentException("Argument_InvalidOffLen");
+                }
+
+                if (!this._isOpen) {
+                    System.IO.__Error.StreamIsClosed();
+                }
+                this.EnsureWriteable();
+
+                var i = (this._position + count) | 0;
+                // Check for overflow
+                if (i < 0) {
+                    throw new System.IO.IOException.$ctor1("IO.IO_StreamTooLong");
+                }
+
+                if (i > this._length) {
+                    var mustZero = this._position > this._length;
+                    if (i > this._capacity) {
+                        var allocatedNewArray = this.EnsureCapacity(i);
+                        if (allocatedNewArray) {
+                            mustZero = false;
+                        }
+                    }
+                    if (mustZero) {
+                        System.Array.fill(this._buffer, 0, this._length, ((i - this._length) | 0));
+                    }
+                    this._length = i;
+                }
+                if ((count <= 8) && (!Bridge.referenceEquals(buffer, this._buffer))) {
+                    var byteCount = count;
+                    while (((byteCount = (byteCount - 1) | 0)) >= 0) {
+                        this._buffer[System.Array.index(((this._position + byteCount) | 0), this._buffer)] = buffer[System.Array.index(((offset + byteCount) | 0), buffer)];
+                    }
+                } else {
+                    System.Array.copy(buffer, offset, this._buffer, this._position, count);
+                }
+                this._position = i;
+
+            },
+            WriteByte: function (value) {
+                if (!this._isOpen) {
+                    System.IO.__Error.StreamIsClosed();
+                }
+                this.EnsureWriteable();
+
+                if (this._position >= this._length) {
+                    var newLength = (this._position + 1) | 0;
+                    var mustZero = this._position > this._length;
+                    if (newLength >= this._capacity) {
+                        var allocatedNewArray = this.EnsureCapacity(newLength);
+                        if (allocatedNewArray) {
+                            mustZero = false;
+                        }
+                    }
+                    if (mustZero) {
+                        System.Array.fill(this._buffer, 0, this._length, ((this._position - this._length) | 0));
+                    }
+                    this._length = newLength;
+                }
+                this._buffer[System.Array.index(Bridge.identity(this._position, (this._position = (this._position + 1) | 0)), this._buffer)] = value;
+
+            },
+            WriteTo: function (stream) {
+                if (stream == null) {
+                    throw new System.ArgumentNullException("stream", "ArgumentNull_Stream");
+                }
+
+                if (!this._isOpen) {
+                    System.IO.__Error.StreamIsClosed();
+                }
+                stream.Write(this._buffer, this._origin, ((this._length - this._origin) | 0));
+            }
+        }
+    });
+
+    // @source ReadLinesIterator.js
+
+    Bridge.define("System.IO.ReadLinesIterator", {
+        inherits: [System.IO.Iterator$1(System.String)],
+        statics: {
+            methods: {
+                CreateIterator: function (path, encoding) {
+                    return System.IO.ReadLinesIterator.CreateIterator$1(path, encoding, null);
+                },
+                CreateIterator$1: function (path, encoding, reader) {
+                    return new System.IO.ReadLinesIterator(path, encoding, reader || new System.IO.StreamReader.$ctor9(path, encoding));
+                }
+            }
+        },
+        fields: {
+            _path: null,
+            _encoding: null,
+            _reader: null
+        },
+        alias: ["MoveNext", "System$Collections$IEnumerator$moveNext"],
+        ctors: {
+            ctor: function (path, encoding, reader) {
+                this.$initialize();
+                System.IO.Iterator$1(System.String).ctor.call(this);
+
+                this._path = path;
+                this._encoding = encoding;
+                this._reader = reader;
+            }
+        },
+        methods: {
+            MoveNext: function () {
+                if (this._reader != null) {
+                    this.current = this._reader.ReadLine();
+                    if (this.current != null) {
+                        return true;
+                    }
+
+                    // To maintain 4.0 behavior we Dispose
+                    // after reading to the end of the reader.
+                    this.Dispose();
+                }
+
+                return false;
+            },
+            Clone: function () {
+                // NOTE: To maintain the same behavior with the previous yield-based
+                // iterator in 4.0, we have all the IEnumerator<T> instances share the same
+                // underlying reader. If we have already been disposed, _reader will be null,
+                // which will cause CreateIterator to simply new up a new instance to start up
+                // a new iteration. Dev10 Bugs 904764 has been filed to fix this in next side-
+                // by-side release.
+                return System.IO.ReadLinesIterator.CreateIterator$1(this._path, this._encoding, this._reader);
+            },
+            Dispose$1: function (disposing) {
+                try {
+                    if (disposing) {
+                        if (this._reader != null) {
+                            this._reader.Dispose();
+                        }
+                    }
+                }
+                finally {
+                    this._reader = null;
+                    System.IO.Iterator$1(System.String).prototype.Dispose$1.call(this, disposing);
+                }
+            }
+        }
+    });
+
+    // @source SeekOrigin.js
+
+    Bridge.define("System.IO.SeekOrigin", {
+        $kind: "enum",
+        statics: {
+            fields: {
+                Begin: 0,
+                Current: 1,
+                End: 2
+            }
+        }
+    });
+
+    // @source NullStream.js
+
+    Bridge.define("System.IO.Stream.NullStream", {
+        inherits: [System.IO.Stream],
+        $kind: "nested class",
+        props: {
+            CanRead: {
+                get: function () {
+                    return true;
+                }
+            },
+            CanWrite: {
+                get: function () {
+                    return true;
+                }
+            },
+            CanSeek: {
+                get: function () {
+                    return true;
+                }
+            },
+            Length: {
+                get: function () {
+                    return System.Int64(0);
+                }
+            },
+            Position: {
+                get: function () {
+                    return System.Int64(0);
+                },
+                set: function (value) { }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                System.IO.Stream.ctor.call(this);
+            }
+        },
+        methods: {
+            Dispose$1: function (disposing) {
+                // Do nothing - we don't want NullStream singleton (static) to be closable
+            },
+            Flush: function () { },
+            BeginRead: function (buffer, offset, count, callback, state) {
+                if (!this.CanRead) {
+                    System.IO.__Error.ReadNotSupported();
+                }
+
+                return this.BlockingBeginRead(buffer, offset, count, callback, state);
+            },
+            EndRead: function (asyncResult) {
+                if (asyncResult == null) {
+                    throw new System.ArgumentNullException("asyncResult");
+                }
+
+                return System.IO.Stream.BlockingEndRead(asyncResult);
+            },
+            BeginWrite: function (buffer, offset, count, callback, state) {
+                if (!this.CanWrite) {
+                    System.IO.__Error.WriteNotSupported();
+                }
+
+                return this.BlockingBeginWrite(buffer, offset, count, callback, state);
+            },
+            EndWrite: function (asyncResult) {
+                if (asyncResult == null) {
+                    throw new System.ArgumentNullException("asyncResult");
+                }
+
+                System.IO.Stream.BlockingEndWrite(asyncResult);
+            },
+            Read: function (buffer, offset, count) {
+                return 0;
+            },
+            ReadByte: function () {
+                return -1;
+            },
+            Write: function (buffer, offset, count) { },
+            WriteByte: function (value) { },
+            Seek: function (offset, origin) {
+                return System.Int64(0);
+            },
+            SetLength: function (length) { }
+        }
+    });
+
+    // @source SynchronousAsyncResult.js
+
+    Bridge.define("System.IO.Stream.SynchronousAsyncResult", {
+        inherits: [System.IAsyncResult],
+        $kind: "nested class",
+        statics: {
+            methods: {
+                EndRead: function (asyncResult) {
+
+                    var ar = Bridge.as(asyncResult, System.IO.Stream.SynchronousAsyncResult);
+                    if (ar == null || ar._isWrite) {
+                        System.IO.__Error.WrongAsyncResult();
+                    }
+
+                    if (ar._endXxxCalled) {
+                        System.IO.__Error.EndReadCalledTwice();
+                    }
+
+                    ar._endXxxCalled = true;
+
+                    ar.ThrowIfError();
+                    return ar._bytesRead;
+                },
+                EndWrite: function (asyncResult) {
+
+                    var ar = Bridge.as(asyncResult, System.IO.Stream.SynchronousAsyncResult);
+                    if (ar == null || !ar._isWrite) {
+                        System.IO.__Error.WrongAsyncResult();
+                    }
+
+                    if (ar._endXxxCalled) {
+                        System.IO.__Error.EndWriteCalledTwice();
+                    }
+
+                    ar._endXxxCalled = true;
+
+                    ar.ThrowIfError();
+                }
+            }
+        },
+        fields: {
+            _stateObject: null,
+            _isWrite: false,
+            _exceptionInfo: null,
+            _endXxxCalled: false,
+            _bytesRead: 0
+        },
+        props: {
+            IsCompleted: {
+                get: function () {
+                    return true;
+                }
+            },
+            AsyncState: {
+                get: function () {
+                    return this._stateObject;
+                }
+            },
+            CompletedSynchronously: {
+                get: function () {
+                    return true;
+                }
+            }
+        },
+        alias: [
+            "IsCompleted", "System$IAsyncResult$IsCompleted",
+            "AsyncState", "System$IAsyncResult$AsyncState",
+            "CompletedSynchronously", "System$IAsyncResult$CompletedSynchronously"
+        ],
+        ctors: {
+            $ctor1: function (bytesRead, asyncStateObject) {
+                this.$initialize();
+                this._bytesRead = bytesRead;
+                this._stateObject = asyncStateObject;
+                //_isWrite = false;
+            },
+            $ctor2: function (asyncStateObject) {
+                this.$initialize();
+                this._stateObject = asyncStateObject;
+                this._isWrite = true;
+            },
+            ctor: function (ex, asyncStateObject, isWrite) {
+                this.$initialize();
+                this._exceptionInfo = ex;
+                this._stateObject = asyncStateObject;
+                this._isWrite = isWrite;
+            }
+        },
+        methods: {
+            ThrowIfError: function () {
+                if (this._exceptionInfo != null) {
+                    throw this._exceptionInfo;
+                }
+            }
+        }
+    });
+
+    // @source TextReader.js
+
+    Bridge.define("System.IO.TextReader", {
+        inherits: [System.IDisposable],
+        statics: {
+            fields: {
+                Null: null
+            },
+            ctors: {
+                init: function () {
+                    this.Null = new System.IO.TextReader.NullTextReader();
+                }
+            },
+            methods: {
+                Synchronized: function (reader) {
+                    if (reader == null) {
+                        throw new System.ArgumentNullException("reader");
+                    }
+
+                    return reader;
+                }
+            }
+        },
+        alias: ["Dispose", "System$IDisposable$dispose"],
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+            }
+        },
+        methods: {
+            Close: function () {
+                this.Dispose$1(true);
+            },
+            Dispose: function () {
+                this.Dispose$1(true);
+            },
+            Dispose$1: function (disposing) { },
+            Peek: function () {
+
+                return -1;
+            },
+            Read: function () {
+                return -1;
+            },
+            Read$1: function (buffer, index, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer");
+                }
+                if (index < 0) {
+                    throw new System.ArgumentOutOfRangeException("index");
+                }
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count");
+                }
+                if (((buffer.length - index) | 0) < count) {
+                    throw new System.ArgumentException();
+                }
+
+                var n = 0;
+                do {
+                    var ch = this.Read();
+                    if (ch === -1) {
+                        break;
+                    }
+                    buffer[System.Array.index(((index + Bridge.identity(n, (n = (n + 1) | 0))) | 0), buffer)] = ch & 65535;
+                } while (n < count);
+                return n;
+            },
+            ReadToEndAsync: function () {
+                return System.Threading.Tasks.Task.fromResult(this.ReadToEnd(), System.String);
+            },
+            ReadToEnd: function () {
+
+                var chars = System.Array.init(4096, 0, System.Char);
+                var len;
+                var sb = new System.Text.StringBuilder("", 4096);
+                while (((len = this.Read$1(chars, 0, chars.length))) !== 0) {
+                    sb.append(System.String.fromCharArray(chars, 0, len));
+                }
+                return sb.toString();
+            },
+            ReadBlock: function (buffer, index, count) {
+
+                var i, n = 0;
+                do {
+                    n = (n + ((i = this.Read$1(buffer, ((index + n) | 0), ((count - n) | 0))))) | 0;
+                } while (i > 0 && n < count);
+                return n;
+            },
+            ReadLine: function () {
+                var sb = new System.Text.StringBuilder();
+                while (true) {
+                    var ch = this.Read();
+                    if (ch === -1) {
+                        break;
+                    }
+                    if (ch === 13 || ch === 10) {
+                        if (ch === 13 && this.Peek() === 10) {
+                            this.Read();
+                        }
+                        return sb.toString();
+                    }
+                    sb.append(String.fromCharCode((ch & 65535)));
+                }
+                if (sb.getLength() > 0) {
+                    return sb.toString();
+                }
+                return null;
+            }
+        }
+    });
+
+    // @source StreamReader.js
+
+    Bridge.define("System.IO.StreamReader", {
+        inherits: [System.IO.TextReader],
+        statics: {
+            fields: {
+                Null: null,
+                DefaultFileStreamBufferSize: 0,
+                MinBufferSize: 0
+            },
+            props: {
+                DefaultBufferSize: {
+                    get: function () {
+                        return 1024;
+                    }
+                }
+            },
+            ctors: {
+                init: function () {
+                    this.Null = new System.IO.StreamReader.NullStreamReader();
+                    this.DefaultFileStreamBufferSize = 4096;
+                    this.MinBufferSize = 128;
+                }
+            }
+        },
+        fields: {
+            stream: null,
+            encoding: null,
+            byteBuffer: null,
+            charBuffer: null,
+            charPos: 0,
+            charLen: 0,
+            byteLen: 0,
+            bytePos: 0,
+            _maxCharsPerBuffer: 0,
+            _detectEncoding: false,
+            _isBlocked: false,
+            _closable: false
+        },
+        props: {
+            CurrentEncoding: {
+                get: function () {
+                    return this.encoding;
+                }
+            },
+            BaseStream: {
+                get: function () {
+                    return this.stream;
+                }
+            },
+            LeaveOpen: {
+                get: function () {
+                    return !this._closable;
+                }
+            },
+            EndOfStream: {
+                get: function () {
+                    if (this.stream == null) {
+                        System.IO.__Error.ReaderClosed();
+                    }
+
+
+                    if (this.charPos < this.charLen) {
+                        return false;
+                    }
+
+                    // This may block on pipes!
+                    var numRead = this.ReadBuffer();
+                    return numRead === 0;
+                }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                System.IO.TextReader.ctor.call(this);
+            },
+            $ctor1: function (stream) {
+                System.IO.StreamReader.$ctor2.call(this, stream, true);
+            },
+            $ctor2: function (stream, detectEncodingFromByteOrderMarks) {
+                System.IO.StreamReader.$ctor6.call(this, stream, System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks, System.IO.StreamReader.DefaultBufferSize, false);
+            },
+            $ctor3: function (stream, encoding) {
+                System.IO.StreamReader.$ctor6.call(this, stream, encoding, true, System.IO.StreamReader.DefaultBufferSize, false);
+            },
+            $ctor4: function (stream, encoding, detectEncodingFromByteOrderMarks) {
+                System.IO.StreamReader.$ctor6.call(this, stream, encoding, detectEncodingFromByteOrderMarks, System.IO.StreamReader.DefaultBufferSize, false);
+            },
+            $ctor5: function (stream, encoding, detectEncodingFromByteOrderMarks, bufferSize) {
+                System.IO.StreamReader.$ctor6.call(this, stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, false);
+            },
+            $ctor6: function (stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen) {
+                this.$initialize();
+                System.IO.TextReader.ctor.call(this);
+                if (stream == null || encoding == null) {
+                    throw new System.ArgumentNullException((stream == null ? "stream" : "encoding"));
+                }
+                if (!stream.CanRead) {
+                    throw new System.ArgumentException();
+                }
+                if (bufferSize <= 0) {
+                    throw new System.ArgumentOutOfRangeException("bufferSize");
+                }
+
+                this.Init$1(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen);
+            },
+            $ctor7: function (path) {
+                System.IO.StreamReader.$ctor8.call(this, path, true);
+            },
+            $ctor8: function (path, detectEncodingFromByteOrderMarks) {
+                System.IO.StreamReader.$ctor11.call(this, path, System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks, System.IO.StreamReader.DefaultBufferSize);
+            },
+            $ctor9: function (path, encoding) {
+                System.IO.StreamReader.$ctor11.call(this, path, encoding, true, System.IO.StreamReader.DefaultBufferSize);
+            },
+            $ctor10: function (path, encoding, detectEncodingFromByteOrderMarks) {
+                System.IO.StreamReader.$ctor11.call(this, path, encoding, detectEncodingFromByteOrderMarks, System.IO.StreamReader.DefaultBufferSize);
+            },
+            $ctor11: function (path, encoding, detectEncodingFromByteOrderMarks, bufferSize) {
+                System.IO.StreamReader.$ctor12.call(this, path, encoding, detectEncodingFromByteOrderMarks, bufferSize, true);
+            },
+            $ctor12: function (path, encoding, detectEncodingFromByteOrderMarks, bufferSize, checkHost) {
+                this.$initialize();
+                System.IO.TextReader.ctor.call(this);
+                // Don't open a Stream before checking for invalid arguments,
+                // or we'll create a FileStream on disk and we won't close it until
+                // the finalizer runs, causing problems for applications.
+                if (path == null || encoding == null) {
+                    throw new System.ArgumentNullException((path == null ? "path" : "encoding"));
+                }
+                if (path.length === 0) {
+                    throw new System.ArgumentException();
+                }
+                if (bufferSize <= 0) {
+                    throw new System.ArgumentOutOfRangeException("bufferSize");
+                }
+
+                var stream = new System.IO.FileStream.$ctor1(path, System.IO.FileMode.Open);
+                this.Init$1(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, false);
+            }
+        },
+        methods: {
+            Init$1: function (stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen) {
+                this.stream = stream;
+                this.encoding = encoding;
+                if (bufferSize < System.IO.StreamReader.MinBufferSize) {
+                    bufferSize = System.IO.StreamReader.MinBufferSize;
+                }
+                this.byteBuffer = System.Array.init(bufferSize, 0, System.Byte);
+                this._maxCharsPerBuffer = encoding.GetMaxCharCount(bufferSize);
+                this.charBuffer = System.Array.init(this._maxCharsPerBuffer, 0, System.Char);
+                this.byteLen = 0;
+                this.bytePos = 0;
+                this._detectEncoding = detectEncodingFromByteOrderMarks;
+                this._isBlocked = false;
+                this._closable = !leaveOpen;
+            },
+            Init: function (stream) {
+                this.stream = stream;
+                this._closable = true;
+            },
+            Close: function () {
+                this.Dispose$1(true);
+            },
+            Dispose$1: function (disposing) {
+                // Dispose of our resources if this StreamReader is closable.
+                // Note that Console.In should be left open.
+                try {
+                    // Note that Stream.Close() can potentially throw here. So we need to
+                    // ensure cleaning up internal resources, inside the finally block.
+                    if (!this.LeaveOpen && disposing && (this.stream != null)) {
+                        this.stream.Close();
+                    }
+                }
+                finally {
+                    if (!this.LeaveOpen && (this.stream != null)) {
+                        this.stream = null;
+                        this.encoding = null;
+                        this.byteBuffer = null;
+                        this.charBuffer = null;
+                        this.charPos = 0;
+                        this.charLen = 0;
+                        System.IO.TextReader.prototype.Dispose$1.call(this, disposing);
+                    }
+                }
+            },
+            DiscardBufferedData: function () {
+
+                this.byteLen = 0;
+                this.charLen = 0;
+                this.charPos = 0;
+                this._isBlocked = false;
+            },
+            Peek: function () {
+                if (this.stream == null) {
+                    System.IO.__Error.ReaderClosed();
+                }
+
+                if (this.charPos === this.charLen) {
+                    if (this._isBlocked || this.ReadBuffer() === 0) {
+                        return -1;
+                    }
+                }
+                return this.charBuffer[System.Array.index(this.charPos, this.charBuffer)];
+            },
+            Read: function () {
+                if (this.stream == null) {
+                    System.IO.__Error.ReaderClosed();
+                }
+
+
+                if (this.charPos === this.charLen) {
+                    if (this.ReadBuffer() === 0) {
+                        return -1;
+                    }
+                }
+                var result = this.charBuffer[System.Array.index(this.charPos, this.charBuffer)];
+                this.charPos = (this.charPos + 1) | 0;
+                return result;
+            },
+            Read$1: function (buffer, index, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer");
+                }
+                if (index < 0 || count < 0) {
+                    throw new System.ArgumentOutOfRangeException((index < 0 ? "index" : "count"));
+                }
+                if (((buffer.length - index) | 0) < count) {
+                    throw new System.ArgumentException();
+                }
+
+                if (this.stream == null) {
+                    System.IO.__Error.ReaderClosed();
+                }
+
+
+                var charsRead = 0;
+                // As a perf optimization, if we had exactly one buffer's worth of
+                // data read in, let's try writing directly to the user's buffer.
+                var readToUserBuffer = { v : false };
+                while (count > 0) {
+                    var n = (this.charLen - this.charPos) | 0;
+                    if (n === 0) {
+                        n = this.ReadBuffer$1(buffer, ((index + charsRead) | 0), count, readToUserBuffer);
+                    }
+                    if (n === 0) {
+                        break;
+                    } // We're at EOF
+                    if (n > count) {
+                        n = count;
+                    }
+                    if (!readToUserBuffer.v) {
+                        System.Array.copy(this.charBuffer, this.charPos, buffer, (((index + charsRead) | 0)), n);
+                        this.charPos = (this.charPos + n) | 0;
+                    }
+                    charsRead = (charsRead + n) | 0;
+                    count = (count - n) | 0;
+                    // This function shouldn't block for an indefinite amount of time,
+                    // or reading from a network stream won't work right.  If we got
+                    // fewer bytes than we requested, then we want to break right here.
+                    if (this._isBlocked) {
+                        break;
+                    }
+                }
+
+                return charsRead;
+            },
+            ReadToEndAsync: function () {
+                var $step = 0,
+                    $task1, 
+                    $task2, 
+                    $taskResult2, 
+                    $jumpFromFinally, 
+                    $tcs = new System.Threading.Tasks.TaskCompletionSource(), 
+                    $returnValue, 
+                    $async_e, 
+                    $asyncBody = Bridge.fn.bind(this, function () {
+                        try {
+                            for (;;) {
+                                $step = System.Array.min([0,1,2,3,4], $step);
+                                switch ($step) {
+                                    case 0: {
+                                        if (Bridge.is(this.stream, System.IO.FileStream)) {
+                                            $step = 1;
+                                            continue;
+                                        } 
+                                        $step = 3;
+                                        continue;
+                                    }
+                                    case 1: {
+                                        $task1 = this.stream.EnsureBufferAsync();
+                                        $step = 2;
+                                        $task1.continueWith($asyncBody);
+                                        return;
+                                    }
+                                    case 2: {
+                                        $task1.getAwaitedResult();
+                                        $step = 3;
+                                        continue;
+                                    }
+                                    case 3: {
+                                        $task2 = System.IO.TextReader.prototype.ReadToEndAsync.call(this);
+                                        $step = 4;
+                                        $task2.continueWith($asyncBody);
+                                        return;
+                                    }
+                                    case 4: {
+                                        $taskResult2 = $task2.getAwaitedResult();
+                                        $tcs.setResult($taskResult2);
+                                        return;
+                                    }
+                                    default: {
+                                        $tcs.setResult(null);
+                                        return;
+                                    }
+                                }
+                            }
+                        } catch($async_e1) {
+                            $async_e = System.Exception.create($async_e1);
+                            $tcs.setException($async_e);
+                        }
+                    }, arguments);
+
+                $asyncBody();
+                return $tcs.task;
+            },
+            ReadToEnd: function () {
+                if (this.stream == null) {
+                    System.IO.__Error.ReaderClosed();
+                }
+
+                // Call ReadBuffer, then pull data out of charBuffer.
+                var sb = new System.Text.StringBuilder("", ((this.charLen - this.charPos) | 0));
+                do {
+                    sb.append(System.String.fromCharArray(this.charBuffer, this.charPos, ((this.charLen - this.charPos) | 0)));
+                    this.charPos = this.charLen; // Note we consumed these characters
+                    this.ReadBuffer();
+                } while (this.charLen > 0);
+                return sb.toString();
+            },
+            ReadBlock: function (buffer, index, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer");
+                }
+                if (index < 0 || count < 0) {
+                    throw new System.ArgumentOutOfRangeException((index < 0 ? "index" : "count"));
+                }
+                if (((buffer.length - index) | 0) < count) {
+                    throw new System.ArgumentException();
+                }
+
+                if (this.stream == null) {
+                    System.IO.__Error.ReaderClosed();
+                }
+
+                return System.IO.TextReader.prototype.ReadBlock.call(this, buffer, index, count);
+            },
+            CompressBuffer: function (n) {
+                System.Array.copy(this.byteBuffer, n, this.byteBuffer, 0, ((this.byteLen - n) | 0));
+                this.byteLen = (this.byteLen - n) | 0;
+            },
+            DetectEncoding: function () {
+                if (this.byteLen < 2) {
+                    return;
+                }
+                this._detectEncoding = false;
+                var changedEncoding = false;
+                if (this.byteBuffer[System.Array.index(0, this.byteBuffer)] === 254 && this.byteBuffer[System.Array.index(1, this.byteBuffer)] === 255) {
+                    // Big Endian Unicode
+
+                    this.encoding = new System.Text.UnicodeEncoding.$ctor1(true, true);
+                    this.CompressBuffer(2);
+                    changedEncoding = true;
+                } else if (this.byteBuffer[System.Array.index(0, this.byteBuffer)] === 255 && this.byteBuffer[System.Array.index(1, this.byteBuffer)] === 254) {
+                    // Little Endian Unicode, or possibly little endian UTF32
+                    if (this.byteLen < 4 || this.byteBuffer[System.Array.index(2, this.byteBuffer)] !== 0 || this.byteBuffer[System.Array.index(3, this.byteBuffer)] !== 0) {
+                        this.encoding = new System.Text.UnicodeEncoding.$ctor1(false, true);
+                        this.CompressBuffer(2);
+                        changedEncoding = true;
+                    } else {
+                        this.encoding = new System.Text.UTF32Encoding.$ctor1(false, true);
+                        this.CompressBuffer(4);
+                        changedEncoding = true;
+                    }
+                } else if (this.byteLen >= 3 && this.byteBuffer[System.Array.index(0, this.byteBuffer)] === 239 && this.byteBuffer[System.Array.index(1, this.byteBuffer)] === 187 && this.byteBuffer[System.Array.index(2, this.byteBuffer)] === 191) {
+                    // UTF-8
+                    this.encoding = System.Text.Encoding.UTF8;
+                    this.CompressBuffer(3);
+                    changedEncoding = true;
+                } else if (this.byteLen >= 4 && this.byteBuffer[System.Array.index(0, this.byteBuffer)] === 0 && this.byteBuffer[System.Array.index(1, this.byteBuffer)] === 0 && this.byteBuffer[System.Array.index(2, this.byteBuffer)] === 254 && this.byteBuffer[System.Array.index(3, this.byteBuffer)] === 255) {
+                    // Big Endian UTF32
+                    this.encoding = new System.Text.UTF32Encoding.$ctor1(true, true);
+                    this.CompressBuffer(4);
+                    changedEncoding = true;
+                } else if (this.byteLen === 2) {
+                    this._detectEncoding = true;
+                }
+                // Note: in the future, if we change this algorithm significantly,
+                // we can support checking for the preamble of the given encoding.
+
+                if (changedEncoding) {
+                    this._maxCharsPerBuffer = this.encoding.GetMaxCharCount(this.byteBuffer.length);
+                    this.charBuffer = System.Array.init(this._maxCharsPerBuffer, 0, System.Char);
+                }
+            },
+            IsPreamble: function () {
+                return false;
+            },
+            ReadBuffer: function () {
+                this.charLen = 0;
+                this.charPos = 0;
+
+                this.byteLen = 0;
+                do {
+                    this.byteLen = this.stream.Read(this.byteBuffer, 0, this.byteBuffer.length);
+
+                    if (this.byteLen === 0) {
+                        return this.charLen;
+                    }
+
+                    // _isBlocked == whether we read fewer bytes than we asked for.
+                    // Note we must check it here because CompressBuffer or
+                    // DetectEncoding will change byteLen.
+                    this._isBlocked = (this.byteLen < this.byteBuffer.length);
+
+                    // Check for preamble before detect encoding. This is not to override the
+                    // user suppplied Encoding for the one we implicitly detect. The user could
+                    // customize the encoding which we will loose, such as ThrowOnError on UTF8
+                    if (this.IsPreamble()) {
+                        continue;
+                    }
+
+                    // If we're supposed to detect the encoding and haven't done so yet,
+                    // do it.  Note this may need to be called more than once.
+                    if (this._detectEncoding && this.byteLen >= 2) {
+                        this.DetectEncoding();
+                    }
+
+                    this.charLen = (this.charLen + (this.encoding.GetChars$2(this.byteBuffer, 0, this.byteLen, this.charBuffer, this.charLen))) | 0;
+                } while (this.charLen === 0);
+                //Console.WriteLine("ReadBuffer called.  chars: "+charLen);
+                return this.charLen;
+            },
+            ReadBuffer$1: function (userBuffer, userOffset, desiredChars, readToUserBuffer) {
+                this.charLen = 0;
+                this.charPos = 0;
+
+                this.byteLen = 0;
+
+                var charsRead = 0;
+
+                // As a perf optimization, we can decode characters DIRECTLY into a
+                // user's char[].  We absolutely must not write more characters
+                // into the user's buffer than they asked for.  Calculating
+                // encoding.GetMaxCharCount(byteLen) each time is potentially very
+                // expensive - instead, cache the number of chars a full buffer's
+                // worth of data may produce.  Yes, this makes the perf optimization
+                // less aggressive, in that all reads that asked for fewer than AND
+                // returned fewer than _maxCharsPerBuffer chars won't get the user
+                // buffer optimization.  This affects reads where the end of the
+                // Stream comes in the middle somewhere, and when you ask for
+                // fewer chars than your buffer could produce.
+                readToUserBuffer.v = desiredChars >= this._maxCharsPerBuffer;
+
+                do {
+
+
+                    this.byteLen = this.stream.Read(this.byteBuffer, 0, this.byteBuffer.length);
+
+
+                    if (this.byteLen === 0) {
+                        break;
+                    }
+
+                    // _isBlocked == whether we read fewer bytes than we asked for.
+                    // Note we must check it here because CompressBuffer or
+                    // DetectEncoding will change byteLen.
+                    this._isBlocked = (this.byteLen < this.byteBuffer.length);
+
+                    // Check for preamble before detect encoding. This is not to override the
+                    // user suppplied Encoding for the one we implicitly detect. The user could
+                    // customize the encoding which we will loose, such as ThrowOnError on UTF8
+                    // Note: we don't need to recompute readToUserBuffer optimization as IsPreamble
+                    // doesn't change the encoding or affect _maxCharsPerBuffer
+                    if (this.IsPreamble()) {
+                        continue;
+                    }
+
+                    // On the first call to ReadBuffer, if we're supposed to detect the encoding, do it.
+                    if (this._detectEncoding && this.byteLen >= 2) {
+                        this.DetectEncoding();
+                        // DetectEncoding changes some buffer state.  Recompute this.
+                        readToUserBuffer.v = desiredChars >= this._maxCharsPerBuffer;
+                    }
+
+                    this.charPos = 0;
+                    if (readToUserBuffer.v) {
+                        charsRead = (charsRead + (this.encoding.GetChars$2(this.byteBuffer, 0, this.byteLen, userBuffer, ((userOffset + charsRead) | 0)))) | 0;
+                        this.charLen = 0; // StreamReader's buffer is empty.
+                    } else {
+                        charsRead = this.encoding.GetChars$2(this.byteBuffer, 0, this.byteLen, this.charBuffer, charsRead);
+                        this.charLen = (this.charLen + charsRead) | 0; // Number of chars in StreamReader's buffer.
+                    }
+                } while (charsRead === 0);
+
+                this._isBlocked = !!(this._isBlocked & charsRead < desiredChars);
+
+                //Console.WriteLine("ReadBuffer: charsRead: "+charsRead+"  readToUserBuffer: "+readToUserBuffer);
+                return charsRead;
+            },
+            ReadLine: function () {
+                if (this.stream == null) {
+                    System.IO.__Error.ReaderClosed();
+                }
+
+                if (this.charPos === this.charLen) {
+                    if (this.ReadBuffer() === 0) {
+                        return null;
+                    }
+                }
+
+                var sb = null;
+                do {
+                    var i = this.charPos;
+                    do {
+                        var ch = this.charBuffer[System.Array.index(i, this.charBuffer)];
+                        // Note the following common line feed chars:
+                        // \n - UNIX   \r\n - DOS   \r - Mac
+                        if (ch === 13 || ch === 10) {
+                            var s;
+                            if (sb != null) {
+                                sb.append(System.String.fromCharArray(this.charBuffer, this.charPos, ((i - this.charPos) | 0)));
+                                s = sb.toString();
+                            } else {
+                                s = System.String.fromCharArray(this.charBuffer, this.charPos, ((i - this.charPos) | 0));
+                            }
+                            this.charPos = (i + 1) | 0;
+                            if (ch === 13 && (this.charPos < this.charLen || this.ReadBuffer() > 0)) {
+                                if (this.charBuffer[System.Array.index(this.charPos, this.charBuffer)] === 10) {
+                                    this.charPos = (this.charPos + 1) | 0;
+                                }
+                            }
+                            return s;
+                        }
+                        i = (i + 1) | 0;
+                    } while (i < this.charLen);
+                    i = (this.charLen - this.charPos) | 0;
+                    if (sb == null) {
+                        sb = new System.Text.StringBuilder("", ((i + 80) | 0));
+                    }
+                    sb.append(System.String.fromCharArray(this.charBuffer, this.charPos, i));
+                } while (this.ReadBuffer() > 0);
+                return sb.toString();
+            }
+        }
+    });
+
+    // @source NullStreamReader.js
+
+    Bridge.define("System.IO.StreamReader.NullStreamReader", {
+        inherits: [System.IO.StreamReader],
+        $kind: "nested class",
+        props: {
+            BaseStream: {
+                get: function () {
+                    return System.IO.Stream.Null;
+                }
+            },
+            CurrentEncoding: {
+                get: function () {
+                    return System.Text.Encoding.Unicode;
+                }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                System.IO.StreamReader.ctor.call(this);
+                this.Init(System.IO.Stream.Null);
+            }
+        },
+        methods: {
+            Dispose$1: function (disposing) {
+                // Do nothing - this is essentially unclosable.
+            },
+            Peek: function () {
+                return -1;
+            },
+            Read: function () {
+                return -1;
+            },
+            Read$1: function (buffer, index, count) {
+                return 0;
+            },
+            ReadLine: function () {
+                return null;
+            },
+            ReadToEnd: function () {
+                return "";
+            },
+            ReadBuffer: function () {
+                return 0;
+            }
+        }
+    });
+
+    // @source TextWriter.js
+
+    Bridge.define("System.IO.TextWriter", {
+        inherits: [System.IDisposable],
+        statics: {
+            fields: {
+                Null: null,
+                InitialNewLine: null
+            },
+            ctors: {
+                init: function () {
+                    this.Null = new System.IO.TextWriter.NullTextWriter();
+                    this.InitialNewLine = "\r\n";
+                }
+            },
+            methods: {
+                Synchronized: function (writer) {
+                    if (writer == null) {
+                        throw new System.ArgumentNullException("writer");
+                    }
+
+                    return writer;
+                }
+            }
+        },
+        fields: {
+            CoreNewLine: null,
+            InternalFormatProvider: null
+        },
+        props: {
+            FormatProvider: {
+                get: function () {
+                    if (this.InternalFormatProvider == null) {
+                        return System.Globalization.CultureInfo.getCurrentCulture();
+                    } else {
+                        return this.InternalFormatProvider;
+                    }
+                }
+            },
+            NewLine: {
+                get: function () {
+                    return System.String.fromCharArray(this.CoreNewLine);
+                },
+                set: function (value) {
+                    if (value == null) {
+                        value = System.IO.TextWriter.InitialNewLine;
+                    }
+                    this.CoreNewLine = System.String.toCharArray(value, 0, value.length);
+                }
+            }
+        },
+        alias: ["Dispose", "System$IDisposable$dispose"],
+        ctors: {
+            init: function () {
+                this.CoreNewLine = System.Array.init([13, 10], System.Char);
+            },
+            ctor: function () {
+                this.$initialize();
+                this.InternalFormatProvider = null; // Ask for CurrentCulture all the time.
+            },
+            $ctor1: function (formatProvider) {
+                this.$initialize();
+                this.InternalFormatProvider = formatProvider;
+            }
+        },
+        methods: {
+            Close: function () {
+                this.Dispose$1(true);
+            },
+            Dispose$1: function (disposing) { },
+            Dispose: function () {
+                this.Dispose$1(true);
+            },
+            Flush: function () { },
+            Write$1: function (value) { },
+            Write$2: function (buffer) {
+                if (buffer != null) {
+                    this.Write$3(buffer, 0, buffer.length);
+                }
+            },
+            Write$3: function (buffer, index, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer");
+                }
+                if (index < 0) {
+                    throw new System.ArgumentOutOfRangeException("index");
+                }
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count");
+                }
+                if (((buffer.length - index) | 0) < count) {
+                    throw new System.ArgumentException();
+                }
+
+                for (var i = 0; i < count; i = (i + 1) | 0) {
+                    this.Write$1(buffer[System.Array.index(((index + i) | 0), buffer)]);
+                }
+            },
+            Write: function (value) {
+                this.Write$10(value ? System.Boolean.trueString : System.Boolean.falseString);
+            },
+            Write$6: function (value) {
+                this.Write$10(System.Int32.format(value, "G", this.FormatProvider));
+            },
+            Write$15: function (value) {
+                this.Write$10(System.UInt32.format(value, "G", this.FormatProvider));
+            },
+            Write$7: function (value) {
+                this.Write$10(value.format("G", this.FormatProvider));
+            },
+            Write$16: function (value) {
+                this.Write$10(value.format("G", this.FormatProvider));
+            },
+            Write$9: function (value) {
+                this.Write$10(System.Single.format(value, "G", this.FormatProvider));
+            },
+            Write$5: function (value) {
+                this.Write$10(System.Double.format(value, "G", this.FormatProvider));
+            },
+            Write$4: function (value) {
+                this.Write$10(Bridge.Int.format(value, "G", this.FormatProvider));
+            },
+            Write$10: function (value) {
+                if (value != null) {
+                    this.Write$2(System.String.toCharArray(value, 0, value.length));
+                }
+            },
+            Write$8: function (value) {
+                if (value != null) {
+                    var f = Bridge.as(value, System.IFormattable);
+                    if (f != null) {
+                        this.Write$10(Bridge.format(f, null, this.FormatProvider));
+                    } else {
+                        this.Write$10(Bridge.toString(value));
+                    }
+                }
+            },
+            Write$11: function (format, arg0) {
+                this.Write$10(System.String.formatProvider(this.FormatProvider, format, [arg0]));
+            },
+            Write$12: function (format, arg0, arg1) {
+                this.Write$10(System.String.formatProvider(this.FormatProvider, format, arg0, arg1));
+            },
+            Write$13: function (format, arg0, arg1, arg2) {
+                this.Write$10(System.String.formatProvider(this.FormatProvider, format, arg0, arg1, arg2));
+            },
+            Write$14: function (format, arg) {
+                if (arg === void 0) { arg = []; }
+                this.Write$10(System.String.formatProvider.apply(System.String, [this.FormatProvider, format].concat(arg)));
+            },
+            WriteLine: function () {
+                this.Write$2(this.CoreNewLine);
+            },
+            WriteLine$2: function (value) {
+                this.Write$1(value);
+                this.WriteLine();
+            },
+            WriteLine$3: function (buffer) {
+                this.Write$2(buffer);
+                this.WriteLine();
+            },
+            WriteLine$4: function (buffer, index, count) {
+                this.Write$3(buffer, index, count);
+                this.WriteLine();
+            },
+            WriteLine$1: function (value) {
+                this.Write(value);
+                this.WriteLine();
+            },
+            WriteLine$7: function (value) {
+                this.Write$6(value);
+                this.WriteLine();
+            },
+            WriteLine$16: function (value) {
+                this.Write$15(value);
+                this.WriteLine();
+            },
+            WriteLine$8: function (value) {
+                this.Write$7(value);
+                this.WriteLine();
+            },
+            WriteLine$17: function (value) {
+                this.Write$16(value);
+                this.WriteLine();
+            },
+            WriteLine$10: function (value) {
+                this.Write$9(value);
+                this.WriteLine();
+            },
+            WriteLine$6: function (value) {
+                this.Write$5(value);
+                this.WriteLine();
+            },
+            WriteLine$5: function (value) {
+                this.Write$4(value);
+                this.WriteLine();
+            },
+            WriteLine$11: function (value) {
+
+                if (value == null) {
+                    this.WriteLine();
+                } else {
+                    // We'd ideally like WriteLine to be atomic, in that one call
+                    // to WriteLine equals one call to the OS (ie, so writing to
+                    // console while simultaneously calling printf will guarantee we
+                    // write out a string and new line chars, without any interference).
+                    // Additionally, we need to call ToCharArray on Strings anyways,
+                    // so allocating a char[] here isn't any worse than what we were
+                    // doing anyways.  We do reduce the number of calls to the
+                    // backing store this way, potentially.
+                    var vLen = value.length;
+                    var nlLen = this.CoreNewLine.length;
+                    var chars = System.Array.init(((vLen + nlLen) | 0), 0, System.Char);
+                    System.String.copyTo(value, 0, chars, 0, vLen);
+                    // CoreNewLine will almost always be 2 chars, and possibly 1.
+                    if (nlLen === 2) {
+                        chars[System.Array.index(vLen, chars)] = this.CoreNewLine[System.Array.index(0, this.CoreNewLine)];
+                        chars[System.Array.index(((vLen + 1) | 0), chars)] = this.CoreNewLine[System.Array.index(1, this.CoreNewLine)];
+                    } else if (nlLen === 1) {
+                        chars[System.Array.index(vLen, chars)] = this.CoreNewLine[System.Array.index(0, this.CoreNewLine)];
+                    } else {
+                        System.Array.copy(this.CoreNewLine, 0, chars, Bridge.Int.mul(vLen, 2), Bridge.Int.mul(nlLen, 2));
+                    }
+                    this.Write$3(chars, 0, ((vLen + nlLen) | 0));
+                }
+                /* 
+                Write(value);  // We could call Write(String) on StreamWriter...
+                WriteLine();
+                */
+            },
+            WriteLine$9: function (value) {
+                if (value == null) {
+                    this.WriteLine();
+                } else {
+                    // Call WriteLine(value.ToString), not Write(Object), WriteLine().
+                    // This makes calls to WriteLine(Object) atomic.
+                    var f = Bridge.as(value, System.IFormattable);
+                    if (f != null) {
+                        this.WriteLine$11(Bridge.format(f, null, this.FormatProvider));
+                    } else {
+                        this.WriteLine$11(Bridge.toString(value));
+                    }
+                }
+            },
+            WriteLine$12: function (format, arg0) {
+                this.WriteLine$11(System.String.formatProvider(this.FormatProvider, format, [arg0]));
+            },
+            WriteLine$13: function (format, arg0, arg1) {
+                this.WriteLine$11(System.String.formatProvider(this.FormatProvider, format, arg0, arg1));
+            },
+            WriteLine$14: function (format, arg0, arg1, arg2) {
+                this.WriteLine$11(System.String.formatProvider(this.FormatProvider, format, arg0, arg1, arg2));
+            },
+            WriteLine$15: function (format, arg) {
+                if (arg === void 0) { arg = []; }
+                this.WriteLine$11(System.String.formatProvider.apply(System.String, [this.FormatProvider, format].concat(arg)));
+            }
+        }
+    });
+
+    // @source StreamWriter.js
+
+    Bridge.define("System.IO.StreamWriter", {
+        inherits: [System.IO.TextWriter],
+        statics: {
+            fields: {
+                DefaultBufferSize: 0,
+                DefaultFileStreamBufferSize: 0,
+                MinBufferSize: 0,
+                Null: null,
+                _UTF8NoBOM: null
+            },
+            props: {
+                UTF8NoBOM: {
+                    get: function () {
+                        if (System.IO.StreamWriter._UTF8NoBOM == null) {
+                            // No need for double lock - we just want to avoid extra
+                            // allocations in the common case.
+                            var noBOM = new System.Text.UTF8Encoding.$ctor2(false, true);
+                            System.IO.StreamWriter._UTF8NoBOM = noBOM;
+                        }
+                        return System.IO.StreamWriter._UTF8NoBOM;
+                    }
+                }
+            },
+            ctors: {
+                init: function () {
+                    this.DefaultBufferSize = 1024;
+                    this.DefaultFileStreamBufferSize = 4096;
+                    this.MinBufferSize = 128;
+                    this.Null = new System.IO.StreamWriter.$ctor4(System.IO.Stream.Null, new System.Text.UTF8Encoding.$ctor2(false, true), System.IO.StreamWriter.MinBufferSize, true);
+                }
+            }
+        },
+        fields: {
+            stream: null,
+            encoding: null,
+            byteBuffer: null,
+            charBuffer: null,
+            charPos: 0,
+            charLen: 0,
+            autoFlush: false,
+            haveWrittenPreamble: false,
+            closable: false
+        },
+        props: {
+            AutoFlush: {
+                get: function () {
+                    return this.autoFlush;
+                },
+                set: function (value) {
+                    this.autoFlush = value;
+                    if (value) {
+                        this.Flush$1(true, false);
+                    }
+                }
+            },
+            BaseStream: {
+                get: function () {
+                    return this.stream;
+                }
+            },
+            LeaveOpen: {
+                get: function () {
+                    return !this.closable;
+                }
+            },
+            HaveWrittenPreamble: {
+                set: function (value) {
+                    this.haveWrittenPreamble = value;
+                }
+            },
+            Encoding: {
+                get: function () {
+                    return this.encoding;
+                }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                System.IO.TextWriter.$ctor1.call(this, null); // Ask for CurrentCulture all the time
+            },
+            $ctor1: function (stream) {
+                System.IO.StreamWriter.$ctor4.call(this, stream, System.IO.StreamWriter.UTF8NoBOM, System.IO.StreamWriter.DefaultBufferSize, false);
+            },
+            $ctor2: function (stream, encoding) {
+                System.IO.StreamWriter.$ctor4.call(this, stream, encoding, System.IO.StreamWriter.DefaultBufferSize, false);
+            },
+            $ctor3: function (stream, encoding, bufferSize) {
+                System.IO.StreamWriter.$ctor4.call(this, stream, encoding, bufferSize, false);
+            },
+            $ctor4: function (stream, encoding, bufferSize, leaveOpen) {
+                this.$initialize();
+                System.IO.TextWriter.$ctor1.call(this, null);
+                if (stream == null || encoding == null) {
+                    throw new System.ArgumentNullException((stream == null ? "stream" : "encoding"));
+                }
+                if (!stream.CanWrite) {
+                    throw new System.ArgumentException("Argument_StreamNotWritable");
+                }
+                if (bufferSize <= 0) {
+                    throw new System.ArgumentOutOfRangeException("bufferSize", "ArgumentOutOfRange_NeedPosNum");
+                }
+
+                this.Init(stream, encoding, bufferSize, leaveOpen);
+            },
+            $ctor5: function (path) {
+                System.IO.StreamWriter.$ctor8.call(this, path, false, System.IO.StreamWriter.UTF8NoBOM, System.IO.StreamWriter.DefaultBufferSize);
+            },
+            $ctor6: function (path, append) {
+                System.IO.StreamWriter.$ctor8.call(this, path, append, System.IO.StreamWriter.UTF8NoBOM, System.IO.StreamWriter.DefaultBufferSize);
+            },
+            $ctor7: function (path, append, encoding) {
+                System.IO.StreamWriter.$ctor8.call(this, path, append, encoding, System.IO.StreamWriter.DefaultBufferSize);
+            },
+            $ctor8: function (path, append, encoding, bufferSize) {
+                System.IO.StreamWriter.$ctor9.call(this, path, append, encoding, bufferSize, true);
+            },
+            $ctor9: function (path, append, encoding, bufferSize, checkHost) {
+                this.$initialize();
+                System.IO.TextWriter.$ctor1.call(this, null);
+                throw new System.NotSupportedException();
+            }
+        },
+        methods: {
+            Init: function (streamArg, encodingArg, bufferSize, shouldLeaveOpen) {
+                this.stream = streamArg;
+                this.encoding = encodingArg;
+                if (bufferSize < System.IO.StreamWriter.MinBufferSize) {
+                    bufferSize = System.IO.StreamWriter.MinBufferSize;
+                }
+                this.charBuffer = System.Array.init(bufferSize, 0, System.Char);
+                this.byteBuffer = System.Array.init(this.encoding.GetMaxByteCount(bufferSize), 0, System.Byte);
+                this.charLen = bufferSize;
+                // If we're appending to a Stream that already has data, don't write
+                // the preamble.
+                if (this.stream.CanSeek && this.stream.Position.gt(System.Int64(0))) {
+                    this.haveWrittenPreamble = true;
+                }
+                this.closable = !shouldLeaveOpen;
+            },
+            Close: function () {
+                this.Dispose$1(true);
+            },
+            Dispose$1: function (disposing) {
+                try {
+                    // We need to flush any buffered data if we are being closed/disposed.
+                    // Also, we never close the handles for stdout & friends.  So we can safely
+                    // write any buffered data to those streams even during finalization, which
+                    // is generally the right thing to do.
+                    if (this.stream != null) {
+                        // Note: flush on the underlying stream can throw (ex., low disk space)
+                        if (disposing) {
+                            this.Flush$1(true, true);
+                        }
+                    }
+                }
+                finally {
+                    // Dispose of our resources if this StreamWriter is closable.
+                    // Note: Console.Out and other such non closable streamwriters should be left alone
+                    if (!this.LeaveOpen && this.stream != null) {
+                        try {
+                            // Attempt to close the stream even if there was an IO error from Flushing.
+                            // Note that Stream.Close() can potentially throw here (may or may not be
+                            // due to the same Flush error). In this case, we still need to ensure
+                            // cleaning up internal resources, hence the finally block.
+                            if (disposing) {
+                                this.stream.Close();
+                            }
+                        }
+                        finally {
+                            this.stream = null;
+                            this.byteBuffer = null;
+                            this.charBuffer = null;
+                            this.encoding = null;
+                            this.charLen = 0;
+                            System.IO.TextWriter.prototype.Dispose$1.call(this, disposing);
+                        }
+                    }
+                }
+            },
+            Flush: function () {
+                this.Flush$1(true, true);
+            },
+            Flush$1: function (flushStream, flushEncoder) {
+                // flushEncoder should be true at the end of the file and if
+                // the user explicitly calls Flush (though not if AutoFlush is true).
+                // This is required to flush any dangling characters from our UTF-7
+                // and UTF-8 encoders.
+                if (this.stream == null) {
+                    System.IO.__Error.WriterClosed();
+                }
+
+                // Perf boost for Flush on non-dirty writers.
+                if (this.charPos === 0 && (!flushStream && !flushEncoder)) {
+                    return;
+                }
+
+                /* if (!haveWrittenPreamble) {
+                   haveWrittenPreamble = true;
+                   byte[] preamble = encoding.GetPreamble();
+                   if (preamble.Length > 0)
+                       stream.Write(preamble, 0, preamble.Length);
+                }*/
+
+                var count = this.encoding.GetBytes$3(this.charBuffer, 0, this.charPos, this.byteBuffer, 0);
+                this.charPos = 0;
+                if (count > 0) {
+                    this.stream.Write(this.byteBuffer, 0, count);
+                }
+                // By definition, calling Flush should flush the stream, but this is
+                // only necessary if we passed in true for flushStream.  The Web
+                // Services guys have some perf tests where flushing needlessly hurts.
+                if (flushStream) {
+                    this.stream.Flush();
+                }
+            },
+            Write$1: function (value) {
+                if (this.charPos === this.charLen) {
+                    this.Flush$1(false, false);
+                }
+                this.charBuffer[System.Array.index(this.charPos, this.charBuffer)] = value;
+                this.charPos = (this.charPos + 1) | 0;
+                if (this.autoFlush) {
+                    this.Flush$1(true, false);
+                }
+            },
+            Write$2: function (buffer) {
+                // This may be faster than the one with the index & count since it
+                // has to do less argument checking.
+                if (buffer == null) {
+                    return;
+                }
+
+                var index = 0;
+                var count = buffer.length;
+                while (count > 0) {
+                    if (this.charPos === this.charLen) {
+                        this.Flush$1(false, false);
+                    }
+                    var n = (this.charLen - this.charPos) | 0;
+                    if (n > count) {
+                        n = count;
+                    }
+                    System.Array.copy(buffer, index, this.charBuffer, this.charPos, n);
+                    this.charPos = (this.charPos + n) | 0;
+                    index = (index + n) | 0;
+                    count = (count - n) | 0;
+                }
+                if (this.autoFlush) {
+                    this.Flush$1(true, false);
+                }
+            },
+            Write$3: function (buffer, index, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer", "ArgumentNull_Buffer");
+                }
+                if (index < 0) {
+                    throw new System.ArgumentOutOfRangeException("index", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
+                }
+                if (((buffer.length - index) | 0) < count) {
+                    throw new System.ArgumentException("Argument_InvalidOffLen");
+                }
+
+                while (count > 0) {
+                    if (this.charPos === this.charLen) {
+                        this.Flush$1(false, false);
+                    }
+                    var n = (this.charLen - this.charPos) | 0;
+                    if (n > count) {
+                        n = count;
+                    }
+                    System.Array.copy(buffer, index, this.charBuffer, this.charPos, n);
+                    this.charPos = (this.charPos + n) | 0;
+                    index = (index + n) | 0;
+                    count = (count - n) | 0;
+                }
+                if (this.autoFlush) {
+                    this.Flush$1(true, false);
+                }
+            },
+            Write$10: function (value) {
+                if (value != null) {
+                    var count = value.length;
+                    var index = 0;
+                    while (count > 0) {
+                        if (this.charPos === this.charLen) {
+                            this.Flush$1(false, false);
+                        }
+                        var n = (this.charLen - this.charPos) | 0;
+                        if (n > count) {
+                            n = count;
+                        }
+                        System.String.copyTo(value, index, this.charBuffer, this.charPos, n);
+                        this.charPos = (this.charPos + n) | 0;
+                        index = (index + n) | 0;
+                        count = (count - n) | 0;
+                    }
+                    if (this.autoFlush) {
+                        this.Flush$1(true, false);
+                    }
+                }
+            }
+        }
+    });
+
+    // @source StringReader.js
+
+    Bridge.define("System.IO.StringReader", {
+        inherits: [System.IO.TextReader],
+        fields: {
+            _s: null,
+            _pos: 0,
+            _length: 0
+        },
+        ctors: {
+            ctor: function (s) {
+                this.$initialize();
+                System.IO.TextReader.ctor.call(this);
+                if (s == null) {
+                    throw new System.ArgumentNullException("s");
+                }
+                this._s = s;
+                this._length = s == null ? 0 : s.length;
+            }
+        },
+        methods: {
+            Close: function () {
+                this.Dispose$1(true);
+            },
+            Dispose$1: function (disposing) {
+                this._s = null;
+                this._pos = 0;
+                this._length = 0;
+                System.IO.TextReader.prototype.Dispose$1.call(this, disposing);
+            },
+            Peek: function () {
+                if (this._s == null) {
+                    System.IO.__Error.ReaderClosed();
+                }
+                if (this._pos === this._length) {
+                    return -1;
+                }
+                return this._s.charCodeAt(this._pos);
+            },
+            Read: function () {
+                if (this._s == null) {
+                    System.IO.__Error.ReaderClosed();
+                }
+                if (this._pos === this._length) {
+                    return -1;
+                }
+                return this._s.charCodeAt(Bridge.identity(this._pos, (this._pos = (this._pos + 1) | 0)));
+            },
+            Read$1: function (buffer, index, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer");
+                }
+                if (index < 0) {
+                    throw new System.ArgumentOutOfRangeException("index");
+                }
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count");
+                }
+                if (((buffer.length - index) | 0) < count) {
+                    throw new System.ArgumentException();
+                }
+                if (this._s == null) {
+                    System.IO.__Error.ReaderClosed();
+                }
+
+                var n = (this._length - this._pos) | 0;
+                if (n > 0) {
+                    if (n > count) {
+                        n = count;
+                    }
+                    System.String.copyTo(this._s, this._pos, buffer, index, n);
+                    this._pos = (this._pos + n) | 0;
+                }
+                return n;
+            },
+            ReadToEnd: function () {
+                if (this._s == null) {
+                    System.IO.__Error.ReaderClosed();
+                }
+                var s;
+                if (this._pos === 0) {
+                    s = this._s;
+                } else {
+                    s = this._s.substr(this._pos, ((this._length - this._pos) | 0));
+                }
+                this._pos = this._length;
+                return s;
+            },
+            ReadLine: function () {
+                if (this._s == null) {
+                    System.IO.__Error.ReaderClosed();
+                }
+                var i = this._pos;
+                while (i < this._length) {
+                    var ch = this._s.charCodeAt(i);
+                    if (ch === 13 || ch === 10) {
+                        var result = this._s.substr(this._pos, ((i - this._pos) | 0));
+                        this._pos = (i + 1) | 0;
+                        if (ch === 13 && this._pos < this._length && this._s.charCodeAt(this._pos) === 10) {
+                            this._pos = (this._pos + 1) | 0;
+                        }
+                        return result;
+                    }
+                    i = (i + 1) | 0;
+                }
+                if (i > this._pos) {
+                    var result1 = this._s.substr(this._pos, ((i - this._pos) | 0));
+                    this._pos = i;
+                    return result1;
+                }
+                return null;
+            }
+        }
+    });
+
+    // @source StringWriter.js
+
+    Bridge.define("System.IO.StringWriter", {
+        inherits: [System.IO.TextWriter],
+        statics: {
+            fields: {
+                m_encoding: null
+            }
+        },
+        fields: {
+            _sb: null,
+            _isOpen: false
+        },
+        props: {
+            Encoding: {
+                get: function () {
+                    if (System.IO.StringWriter.m_encoding == null) {
+                        System.IO.StringWriter.m_encoding = new System.Text.UnicodeEncoding.$ctor1(false, false);
+                    }
+                    return System.IO.StringWriter.m_encoding;
+                }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                System.IO.StringWriter.$ctor3.call(this, new System.Text.StringBuilder(), System.Globalization.CultureInfo.getCurrentCulture());
+            },
+            $ctor1: function (formatProvider) {
+                System.IO.StringWriter.$ctor3.call(this, new System.Text.StringBuilder(), formatProvider);
+            },
+            $ctor2: function (sb) {
+                System.IO.StringWriter.$ctor3.call(this, sb, System.Globalization.CultureInfo.getCurrentCulture());
+            },
+            $ctor3: function (sb, formatProvider) {
+                this.$initialize();
+                System.IO.TextWriter.$ctor1.call(this, formatProvider);
+                if (sb == null) {
+                    throw new System.ArgumentNullException("sb");
+                }
+                this._sb = sb;
+                this._isOpen = true;
+            }
+        },
+        methods: {
+            Close: function () {
+                this.Dispose$1(true);
+            },
+            Dispose$1: function (disposing) {
+                // Do not destroy _sb, so that we can extract this after we are
+                // done writing (similar to MemoryStream's GetBuffer & ToArray methods)
+                this._isOpen = false;
+                System.IO.TextWriter.prototype.Dispose$1.call(this, disposing);
+            },
+            GetStringBuilder: function () {
+                return this._sb;
+            },
+            Write$1: function (value) {
+                if (!this._isOpen) {
+                    System.IO.__Error.WriterClosed();
+                }
+                this._sb.append(String.fromCharCode(value));
+            },
+            Write$3: function (buffer, index, count) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer");
+                }
+                if (index < 0) {
+                    throw new System.ArgumentOutOfRangeException("index");
+                }
+                if (count < 0) {
+                    throw new System.ArgumentOutOfRangeException("count");
+                }
+                if (((buffer.length - index) | 0) < count) {
+                    throw new System.ArgumentException();
+                }
+
+                if (!this._isOpen) {
+                    System.IO.__Error.WriterClosed();
+                }
+
+                this._sb.append(System.String.fromCharArray(buffer, index, count));
+            },
+            Write$10: function (value) {
+                if (!this._isOpen) {
+                    System.IO.__Error.WriterClosed();
+                }
+                if (value != null) {
+                    this._sb.append(value);
+                }
+            },
+            ToString: function () {
+                return this._sb.toString();
+            }
+        }
+    });
+
+    // @source NullTextReader.js
+
+    Bridge.define("System.IO.TextReader.NullTextReader", {
+        inherits: [System.IO.TextReader],
+        $kind: "nested class",
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                System.IO.TextReader.ctor.call(this);
+            }
+        },
+        methods: {
+            Read$1: function (buffer, index, count) {
+                return 0;
+            },
+            ReadLine: function () {
+                return null;
+            }
+        }
+    });
+
+    // @source NullTextWriter.js
+
+    Bridge.define("System.IO.TextWriter.NullTextWriter", {
+        inherits: [System.IO.TextWriter],
+        $kind: "nested class",
+        props: {
+            Encoding: {
+                get: function () {
+                    return System.Text.Encoding.Default;
+                }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                System.IO.TextWriter.$ctor1.call(this, System.Globalization.CultureInfo.invariantCulture);
+            }
+        },
+        methods: {
+            Write$3: function (buffer, index, count) { },
+            Write$10: function (value) { },
+            WriteLine: function () { },
+            WriteLine$11: function (value) { },
+            WriteLine$9: function (value) { }
+        }
+    });
+
+    // @source __Error.js
+
+    Bridge.define("System.IO.__Error", {
+        statics: {
+            methods: {
+                EndOfFile: function () {
+                    throw new System.IO.EndOfStreamException.$ctor1("IO.EOF_ReadBeyondEOF");
+                },
+                FileNotOpen: function () {
+                    throw new System.Exception("ObjectDisposed_FileClosed");
+                },
+                StreamIsClosed: function () {
+                    throw new System.Exception("ObjectDisposed_StreamClosed");
+                },
+                MemoryStreamNotExpandable: function () {
+                    throw new System.NotSupportedException("NotSupported_MemStreamNotExpandable");
+                },
+                ReaderClosed: function () {
+                    throw new System.Exception("ObjectDisposed_ReaderClosed");
+                },
+                ReadNotSupported: function () {
+                    throw new System.NotSupportedException("NotSupported_UnreadableStream");
+                },
+                SeekNotSupported: function () {
+                    throw new System.NotSupportedException("NotSupported_UnseekableStream");
+                },
+                WrongAsyncResult: function () {
+                    throw new System.ArgumentException("Arg_WrongAsyncResult");
+                },
+                EndReadCalledTwice: function () {
+                    // Should ideally be InvalidOperationExc but we can't maitain parity with Stream and FileStream without some work
+                    throw new System.ArgumentException("InvalidOperation_EndReadCalledMultiple");
+                },
+                EndWriteCalledTwice: function () {
+                    // Should ideally be InvalidOperationExc but we can't maintain parity with Stream and FileStream without some work
+                    throw new System.ArgumentException("InvalidOperation_EndWriteCalledMultiple");
+                },
+                WriteNotSupported: function () {
+                    throw new System.NotSupportedException("NotSupported_UnwritableStream");
+                },
+                WriterClosed: function () {
+                    throw new System.Exception("ObjectDisposed_WriterClosed");
+                }
+            }
+        }
+    });
+
+    // @source Random.js
+
+    Bridge.define("System.Random", {
+        statics: {
+            fields: {
+                MBIG: 0,
+                MSEED: 0,
+                MZ: 0
+            },
+            ctors: {
+                init: function () {
+                    this.MBIG = 2147483647;
+                    this.MSEED = 161803398;
+                    this.MZ = 0;
+                }
+            }
+        },
+        fields: {
+            inext: 0,
+            inextp: 0,
+            seedArray: null
+        },
+        ctors: {
+            init: function () {
+                this.seedArray = System.Array.init(56, 0, System.Int32);
+            },
+            ctor: function () {
+                System.Random.$ctor1.call(this, System.Int64.clip32(System.DateTime.getTicks(System.DateTime.getNow())));
+            },
+            $ctor1: function (seed) {
+                this.$initialize();
+                var ii;
+                var mj, mk;
+
+                //Initialize our Seed array.
+                //This algorithm comes from Numerical Recipes in C (2nd Ed.)
+                var subtraction = (seed === -2147483648) ? 2147483647 : Math.abs(seed);
+                mj = (System.Random.MSEED - subtraction) | 0;
+                this.seedArray[System.Array.index(55, this.seedArray)] = mj;
+                mk = 1;
+                for (var i = 1; i < 55; i = (i + 1) | 0) { //Apparently the range [1..55] is special (Knuth) and so we're wasting the 0'th position.
+                    ii = (Bridge.Int.mul(21, i)) % 55;
+                    this.seedArray[System.Array.index(ii, this.seedArray)] = mk;
+                    mk = (mj - mk) | 0;
+                    if (mk < 0) {
+                        mk = (mk + System.Random.MBIG) | 0;
+                    }
+                    mj = this.seedArray[System.Array.index(ii, this.seedArray)];
+                }
+                for (var k = 1; k < 5; k = (k + 1) | 0) {
+                    for (var i1 = 1; i1 < 56; i1 = (i1 + 1) | 0) {
+                        this.seedArray[System.Array.index(i1, this.seedArray)] = (this.seedArray[System.Array.index(i1, this.seedArray)] - this.seedArray[System.Array.index(((1 + (((i1 + 30) | 0)) % 55) | 0), this.seedArray)]) | 0;
+                        if (this.seedArray[System.Array.index(i1, this.seedArray)] < 0) {
+                            this.seedArray[System.Array.index(i1, this.seedArray)] = (this.seedArray[System.Array.index(i1, this.seedArray)] + System.Random.MBIG) | 0;
+                        }
+                    }
+                }
+                this.inext = 0;
+                this.inextp = 21;
+                seed = 1;
+            }
+        },
+        methods: {
+            sample: function () {
+                //Including this division at the end gives us significantly improved
+                //random number distribution.
+                return (this.internalSample() * (4.6566128752457969E-10));
+            },
+            internalSample: function () {
+                var retVal;
+                var locINext = this.inext;
+                var locINextp = this.inextp;
+
+                if (((locINext = (locINext + 1) | 0)) >= 56) {
+                    locINext = 1;
+                }
+
+                if (((locINextp = (locINextp + 1) | 0)) >= 56) {
+                    locINextp = 1;
+                }
+
+                retVal = (this.seedArray[System.Array.index(locINext, this.seedArray)] - this.seedArray[System.Array.index(locINextp, this.seedArray)]) | 0;
+
+                if (retVal === System.Random.MBIG) {
+                    retVal = (retVal - 1) | 0;
+                }
+
+                if (retVal < 0) {
+                    retVal = (retVal + System.Random.MBIG) | 0;
+                }
+
+                this.seedArray[System.Array.index(locINext, this.seedArray)] = retVal;
+
+                this.inext = locINext;
+                this.inextp = locINextp;
+
+                return retVal;
+            },
+            next: function () {
+                return this.internalSample();
+            },
+            next$2: function (minValue, maxValue) {
+                if (minValue > maxValue) {
+                    throw new System.ArgumentOutOfRangeException("minValue", "'minValue' cannot be greater than maxValue.");
+                }
+
+                var range = System.Int64(maxValue).sub(System.Int64(minValue));
+                if (range.lte(System.Int64(2147483647))) {
+                    return (((Bridge.Int.clip32((this.sample() * System.Int64.toNumber(range))) + minValue) | 0));
+                } else {
+                    return System.Int64.clip32(Bridge.Int.clip64((this.getSampleForLargeRange() * System.Int64.toNumber(range))).add(System.Int64(minValue)));
+                }
+            },
+            next$1: function (maxValue) {
+                if (maxValue < 0) {
+                    throw new System.ArgumentOutOfRangeException("maxValue", "'maxValue' must be greater than zero.");
+                }
+                return Bridge.Int.clip32(this.sample() * maxValue);
+            },
+            getSampleForLargeRange: function () {
+                // The distribution of double value returned by Sample
+                // is not distributed well enough for a large range.
+                // If we use Sample for a range [Int32.MinValue..Int32.MaxValue)
+                // We will end up getting even numbers only.
+
+                var result = this.internalSample();
+                // Note we can't use addition here. The distribution will be bad if we do that.
+                var negative = (this.internalSample() % 2 === 0) ? true : false; // decide the sign based on second sample
+                if (negative) {
+                    result = (-result) | 0;
+                }
+                var d = result;
+                d += (2147483646); // get a number in range [0 .. 2 * Int32MaxValue - 1)
+                d /= 4294967293;
+                return d;
+            },
+            nextDouble: function () {
+                return this.sample();
+            },
+            nextBytes: function (buffer) {
+                if (buffer == null) {
+                    throw new System.ArgumentNullException("buffer");
+                }
+                for (var i = 0; i < buffer.length; i = (i + 1) | 0) {
+                    buffer[System.Array.index(i, buffer)] = (this.internalSample() % (256)) & 255;
+                }
+            }
+        }
+    });
+
+    // @source FormattableStringFactory.js
+
+    Bridge.define("System.Runtime.CompilerServices.FormattableStringFactory", {
+        statics: {
+            methods: {
+                create: function (format, args) {
+                    if (args === void 0) { args = []; }
+                    return new System.FormattableStringImpl(format, args);
+                }
+            }
+        }
+    });
+
+    // @source Encoding.js
+
+    Bridge.define("System.Text.Encoding", {
+        statics: {
+            fields: {
+                _encodings: null
+            },
+            props: {
+                Default: null,
+                Unicode: null,
+                ASCII: null,
+                BigEndianUnicode: null,
+                UTF7: null,
+                UTF8: null,
+                UTF32: null
+            },
+            ctors: {
+                init: function () {
+                    this.Default = new System.Text.UnicodeEncoding.$ctor1(false, true);
+                    this.Unicode = new System.Text.UnicodeEncoding.$ctor1(false, true);
+                    this.ASCII = new System.Text.ASCIIEncoding();
+                    this.BigEndianUnicode = new System.Text.UnicodeEncoding.$ctor1(true, true);
+                    this.UTF7 = new System.Text.UTF7Encoding.ctor();
+                    this.UTF8 = new System.Text.UTF8Encoding.ctor();
+                    this.UTF32 = new System.Text.UTF32Encoding.$ctor1(false, true);
+                }
+            },
+            methods: {
+                Convert: function (srcEncoding, dstEncoding, bytes) {
+                    return System.Text.Encoding.Convert$1(srcEncoding, dstEncoding, bytes, 0, bytes.length);
+                },
+                Convert$1: function (srcEncoding, dstEncoding, bytes, index, count) {
+                    if (srcEncoding == null || dstEncoding == null) {
+                        throw new System.ArgumentNullException(srcEncoding == null ? "srcEncoding" : "dstEncoding");
+                    }
+
+                    if (bytes == null) {
+                        throw new System.ArgumentNullException("bytes");
+                    }
+
+                    return dstEncoding.GetBytes(srcEncoding.GetChars$1(bytes, index, count));
+                },
+                GetEncoding: function (codepage) {
+                    switch (codepage) {
+                        case 1200: 
+                            return System.Text.Encoding.Unicode;
+                        case 20127: 
+                            return System.Text.Encoding.ASCII;
+                        case 1201: 
+                            return System.Text.Encoding.BigEndianUnicode;
+                        case 65000: 
+                            return System.Text.Encoding.UTF7;
+                        case 65001: 
+                            return System.Text.Encoding.UTF8;
+                        case 12000: 
+                            return System.Text.Encoding.UTF32;
+                    }
+                    throw new System.NotSupportedException();
+                },
+                GetEncoding$1: function (codepage) {
+                    switch (codepage) {
+                        case "utf-16": 
+                            return System.Text.Encoding.Unicode;
+                        case "us-ascii": 
+                            return System.Text.Encoding.ASCII;
+                        case "utf-16BE": 
+                            return System.Text.Encoding.BigEndianUnicode;
+                        case "utf-7": 
+                            return System.Text.Encoding.UTF7;
+                        case "utf-8": 
+                            return System.Text.Encoding.UTF8;
+                        case "utf-32": 
+                            return System.Text.Encoding.UTF32;
+                    }
+                    throw new System.NotSupportedException();
+                },
+                GetEncodings: function () {
+                    if (System.Text.Encoding._encodings != null) {
+                        return System.Text.Encoding._encodings;
+                    }
+                    System.Text.Encoding._encodings = System.Array.init(6, null, System.Text.EncodingInfo);
+                    var result = System.Text.Encoding._encodings;
+
+                    result[System.Array.index(0, result)] = new System.Text.EncodingInfo(20127, "us-ascii", "US-ASCII");
+                    result[System.Array.index(1, result)] = new System.Text.EncodingInfo(1200, "utf-16", "Unicode");
+                    result[System.Array.index(2, result)] = new System.Text.EncodingInfo(1201, "utf-16BE", "Unicode (Big-Endian)");
+                    result[System.Array.index(3, result)] = new System.Text.EncodingInfo(65000, "utf-7", "Unicode (UTF-7)");
+                    result[System.Array.index(4, result)] = new System.Text.EncodingInfo(65001, "utf-8", "Unicode (UTF-8)");
+                    result[System.Array.index(5, result)] = new System.Text.EncodingInfo(1200, "utf-32", "Unicode (UTF-32)");
+                    return result;
+                }
+            }
+        },
+        fields: {
+            _hasError: false,
+            fallbackCharacter: 0
+        },
+        props: {
+            CodePage: {
+                get: function () {
+                    return 0;
+                }
+            },
+            EncodingName: {
+                get: function () {
+                    return null;
+                }
+            }
+        },
+        ctors: {
+            init: function () {
+                this.fallbackCharacter = 63;
+            }
+        },
+        methods: {
+            Encode$1: function (chars, index, count) {
+                var writtenCount = { };
+                return this.Encode$3(System.String.fromCharArray(chars, index, count), null, 0, writtenCount);
+            },
+            Encode$5: function (s, index, count, outputBytes, outputIndex) {
+                var writtenBytes = { };
+                this.Encode$3(s.substr(index, count), outputBytes, outputIndex, writtenBytes);
+                return writtenBytes.v;
+            },
+            Encode$4: function (chars, index, count, outputBytes, outputIndex) {
+                var writtenBytes = { };
+                this.Encode$3(System.String.fromCharArray(chars, index, count), outputBytes, outputIndex, writtenBytes);
+                return writtenBytes.v;
+            },
+            Encode: function (chars) {
+                var count = { };
+                return this.Encode$3(System.String.fromCharArray(chars), null, 0, count);
+            },
+            Encode$2: function (str) {
+                var count = { };
+                return this.Encode$3(str, null, 0, count);
+            },
+            Decode$1: function (bytes, index, count) {
+                return this.Decode$2(bytes, index, count, null, 0);
+            },
+            Decode: function (bytes) {
+                return this.Decode$2(bytes, 0, bytes.length, null, 0);
+            },
+            GetByteCount: function (chars) {
+                return this.GetByteCount$1(chars, 0, chars.length);
+            },
+            GetByteCount$2: function (s) {
+                return this.Encode$2(s).length;
+            },
+            GetByteCount$1: function (chars, index, count) {
+                return this.Encode$1(chars, index, count).length;
+            },
+            GetBytes: function (chars) {
+                return this.GetBytes$1(chars, 0, chars.length);
+            },
+            GetBytes$1: function (chars, index, count) {
+                return this.Encode$2(System.String.fromCharArray(chars, index, count));
+            },
+            GetBytes$3: function (chars, charIndex, charCount, bytes, byteIndex) {
+                return this.Encode$4(chars, charIndex, charCount, bytes, byteIndex);
+            },
+            GetBytes$2: function (s) {
+                return this.Encode$2(s);
+            },
+            GetBytes$4: function (s, charIndex, charCount, bytes, byteIndex) {
+                return this.Encode$5(s, charIndex, charCount, bytes, byteIndex);
+            },
+            GetCharCount: function (bytes) {
+                return this.Decode(bytes).length;
+            },
+            GetCharCount$1: function (bytes, index, count) {
+                return this.Decode$1(bytes, index, count).length;
+            },
+            GetChars: function (bytes) {
+                var $t;
+                return ($t = this.Decode(bytes), System.String.toCharArray($t, 0, $t.length));
+            },
+            GetChars$1: function (bytes, index, count) {
+                var $t;
+                return ($t = this.Decode$1(bytes, index, count), System.String.toCharArray($t, 0, $t.length));
+            },
+            GetChars$2: function (bytes, byteIndex, byteCount, chars, charIndex) {
+                var s = this.Decode$1(bytes, byteIndex, byteCount);
+                var arr = System.String.toCharArray(s, 0, s.length);
+
+                if (chars.length < (((arr.length + charIndex) | 0))) {
+                    throw new System.ArgumentException(null, "chars");
+                }
+
+                for (var i = 0; i < arr.length; i = (i + 1) | 0) {
+                    chars[System.Array.index(((charIndex + i) | 0), chars)] = arr[System.Array.index(i, arr)];
+                }
+
+                return arr.length;
+            },
+            GetString: function (bytes) {
+                return this.Decode(bytes);
+            },
+            GetString$1: function (bytes, index, count) {
+                return this.Decode$1(bytes, index, count);
+            }
+        }
+    });
+
+    // @source ASCIIEncoding.js
+
+    Bridge.define("System.Text.ASCIIEncoding", {
+        inherits: [System.Text.Encoding],
+        props: {
+            CodePage: {
+                get: function () {
+                    return 20127;
+                }
+            },
+            EncodingName: {
+                get: function () {
+                    return "US-ASCII";
+                }
+            }
+        },
+        methods: {
+            Encode$3: function (s, outputBytes, outputIndex, writtenBytes) {
+                var hasBuffer = outputBytes != null;
+
+                if (!hasBuffer) {
+                    outputBytes = System.Array.init(0, 0, System.Byte);
+                }
+
+                var recorded = 0;
+                for (var i = 0; i < s.length; i = (i + 1) | 0) {
+                    var ch = s.charCodeAt(i);
+                    var byteCode = (ch <= 127 ? ch : this.fallbackCharacter) & 255;
+
+                    if (hasBuffer) {
+                        if ((((i + outputIndex) | 0)) >= outputBytes.length) {
+                            throw new System.ArgumentException("bytes");
+                        }
+                        outputBytes[System.Array.index(((i + outputIndex) | 0), outputBytes)] = byteCode;
+                    } else {
+                        outputBytes.push(byteCode);
+                    }
+                    recorded = (recorded + 1) | 0;
+                }
+
+                writtenBytes.v = recorded;
+
+                if (hasBuffer) {
+                    return null;
+                }
+
+                return outputBytes;
+            },
+            Decode$2: function (bytes, index, count, chars, charIndex) {
+                var position = index;
+                var result = "";
+                var endpoint = (position + count) | 0;
+
+                for (; position < endpoint; position = (position + 1) | 0) {
+                    var byteCode = bytes[System.Array.index(position, bytes)];
+
+                    if (byteCode > 127) {
+                        result = (result || "") + String.fromCharCode(this.fallbackCharacter);
+                    } else {
+                        result = (result || "") + ((String.fromCharCode(byteCode)) || "");
+                    }
+                }
+
+                return result;
+            },
+            GetMaxByteCount: function (charCount) {
+                if (charCount < 0) {
+                    throw new System.ArgumentOutOfRangeException("charCount");
+                }
+
+                var byteCount = System.Int64(charCount).add(System.Int64(1));
+
+                if (byteCount.gt(System.Int64(2147483647))) {
+                    throw new System.ArgumentOutOfRangeException("charCount");
+                }
+
+                return System.Int64.clip32(byteCount);
+            },
+            GetMaxCharCount: function (byteCount) {
+                if (byteCount < 0) {
+                    throw new System.ArgumentOutOfRangeException("byteCount");
+                }
+
+                var charCount = System.Int64(byteCount);
+
+                if (charCount.gt(System.Int64(2147483647))) {
+                    throw new System.ArgumentOutOfRangeException("byteCount");
+                }
+
+                return System.Int64.clip32(charCount);
+            }
+        }
+    });
+
+    // @source EncodingInfo.js
+
+    Bridge.define("System.Text.EncodingInfo", {
+        props: {
+            CodePage: 0,
+            Name: null,
+            DisplayName: null
+        },
+        ctors: {
+            ctor: function (codePage, name, displayName) {
+                var $t;
+                this.$initialize();
+                this.CodePage = codePage;
+                this.Name = name;
+                this.DisplayName = ($t = displayName, $t != null ? $t : name);
+            }
+        },
+        methods: {
+            GetEncoding: function () {
+                return System.Text.Encoding.GetEncoding(this.CodePage);
+            },
+            GetHashCode: function () {
+                return this.CodePage;
+            },
+            Equals: function (o) {
+                var that = Bridge.as(o, System.Text.EncodingInfo);
+                return System.Nullable.eq(this.CodePage, (that != null ? that.CodePage : null));
+            }
+        }
+    });
+
+    // @source UnicodeEncoding.js
+
+    Bridge.define("System.Text.UnicodeEncoding", {
+        inherits: [System.Text.Encoding],
+        fields: {
+            bigEndian: false,
+            byteOrderMark: false,
+            throwOnInvalid: false
+        },
+        props: {
+            CodePage: {
+                get: function () {
+                    return this.bigEndian ? 1201 : 1200;
+                }
+            },
+            EncodingName: {
+                get: function () {
+                    return this.bigEndian ? "Unicode (Big-Endian)" : "Unicode";
+                }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                System.Text.UnicodeEncoding.$ctor1.call(this, false, true);
+            },
+            $ctor1: function (bigEndian, byteOrderMark) {
+                System.Text.UnicodeEncoding.$ctor2.call(this, bigEndian, byteOrderMark, false);
+            },
+            $ctor2: function (bigEndian, byteOrderMark, throwOnInvalidBytes) {
+                this.$initialize();
+                System.Text.Encoding.ctor.call(this);
+                this.bigEndian = bigEndian;
+                this.byteOrderMark = byteOrderMark;
+                this.throwOnInvalid = throwOnInvalidBytes;
+                this.fallbackCharacter = 65533;
+            }
+        },
+        methods: {
+            Encode$3: function (s, outputBytes, outputIndex, writtenBytes) {
+                var hasBuffer = outputBytes != null;
+                var recorded = 0;
+                var surrogate_1st = 0;
+                var fallbackCharacterCode = this.fallbackCharacter;
+
+                var write = function (ch) {
+                    if (hasBuffer) {
+                        if (outputIndex >= outputBytes.length) {
+                            throw new System.ArgumentException("bytes");
+                        }
+
+                        outputBytes[System.Array.index(Bridge.identity(outputIndex, (outputIndex = (outputIndex + 1) | 0)), outputBytes)] = ch;
+                    } else {
+                        outputBytes.push(ch);
+                    }
+                    recorded = (recorded + 1) | 0;
+                };
+
+                var writePair = function (a, b) {
+                    write(a);
+                    write(b);
+                };
+
+                var swap = $asm.$.System.Text.UnicodeEncoding.f1;
+
+                var fallback = Bridge.fn.bind(this, function () {
+                    if (this.throwOnInvalid) {
+                        throw new System.Exception("Invalid character in UTF16 text");
+                    }
+
+                    writePair((fallbackCharacterCode & 255), ((fallbackCharacterCode >> 8) & 255));
+                });
+
+                if (!hasBuffer) {
+                    outputBytes = System.Array.init(0, 0, System.Byte);
+                }
+
+                if (this.bigEndian) {
+                    fallbackCharacterCode = swap(fallbackCharacterCode);
+                }
+
+                for (var i = 0; i < s.length; i = (i + 1) | 0) {
+                    var ch = s.charCodeAt(i);
+
+                    if (surrogate_1st !== 0) {
+                        if (ch >= 56320 && ch <= 57343) {
+                            if (this.bigEndian) {
+                                surrogate_1st = swap(surrogate_1st);
+                                ch = swap(ch);
+                            }
+                            writePair((surrogate_1st & 255), ((surrogate_1st >> 8) & 255));
+                            writePair((ch & 255), ((ch >> 8) & 255));
+                            surrogate_1st = 0;
+                            continue;
+                        }
+                        fallback();
+                        surrogate_1st = 0;
+                    }
+
+                    if (55296 <= ch && ch <= 56319) {
+                        surrogate_1st = ch;
+                        continue;
+                    } else if (56320 <= ch && ch <= 57343) {
+                        fallback();
+                        surrogate_1st = 0;
+                        continue;
+                    }
+
+                    if (ch < 65536) {
+                        if (this.bigEndian) {
+                            ch = swap(ch);
+                        }
+                        writePair((ch & 255), ((ch >> 8) & 255));
+                    } else if (ch <= 1114111) {
+                        ch = ch - 0x10000; //?????
+
+                        var lowBits = ((ch & 1023) | 56320) & 65535;
+                        var highBits = (((ch >> 10) & 1023) | 55296) & 65535;
+
+                        if (this.bigEndian) {
+                            highBits = swap(highBits);
+                            lowBits = swap(lowBits);
+                        }
+                        writePair((highBits & 255), ((highBits >> 8) & 255));
+                        writePair((lowBits & 255), ((lowBits >> 8) & 255));
+                    } else {
+                        fallback();
+                    }
+                }
+
+                if (surrogate_1st !== 0) {
+                    fallback();
+                }
+
+                writtenBytes.v = recorded;
+
+                if (hasBuffer) {
+                    return null;
+                }
+
+                return outputBytes;
+            },
+            Decode$2: function (bytes, index, count, chars, charIndex) {
+                var position = index;
+                var result = "";
+                var endpoint = (position + count) | 0;
+                this._hasError = false;
+
+                var fallback = Bridge.fn.bind(this, function () {
+                    if (this.throwOnInvalid) {
+                        throw new System.Exception("Invalid character in UTF16 text");
+                    }
+
+                    result = (result || "") + String.fromCharCode(this.fallbackCharacter);
+                });
+
+                var swap = $asm.$.System.Text.UnicodeEncoding.f2;
+
+                var readPair = Bridge.fn.bind(this, function () {
+                    if ((((position + 2) | 0)) > endpoint) {
+                        position = (position + 2) | 0;
+                        return null;
+                    }
+
+                    var a = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
+                    var b = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
+
+                    var point = ((a << 8) | b) & 65535;
+                    if (!this.bigEndian) {
+                        point = swap(point);
+                    }
+
+                    return point;
+                });
+
+                while (position < endpoint) {
+                    var firstWord = readPair();
+
+                    if (!System.Nullable.hasValue(firstWord)) {
+                        fallback();
+                        this._hasError = true;
+                    } else if ((System.Nullable.lt(firstWord, 55296)) || (System.Nullable.gt(firstWord, 57343))) {
+                        result = (result || "") + ((System.String.fromCharCode(System.Nullable.getValue(firstWord))) || "");
+                    } else if ((System.Nullable.gte(firstWord, 55296)) && (System.Nullable.lte(firstWord, 56319))) {
+                        var end = position >= endpoint;
+                        var secondWord = readPair();
+                        if (end) {
+                            fallback();
+                            this._hasError = true;
+                        } else if (!System.Nullable.hasValue(secondWord)) {
+                            fallback();
+                            fallback();
+                        } else if ((System.Nullable.gte(secondWord, 56320)) && (System.Nullable.lte(secondWord, 57343))) {
+                            var highBits = System.Nullable.band(firstWord, 1023);
+                            var lowBits = System.Nullable.band(secondWord, 1023);
+
+                            var charCode = Bridge.Int.clip32(System.Nullable.add((System.Nullable.bor((System.Nullable.sl(highBits, 10)), lowBits)), 65536));
+
+                            result = (result || "") + ((System.String.fromCharCode(System.Nullable.getValue(charCode))) || "");
+                        } else {
+                            fallback();
+                            position = (position - 2) | 0;
+                        }
+                    } else {
+                        fallback();
+                    }
+                }
+
+                return result;
+            },
+            GetMaxByteCount: function (charCount) {
+                if (charCount < 0) {
+                    throw new System.ArgumentOutOfRangeException("charCount");
+                }
+
+                var byteCount = System.Int64(charCount).add(System.Int64(1));
+                byteCount = byteCount.shl(1);
+
+                if (byteCount.gt(System.Int64(2147483647))) {
+                    throw new System.ArgumentOutOfRangeException("charCount");
+                }
+
+                return System.Int64.clip32(byteCount);
+            },
+            GetMaxCharCount: function (byteCount) {
+                if (byteCount < 0) {
+                    throw new System.ArgumentOutOfRangeException("byteCount");
+                }
+
+                var charCount = System.Int64((byteCount >> 1)).add(System.Int64((byteCount & 1))).add(System.Int64(1));
+
+                if (charCount.gt(System.Int64(2147483647))) {
+                    throw new System.ArgumentOutOfRangeException("byteCount");
+                }
+
+                return System.Int64.clip32(charCount);
+            }
+        }
+    });
+
+    Bridge.ns("System.Text.UnicodeEncoding", $asm.$);
+
+    Bridge.apply($asm.$.System.Text.UnicodeEncoding, {
+        f1: function (ch) {
+            return ((((ch & 255) << 8) | ((ch >> 8) & 255)) & 65535);
+        },
+        f2: function (ch) {
+            return ((((ch & 255) << 8) | (((ch >> 8)) & 255)) & 65535);
+        }
+    });
+
+    // @source UTF32Encoding.js
+
+    Bridge.define("System.Text.UTF32Encoding", {
+        inherits: [System.Text.Encoding],
+        fields: {
+            bigEndian: false,
+            byteOrderMark: false,
+            throwOnInvalid: false
+        },
+        props: {
+            CodePage: {
+                get: function () {
+                    return this.bigEndian ? 1201 : 1200;
+                }
+            },
+            EncodingName: {
+                get: function () {
+                    return this.bigEndian ? "Unicode (UTF-32 Big-Endian)" : "Unicode (UTF-32)";
+                }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                System.Text.UTF32Encoding.$ctor2.call(this, false, true, false);
+            },
+            $ctor1: function (bigEndian, byteOrderMark) {
+                System.Text.UTF32Encoding.$ctor2.call(this, bigEndian, byteOrderMark, false);
+            },
+            $ctor2: function (bigEndian, byteOrderMark, throwOnInvalidBytes) {
+                this.$initialize();
+                System.Text.Encoding.ctor.call(this);
+                this.bigEndian = bigEndian;
+                this.byteOrderMark = byteOrderMark;
+                this.throwOnInvalid = throwOnInvalidBytes;
+                this.fallbackCharacter = 65533;
+            }
+        },
+        methods: {
+            ToCodePoints: function (str) {
+                var surrogate_1st = 0;
+                var unicode_codes = System.Array.init(0, 0, System.Char);
+                var fallback = Bridge.fn.bind(this, function () {
+                    if (this.throwOnInvalid) {
+                        throw new System.Exception("Invalid character in UTF32 text");
+                    }
+                    unicode_codes.push(this.fallbackCharacter);
+                });
+
+                for (var i = 0; i < str.length; i = (i + 1) | 0) {
+                    var utf16_code = str.charCodeAt(i);
+
+                    if (surrogate_1st !== 0) {
+                        if (utf16_code >= 56320 && utf16_code <= 57343) {
+                            var surrogate_2nd = utf16_code;
+                            var unicode_code = (((Bridge.Int.mul((((surrogate_1st - 55296) | 0)), (1024)) + (65536)) | 0) + (((surrogate_2nd - 56320) | 0))) | 0;
+                            unicode_codes.push(unicode_code);
+                        } else {
+                            fallback();
+                            i = (i - 1) | 0;
+                        }
+                        surrogate_1st = 0;
+                    } else if (utf16_code >= 55296 && utf16_code <= 56319) {
+                        surrogate_1st = utf16_code;
+                    } else if ((utf16_code >= 56320) && (utf16_code <= 57343)) {
+                        fallback();
+                    } else {
+                        unicode_codes.push(utf16_code);
+                    }
+                }
+
+                if (surrogate_1st !== 0) {
+                    fallback();
+                }
+
+                return unicode_codes;
+            },
+            Encode$3: function (s, outputBytes, outputIndex, writtenBytes) {
+                var hasBuffer = outputBytes != null;
+                var recorded = 0;
+
+                var write = function (ch) {
+                    if (hasBuffer) {
+                        if (outputIndex >= outputBytes.length) {
+                            throw new System.ArgumentException("bytes");
+                        }
+
+                        outputBytes[System.Array.index(Bridge.identity(outputIndex, (outputIndex = (outputIndex + 1) | 0)), outputBytes)] = ch;
+                    } else {
+                        outputBytes.push(ch);
+                    }
+                    recorded = (recorded + 1) | 0;
+                };
+
+                var write32 = Bridge.fn.bind(this, function (a) {
+                    var r = System.Array.init(4, 0, System.Byte);
+                    r[System.Array.index(0, r)] = (((a & 255) >>> 0));
+                    r[System.Array.index(1, r)] = ((((a & 65280) >>> 0)) >>> 8);
+                    r[System.Array.index(2, r)] = ((((a & 16711680) >>> 0)) >>> 16);
+                    r[System.Array.index(3, r)] = ((((a & 4278190080) >>> 0)) >>> 24);
+
+                    if (this.bigEndian) {
+                        r.reverse();
+                    }
+
+                    write(r[System.Array.index(0, r)]);
+                    write(r[System.Array.index(1, r)]);
+                    write(r[System.Array.index(2, r)]);
+                    write(r[System.Array.index(3, r)]);
+                });
+
+                if (!hasBuffer) {
+                    outputBytes = System.Array.init(0, 0, System.Byte);
+                }
+
+                var unicode_codes = this.ToCodePoints(s);
+                for (var i = 0; i < unicode_codes.length; i = (i + 1) | 0) {
+                    write32(unicode_codes[System.Array.index(i, unicode_codes)]);
+                }
+
+                writtenBytes.v = recorded;
+
+                if (hasBuffer) {
+                    return null;
+                }
+
+                return outputBytes;
+            },
+            Decode$2: function (bytes, index, count, chars, charIndex) {
+                var position = index;
+                var result = "";
+                var endpoint = (position + count) | 0;
+                this._hasError = false;
+
+                var fallback = Bridge.fn.bind(this, function () {
+                    if (this.throwOnInvalid) {
+                        throw new System.Exception("Invalid character in UTF32 text");
+                    }
+
+                    result = (result || "") + ((String.fromCharCode(this.fallbackCharacter)) || "");
+                });
+
+                var read32 = Bridge.fn.bind(this, function () {
+                    if ((((position + 4) | 0)) > endpoint) {
+                        position = (position + 4) | 0;
+                        return null;
+                    }
+
+                    var a = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
+                    var b = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
+                    var c = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
+                    var d = bytes[System.Array.index(Bridge.identity(position, (position = (position + 1) | 0)), bytes)];
+
+                    if (this.bigEndian) {
+                        var tmp = b;
+                        b = c;
+                        c = tmp;
+
+                        tmp = a;
+                        a = d;
+                        d = tmp;
+                    }
+
+                    return ((d << 24) | (c << 16) | (b << 8) | a);
+                });
+
+                while (position < endpoint) {
+                    var unicode_code = read32();
+
+                    if (unicode_code == null) {
+                        fallback();
+                        this._hasError = true;
+                        continue;
+                    }
+
+                    if (System.Nullable.lt(unicode_code, 65536) || System.Nullable.gt(unicode_code, 1114111)) {
+                        if (System.Nullable.lt(unicode_code, 0) || System.Nullable.gt(unicode_code, 1114111) || (System.Nullable.gte(unicode_code, 55296) && System.Nullable.lte(unicode_code, 57343))) {
+                            fallback();
+                        } else {
+                            result = (result || "") + ((String.fromCharCode(unicode_code)) || "");
+                        }
+                    } else {
+                        result = (result || "") + ((String.fromCharCode((Bridge.Int.clipu32(System.Nullable.add((Bridge.Int.clipu32(Bridge.Int.div((Bridge.Int.clipu32(System.Nullable.sub(unicode_code, (65536)))), (1024)))), 55296))))) || "");
+                        result = (result || "") + ((String.fromCharCode((Bridge.Int.clipu32(System.Nullable.add((System.Nullable.mod(unicode_code, (1024))), 56320))))) || "");
+                    }
+                }
+
+                return result;
+            },
+            GetMaxByteCount: function (charCount) {
+                if (charCount < 0) {
+                    throw new System.ArgumentOutOfRangeException("charCount");
+                }
+
+                var byteCount = System.Int64(charCount).add(System.Int64(1));
+                byteCount = byteCount.mul(System.Int64(4));
+
+                if (byteCount.gt(System.Int64(2147483647))) {
+                    throw new System.ArgumentOutOfRangeException("charCount");
+                }
+
+                return System.Int64.clip32(byteCount);
+            },
+            GetMaxCharCount: function (byteCount) {
+                if (byteCount < 0) {
+                    throw new System.ArgumentOutOfRangeException("byteCount");
+                }
+
+                var charCount = (((Bridge.Int.div(byteCount, 2)) | 0) + 2) | 0;
+
+                if (charCount > 2147483647) {
+                    throw new System.ArgumentOutOfRangeException("byteCount");
+                }
+
+                return charCount;
+            }
+        }
+    });
+
+    // @source UTF7Encoding.js
+
+    Bridge.define("System.Text.UTF7Encoding", {
+        inherits: [System.Text.Encoding],
+        statics: {
+            methods: {
+                Escape: function (chars) {
+                    return chars.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+                }
+            }
+        },
+        fields: {
+            allowOptionals: false
+        },
+        props: {
+            CodePage: {
+                get: function () {
+                    return 65000;
+                }
+            },
+            EncodingName: {
+                get: function () {
+                    return "Unicode (UTF-7)";
+                }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                System.Text.UTF7Encoding.$ctor1.call(this, false);
+            },
+            $ctor1: function (allowOptionals) {
+                this.$initialize();
+                System.Text.Encoding.ctor.call(this);
+                this.allowOptionals = allowOptionals;
+                this.fallbackCharacter = 65533;
+            }
+        },
+        methods: {
+            Encode$3: function (s, outputBytes, outputIndex, writtenBytes) {
+                var setD = "A-Za-z0-9" + (System.Text.UTF7Encoding.Escape("'(),-./:?") || "");
+
+                var encode = $asm.$.System.Text.UTF7Encoding.f1;
+
+                var setO = System.Text.UTF7Encoding.Escape("!\"#$%&*;<=>@[]^_`{|}");
+                var setW = System.Text.UTF7Encoding.Escape(" \r\n\t");
+
+                s = s.replace(new RegExp("[^" + setW + setD + (this.allowOptionals ? setO : "") + "]+", 'g'), function(chunk) {return '+' + (chunk === '+' ? '' : encode(chunk)) + '-';});
+
+                var arr = System.String.toCharArray(s, 0, s.length);
+
+                if (outputBytes != null) {
+                    var recorded = 0;
+
+                    if (arr.length > (((outputBytes.length - outputIndex) | 0))) {
+                        throw new System.ArgumentException("bytes");
+                    }
+
+                    for (var j = 0; j < arr.length; j = (j + 1) | 0) {
+                        outputBytes[System.Array.index(((j + outputIndex) | 0), outputBytes)] = arr[System.Array.index(j, arr)];
+                        recorded = (recorded + 1) | 0;
+                    }
+
+                    writtenBytes.v = recorded;
+                    return null;
+                }
+
+                writtenBytes.v = arr.length;
+
+                return arr;
+            },
+            Decode$2: function (bytes, index, count, chars, charIndex) {
+                var _base64ToArrayBuffer = $asm.$.System.Text.UTF7Encoding.f2;
+
+                var decode = function (s) {
+                    var b = _base64ToArrayBuffer(s);
+                    var r = System.Array.init(0, 0, System.Char);
+                    for (var i = 0; i < b.length; ) {
+                        r.push(((b[System.Array.index(Bridge.identity(i, (i = (i + 1) | 0)), b)] << 8 | b[System.Array.index(Bridge.identity(i, (i = (i + 1) | 0)), b)]) & 65535));
+                    }
+                    return System.String.fromCharArray(r);
+                };
+
+                var str = System.String.fromCharArray(bytes, index, count);
+                return str.replace(/\+([A-Za-z0-9\/]*)-?/gi, function (_, chunk) {if (chunk === '') {return _ == '+-' ? '+' : '';}return decode(chunk);});
+            },
+            GetMaxByteCount: function (charCount) {
+                if (charCount < 0) {
+                    throw new System.ArgumentOutOfRangeException("charCount");
+                }
+
+                var byteCount = System.Int64(charCount).mul(System.Int64(3)).add(System.Int64(2));
+
+                if (byteCount.gt(System.Int64(2147483647))) {
+                    throw new System.ArgumentOutOfRangeException("charCount");
+                }
+
+                return System.Int64.clip32(byteCount);
+            },
+            GetMaxCharCount: function (byteCount) {
+                if (byteCount < 0) {
+                    throw new System.ArgumentOutOfRangeException("byteCount");
+                }
+
+                var charCount = byteCount;
+                if (charCount === 0) {
+                    charCount = 1;
+                }
+
+                return charCount | 0;
+            }
+        }
+    });
+
+    Bridge.ns("System.Text.UTF7Encoding", $asm.$);
+
+    Bridge.apply($asm.$.System.Text.UTF7Encoding, {
+        f1: function (str) {
+            var b = System.Array.init(Bridge.Int.mul(str.length, 2), 0, System.Byte);
+            var bi = 0;
+            for (var i = 0; i < str.length; i = (i + 1) | 0) {
+                var c = str.charCodeAt(i);
+                b[System.Array.index(Bridge.identity(bi, (bi = (bi + 1) | 0)), b)] = (c >> 8);
+                b[System.Array.index(Bridge.identity(bi, (bi = (bi + 1) | 0)), b)] = (c & 255);
+            }
+            var base64Str = System.Convert.toBase64String(b, null, null, null);
+            return base64Str.replace(/=+$/, '');
+        },
+        f2: function (base64) {
+            try {
+                var binary_string = window.atob(base64);
+                var len = binary_string.length;
+                var arr = System.Array.init(len, 0, System.Char);
+
+                if (len === 1 && binary_string.charCodeAt(0) === 0) {
+                    return System.Array.init(0, 0, System.Char);
+                }
+
+                for (var i = 0; i < len; i = (i + 1) | 0) {
+                    arr[System.Array.index(i, arr)] = binary_string.charCodeAt(i);
+                }
+                return arr;
+            }
+            catch ($e1) {
+                $e1 = System.Exception.create($e1);
+                return System.Array.init(0, 0, System.Char);
+            }
+        }
+    });
+
+    // @source UTF8Encoding.js
+
+    Bridge.define("System.Text.UTF8Encoding", {
+        inherits: [System.Text.Encoding],
+        fields: {
+            encoderShouldEmitUTF8Identifier: false,
+            throwOnInvalid: false
+        },
+        props: {
+            CodePage: {
+                get: function () {
+                    return 65001;
+                }
+            },
+            EncodingName: {
+                get: function () {
+                    return "Unicode (UTF-8)";
+                }
+            }
+        },
+        ctors: {
+            ctor: function () {
+                System.Text.UTF8Encoding.$ctor1.call(this, false);
+            },
+            $ctor1: function (encoderShouldEmitUTF8Identifier) {
+                System.Text.UTF8Encoding.$ctor2.call(this, encoderShouldEmitUTF8Identifier, false);
+            },
+            $ctor2: function (encoderShouldEmitUTF8Identifier, throwOnInvalidBytes) {
+                this.$initialize();
+                System.Text.Encoding.ctor.call(this);
+                this.encoderShouldEmitUTF8Identifier = encoderShouldEmitUTF8Identifier;
+                this.throwOnInvalid = throwOnInvalidBytes;
+                this.fallbackCharacter = 65533;
+            }
+        },
+        methods: {
+            Encode$3: function (s, outputBytes, outputIndex, writtenBytes) {
+                var hasBuffer = outputBytes != null;
+                var record = 0;
+
+                var write = function (args) {
+                    var len = args.length;
+                    for (var j = 0; j < len; j = (j + 1) | 0) {
+                        var code = args[System.Array.index(j, args)];
+                        if (hasBuffer) {
+                            if (outputIndex >= outputBytes.length) {
+                                throw new System.ArgumentException("bytes");
+                            }
+
+                            outputBytes[System.Array.index(Bridge.identity(outputIndex, (outputIndex = (outputIndex + 1) | 0)), outputBytes)] = code;
+                        } else {
+                            outputBytes.push(code);
+                        }
+                        record = (record + 1) | 0;
+                    }
+                };
+
+                var fallback = Bridge.fn.bind(this, $asm.$.System.Text.UTF8Encoding.f1);
+
+                if (!hasBuffer) {
+                    outputBytes = System.Array.init(0, 0, System.Byte);
+                }
+
+                for (var i = 0; i < s.length; i = (i + 1) | 0) {
+                    var charcode = s.charCodeAt(i);
+
+                    if ((charcode >= 55296) && (charcode <= 56319)) {
+                        var next = s.charCodeAt(((i + 1) | 0));
+                        if (!((next >= 56320) && (next <= 57343))) {
+                            charcode = fallback();
+                        }
+                    } else if ((charcode >= 56320) && (charcode <= 57343)) {
+                        charcode = fallback();
+                    }
+
+                    if (charcode < 128) {
+                        write(System.Array.init([charcode], System.Byte));
+                    } else if (charcode < 2048) {
+                        write(System.Array.init([(192 | (charcode >> 6)), (128 | (charcode & 63))], System.Byte));
+                    } else if (charcode < 55296 || charcode >= 57344) {
+                        write(System.Array.init([(224 | (charcode >> 12)), (128 | ((charcode >> 6) & 63)), (128 | (charcode & 63))], System.Byte));
+                    } else {
+                        i = (i + 1) | 0;
+                        var code = (65536 + (((charcode & 1023) << 10) | (s.charCodeAt(i) & 1023))) | 0;
+                        write(System.Array.init([(240 | (code >> 18)), (128 | ((code >> 12) & 63)), (128 | ((code >> 6) & 63)), (128 | (code & 63))], System.Byte));
+                    }
+                }
+
+                writtenBytes.v = record;
+
+                if (hasBuffer) {
+                    return null;
+                }
+
+                return outputBytes;
+            },
+            Decode$2: function (bytes, index, count, chars, charIndex) {
+                this._hasError = false;
+                var position = index;
+                var result = "";
+                var surrogate1 = 0;
+                var addFallback = false;
+                var endpoint = (position + count) | 0;
+
+                for (; position < endpoint; position = (position + 1) | 0) {
+                    var accumulator = 0;
+                    var extraBytes = 0;
+                    var hasError = false;
+                    var firstByte = bytes[System.Array.index(position, bytes)];
+
+                    if (firstByte <= 127) {
+                        accumulator = firstByte;
+                    } else if ((firstByte & 64) === 0) {
+                        hasError = true;
+                    } else if ((firstByte & 224) === 192) {
+                        accumulator = firstByte & 31;
+                        extraBytes = 1;
+                    } else if ((firstByte & 240) === 224) {
+                        accumulator = firstByte & 15;
+                        extraBytes = 2;
+                    } else if ((firstByte & 248) === 240) {
+                        accumulator = firstByte & 7;
+                        extraBytes = 3;
+                    } else if ((firstByte & 252) === 248) {
+                        accumulator = firstByte & 3;
+                        extraBytes = 4;
+                        hasError = true;
+                    } else if ((firstByte & 254) === 252) {
+                        accumulator = firstByte & 3;
+                        extraBytes = 5;
+                        hasError = true;
+                    } else {
+                        accumulator = firstByte;
+                        hasError = false;
+                    }
+
+                    while (extraBytes > 0) {
+                        position = (position + 1) | 0;
+
+                        if (position >= endpoint) {
+                            hasError = true;
+                            break;
+                        }
+
+                        var extraByte = bytes[System.Array.index(position, bytes)];
+                        extraBytes = (extraBytes - 1) | 0;
+
+                        if ((extraByte & 192) !== 128) {
+                            position = (position - 1) | 0;
+                            hasError = true;
+                            break;
+                        }
+
+                        accumulator = (accumulator << 6) | (extraByte & 63);
+                    }
+
+                    /* if ((accumulator == 0xFFFE) || (accumulator == 0xFFFF)) {
+                       hasError = true;
+                    }*/
+
+                    var characters = null;
+                    addFallback = false;
+                    if (!hasError) {
+                        if (surrogate1 > 0 && !((accumulator >= 56320) && (accumulator <= 57343))) {
+                            hasError = true;
+                            surrogate1 = 0;
+                        } else if ((accumulator >= 55296) && (accumulator <= 56319)) {
+                            surrogate1 = accumulator & 65535;
+                        } else if ((accumulator >= 56320) && (accumulator <= 57343)) {
+                            hasError = true;
+                            addFallback = true;
+                            surrogate1 = 0;
+                        } else {
+                            characters = System.String.fromCharCode(accumulator);
+                            surrogate1 = 0;
+                        }
+                    }
+
+                    if (hasError) {
+                        if (this.throwOnInvalid) {
+                            throw new System.Exception("Invalid character in UTF8 text");
+                        }
+
+                        result = (result || "") + String.fromCharCode(this.fallbackCharacter);
+                        this._hasError = true;
+                    } else if (surrogate1 === 0) {
+                        result = (result || "") + (characters || "");
+                    }
+                }
+
+                if (surrogate1 > 0 || addFallback) {
+                    if (this.throwOnInvalid) {
+                        throw new System.Exception("Invalid character in UTF8 text");
+                    }
+
+                    if (result.length > 0 && result.charCodeAt(((result.length - 1) | 0)) === this.fallbackCharacter) {
+                        result = (result || "") + String.fromCharCode(this.fallbackCharacter);
+                    } else {
+                        result = (result || "") + (((this.fallbackCharacter + this.fallbackCharacter) | 0));
+                    }
+
+                    this._hasError = true;
+                }
+
+                return result;
+            },
+            GetMaxByteCount: function (charCount) {
+                if (charCount < 0) {
+                    throw new System.ArgumentOutOfRangeException("charCount");
+                }
+
+
+                var byteCount = System.Int64(charCount).add(System.Int64(1));
+                byteCount = byteCount.mul(System.Int64(3));
+
+                if (byteCount.gt(System.Int64(2147483647))) {
+                    throw new System.ArgumentOutOfRangeException("charCount");
+                }
+
+                return System.Int64.clip32(byteCount);
+            },
+            GetMaxCharCount: function (byteCount) {
+                if (byteCount < 0) {
+                    throw new System.ArgumentOutOfRangeException("byteCount");
+                }
+
+                var charCount = System.Int64(byteCount).add(System.Int64(1));
+
+                if (charCount.gt(System.Int64(2147483647))) {
+                    throw new System.ArgumentOutOfRangeException("byteCount");
+                }
+
+                return System.Int64.clip32(charCount);
+            }
+        }
+    });
+
+    Bridge.ns("System.Text.UTF8Encoding", $asm.$);
+
+    Bridge.apply($asm.$.System.Text.UTF8Encoding, {
+        f1: function () {
+            if (this.throwOnInvalid) {
+                throw new System.Exception("Invalid character in UTF8 text");
+            }
+
+            return this.fallbackCharacter;
+        }
+    });
+
+    // @source Timer.js
+
+    Bridge.define("System.Threading.Timer", {
+        inherits: [System.IDisposable],
+        statics: {
+            fields: {
+                MAX_SUPPORTED_TIMEOUT: 0,
+                EXC_LESS: null,
+                EXC_MORE: null,
+                EXC_DISPOSED: null
+            },
+            ctors: {
+                init: function () {
+                    this.MAX_SUPPORTED_TIMEOUT = 4294967294;
+                    this.EXC_LESS = "Number must be either non-negative and less than or equal to Int32.MaxValue or -1.";
+                    this.EXC_MORE = "Time-out interval must be less than 2^32-2.";
+                    this.EXC_DISPOSED = "The timer has been already disposed.";
+                }
+            }
+        },
+        fields: {
+            dueTime: System.Int64(0),
+            period: System.Int64(0),
+            timerCallback: null,
+            state: null,
+            id: null,
+            disposed: false
+        },
+        alias: ["dispose", "System$IDisposable$dispose"],
+        ctors: {
+            $ctor1: function (callback, state, dueTime, period) {
+                this.$initialize();
+                this.timerSetup(callback, state, System.Int64(dueTime), System.Int64(period));
+            },
+            $ctor3: function (callback, state, dueTime, period) {
+                this.$initialize();
+                var dueTm = Bridge.Int.clip64(dueTime.getTotalMilliseconds());
+                var periodTm = Bridge.Int.clip64(period.getTotalMilliseconds());
+
+                this.timerSetup(callback, state, dueTm, periodTm);
+            },
+            $ctor4: function (callback, state, dueTime, period) {
+                this.$initialize();
+                this.timerSetup(callback, state, System.Int64(dueTime), System.Int64(period));
+            },
+            $ctor2: function (callback, state, dueTime, period) {
+                this.$initialize();
+                this.timerSetup(callback, state, dueTime, period);
+            },
+            ctor: function (callback) {
+                this.$initialize();
+                var dueTime = -1; // we want timer to be registered, but not activated.  Requires caller to call
+                var period = -1; // Change after a timer instance is created.  This is to avoid the potential
+                // for a timer to be fired before the returned value is assigned to the variable,
+                // potentially causing the callback to reference a bogus value (if passing the timer to the callback).
+
+                this.timerSetup(callback, this, System.Int64(dueTime), System.Int64(period));
+            }
+        },
+        methods: {
+            timerSetup: function (callback, state, dueTime, period) {
+                if (this.disposed) {
+                    throw new System.InvalidOperationException(System.Threading.Timer.EXC_DISPOSED);
+                }
+
+                if (Bridge.staticEquals(callback, null)) {
+                    throw new System.ArgumentNullException("TimerCallback");
+                }
+
+                if (dueTime.lt(System.Int64(-1))) {
+                    throw new System.ArgumentOutOfRangeException("dueTime", System.Threading.Timer.EXC_LESS);
+                }
+                if (period.lt(System.Int64(-1))) {
+                    throw new System.ArgumentOutOfRangeException("period", System.Threading.Timer.EXC_LESS);
+                }
+                if (dueTime.gt(System.Int64(System.Threading.Timer.MAX_SUPPORTED_TIMEOUT))) {
+                    throw new System.ArgumentOutOfRangeException("dueTime", System.Threading.Timer.EXC_MORE);
+                }
+                if (period.gt(System.Int64(System.Threading.Timer.MAX_SUPPORTED_TIMEOUT))) {
+                    throw new System.ArgumentOutOfRangeException("period", System.Threading.Timer.EXC_MORE);
+                }
+
+                this.dueTime = dueTime;
+                this.period = period;
+
+                this.state = state;
+                this.timerCallback = callback;
+
+                return this.runTimer(this.dueTime);
+            },
+            handleCallback: function () {
+                if (this.disposed) {
+                    return;
+                }
+
+                if (!Bridge.staticEquals(this.timerCallback, null)) {
+                    var myId = this.id;
+                    this.timerCallback(this.state);
+
+                    // timerCallback may call Change(). To prevent double call we can check if timer changed
+                    if (System.Nullable.eq(this.id, myId)) {
+                        this.runTimer(this.period, false);
+                    }
+                }
+            },
+            runTimer: function (period, checkDispose) {
+                if (checkDispose === void 0) { checkDispose = true; }
+                if (checkDispose && this.disposed) {
+                    throw new System.InvalidOperationException(System.Threading.Timer.EXC_DISPOSED);
+                }
+
+                if (period.ne(System.Int64(-1)) && !this.disposed) {
+                    var p = period.toNumber();
+                    this.id = Bridge.global.setTimeout(Bridge.fn.cacheBind(this, this.handleCallback), p);
+                    return true;
+                }
+
+                return false;
+            },
+            change: function (dueTime, period) {
+                return this.changeTimer(System.Int64(dueTime), System.Int64(period));
+            },
+            change$2: function (dueTime, period) {
+                return this.changeTimer(Bridge.Int.clip64(dueTime.getTotalMilliseconds()), Bridge.Int.clip64(period.getTotalMilliseconds()));
+            },
+            change$3: function (dueTime, period) {
+                return this.changeTimer(System.Int64(dueTime), System.Int64(period));
+            },
+            change$1: function (dueTime, period) {
+                return this.changeTimer(dueTime, period);
+            },
+            changeTimer: function (dueTime, period) {
+                this.clearTimeout();
+                return this.timerSetup(this.timerCallback, this.state, dueTime, period);
+            },
+            clearTimeout: function () {
+                if (System.Nullable.hasValue(this.id)) {
+                    Bridge.global.clearTimeout(System.Nullable.getValue(this.id));
+                    this.id = null;
+                }
+            },
+            dispose: function () {
+                this.clearTimeout();
+                this.disposed = true;
+            }
+        }
+    });
+
+    // @source Version.js
+
+    Bridge.define("System.Version", {
+        inherits: function () { return [System.ICloneable,System.IComparable$1(System.Version),System.IEquatable$1(System.Version)]; },
+        statics: {
+            fields: {
+                separatorsArray: 0,
+                ZERO_CHAR_VALUE: 0
+            },
+            ctors: {
+                init: function () {
+                    this.separatorsArray = 46;
+                    this.ZERO_CHAR_VALUE = 48;
+                }
+            },
+            methods: {
+                appendPositiveNumber: function (num, sb) {
+                    var index = sb.getLength();
+                    var reminder;
+
+                    do {
+                        reminder = num % 10;
+                        num = (Bridge.Int.div(num, 10)) | 0;
+                        sb.insert(index, String.fromCharCode(((((System.Version.ZERO_CHAR_VALUE + reminder) | 0)) & 65535)));
+                    } while (num > 0);
+                },
+                parse: function (input) {
+                    if (input == null) {
+                        throw new System.ArgumentNullException("input");
+                    }
+
+                    var r = { v : new System.Version.VersionResult() };
+                    r.v.init("input", true);
+                    if (!System.Version.tryParseVersion(input, r)) {
+                        throw r.v.getVersionParseException();
+                    }
+                    return r.v.m_parsedVersion;
+                },
+                tryParse: function (input, result) {
+                    var r = { v : new System.Version.VersionResult() };
+                    r.v.init("input", false);
+                    var b = System.Version.tryParseVersion(input, r);
+                    result.v = r.v.m_parsedVersion;
+                    return b;
+                },
+                tryParseVersion: function (version, result) {
+                    var major = { }, minor = { }, build = { }, revision = { };
+
+                    if (version == null) {
+                        result.v.setFailure(System.Version.ParseFailureKind.ArgumentNullException);
+
+                        return false;
+                    }
+
+                    var parsedComponents = System.String.split(version, [System.Version.separatorsArray].map(function(i) {{ return String.fromCharCode(i); }}));
+                    var parsedComponentsLength = parsedComponents.length;
+
+                    if ((parsedComponentsLength < 2) || (parsedComponentsLength > 4)) {
+                        result.v.setFailure(System.Version.ParseFailureKind.ArgumentException);
+                        return false;
+                    }
+
+                    if (!System.Version.tryParseComponent(parsedComponents[System.Array.index(0, parsedComponents)], "version", result, major)) {
+                        return false;
+                    }
+
+                    if (!System.Version.tryParseComponent(parsedComponents[System.Array.index(1, parsedComponents)], "version", result, minor)) {
+                        return false;
+                    }
+
+                    parsedComponentsLength = (parsedComponentsLength - 2) | 0;
+
+                    if (parsedComponentsLength > 0) {
+                        if (!System.Version.tryParseComponent(parsedComponents[System.Array.index(2, parsedComponents)], "build", result, build)) {
+                            return false;
+                        }
+
+                        parsedComponentsLength = (parsedComponentsLength - 1) | 0;
+
+                        if (parsedComponentsLength > 0) {
+                            if (!System.Version.tryParseComponent(parsedComponents[System.Array.index(3, parsedComponents)], "revision", result, revision)) {
+                                return false;
+                            } else {
+                                result.v.m_parsedVersion = new System.Version.$ctor3(major.v, minor.v, build.v, revision.v);
+                            }
+                        } else {
+                            result.v.m_parsedVersion = new System.Version.$ctor2(major.v, minor.v, build.v);
+                        }
+                    } else {
+                        result.v.m_parsedVersion = new System.Version.$ctor1(major.v, minor.v);
+                    }
+
+                    return true;
+                },
+                tryParseComponent: function (component, componentName, result, parsedComponent) {
+                    if (!System.Int32.tryParse(component, parsedComponent)) {
+                        result.v.setFailure$1(System.Version.ParseFailureKind.FormatException, component);
+                        return false;
+                    }
+
+                    if (parsedComponent.v < 0) {
+                        result.v.setFailure$1(System.Version.ParseFailureKind.ArgumentOutOfRangeException, componentName);
+                        return false;
+                    }
+
+                    return true;
+                },
+                op_Equality: function (v1, v2) {
+                    if (Bridge.referenceEquals(v1, null)) {
+                        return Bridge.referenceEquals(v2, null);
+                    }
+
+                    return v1.equalsT(v2);
+                },
+                op_Inequality: function (v1, v2) {
+                    return !(System.Version.op_Equality(v1, v2));
+                },
+                op_LessThan: function (v1, v2) {
+                    if (v1 == null) {
+                        throw new System.ArgumentNullException("v1");
+                    }
+
+                    return (v1.compareTo(v2) < 0);
+                },
+                op_LessThanOrEqual: function (v1, v2) {
+                    if (v1 == null) {
+                        throw new System.ArgumentNullException("v1");
+                    }
+
+                    return (v1.compareTo(v2) <= 0);
+                },
+                op_GreaterThan: function (v1, v2) {
+                    return (System.Version.op_LessThan(v2, v1));
+                },
+                op_GreaterThanOrEqual: function (v1, v2) {
+                    return (System.Version.op_LessThanOrEqual(v2, v1));
+                }
+            }
+        },
+        fields: {
+            _Major: 0,
+            _Minor: 0,
+            _Build: 0,
+            _Revision: 0
+        },
+        props: {
+            Major: {
+                get: function () {
+                    return this._Major;
+                }
+            },
+            Minor: {
+                get: function () {
+                    return this._Minor;
+                }
+            },
+            Build: {
+                get: function () {
+                    return this._Build;
+                }
+            },
+            Revision: {
+                get: function () {
+                    return this._Revision;
+                }
+            },
+            MajorRevision: {
+                get: function () {
+                    return Bridge.Int.sxs((this._Revision >> 16) & 65535);
+                }
+            },
+            MinorRevision: {
+                get: function () {
+                    return Bridge.Int.sxs((this._Revision & 65535) & 65535);
+                }
+            }
+        },
+        alias: [
+            "clone", "System$ICloneable$clone",
+            "compareTo", ["System$IComparable$1$System$Version$compareTo", "System$IComparable$1$compareTo"],
+            "equalsT", "System$IEquatable$1$System$Version$equalsT"
+        ],
+        ctors: {
+            init: function () {
+                this._Build = -1;
+                this._Revision = -1;
+            },
+            $ctor3: function (major, minor, build, revision) {
+                this.$initialize();
+                if (major < 0) {
+                    throw new System.ArgumentOutOfRangeException("major", "Cannot be < 0");
+                }
+
+                if (minor < 0) {
+                    throw new System.ArgumentOutOfRangeException("minor", "Cannot be < 0");
+                }
+
+                if (build < 0) {
+                    throw new System.ArgumentOutOfRangeException("build", "Cannot be < 0");
+                }
+
+                if (revision < 0) {
+                    throw new System.ArgumentOutOfRangeException("revision", "Cannot be < 0");
+                }
+
+                this._Major = major;
+                this._Minor = minor;
+                this._Build = build;
+                this._Revision = revision;
+            },
+            $ctor2: function (major, minor, build) {
+                this.$initialize();
+                if (major < 0) {
+                    throw new System.ArgumentOutOfRangeException("major", "Cannot be < 0");
+                }
+
+                if (minor < 0) {
+                    throw new System.ArgumentOutOfRangeException("minor", "Cannot be < 0");
+                }
+
+                if (build < 0) {
+                    throw new System.ArgumentOutOfRangeException("build", "Cannot be < 0");
+                }
+
+                this._Major = major;
+                this._Minor = minor;
+                this._Build = build;
+            },
+            $ctor1: function (major, minor) {
+                this.$initialize();
+                if (major < 0) {
+                    throw new System.ArgumentOutOfRangeException("major", "Cannot be < 0");
+                }
+
+                if (minor < 0) {
+                    throw new System.ArgumentOutOfRangeException("minor", "Cannot be < 0");
+                }
+
+                this._Major = major;
+                this._Minor = minor;
+            },
+            $ctor4: function (version) {
+                this.$initialize();
+                var v = System.Version.parse(version);
+                this._Major = v.Major;
+                this._Minor = v.Minor;
+                this._Build = v.Build;
+                this._Revision = v.Revision;
+            },
+            ctor: function () {
+                this.$initialize();
+                this._Major = 0;
+                this._Minor = 0;
+            }
+        },
+        methods: {
+            clone: function () {
+                var v = new System.Version.ctor();
+                v._Major = this._Major;
+                v._Minor = this._Minor;
+                v._Build = this._Build;
+                v._Revision = this._Revision;
+                return (v);
+            },
+            compareTo$1: function (version) {
+                if (version == null) {
+                    return 1;
+                }
+
+                var v = Bridge.as(version, System.Version);
+                if (System.Version.op_Equality(v, null)) {
+                    throw new System.ArgumentException("version should be of System.Version type");
+                }
+
+                if (this._Major !== v._Major) {
+                    if (this._Major > v._Major) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+
+                if (this._Minor !== v._Minor) {
+                    if (this._Minor > v._Minor) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+
+                if (this._Build !== v._Build) {
+                    if (this._Build > v._Build) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+
+                if (this._Revision !== v._Revision) {
+                    if (this._Revision > v._Revision) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+
+                return 0;
+            },
+            compareTo: function (value) {
+                if (System.Version.op_Equality(value, null)) {
+                    return 1;
+                }
+
+                if (this._Major !== value._Major) {
+                    if (this._Major > value._Major) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+
+                if (this._Minor !== value._Minor) {
+                    if (this._Minor > value._Minor) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+
+                if (this._Build !== value._Build) {
+                    if (this._Build > value._Build) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+
+                if (this._Revision !== value._Revision) {
+                    if (this._Revision > value._Revision) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+
+                return 0;
+            },
+            equals: function (obj) {
+                return this.equalsT(Bridge.as(obj, System.Version));
+            },
+            equalsT: function (obj) {
+                if (System.Version.op_Equality(obj, null)) {
+                    return false;
+                }
+
+                // check that major, minor, build & revision numbers match
+                if ((this._Major !== obj._Major) || (this._Minor !== obj._Minor) || (this._Build !== obj._Build) || (this._Revision !== obj._Revision)) {
+                    return false;
+                }
+
+                return true;
+            },
+            getHashCode: function () {
+                // Let's assume that most version numbers will be pretty small and just
+                // OR some lower order bits together.
+
+                var accumulator = 0;
+
+                accumulator = accumulator | ((this._Major & 15) << 28);
+                accumulator = accumulator | ((this._Minor & 255) << 20);
+                accumulator = accumulator | ((this._Build & 255) << 12);
+                accumulator = accumulator | (this._Revision & 4095);
+
+                return accumulator;
+            },
+            toString: function () {
+                if (this._Build === -1) {
+                    return (this.toString$1(2));
+                }
+                if (this._Revision === -1) {
+                    return (this.toString$1(3));
+                }
+                return (this.toString$1(4));
+            },
+            toString$1: function (fieldCount) {
+                var sb;
+                switch (fieldCount) {
+                    case 0: 
+                        return ("");
+                    case 1: 
+                        return (Bridge.toString(this._Major));
+                    case 2: 
+                        sb = new System.Text.StringBuilder();
+                        System.Version.appendPositiveNumber(this._Major, sb);
+                        sb.append(String.fromCharCode(46));
+                        System.Version.appendPositiveNumber(this._Minor, sb);
+                        return sb.toString();
+                    default: 
+                        if (this._Build === -1) {
+                            throw new System.ArgumentException("Build should be > 0 if fieldCount > 2", "fieldCount");
+                        }
+                        if (fieldCount === 3) {
+                            sb = new System.Text.StringBuilder();
+                            System.Version.appendPositiveNumber(this._Major, sb);
+                            sb.append(String.fromCharCode(46));
+                            System.Version.appendPositiveNumber(this._Minor, sb);
+                            sb.append(String.fromCharCode(46));
+                            System.Version.appendPositiveNumber(this._Build, sb);
+                            return sb.toString();
+                        }
+                        if (this._Revision === -1) {
+                            throw new System.ArgumentException("Revision should be > 0 if fieldCount > 3", "fieldCount");
+                        }
+                        if (fieldCount === 4) {
+                            sb = new System.Text.StringBuilder();
+                            System.Version.appendPositiveNumber(this._Major, sb);
+                            sb.append(String.fromCharCode(46));
+                            System.Version.appendPositiveNumber(this._Minor, sb);
+                            sb.append(String.fromCharCode(46));
+                            System.Version.appendPositiveNumber(this._Build, sb);
+                            sb.append(String.fromCharCode(46));
+                            System.Version.appendPositiveNumber(this._Revision, sb);
+                            return sb.toString();
+                        }
+                        throw new System.ArgumentException("Should be < 5", "fieldCount");
+                }
+            }
+        }
+    });
+
+    // @source ParseFailureKind.js
+
+    Bridge.define("System.Version.ParseFailureKind", {
+        $kind: "nested enum",
+        statics: {
+            fields: {
+                ArgumentNullException: 0,
+                ArgumentException: 1,
+                ArgumentOutOfRangeException: 2,
+                FormatException: 3
+            }
+        }
+    });
+
+    // @source VersionResult.js
+
+    Bridge.define("System.Version.VersionResult", {
+        $kind: "nested struct",
+        statics: {
+            methods: {
+                getDefaultValue: function () { return new System.Version.VersionResult(); }
+            }
+        },
+        fields: {
+            m_parsedVersion: null,
+            m_failure: 0,
+            m_exceptionArgument: null,
+            m_argumentName: null,
+            m_canThrow: false
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+            }
+        },
+        methods: {
+            init: function (argumentName, canThrow) {
+                this.m_canThrow = canThrow;
+                this.m_argumentName = argumentName;
+            },
+            setFailure: function (failure) {
+                this.setFailure$1(failure, "");
+            },
+            setFailure$1: function (failure, argument) {
+                this.m_failure = failure;
+                this.m_exceptionArgument = argument;
+                if (this.m_canThrow) {
+                    throw this.getVersionParseException();
+                }
+            },
+            getVersionParseException: function () {
+                switch (this.m_failure) {
+                    case System.Version.ParseFailureKind.ArgumentNullException: 
+                        return new System.ArgumentNullException(this.m_argumentName);
+                    case System.Version.ParseFailureKind.ArgumentException: 
+                        return new System.ArgumentException("VersionString");
+                    case System.Version.ParseFailureKind.ArgumentOutOfRangeException: 
+                        return new System.ArgumentOutOfRangeException(this.m_exceptionArgument, "Cannot be < 0");
+                    case System.Version.ParseFailureKind.FormatException: 
+                        // Regenerate the FormatException as would be thrown by Int32.Parse()
+                        try {
+                            System.Int32.parse(this.m_exceptionArgument);
+                        }
+                        catch ($e1) {
+                            $e1 = System.Exception.create($e1);
+                            var e;
+                            if (Bridge.is($e1, System.FormatException)) {
+                                e = $e1;
+                                return e;
+                            } else if (Bridge.is($e1, System.OverflowException)) {
+                                e = $e1;
+                                return e;
+                            } else {
+                                throw $e1;
+                            }
+                        }
+                        return new System.FormatException("InvalidString");
+                    default: 
+                        return new System.ArgumentException("VersionString");
+                }
+            },
+            getHashCode: function () {
+                var h = Bridge.addHash([5139482776, this.m_parsedVersion, this.m_failure, this.m_exceptionArgument, this.m_argumentName, this.m_canThrow]);
+                return h;
+            },
+            equals: function (o) {
+                if (!Bridge.is(o, System.Version.VersionResult)) {
+                    return false;
+                }
+                return Bridge.equals(this.m_parsedVersion, o.m_parsedVersion) && Bridge.equals(this.m_failure, o.m_failure) && Bridge.equals(this.m_exceptionArgument, o.m_exceptionArgument) && Bridge.equals(this.m_argumentName, o.m_argumentName) && Bridge.equals(this.m_canThrow, o.m_canThrow);
+            },
+            $clone: function (to) {
+                var s = to || new System.Version.VersionResult();
+                s.m_parsedVersion = this.m_parsedVersion;
+                s.m_failure = this.m_failure;
+                s.m_exceptionArgument = this.m_exceptionArgument;
+                s.m_argumentName = this.m_argumentName;
+                s.m_canThrow = this.m_canThrow;
+                return s;
             }
         }
     });
