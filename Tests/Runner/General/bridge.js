@@ -8773,17 +8773,41 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                 return Bridge.isDate(instance);
             },
 
+            $default: null,
+
+            getDefaultValue: function () {
+                if (System.DateTime.$default === null) {
+                    System.DateTime.$default = System.DateTime.create(1, 1, 1, 0, 0, 0, 0, 0);
+                }
+
+                return System.DateTime.$default;
+            },
+
+            $min: null,
+
             // UTC Min Value
             getMinValue: function () {
-                return System.DateTime.create$2(0);
+                if (System.DateTime.$min === null) {
+                    System.DateTime.$min = System.DateTime.create$2(0, 0);
+                }
+
+                return System.DateTime.$min;
             },
+
+            $max: null,
 
             // UTC Max Value
             getMaxValue: function () {
-                var d = System.DateTime.create$2(System.DateTime.maxTicks);
-                d.ticks = System.DateTime.maxTicks;
+                if (System.DateTime.$max === null) {
+                    System.DateTime.$max = System.DateTime.create$2(System.DateTime.maxTicks, 0);
+                    System.DateTime.$max.ticks = System.DateTime.maxTicks;
+                }
 
-                return d;
+                return System.DateTime.$max;
+            },
+
+            $getTzOffset: function (d) {
+                return d.getTimezoneOffset() * 60 * 1000;
             },
 
             // Get the number of ticks since 0001-01-01T00:00:00.0000000 UTC
@@ -8794,7 +8818,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                     if (d.kind === 1) {
                         d.ticks = System.Int64(d.getTime()).mul(10000).add(System.DateTime.minOffset);
                     } else {
-                        d.ticks = System.Int64(d.getTime() - d.getTimezoneOffset() * 60 * 1000).mul(10000).add(System.DateTime.minOffset);
+                        d.ticks = System.Int64(d.getTime() - System.DateTime.$getTzOffset(d)).mul(10000).add(System.DateTime.minOffset);
                     }
                 }
 
@@ -8806,14 +8830,14 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                     ticks = System.DateTime.getTicks(d);
 
                 if (d.kind !== 2) {
-                    ticks = d.ticks.sub(System.Int64(d.getTimezoneOffset() * 60 * 1000).mul(10000));
+                    ticks = d.ticks.sub(System.Int64(System.DateTime.$getTzOffset(d)).mul(10000));
                 }
 
                 d1 = System.DateTime.create$2(ticks, 2);
 
                 // Check if Ticks are out of range
                 if (ticks.gt(System.DateTime.maxTicks) || ticks.lt(0)) {
-                    ticks = ticks.add(System.Int64(d1.getTimezoneOffset() * 60 * 1000).mul(10000));
+                    ticks = ticks.add(System.Int64(System.DateTime.$getTzOffset(d1)).mul(10000));
                     d1 = System.DateTime.create$2(ticks, 2);
                 }
 
@@ -8826,22 +8850,18 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
 
                 // Assuming d is Local time, so adjust to UTC
                 if (d.kind !== 1) {
-                    ticks = ticks.add(System.Int64(d.getTimezoneOffset() * 60 * 1000).mul(10000));
+                    ticks = ticks.add(System.Int64(System.DateTime.$getTzOffset(d)).mul(10000));
                 }
 
                 d1 = System.DateTime.create$2(ticks, 1);
 
                 // Check if Ticks are out of range
                 if (ticks.gt(System.DateTime.maxTicks) || ticks.lt(0)) {
-                    ticks = ticks.sub(System.Int64(d1.getTimezoneOffset() * 60 * 1000).mul(10000));
+                    ticks = ticks.sub(System.Int64(System.DateTime.$getTzOffset(d1)).mul(10000));
                     d1 = System.DateTime.create$2(ticks, 1);
                 }
 
                 return d1;
-            },
-
-            getDefaultValue: function () {
-                return System.DateTime.getMinValue();
             },
 
             create: function (year, month, day, hour, minute, second, millisecond, kind) {
@@ -8863,7 +8883,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                 ticks = System.DateTime.getTicks(d);
 
                 if (kind === 1) {
-                    d = new Date(d.getTime() - d.getTimezoneOffset() * 60 * 1000)
+                    d = new Date(d.getTime() - System.DateTime.$getTzOffset(d))
                 }
 
                 d.kind = kind;
@@ -8895,7 +8915,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                 var d = new Date(ticks.sub(System.DateTime.minOffset).div(10000).toNumber());
 
                 if (kind !== 1) {
-                    d = System.DateTime.addMilliseconds(d, d.getTimezoneOffset() * 60 * 1000);
+                    d = System.DateTime.addMilliseconds(d, System.DateTime.$getTzOffset(d));
                 }
 
                 d.ticks = ticks;
@@ -8915,7 +8935,9 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             },
 
             getUtcNow: function () {
-                return System.DateTime.create$1(new Date(), 1);
+                var d = new Date();
+
+                return System.DateTime.create$1(new Date(d.getTime() + System.DateTime.$getTzOffset(d)), 1);
             },
 
             getTimeOfDay: function (d) {
@@ -9696,10 +9718,10 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
 
                 if (kind === 2) {
                     if (adjust === true) {
-                        d = new Date(d.getTime() - d.getTimezoneOffset() * 60 * 1000);
+                        d = new Date(d.getTime() - System.DateTime.$getTzOffset(d));
                         d.kind = kind;
                     } else if (offset !== 0) {
-                        d = new Date(d.getTime() - d.getTimezoneOffset() * 60 * 1000);
+                        d = new Date(d.getTime() - System.DateTime.$getTzOffset(d));
                         d = System.DateTime.addMilliseconds(d, -offset);
                         d.kind = kind;
                     }
@@ -10168,8 +10190,9 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                 me = this,
                 dtInfo = (provider || System.Globalization.CultureInfo.getCurrentCulture()).getFormat(System.Globalization.DateTimeFormatInfo),
                 format = function (t, n, dir, cut) {
-                    return System.String.alignString((t | 0).toString(), n || 2, "0", dir || 2, cut || false);
-                };
+                    return System.String.alignString(Math.abs(t | 0).toString(), n || 2, "0", dir || 2, cut || false);
+                },
+                isNeg = ticks < 0;
 
             if (formatStr) {
                 return formatStr.replace(/(\\.|'[^']*'|"[^"]*"|dd?|HH?|hh?|mm?|ss?|tt?|f{1,7}|\:|\/)/g,
@@ -10217,7 +10240,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             }
 
             if (ticks.abs().gte(864e9)) {
-                result += format(ticks.toNumberDivided(864e9)) + ".";
+                result += format(ticks.toNumberDivided(864e9), 1) + ".";
                 ticks = ticks.mod(864e9);
             }
 
@@ -10232,7 +10255,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                 result += "." + format(ticks.toNumber(), 7);
             }
 
-            return result;
+            return (isNeg ? "-" : "") + result;
         }
     });
 
@@ -13032,12 +13055,12 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             }
         },
         alias: [
-            "Count", "System$Collections$Generic$IReadOnlyCollection$1$" + Bridge.getTypeAlias(T) + "$Count",
+            "Count", ["System$Collections$Generic$IReadOnlyCollection$1$" + Bridge.getTypeAlias(T) + "$Count", "System$Collections$Generic$IReadOnlyCollection$1$Count"],
             "Count", "System$Collections$ICollection$Count",
             "Count", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$Count",
             "System$Collections$Generic$ICollection$1$IsReadOnly", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$IsReadOnly",
-            "getItem", "System$Collections$Generic$IReadOnlyList$1$" + Bridge.getTypeAlias(T) + "$getItem",
-            "setItem", "System$Collections$Generic$IReadOnlyList$1$" + Bridge.getTypeAlias(T) + "$setItem",
+            "getItem", ["System$Collections$Generic$IReadOnlyList$1$" + Bridge.getTypeAlias(T) + "$getItem", "System$Collections$Generic$IReadOnlyList$1$getItem"],
+            "setItem", ["System$Collections$Generic$IReadOnlyList$1$" + Bridge.getTypeAlias(T) + "$setItem", "System$Collections$Generic$IReadOnlyList$1$setItem"],
             "getItem", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$getItem",
             "setItem", "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$setItem",
             "add", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$add",
@@ -27088,7 +27111,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
     // @source HashSet.js
 
     Bridge.define("System.Collections.Generic.HashSet$1", function (T) { return {
-        inherits: [System.Collections.Generic.ICollection$1(T),System.Collections.Generic.ISet$1(T)],
+        inherits: [System.Collections.Generic.ICollection$1(T),System.Collections.Generic.ISet$1(T),System.Collections.Generic.IReadOnlyCollection$1(T)],
         statics: {
             fields: {
                 Lower31BitMask: 0,
@@ -27192,6 +27215,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
             "contains", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$contains",
             "copyTo", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$copyTo",
             "remove", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$remove",
+            "Count", ["System$Collections$Generic$IReadOnlyCollection$1$" + Bridge.getTypeAlias(T) + "$Count", "System$Collections$Generic$IReadOnlyCollection$1$Count"],
             "Count", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$Count",
             "IsReadOnly", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$IsReadOnly",
             "System$Collections$Generic$IEnumerable$1$getEnumerator", "System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(T) + "$getEnumerator",
@@ -28156,7 +28180,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
     // @source Queue.js
 
     Bridge.define("System.Collections.Generic.Queue$1", function (T) { return {
-        inherits: [System.Collections.Generic.IEnumerable$1(T),System.Collections.ICollection],
+        inherits: [System.Collections.Generic.IEnumerable$1(T),System.Collections.ICollection,System.Collections.Generic.IReadOnlyCollection$1(T)],
         statics: {
             fields: {
                 MinimumGrow: 0,
@@ -28201,6 +28225,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
             }
         },
         alias: [
+            "Count", ["System$Collections$Generic$IReadOnlyCollection$1$" + Bridge.getTypeAlias(T) + "$Count", "System$Collections$Generic$IReadOnlyCollection$1$Count"],
             "Count", "System$Collections$ICollection$Count",
             "copyTo", "System$Collections$ICollection$copyTo",
             "System$Collections$Generic$IEnumerable$1$getEnumerator", "System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(T) + "$getEnumerator"
@@ -28536,7 +28561,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
     // @source Stack.js
 
     Bridge.define("System.Collections.Generic.Stack$1", function (T) { return {
-        inherits: [System.Collections.Generic.IEnumerable$1(T),System.Collections.ICollection],
+        inherits: [System.Collections.Generic.IEnumerable$1(T),System.Collections.ICollection,System.Collections.Generic.IReadOnlyCollection$1(T)],
         statics: {
             fields: {
                 DefaultCapacity: 0
@@ -28575,6 +28600,7 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
             }
         },
         alias: [
+            "Count", ["System$Collections$Generic$IReadOnlyCollection$1$" + Bridge.getTypeAlias(T) + "$Count", "System$Collections$Generic$IReadOnlyCollection$1$Count"],
             "Count", "System$Collections$ICollection$Count",
             "copyTo", "System$Collections$ICollection$copyTo",
             "System$Collections$Generic$IEnumerable$1$getEnumerator", "System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(T) + "$getEnumerator"
@@ -29039,10 +29065,10 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
             }
         },
         alias: [
-            "Count", "System$Collections$Generic$IReadOnlyCollection$1$" + Bridge.getTypeAlias(T) + "$Count",
+            "Count", ["System$Collections$Generic$IReadOnlyCollection$1$" + Bridge.getTypeAlias(T) + "$Count", "System$Collections$Generic$IReadOnlyCollection$1$Count"],
             "Count", "System$Collections$ICollection$Count",
             "Count", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$Count",
-            "getItem", "System$Collections$Generic$IReadOnlyList$1$" + Bridge.getTypeAlias(T) + "$getItem",
+            "getItem", ["System$Collections$Generic$IReadOnlyList$1$" + Bridge.getTypeAlias(T) + "$getItem", "System$Collections$Generic$IReadOnlyList$1$getItem"],
             "contains", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$contains",
             "copyTo", "System$Collections$Generic$ICollection$1$" + Bridge.getTypeAlias(T) + "$copyTo",
             "getEnumerator", ["System$Collections$Generic$IEnumerable$1$" + Bridge.getTypeAlias(T) + "$getEnumerator", "System$Collections$Generic$IEnumerable$1$getEnumerator"],
