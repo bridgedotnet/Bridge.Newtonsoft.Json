@@ -186,7 +186,7 @@
                             var typeElement = System.Collections.Generic.List$1.getElementType(targetType) || System.Object;
 
                             if (!Bridge.isArray(raw)) {
-                                raw = raw.toArray();
+                                raw = raw.ToArray();
                             }                            
 
                             for (var i = 0; i < raw.length; i++) {
@@ -199,7 +199,7 @@
                                 keys;
 
                             if (Bridge.is(raw, System.Collections.IDictionary)) {
-                                keys = System.Linq.Enumerable.from(raw.getKeys()).toArray()
+                                keys = System.Linq.Enumerable.from(raw.getKeys()).ToArray()
                                 for (var i = 0; i < keys.length; i++) {
                                     var key = keys[i];
                                     target.set(Newtonsoft.Json.JsonConvert.DeserializeObject(key, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw.get(key), typeValue, settings, true), false);
@@ -846,7 +846,7 @@
                         } else if (type === System.Uri) {
                             return new System.Uri(raw);
                         } else if (type === System.Guid) {
-                            return System.Guid.parse(raw);
+                            return System.Guid.Parse(raw);
                         } else if (type === System.Boolean) {
                             var parsed = { v: false };
                             if (!System.String.isNullOrWhiteSpace(raw) && System.Boolean.tryParse(raw, parsed)) {
