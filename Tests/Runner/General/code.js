@@ -1407,7 +1407,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             ctor: function (value) {
                 this.$initialize();
                 if (System.String.isNullOrWhiteSpace(value)) {
-                    throw new System.ArgumentException(System.String.format("Null/blank {0} specified", ["value"]));
+                    throw new System.ArgumentException.$ctor1(System.String.format("Null/blank {0} specified", ["value"]));
                 }
 
                 this.Value = value;
