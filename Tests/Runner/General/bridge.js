@@ -20844,19 +20844,6 @@
     System.Linq.OrderedEnumerable$1 = OrderedEnumerable;
 })(Bridge.global);
 
-    // @source FormattableStringFactory.js
-
-    Bridge.define("System.Runtime.CompilerServices.FormattableStringFactory", {
-        statics: {
-            methods: {
-                create: function (format, args) {
-                    if (args === void 0) { args = []; }
-                    return new System.FormattableStringImpl(format, args);
-                }
-            }
-        }
-    });
-
     // @source IDeserializationCallback.js
 
     Bridge.define("System.Runtime.Serialization.IDeserializationCallback", {
@@ -31379,15 +31366,18 @@
             },
             toString: function () {
                 return System.DateTime.format(this.DateTime);
+
             },
             ToString$1: function (format) {
-                return System.DateTime.format(this.DateTime, format);
+                return System.DateTime.format(System.DateTime.specifyKind(this.DateTime, 2), format);
+
             },
             ToString: function (formatProvider) {
-                return System.DateTime.format(this.DateTime, null, formatProvider);
+                return System.DateTime.format(System.DateTime.specifyKind(this.DateTime, 2), null, formatProvider);
+
             },
             format: function (format, formatProvider) {
-                return System.DateTime.format(this.DateTime, format, formatProvider);
+                return System.DateTime.format(System.DateTime.specifyKind(this.DateTime, 2), format, formatProvider);
 
             },
             ToUniversalTime: function () {
@@ -32098,60 +32088,84 @@
         inherits: [System.IFormattable],
         statics: {
             methods: {
-                invariant: function (formattable) {
-                    return formattable.toString$1(System.Globalization.CultureInfo.invariantCulture);
+                Invariant: function (formattable) {
+                    if (formattable == null) {
+                        throw new System.ArgumentNullException.$ctor1("formattable");
+                    }
+
+                    return formattable.ToString(System.Globalization.CultureInfo.invariantCulture);
                 }
             }
         },
         methods: {
-            toString: function () {
-                return this.toString$1(System.Globalization.CultureInfo.getCurrentCulture());
+            System$IFormattable$format: function (ignored, formatProvider) {
+                return this.ToString(formatProvider);
             },
-            System$IFormattable$format: function (format, formatProvider) {
-                return this.toString$1(formatProvider);
+            toString: function () {
+                return this.ToString(System.Globalization.CultureInfo.getCurrentCulture());
             }
         }
     });
 
-    // @source FormattableStringImpl.js
+    // @source ConcreteFormattableString.js
 
-    Bridge.define("System.FormattableStringImpl", {
+    Bridge.define("System.Runtime.CompilerServices.FormattableStringFactory.ConcreteFormattableString", {
         inherits: [System.FormattableString],
+        $kind: "nested class",
         fields: {
-            args: null,
-            format: null
+            _format: null,
+            _arguments: null
         },
         props: {
-            ArgumentCount: {
-                get: function () {
-                    return this.args.length;
-                }
-            },
             Format: {
                 get: function () {
-                    return this.format;
+                    return this._format;
+                }
+            },
+            ArgumentCount: {
+                get: function () {
+                    return this._arguments.length;
                 }
             }
         },
         ctors: {
-            ctor: function (format, args) {
-                if (args === void 0) { args = []; }
-
+            ctor: function (format, $arguments) {
                 this.$initialize();
                 System.FormattableString.ctor.call(this);
-                this.format = format;
-                this.args = args;
+                this._format = format;
+                this._arguments = $arguments;
             }
         },
         methods: {
-            getArgument: function (index) {
-                return this.args[System.Array.index(index, this.args)];
+            GetArguments: function () {
+                return this._arguments;
             },
-            getArguments: function () {
-                return this.args;
+            GetArgument: function (index) {
+                return this._arguments[System.Array.index(index, this._arguments)];
             },
-            toString$1: function (formatProvider) {
-                return System.String.formatProvider.apply(System.String, [formatProvider, this.format].concat(this.args));
+            ToString: function (formatProvider) {
+                return System.String.formatProvider.apply(System.String, [formatProvider, this._format].concat(this._arguments));
+            }
+        }
+    });
+
+    // @source FormattableStringFactory.js
+
+    Bridge.define("System.Runtime.CompilerServices.FormattableStringFactory", {
+        statics: {
+            methods: {
+                Create: function (format, $arguments) {
+                    if ($arguments === void 0) { $arguments = []; }
+                    if (format == null) {
+                        throw new System.ArgumentNullException.$ctor1("format");
+                    }
+
+                    if ($arguments == null) {
+                        throw new System.ArgumentNullException.$ctor1("arguments");
+                    }
+
+                    return new System.Runtime.CompilerServices.FormattableStringFactory.ConcreteFormattableString(format, $arguments);
+                }
             }
         }
     });
@@ -33762,6 +33776,50 @@
             }
         },
         $flags: true
+    });
+
+    // @source StringBuilderCache.js
+
+    Bridge.define("System.IO.StringBuilderCache", {
+        statics: {
+            fields: {
+                MAX_BUILDER_SIZE: 0,
+                DEFAULT_CAPACITY: 0,
+                t_cachedInstance: null
+            },
+            ctors: {
+                init: function () {
+                    this.MAX_BUILDER_SIZE = 260;
+                    this.DEFAULT_CAPACITY = 16;
+                }
+            },
+            methods: {
+                Acquire: function (capacity) {
+                    if (capacity === void 0) { capacity = 16; }
+                    if (capacity <= System.IO.StringBuilderCache.MAX_BUILDER_SIZE) {
+                        var sb = System.IO.StringBuilderCache.t_cachedInstance;
+                        if (sb != null) {
+                            if (capacity <= sb.getCapacity()) {
+                                System.IO.StringBuilderCache.t_cachedInstance = null;
+                                sb.clear();
+                                return sb;
+                            }
+                        }
+                    }
+                    return new System.Text.StringBuilder("", capacity);
+                },
+                Release: function (sb) {
+                    if (sb.getCapacity() <= System.IO.StringBuilderCache.MAX_BUILDER_SIZE) {
+                        System.IO.StringBuilderCache.t_cachedInstance = sb;
+                    }
+                },
+                GetStringAndRelease: function (sb) {
+                    var result = sb.toString();
+                    System.IO.StringBuilderCache.Release(sb);
+                    return result;
+                }
+            }
+        }
     });
 
     // @source BinaryReader.js

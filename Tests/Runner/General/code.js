@@ -976,7 +976,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var $t;
                     var account = ($t = new Newtonsoft.Json.Tests.Issues.Case16.Account(), $t.Email = "james@example.com", $t.Active = true, $t.CreatedDate = System.DateTime.create(2013, 1, 20, 0, 0, 0, 0, 1), $t.Roles = $asm.$.Newtonsoft.Json.Tests.Issues.Case16.f1(new (System.Collections.Generic.List$1(System.String)).ctor()), $t);
 
-                    var json = "{\n              \"Active\": false,\n              \"Roles\": [\n                \"Expired\"\n              ]\n            }";
+                    var json = "{\r\n              \"Active\": false,\r\n              \"Roles\": [\r\n                \"Expired\"\r\n              ]\r\n            }";
 
                     Newtonsoft.Json.JsonConvert.PopulateObject(json, account);
 
@@ -988,7 +988,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var s = new Newtonsoft.Json.Tests.Issues.Case16.Session();
                     s.Date = System.DateTime.create(2014, 6, 4);
 
-                    var j = "{\n              \"Name\": \"Serialize All The Things\"\n            }";
+                    var j = "{\r\n              \"Name\": \"Serialize All The Things\"\r\n            }";
 
                     Newtonsoft.Json.JsonConvert.PopulateObject(j, s);
 
@@ -2627,6 +2627,52 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 this.FltID = 2.5;
                 this.DblID = 2.5;
                 this.BytID = 8;
+            }
+        }
+    });
+
+    /**
+     * Test that DateTimeOffset Serialization and Deserialization works
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case94
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case94", {
+        statics: {
+            methods: {
+                DateTimeOffsetSerializationAndDeserializationWorks: function () {
+                    var dto1 = new System.DateTimeOffset.$ctor3(2018, 3, 30, 16, 21, 15, 750, new System.TimeSpan(5, 0, 0));
+
+                    var dto1Serialized = Newtonsoft.Json.JsonConvert.SerializeObject(dto1.$clone());
+
+                    var dto1Deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(dto1Serialized, System.DateTimeOffset).$clone();
+
+                    Bridge.Test.NUnit.Assert.AreEqual(dto1.Offset.getHours(), 5, "Offset is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto1.Ticks, System.Int64([1123483744,148215386]), "Ticks are correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto1.Year, 2018, "Year is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto1.Month, 3, "Month is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto1.Day, 30, "Day is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto1.Hour, 16, "Hour is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto1.Minute, 21, "Minute is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto1.Second, 15, "Second is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto1.Millisecond, 750, "Millisecond is correct");
+
+                    var dto2 = new System.DateTimeOffset.$ctor3(2018, 3, 30, 16, 21, 15, 750, new System.TimeSpan(-5, 0, 0));
+
+                    var dto2Serialized = Newtonsoft.Json.JsonConvert.SerializeObject(dto2.$clone());
+
+                    var dto2Deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(dto2Serialized, System.DateTimeOffset).$clone();
+
+                    Bridge.Test.NUnit.Assert.AreEqual(dto2.Offset.getHours(), -5, "Offset is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto2.Ticks, System.Int64([1123483744,148215386]), "Ticks are correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto2.Year, 2018, "Year is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto2.Month, 3, "Month is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto2.Day, 30, "Day is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto2.Hour, 16, "Hour is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto2.Minute, 21, "Minute is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto2.Second, 15, "Second is correct");
+                    Bridge.Test.NUnit.Assert.AreEqual(dto2.Millisecond, 750, "Millisecond is correct");
+                }
             }
         }
     });
