@@ -27,6 +27,14 @@
             return x;
         },
 
+        Deconstruct: function (obj) {
+            var args = Array.prototype.slice.call(arguments, 1);
+
+            for (var i = 0; i < args.length; i++) {
+                args[i].v = i == 7 ? obj["Rest"] : obj["Item" + (i + 1)];
+            }
+        },
+
         toString: function (instance) {
             if (instance == null) {
                 throw new System.ArgumentNullException();
@@ -597,7 +605,7 @@
                 throw new System.InvalidOperationException.$ctor1("HashCode cannot be calculated for empty value");
             }
 
-            if (deep !== false && value.hasOwnProperty("item1") && Bridge.isPlainObject(value)) {
+            if (deep !== false && value.hasOwnProperty("Item1") && Bridge.isPlainObject(value)) {
                 deep = true;
             }
 
@@ -1298,7 +1306,7 @@
                     return Bridge.getHashCode(a) === Bridge.getHashCode(b) && Bridge.objectEquals(a, b);
                 }
 
-                if (!eq && a && b && a.hasOwnProperty("item1") && Bridge.isPlainObject(a) && b.hasOwnProperty("item1") && Bridge.isPlainObject(b)) {
+                if (!eq && a && b && a.hasOwnProperty("Item1") && Bridge.isPlainObject(a) && b.hasOwnProperty("Item1") && Bridge.isPlainObject(b)) {
                     return Bridge.objectEquals(a, b);
                 }
 
@@ -8989,34 +8997,34 @@
             $default: null,
 
             getDefaultValue: function () {
-                if (System.DateTime.$default === null) {
-                    System.DateTime.$default = System.DateTime.create(1, 1, 1, 0, 0, 0, 0, 0);
+                if (this.$default === null) {
+                    this.$default = this.create(1, 1, 1, 0, 0, 0, 0, 0);
                 }
 
-                return System.DateTime.$default;
+                return this.$default;
             },
 
             $min: null,
 
             // UTC Min Value
             getMinValue: function () {
-                if (System.DateTime.$min === null) {
-                    System.DateTime.$min = System.DateTime.create$2(0, 0);
+                if (this.$min === null) {
+                    this.$min = this.create$2(0, 0);
                 }
 
-                return System.DateTime.$min;
+                return this.$min;
             },
 
             $max: null,
 
             // UTC Max Value
             getMaxValue: function () {
-                if (System.DateTime.$max === null) {
-                    System.DateTime.$max = System.DateTime.create$2(System.DateTime.MaxTicks, 0);
-                    System.DateTime.$max.ticks = System.DateTime.MaxTicks;
+                if (this.$max === null) {
+                    this.$max = this.create$2(this.MaxTicks, 0);
+                    this.$max.ticks = this.MaxTicks;
                 }
 
-                return System.DateTime.$max;
+                return this.$max;
             },
 
             $getTzOffset: function (d) {
@@ -9029,9 +9037,9 @@
 
                 if (d.ticks === undefined) {
                     if (d.kind === 1) {
-                        d.ticks = System.Int64(d.getTime()).mul(10000).add(System.DateTime.$minOffset);
+                        d.ticks = System.Int64(d.getTime()).mul(10000).add(this.$minOffset);
                     } else {
-                        d.ticks = System.Int64(d.getTime() - System.DateTime.$getTzOffset(d)).mul(10000).add(System.DateTime.$minOffset);
+                        d.ticks = System.Int64(d.getTime() - this.$getTzOffset(d)).mul(10000).add(this.$minOffset);
                     }
                 }
 
@@ -9040,21 +9048,21 @@
 
             toLocalTime: function (d, throwOnOverflow) {
                 var d1,
-                    ticks = System.DateTime.getTicks(d);
+                    ticks = this.getTicks(d);
 
                 if (d.kind !== 2) {
-                    ticks = d.ticks.sub(System.Int64(System.DateTime.$getTzOffset(d)).mul(10000));
+                    ticks = d.ticks.sub(System.Int64(this.$getTzOffset(d)).mul(10000));
                 }
 
-                d1 = System.DateTime.create$2(ticks, 2);
+                d1 = this.create$2(ticks, 2);
 
                 // Check if Ticks are out of range
-                if (ticks.gt(System.DateTime.MaxTicks) || ticks.lt(0)) {
+                if (ticks.gt(this.MaxTicks) || ticks.lt(0)) {
                     if (throwOnOverflow && throwOnOverflow === true) {
                         throw new System.ArgumentException.$ctor1("Specified argument was out of the range of valid values.");
                     } else {
-                        ticks = ticks.add(System.Int64(System.DateTime.$getTzOffset(d1)).mul(10000));
-                        d1 = System.DateTime.create$2(ticks, 2);
+                        ticks = ticks.add(System.Int64(this.$getTzOffset(d1)).mul(10000));
+                        d1 = this.create$2(ticks, 2);
                     }
                 }
                 
@@ -9062,20 +9070,20 @@
             },
 
             toUniversalTime: function (d) {
-                var ticks = System.DateTime.getTicks(d),
+                var ticks = this.getTicks(d),
                     d1;
 
                 // Assuming d is Local time, so adjust to UTC
                 if (d.kind !== 1) {
-                    ticks = ticks.add(System.Int64(System.DateTime.$getTzOffset(d)).mul(10000));
+                    ticks = ticks.add(System.Int64(this.$getTzOffset(d)).mul(10000));
                 }
 
-                d1 = System.DateTime.create$2(ticks, 1);
+                d1 = this.create$2(ticks, 1);
 
                 // Check if Ticks are out of range
-                if (ticks.gt(System.DateTime.MaxTicks) || ticks.lt(0)) {
-                    ticks = ticks.sub(System.Int64(System.DateTime.$getTzOffset(d1)).mul(10000));
-                    d1 = System.DateTime.create$2(ticks, 1);
+                if (ticks.gt(this.MaxTicks) || ticks.lt(0)) {
+                    ticks = ticks.sub(System.Int64(this.$getTzOffset(d1)).mul(10000));
+                    d1 = this.create$2(ticks, 1);
                 }
 
                 return d1;
@@ -9097,10 +9105,10 @@
                 d = new Date(year, month - 1, day, hour, minute, second, millisecond);
                 d.setFullYear(year);
 
-                ticks = System.DateTime.getTicks(d);
+                ticks = this.getTicks(d);
 
                 if (kind === 1) {
-                    d = new Date(d.getTime() - System.DateTime.$getTzOffset(d))
+                    d = new Date(d.getTime() - this.$getTzOffset(d))
                 }
 
                 d.kind = kind;
@@ -9115,12 +9123,12 @@
                 var d;
 
                 if (kind === 1) {
-                    d = System.DateTime.create(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds(), kind);
+                    d = this.create(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds(), kind);
                 } else {
-                    d = System.DateTime.create(date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds(), kind);
+                    d = this.create(date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds(), kind);
                 }
 
-                d.ticks = System.DateTime.getTicks(d)
+                d.ticks = this.getTicks(d)
 
                 return d;
             },
@@ -9129,10 +9137,10 @@
                 ticks = System.Int64.is64Bit(ticks) ? ticks : System.Int64(ticks);
                 kind = (kind !== undefined) ? kind : 0
 
-                var d = new Date(ticks.sub(System.DateTime.$minOffset).div(10000).toNumber());
+                var d = new Date(ticks.sub(this.$minOffset).div(10000).toNumber());
 
                 if (kind !== 1) {
-                    d = System.DateTime.addMilliseconds(d, System.DateTime.$getTzOffset(d));
+                    d = new Date(d.getTime() + this.$getTzOffset(d));
                 }
 
                 d.ticks = ticks;
@@ -9144,21 +9152,19 @@
             getToday: function () {
                 var d = new Date();
 
-                return System.DateTime.create(d.getFullYear(), d.getMonth() + 1, d.getDate(), 0, 0, 0, 0, 2);
+                return this.create(d.getFullYear(), d.getMonth() + 1, d.getDate(), 0, 0, 0, 0, 2);
             },
 
             getNow: function () {
-                return System.DateTime.create$1(new Date(), 2);
+                return this.create$1(new Date(), 2);
             },
 
             getUtcNow: function () {
-                var d = new Date();
-
-                return System.DateTime.create$1(new Date(d.getTime() + System.DateTime.$getTzOffset(d)), 1);
+                return this.create$1(new Date(), 1);
             },
 
             getTimeOfDay: function (d) {
-                var d1 = System.DateTime.getDate(d);
+                var d1 = this.getDate(d);
 
                 return new System.TimeSpan((d - d1) * 10000);
             },
@@ -9170,27 +9176,27 @@
             },
 
             specifyKind: function (d, kind) {
-                return System.DateTime.create$2(System.DateTime.getTicks(d), kind);
+                return this.create$2(this.getTicks(d), kind);
             },
 
             $FileTimeOffset: System.Int64("584388").mul(System.Int64("864000000000")),
 
             FromFileTime: function (fileTime) {
-                return System.DateTime.toLocalTime(System.DateTime.FromFileTimeUtc(fileTime));
+                return this.toLocalTime(this.FromFileTimeUtc(fileTime));
             },
 
             FromFileTimeUtc: function (fileTime) {
                 fileTime = System.Int64.is64Bit(fileTime) ? fileTime : System.Int64(fileTime);
 
-                return System.DateTime.create$2(fileTime.add(System.DateTime.$FileTimeOffset), 1);
+                return this.create$2(fileTime.add(this.$FileTimeOffset), 1);
             },
 
             ToFileTime: function (d) {
-                return System.DateTime.ToFileTimeUtc(System.DateTime.toUniversalTime(d));
+                return this.ToFileTimeUtc(this.toUniversalTime(d));
             },
 
             ToFileTimeUtc: function (d) {
-                return (System.DateTime.getKind(d) !== 0) ? System.DateTime.getTicks(System.DateTime.toUniversalTime(d)) : System.DateTime.getTicks(d); 
+                return (this.getKind(d) !== 0) ? this.getTicks(this.toUniversalTime(d)) : this.getTicks(d); 
             },
  
             isUseGenitiveForm: function (format, index, tokenLen, patternToMatch) {
@@ -9491,7 +9497,7 @@
                         d;
 
                     for (j; j < format.length; j++) {
-                        d = System.DateTime.parseExact(str, format[j], provider, utc, true);
+                        d = this.parseExact(str, format[j], provider, utc, true);
 
                         if (d != null) {
                             return d;
@@ -9951,15 +9957,15 @@
                     }
                 }
 
-                var d = System.DateTime.create(year, month, date, hh, mm, ss, ff, kind);
+                var d = this.create(year, month, date, hh, mm, ss, ff, kind);
 
                 if (kind === 2) {
                     if (adjust === true) {
-                        d = new Date(d.getTime() - System.DateTime.$getTzOffset(d));
+                        d = new Date(d.getTime() - this.$getTzOffset(d));
                         d.kind = kind;
                     } else if (offset !== 0) {
-                        d = new Date(d.getTime() - System.DateTime.$getTzOffset(d));
-                        d = System.DateTime.addMilliseconds(d, -offset);
+                        d = new Date(d.getTime() - this.$getTzOffset(d));
+                        d = this.addMilliseconds(d, -offset);
                         d.kind = kind;
                     }
                 }
@@ -9990,7 +9996,7 @@
                 result.v = this.parse(value, provider, utc, true);
 
                 if (result.v == null) {
-                    result.v = System.DateTime.getMinValue();
+                    result.v = this.getMinValue();
 
                     return false;
                 }
@@ -10002,7 +10008,7 @@
                 r.v = this.parseExact(v, f, p, utc, true);
 
                 if (r.v == null) {
-                    r.v = System.DateTime.getMinValue();
+                    r.v = this.getMinValue();
 
                     return false;
                 }
@@ -10011,129 +10017,103 @@
             },
 
             isDaylightSavingTime: function (d) {
-                var temp = System.DateTime.getToday();
+                if (d.kind !== undefined && d.kind === 1) {
+                    return false;
+                }
 
-                temp.setMonth(0);
-                temp.setDate(1);
+                var tmp = new Date(d.getTime());
 
-                return temp.getTimezoneOffset() !== d.getTimezoneOffset();
+                tmp.setMonth(0);
+                tmp.setDate(1);
+
+                return tmp.getTimezoneOffset() !== d.getTimezoneOffset();
             },
 
-            dateAddSubTimespan: function (d, t, direction) {
-                var r = new Date(d.getTime());
-
-                r.setDate(r.getDate() + (direction * t.getDays()));
-                r.setHours(r.getHours() + (direction * t.getHours()));
-                r.setMinutes(r.getMinutes() + (direction * t.getMinutes()));
-                r.setSeconds(r.getSeconds() + (direction * t.getSeconds()));
-                r.setMilliseconds(r.getMilliseconds() + (direction * t.getMilliseconds()));
-
-                return r;
+            dateAddSubTimeSpan: function (d, t, direction) {
+                return Bridge.hasValue$1(d, t) ? this.create$2(this.getTicks(d).add(t.getTicks().mul(direction)), d.kind) : null;
             },
 
             subdt: function (d, t) {
-                return Bridge.hasValue$1(d, t) ? this.dateAddSubTimespan(d, t, -1) : null;
+                return this.dateAddSubTimeSpan(d, t, -1);
             },
 
             adddt: function (d, t) {
-                return Bridge.hasValue$1(d, t) ? this.dateAddSubTimespan(d, t, 1) : null;
+                return this.dateAddSubTimeSpan(d, t, 1);
             },
 
             subdd: function (a, b) {
-                return Bridge.hasValue$1(a, b) ? (new System.TimeSpan((a - b) * 10000)) : null;
+                return Bridge.hasValue$1(a, b) ? (new System.TimeSpan((this.getTicks(a).sub(this.getTicks(b))))) : null;
             },
 
             addYears: function (d, v) {
-                return System.DateTime.addMonths(d, v * 12);
+                return this.addMonths(d, v * 12);
             },
 
             addMonths: function (d, v) {
-                d.kind = (d.kind !== undefined) ? d.kind : 0
+                var dt = new Date(d.getTime()),
+                    day = d.getDate();
 
-                var d1 = new Date(d.getTime()),
-                    day = d1.getDate();
+                dt.setDate(1);
+                dt.setMonth(dt.getMonth() + v * 1);
+                dt.setDate(Math.min(day, this.getDaysInMonth(dt.getFullYear(), dt.getMonth() + 1)));
+                dt.kind = (d.kind !== undefined) ? d.kind : 0;
 
-                d1.setMonth(d1.getMonth() + v);
-
-                if (d1.getDate() != day) {
-                    d1.setDate(0);
-                }
-
-                d1.kind = d.kind;
-
-                return d1;
+                return dt;
             },
 
             addDays: function (d, v) {
-                d.kind = (d.kind !== undefined) ? d.kind : 0
-
                 var d1 = new Date(d.getTime());
 
-                d1.setDate(d.getDate() + Math.floor(v));
+                d1.setDate(d1.getDate() + Math.floor(v));
+                d1.kind = (d.kind !== undefined) ? d.kind : 0;
 
-                d1.kind = d.kind;
-
-                return System.DateTime.addMilliseconds(d1, Math.round((v % 1) * 864e5));
+                return v % 1 !== 0 ? this.addMilliseconds(d1, Math.round((v % 1) * 864e5)) : d1;
             },
 
             addHours: function (d, v) {
-                return System.DateTime.addMilliseconds(d, Math.round(v * 36e5));
+                return this.addMilliseconds(d, Math.round(v * 36e5));
             },
 
             addMinutes: function (d, v) {
-                return System.DateTime.addMilliseconds(d, Math.round(v * 6e4));
+                return this.addMilliseconds(d, Math.round(v * 6e4));
             },
 
             addSeconds: function (d, v) {
-                return System.DateTime.addMilliseconds(d, Math.round(v * 1e3));
+                return this.addMilliseconds(d, Math.round(v * 1e3));
             },
 
             addMilliseconds: function (d, v) {
-                d.kind = (d.kind !== undefined) ? d.kind : 0
+                v = System.Int64.is64Bit(v) ? v : System.Int64(v);
 
-                var d1 = new Date(d.getTime() + Math.round(v));
-
-                d1.kind = d.kind;
-                d1.ticks = System.DateTime.getTicks(d1);
-
-                return d1;
+                return System.DateTime.addTicks(d, v.mul(10000));
             },
 
             addTicks: function (d, v) {
-                return System.DateTime.addMilliseconds(d, v / 10000);
+                v = System.Int64.is64Bit(v) ? v : System.Int64(v);
+
+                return this.create$2(this.getTicks(d).add(v), d.kind);
             },
 
             add: function (d, value) {
-                d.kind = (d.kind !== undefined) ? d.kind : 0
-
-                var d1 = new Date(d.getTime() + value.ticks.div(10000).toNumber());
-
-                d1.kind = d.kind;
-                d1.ticks = System.DateTime.getTicks(d1);
-
-                return d1;
+                return this.addTicks(d, value.getTicks());
             },
 
             subtract: function (d, value) {
-                d.kind = (d.kind !== undefined) ? d.kind : 0
-
-                var d1 = new Date(d.getTime() - value.ticks.div(10000).toNumber());
-
-                d1.kind = d.kind;
-                d1.ticks = System.DateTime.getTicks(d1);
-
-                return d1;
+                return this.addTicks(d, value.getTicks().mul(-1));
             },
 
             // Replaced leap year calculation for performance:
             // https://jsperf.com/leapyear-calculation/1
             getIsLeapYear: function (year) {
-                if ((year & 3) != 0) return false;
+                if ((year & 3) != 0) {
+                    return false;
+                }
+
                 return ((year % 100) != 0 || (year % 400) == 0);
             },
 
             getDaysInMonth: function (year, month) {
-                return new Date(year, month, - 1).getDate() + 1;
+                return [31, (this.getIsLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
             },
 
             $clearTime: function (d, isUTC) {
@@ -10156,18 +10136,22 @@
 
             // Optimized as per: https://jsperf.com/get-day-of-year
             getDayOfYear: function (d) {
-                var dt = System.DateTime.getDate(d),
+                var dt = this.getDate(d),
                     mn = dt.getMonth(),
                     dn = dt.getDate(),
-                    dayOfYear = System.DateTime.YearDaysByMonth[mn] + dn;
-                if (mn > 1 && System.DateTime.getIsLeapYear(dt.getFullYear())) dayOfYear++;
+                    dayOfYear = this.YearDaysByMonth[mn] + dn;
+
+                if (mn > 1 && this.getIsLeapYear(dt.getFullYear())) {
+                    dayOfYear++;
+                }
+
                 return dayOfYear;
             },
 
             getDate: function (d) {
                 d.kind = (d.kind !== undefined) ? d.kind : 0
 
-                var d1 = System.DateTime.$clearTime(d, d.kind === 1);
+                var d1 = this.$clearTime(d, d.kind === 1);
 
                 d1.kind = d.kind;
 
@@ -10175,51 +10159,51 @@
             },
 
             getDayOfWeek: function (d) {
-                return (System.DateTime.getKind(d) === 1) ? d.getUTCDay() : d.getDay();
+                return (this.getKind(d) === 1) ? d.getUTCDay() : d.getDay();
             },
 
             getYear: function (d) {
-                return (System.DateTime.getKind(d) === 1) ? d.getUTCFullYear() : d.getFullYear();
+                return (this.getKind(d) === 1) ? d.getUTCFullYear() : d.getFullYear();
             },
 
             getMonth: function (d) {
-                return ((System.DateTime.getKind(d) === 1) ? d.getUTCMonth() : d.getMonth()) + 1;
+                return ((this.getKind(d) === 1) ? d.getUTCMonth() : d.getMonth()) + 1;
             },
 
             getDay: function (d) {
-                return (System.DateTime.getKind(d) === 1) ? d.getUTCDate() : d.getDate();
+                return (this.getKind(d) === 1) ? d.getUTCDate() : d.getDate();
             },
 
             getHour: function (d) {
-                return (System.DateTime.getKind(d) === 1) ? d.getUTCHours() : d.getHours();
+                return (this.getKind(d) === 1) ? d.getUTCHours() : d.getHours();
             },
 
             getMinute: function (d) {
-                return (System.DateTime.getKind(d) === 1) ? d.getUTCMinutes() : d.getMinutes();
+                return (this.getKind(d) === 1) ? d.getUTCMinutes() : d.getMinutes();
             },
 
             getSecond: function (d) {
-                return (System.DateTime.getKind(d) === 1) ? d.getUTCSeconds() : d.getSeconds();
+                return (this.getKind(d) === 1) ? d.getUTCSeconds() : d.getSeconds();
             },
 
             getMillisecond: function (d) {
-                return (System.DateTime.getKind(d) === 1) ? d.getUTCMilliseconds() : d.getMilliseconds();
+                return (this.getKind(d) === 1) ? d.getUTCMilliseconds() : d.getMilliseconds();
             },
 
             gt: function (a, b) {
-                return (a != null && b != null) ? (System.DateTime.getTicks(a).gt(System.DateTime.getTicks(b))) : false;
+                return (a != null && b != null) ? (this.getTicks(a).gt(this.getTicks(b))) : false;
             },
 
             gte: function (a, b) {
-                return (a != null && b != null) ? (System.DateTime.getTicks(a).gte(System.DateTime.getTicks(b))) : false;
+                return (a != null && b != null) ? (this.getTicks(a).gte(this.getTicks(b))) : false;
             },
 
             lt: function (a, b) {
-                return (a != null && b != null) ? (System.DateTime.getTicks(a).lt(System.DateTime.getTicks(b))) : false;
+                return (a != null && b != null) ? (this.getTicks(a).lt(this.getTicks(b))) : false;
             },
 
             lte: function (a, b) {
-                return (a != null && b != null) ? (System.DateTime.getTicks(a).lte(System.DateTime.getTicks(b))) : false;
+                return (a != null && b != null) ? (this.getTicks(a).lte(this.getTicks(b))) : false;
             }
         }
     });
@@ -12584,49 +12568,70 @@
 
     // @source KeyValuePair.js
 
-    Bridge.define("System.Collections.Generic.KeyValuePair$2", function (TKey, TValue) {
-        return {
-            $kind: "struct",
-
-            statics: {
-                getDefaultValue: function () {
-                    return new (System.Collections.Generic.KeyValuePair$2(TKey, TValue))(Bridge.getDefaultValue(TKey), Bridge.getDefaultValue(TValue));
-                }
-            },
-
-            ctor: function (key, value) {
-                if (key === undefined) {
-                    key = Bridge.getDefaultValue(TKey);
-                }
-
-                if (value === undefined) {
-                    value = Bridge.getDefaultValue(TValue);
-                }
-
-                this.$initialize();
-                this.key = key;
-                this.value = value;
-            },
-
-            toString: function () {
-                var s = "[";
-
-                if (this.key != null) {
-                    s += Bridge.toString(this.key);
-                }
-
-                s += ", ";
-
-                if (this.value != null) {
-                    s += Bridge.toString(this.value);
-                }
-
-                s += "]";
-
-                return s;
+    Bridge.define("System.Collections.Generic.KeyValuePair$2", function (TKey, TValue) { return {
+        $kind: "struct",
+        statics: {
+            methods: {
+                getDefaultValue: function () { return new (System.Collections.Generic.KeyValuePair$2(TKey,TValue))(); }
             }
-        };
-    });
+        },
+        fields: {
+            key$1: Bridge.getDefaultValue(TKey),
+            value$1: Bridge.getDefaultValue(TValue)
+        },
+        props: {
+            key: {
+                get: function () {
+                    return this.key$1;
+                }
+            },
+            value: {
+                get: function () {
+                    return this.value$1;
+                }
+            }
+        },
+        ctors: {
+            $ctor1: function (key, value) {
+                this.$initialize();
+                this.key$1 = key;
+                this.value$1 = value;
+            },
+            ctor: function () {
+                this.$initialize();
+            }
+        },
+        methods: {
+            toString: function () {
+                var s = System.Text.StringBuilderCache.Acquire();
+                s.append(String.fromCharCode(91));
+                if (this.key != null) {
+                    s.append(Bridge.toString(this.key));
+                }
+                s.append(", ");
+                if (this.value != null) {
+                    s.append(Bridge.toString(this.value));
+                }
+                s.append(String.fromCharCode(93));
+                return System.Text.StringBuilderCache.GetStringAndRelease(s);
+            },
+            Deconstruct: function (key, value) {
+                key.v = this.key;
+                value.v = this.value;
+            },
+            getHashCode: function () {
+                var h = Bridge.addHash([5072499452, this.key$1, this.value$1]);
+                return h;
+            },
+            equals: function (o) {
+                if (!Bridge.is(o, System.Collections.Generic.KeyValuePair$2(TKey,TValue))) {
+                    return false;
+                }
+                return Bridge.equals(this.key$1, o.key$1) && Bridge.equals(this.value$1, o.value$1);
+            },
+            $clone: function (to) { return this; }
+        }
+    }; });
 
     // @source Interfaces.js
 
@@ -13280,11 +13285,11 @@
                         throw new System.ArgumentException.$ctor1("Key " + key + " already exists.");
                     }
 
-                    entry.value = value;
+                    entry.value$1 = value;
                     return;
                 }
 
-                entry = new (System.Collections.Generic.KeyValuePair$2(TKey, TValue))(key, value);
+                entry = new (System.Collections.Generic.KeyValuePair$2(TKey, TValue)).$ctor1(key, value);
 
                 if (this.isSimpleKey) {
                     this.entries[key] = entry;
@@ -20843,19 +20848,6 @@
     System.Linq.Lookup$2 = Lookup;
     System.Linq.OrderedEnumerable$1 = OrderedEnumerable;
 })(Bridge.global);
-
-    // @source FormattableStringFactory.js
-
-    Bridge.define("System.Runtime.CompilerServices.FormattableStringFactory", {
-        statics: {
-            methods: {
-                create: function (format, args) {
-                    if (args === void 0) { args = []; }
-                    return new System.FormattableStringImpl(format, args);
-                }
-            }
-        }
-    });
 
     // @source IDeserializationCallback.js
 
@@ -31379,15 +31371,18 @@
             },
             toString: function () {
                 return System.DateTime.format(this.DateTime);
+
             },
             ToString$1: function (format) {
-                return System.DateTime.format(this.DateTime, format);
+                return System.DateTime.format(System.DateTime.specifyKind(this.DateTime, 2), format);
+
             },
             ToString: function (formatProvider) {
-                return System.DateTime.format(this.DateTime, null, formatProvider);
+                return System.DateTime.format(System.DateTime.specifyKind(this.DateTime, 2), null, formatProvider);
+
             },
             format: function (format, formatProvider) {
-                return System.DateTime.format(this.DateTime, format, formatProvider);
+                return System.DateTime.format(System.DateTime.specifyKind(this.DateTime, 2), format, formatProvider);
 
             },
             ToUniversalTime: function () {
@@ -32098,60 +32093,84 @@
         inherits: [System.IFormattable],
         statics: {
             methods: {
-                invariant: function (formattable) {
-                    return formattable.toString$1(System.Globalization.CultureInfo.invariantCulture);
+                Invariant: function (formattable) {
+                    if (formattable == null) {
+                        throw new System.ArgumentNullException.$ctor1("formattable");
+                    }
+
+                    return formattable.ToString(System.Globalization.CultureInfo.invariantCulture);
                 }
             }
         },
         methods: {
-            toString: function () {
-                return this.toString$1(System.Globalization.CultureInfo.getCurrentCulture());
+            System$IFormattable$format: function (ignored, formatProvider) {
+                return this.ToString(formatProvider);
             },
-            System$IFormattable$format: function (format, formatProvider) {
-                return this.toString$1(formatProvider);
+            toString: function () {
+                return this.ToString(System.Globalization.CultureInfo.getCurrentCulture());
             }
         }
     });
 
-    // @source FormattableStringImpl.js
+    // @source ConcreteFormattableString.js
 
-    Bridge.define("System.FormattableStringImpl", {
+    Bridge.define("System.Runtime.CompilerServices.FormattableStringFactory.ConcreteFormattableString", {
         inherits: [System.FormattableString],
+        $kind: "nested class",
         fields: {
-            args: null,
-            format: null
+            _format: null,
+            _arguments: null
         },
         props: {
-            ArgumentCount: {
-                get: function () {
-                    return this.args.length;
-                }
-            },
             Format: {
                 get: function () {
-                    return this.format;
+                    return this._format;
+                }
+            },
+            ArgumentCount: {
+                get: function () {
+                    return this._arguments.length;
                 }
             }
         },
         ctors: {
-            ctor: function (format, args) {
-                if (args === void 0) { args = []; }
-
+            ctor: function (format, $arguments) {
                 this.$initialize();
                 System.FormattableString.ctor.call(this);
-                this.format = format;
-                this.args = args;
+                this._format = format;
+                this._arguments = $arguments;
             }
         },
         methods: {
-            getArgument: function (index) {
-                return this.args[System.Array.index(index, this.args)];
+            GetArguments: function () {
+                return this._arguments;
             },
-            getArguments: function () {
-                return this.args;
+            GetArgument: function (index) {
+                return this._arguments[System.Array.index(index, this._arguments)];
             },
-            toString$1: function (formatProvider) {
-                return System.String.formatProvider.apply(System.String, [formatProvider, this.format].concat(this.args));
+            ToString: function (formatProvider) {
+                return System.String.formatProvider.apply(System.String, [formatProvider, this._format].concat(this._arguments));
+            }
+        }
+    });
+
+    // @source FormattableStringFactory.js
+
+    Bridge.define("System.Runtime.CompilerServices.FormattableStringFactory", {
+        statics: {
+            methods: {
+                Create: function (format, $arguments) {
+                    if ($arguments === void 0) { $arguments = []; }
+                    if (format == null) {
+                        throw new System.ArgumentNullException.$ctor1("format");
+                    }
+
+                    if ($arguments == null) {
+                        throw new System.ArgumentNullException.$ctor1("arguments");
+                    }
+
+                    return new System.Runtime.CompilerServices.FormattableStringFactory.ConcreteFormattableString(format, $arguments);
+                }
             }
         }
     });
@@ -33762,6 +33781,50 @@
             }
         },
         $flags: true
+    });
+
+    // @source StringBuilderCache.js
+
+    Bridge.define("System.Text.StringBuilderCache", {
+        statics: {
+            fields: {
+                MAX_BUILDER_SIZE: 0,
+                DEFAULT_CAPACITY: 0,
+                t_cachedInstance: null
+            },
+            ctors: {
+                init: function () {
+                    this.MAX_BUILDER_SIZE = 260;
+                    this.DEFAULT_CAPACITY = 16;
+                }
+            },
+            methods: {
+                Acquire: function (capacity) {
+                    if (capacity === void 0) { capacity = 16; }
+                    if (capacity <= System.Text.StringBuilderCache.MAX_BUILDER_SIZE) {
+                        var sb = System.Text.StringBuilderCache.t_cachedInstance;
+                        if (sb != null) {
+                            if (capacity <= sb.getCapacity()) {
+                                System.Text.StringBuilderCache.t_cachedInstance = null;
+                                sb.clear();
+                                return sb;
+                            }
+                        }
+                    }
+                    return new System.Text.StringBuilder("", capacity);
+                },
+                Release: function (sb) {
+                    if (sb.getCapacity() <= System.Text.StringBuilderCache.MAX_BUILDER_SIZE) {
+                        System.Text.StringBuilderCache.t_cachedInstance = sb;
+                    }
+                },
+                GetStringAndRelease: function (sb) {
+                    var result = sb.toString();
+                    System.Text.StringBuilderCache.Release(sb);
+                    return result;
+                }
+            }
+        }
     });
 
     // @source BinaryReader.js
