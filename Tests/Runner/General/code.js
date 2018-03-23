@@ -976,7 +976,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var $t;
                     var account = ($t = new Newtonsoft.Json.Tests.Issues.Case16.Account(), $t.Email = "james@example.com", $t.Active = true, $t.CreatedDate = System.DateTime.create(2013, 1, 20, 0, 0, 0, 0, 1), $t.Roles = $asm.$.Newtonsoft.Json.Tests.Issues.Case16.f1(new (System.Collections.Generic.List$1(System.String)).ctor()), $t);
 
-                    var json = "{\r\n              \"Active\": false,\r\n              \"Roles\": [\r\n                \"Expired\"\r\n              ]\r\n            }";
+                    var json = "{\n              \"Active\": false,\n              \"Roles\": [\n                \"Expired\"\n              ]\n            }";
 
                     Newtonsoft.Json.JsonConvert.PopulateObject(json, account);
 
@@ -988,7 +988,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var s = new Newtonsoft.Json.Tests.Issues.Case16.Session();
                     s.Date = System.DateTime.create(2014, 6, 4);
 
-                    var j = "{\r\n              \"Name\": \"Serialize All The Things\"\r\n            }";
+                    var j = "{\n              \"Name\": \"Serialize All The Things\"\n            }";
 
                     Newtonsoft.Json.JsonConvert.PopulateObject(j, s);
 
