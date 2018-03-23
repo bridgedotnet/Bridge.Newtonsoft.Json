@@ -1340,7 +1340,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var $t;
                     var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
 
-                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(new (System.Collections.Generic.KeyValuePair$2(System.Int32,System.String))(1, "bla1"), settings);
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(new (System.Collections.Generic.KeyValuePair$2(System.Int32,System.String)).$ctor1(1, "bla1"), settings);
 
                     Bridge.Test.NUnit.Assert.AreEqual("{\"$type\":\"System.Collections.Generic.KeyValuePair`2[[System.Int32, mscorlib],[System.String, mscorlib]], mscorlib\",\"Key\":1,\"Value\":\"bla1\"}", json);
 
