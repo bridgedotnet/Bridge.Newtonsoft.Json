@@ -1970,6 +1970,39 @@
         }
     };
 
+    if (!globals.setImmediate) {
+        core.setImmediate = (function () {
+            var head = {},
+                tail = head;
+
+            var id = Math.random();
+
+            function onmessage(e) {
+                if (e.data != id) {
+                    return;
+                }
+                head = head.next;
+                var func = head.func;
+                delete head.func;
+                func();
+            }
+
+            if (window.addEventListener) {
+                window.addEventListener('message', onmessage);
+            } else {
+                window.attachEvent('onmessage', onmessage);
+            }
+
+            return function (func) {
+                tail = tail.next = { func: func };
+                window.postMessage(id, "*");
+            };
+        }());
+    }
+    else {
+        core.setImmediate = globals.setImmediate;
+    }
+
     globals.Bridge = core;
     globals.Bridge.caller = [];
     globals.Bridge.$equalsGuard = [];
@@ -14994,6 +15027,22 @@
         },
 
         statics: {
+            queue: [],
+
+            runQueue: function () {
+                var queue = System.Threading.Tasks.Task.queue.slice(0);
+                System.Threading.Tasks.Task.queue = [];
+
+                for (var i = 0; i < queue.length; i++) {
+                    queue[i]();
+                }
+            },
+
+            schedule: function (fn) {
+                System.Threading.Tasks.Task.queue.push(fn);
+                Bridge.setImmediate(System.Threading.Tasks.Task.runQueue);
+            },
+
             delay: function (delay, state) {
                 var tcs = new System.Threading.Tasks.TaskCompletionSource();
 
@@ -15016,13 +15065,13 @@
             run: function (fn) {
                 var tcs = new System.Threading.Tasks.TaskCompletionSource();
 
-                setTimeout(function () {
+                System.Threading.Tasks.Task.schedule(function () {
                     try {
                         tcs.setResult(fn());
                     } catch (e) {
                         tcs.setException(System.Exception.create(e));
                     }
-                }, 0);
+                });
 
                 return tcs.task;
             },
@@ -15210,7 +15259,9 @@
                 };
 
             if (this.isCompleted()) {
-                setTimeout(fn, 0);
+                //System.Threading.Tasks.Task.schedule(fn);
+                System.Threading.Tasks.Task.queue.push(fn);
+                System.Threading.Tasks.Task.runQueue();
             } else {
                 this.callbacks.push(fn);
             }
@@ -15227,7 +15278,7 @@
 
             this.status = System.Threading.Tasks.TaskStatus.running;
 
-            setTimeout(function () {
+            System.Threading.Tasks.Task.schedule(function () {
                 try {
                     var result = me.action(me.state);
 
@@ -15238,19 +15289,17 @@
                 } catch (e) {
                     me.fail(new System.AggregateException(null, [System.Exception.create(e)]));
                 }
-            }, 0);
+            });
         },
 
         runCallbacks: function () {
             var me = this;
 
-            setTimeout(function () {
-                for (var i = 0; i < me.callbacks.length; i++) {
-                    me.callbacks[i](me);
-                }
+            for (var i = 0; i < me.callbacks.length; i++) {
+                me.callbacks[i](me);
+            }
 
-                delete me.callbacks;
-            }, 0);
+            delete me.callbacks;
         },
 
         complete: function (result) {
@@ -35610,7 +35659,7 @@
                     } else {
                         var req = new XMLHttpRequest();
                         req.open("GET", path, false);
-                        req.overrideMimeType("text/plain; charset=binary-data");
+                        req.overrideMimeType("text/plain; charset=x-user-defined");
                         req.send(null);
                         if (req.status !== 200) {
                             throw new System.IO.IOException.$ctor1(System.String.concat("Status of request to " + (path || "") + " returned status: ", req.status));
