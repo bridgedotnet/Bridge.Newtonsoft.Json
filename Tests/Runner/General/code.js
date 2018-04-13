@@ -1,9 +1,9 @@
 /**
  * Newtonsoft.Json Test library
- * @version 1.7.0-bridge17-0-0-beta0
+ * @version 1.7.0-bridge17-0-0-beta
  * @author Object.NET, Inc.
  * @copyright Copyright 2008-2018 Object.NET, Inc.
- * @compiler Bridge.NET 17.0.0-beta0
+ * @compiler Bridge.NET 17.0.0-beta
  */
 Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     "use strict";
