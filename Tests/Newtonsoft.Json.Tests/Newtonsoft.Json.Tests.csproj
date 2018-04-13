@@ -88,13 +88,13 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Bridge, Version=17.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Bridge.Core.17.0.0-beta0\lib\net40\Bridge.dll</HintPath>
+      <HintPath>..\..\packages\Bridge.Core.17.0.0-beta\lib\net40\Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Bridge.Html5, Version=17.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Bridge.Html5.17.0.0-bridge17-0-0-beta0\lib\net40\Bridge.Html5.dll</HintPath>
+      <HintPath>..\..\packages\Bridge.Html5.17.0.0-bridge17-0-0-beta\lib\net40\Bridge.Html5.dll</HintPath>
     </Reference>
     <Reference Include="Bridge.Test, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Bridge.Test.Core.1.4.0-bridge17-0-0-beta0\lib\net40\Bridge.Test.dll</HintPath>
+      <HintPath>..\..\packages\Bridge.Test.Core.1.4.0-bridge17-0-0-beta\lib\net40\Bridge.Test.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -110,7 +110,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Bridge.Min.17.0.0-beta0\build\Bridge.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Bridge.Min.17.0.0-beta0\build\Bridge.Min.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Bridge.Min.17.0.0-beta\build\Bridge.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Bridge.Min.17.0.0-beta\build\Bridge.Min.targets'))" />
   </Target>
-  <Import Project="..\..\packages\Bridge.Min.17.0.0-beta0\build\Bridge.Min.targets" Condition="Exists('..\..\packages\Bridge.Min.17.0.0-beta0\build\Bridge.Min.targets')" />
+  <Import Project="..\..\packages\Bridge.Min.17.0.0-beta\build\Bridge.Min.targets" Condition="Exists('..\..\packages\Bridge.Min.17.0.0-beta\build\Bridge.Min.targets')" />
 </Project>
