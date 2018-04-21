@@ -1,5 +1,5 @@
 /**
- * @version   : 17.0.0-beta - Bridge.NET
+ * @version   : 17.0.0 - Bridge.NET
  * @author    : Object.NET, Inc. http://bridge.net/
  * @copyright : Copyright 2008-2018 Object.NET, Inc. http://object.net/
  * @license   : See license.txt and https://github.com/bridgedotnet/Bridge/blob/master/LICENSE.md
@@ -1599,6 +1599,16 @@
                 result = Object;
             }
 
+            if (result === Object) {
+                var str = instance.toString(),
+                    match = (/\[object (.{1,})\]/).exec(str),
+                    name = (match && match.length > 1) ? match[1] : "Object";
+
+                if (name != "Object") {
+                    result = instance;
+                }
+            }
+
             return Bridge.Reflection.convertType(result);
         },
 
@@ -2268,7 +2278,7 @@
                                     Object.defineProperty(obj, alias, descriptor);
                                     aliases.push({ alias: alias, descriptor: descriptor });
                                 } else {
-                                    scope[alias] = m;
+                                    obj[alias] = m;
                                     aliases.push({ fn: name, alias: alias });
                                 }
                             }
@@ -3377,8 +3387,8 @@
     // @source SystemAssemblyVersion.js
 
     Bridge.init(function () {
-        Bridge.SystemAssembly.version = "17.0.0-beta";
-        Bridge.SystemAssembly.compiler = "17.0.0-beta";
+        Bridge.SystemAssembly.version = "17.0.0";
+        Bridge.SystemAssembly.compiler = "17.0.0";
     });
 
     Bridge.define("Bridge.Utils.SystemAssemblyVersion");
@@ -5313,6 +5323,47 @@
     });
 
     Bridge.Class.addExtend(System.Char, [System.IComparable$1(System.Char), System.IEquatable$1(System.Char)]);
+
+    // @source Ref.js
+
+    Bridge.define("Bridge.Ref$1", function (T) { return {
+        statics: {
+            methods: {
+                op_Implicit: function (reference) {
+                    return reference.Value;
+                }
+            }
+        },
+        fields: {
+            getter: null,
+            setter: null
+        },
+        props: {
+            Value: {
+                get: function () {
+                    return this.getter();
+                },
+                set: function (value) {
+                    this.setter(value);
+                }
+            }
+        },
+        ctors: {
+            ctor: function (getter, setter) {
+                this.$initialize();
+                this.getter = getter;
+                this.setter = setter;
+            }
+        },
+        methods: {
+            toString: function () {
+                return Bridge.toString(this.Value);
+            },
+            valueOf: function () {
+                return this.Value;
+            }
+        }
+    }; });
 
     // @source IConvertible.js
 
