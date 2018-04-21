@@ -68,6 +68,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             QUnit.test("#8 - TestGenericAndArrayTypeHandlingMoreLevels", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case8.TestGenericAndArrayTypeHandlingMoreLevels);
             QUnit.test("#81 - TestConstructors", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case81.TestConstructors);
             QUnit.test("#82 - TestNullableDeserialization", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case82.TestNullableDeserialization);
+            QUnit.test("#94 - DateTimeOffsetSerializationAndDeserializationWorks", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case94.DateTimeOffsetSerializationAndDeserializationWorks);
             QUnit.module("JsonConstructor");
             QUnit.test("TestJsonConstructor", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.JsonConstructorTests.TestJsonConstructor);
             QUnit.test("TestJsonConstructorMyOtherString", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.JsonConstructorTests.TestJsonConstructorMyOtherString);
@@ -955,6 +956,32 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
                 var $t;
                 if (this.context == null) {
                     this.context = ($t = new Bridge.Test.Runtime.FixtureContext(), $t.Project = "Newtonsoft.Json.Tests", $t.ClassName = "Newtonsoft.Json.Tests.Issues.Case82", $t.File = "Newtonsoft.Json.Tests\\Issues\\0100\\Case082.cs", $t);
+                }
+                return this.context;
+            }
+        }
+    });
+
+    Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case94", {
+        inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case94)],
+        $kind: "nested class",
+        statics: {
+            methods: {
+                DateTimeOffsetSerializationAndDeserializationWorks: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case94).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case94, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "DateTimeOffsetSerializationAndDeserializationWorks()", $t.Line = "14", $t));
+                    Newtonsoft.Json.Tests.Issues.Case94.DateTimeOffsetSerializationAndDeserializationWorks();
+                }
+            }
+        },
+        fields: {
+            context: null
+        },
+        methods: {
+            GetContext: function () {
+                var $t;
+                if (this.context == null) {
+                    this.context = ($t = new Bridge.Test.Runtime.FixtureContext(), $t.Project = "Newtonsoft.Json.Tests", $t.ClassName = "Newtonsoft.Json.Tests.Issues.Case94", $t.File = "Newtonsoft.Json.Tests\\Issues\\0100\\Case094.cs", $t);
                 }
                 return this.context;
             }

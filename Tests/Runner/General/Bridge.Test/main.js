@@ -1,5 +1,5 @@
 /**
- * @compiler Bridge.NET 16.8.2
+ * @compiler Bridge.NET 17.0.0
  */
 Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
     
@@ -232,7 +232,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
                         }
                     } finally {
                         if (Bridge.is($t, System.IDisposable)) {
-                            $t.System$IDisposable$dispose();
+                            $t.System$IDisposable$Dispose();
                         }
                     }},
                 Init: function () {

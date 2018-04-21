@@ -1,5 +1,5 @@
 /*
- * @version   : 1.6.0 - A Bridge.NET implementation of Newtonsoft.Json
+ * @version   : 1.7.0 - A Bridge.NET implementation of Newtonsoft.Json
  * @author    : Object.NET, Inc. http://www.bridge.net/
  * @copyright : Copyright (c) 2008-2018, Object.NET, Inc. (http://www.object.net/). All rights reserved.
  * @license   : See license.txt and https://github.com/bridgedotnet/Bridge.NET/blob/master/LICENSE.
@@ -258,8 +258,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
             },
             ctors: {
                 init: function () {
-                    this.version = "1.6.0";
-                    this.compiler = "16.8.2";
+                    this.version = "1.7.0";
+                    this.compiler = "17.0.0";
                 }
             }
         }
@@ -339,7 +339,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     Bridge.$jsonGuard && Bridge.$jsonGuard.pop();
                 },
 
-                getValue: function(obj, name) {
+                getValue: function (obj, name) {
                     name = name.toLowerCase();
                     for (var key in obj) {
                         if (key.toLowerCase() == name) {
@@ -478,7 +478,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             var typeElement = System.Collections.Generic.List$1.getElementType(targetType) || System.Object;
 
                             if (!Bridge.isArray(raw)) {
-                                raw = raw.toArray();
+                                raw = raw.ToArray();
                             }                            
 
                             for (var i = 0; i < raw.length; i++) {
@@ -491,7 +491,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 keys;
 
                             if (Bridge.is(raw, System.Collections.IDictionary)) {
-                                keys = System.Linq.Enumerable.from(raw.getKeys()).toArray()
+                                keys = System.Linq.Enumerable.from(raw.getKeys()).ToArray()
                                 for (var i = 0; i < keys.length; i++) {
                                     var key = keys[i];
                                     target.set(Newtonsoft.Json.JsonConvert.DeserializeObject(key, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw.get(key), typeValue, settings, true), false);
@@ -658,6 +658,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             type !== System.UInt64 &&
                             type !== System.Decimal &&
                             type !== System.DateTime &&
+                            type !== System.DateTimeOffset &&
                             type !== System.Char &&
                             !Bridge.Reflection.isEnum(type)) {
                             Bridge.$jsonGuard.push(obj);
@@ -685,6 +686,9 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return obj.toJSON();
                         } else if (type === System.DateTime) {
                             var d = System.DateTime.format(obj, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
+                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
+                        } else if (type === System.DateTimeOffset) {
+                            var d = obj.ToString$1("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
                             return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
                         } else if (Bridge.isArray(null, type)) {
                             if (type.$elementType === System.Byte) {
@@ -716,7 +720,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 var entr = enm.Current,
                                     keyJson = Newtonsoft.Json.JsonConvert.SerializeObject(entr.key, formatting, settings, true, typeKey);
 
-                                if (typeof keyJson === 'object') {
+                                if (typeof keyJson === "object") {
                                     keyJson = Bridge.toString(entr.key);
                                 }
 
@@ -951,7 +955,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 for (var i = 0; i < params.length; i++) {
                                     var prm = params[i],
                                         name = prm.sn || prm.n,
-                                        match = new RegExp(name, 'i').exec(strKeys);
+                                        match = new RegExp(name, "i").exec(strKeys);
 
                                     name = match && match.length > 0 ? match[0] : null;
 
@@ -1031,7 +1035,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             throw new Newtonsoft.Json.JsonException(e.message);
                         }
 
-                        if (typeof obj === "object" || Bridge.isArray(obj) || type === System.Array.type(System.Byte, 1) || type === Function || type === System.Guid || type === System.Globalization.CultureInfo || type === System.Uri || type === System.DateTime || type === System.Char || Bridge.Reflection.isEnum(type)) {
+                        if (typeof obj === "object" || Bridge.isArray(obj) || type === System.Array.type(System.Byte, 1) || type === Function || type === System.Guid || type === System.Globalization.CultureInfo || type === System.Uri || type === System.DateTime || type === System.DateTimeOffset || type === System.Char || Bridge.Reflection.isEnum(type)) {
                             raw = obj;
                         }
                     }
@@ -1067,6 +1071,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return "true";
                         } else if (type === System.DateTime) {
                             return System.DateTime.create$2(1, 0);
+                        } else if (type === System.DateTimeOffset) {
+                            return System.DateTimeOffset.MinValue.$clone();
                         } else if (Bridge.Reflection.isEnum(type)) {
                             return Bridge.unbox(System.Enum.parse(type, 1));
                         } else {
@@ -1116,6 +1122,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return raw.toString();
                         } else if (type === System.DateTime) {
                             return System.DateTime.create$2(raw | 0, 0);
+                        } else if (type === System.DateTimeOffset) {
+                            return new System.DateTimeOffset.$ctor5(System.Int64(raw | 0), new System.DateTimeOffset.ctor().Offset);
                         } else {
                             throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
@@ -1138,7 +1146,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else if (type === System.Uri) {
                             return new System.Uri(raw);
                         } else if (type === System.Guid) {
-                            return System.Guid.parse(raw);
+                            return System.Guid.Parse(raw);
                         } else if (type === System.Boolean) {
                             var parsed = { v: false };
                             if (!System.String.isNullOrWhiteSpace(raw) && System.Boolean.tryParse(raw, parsed)) {
@@ -1192,6 +1200,19 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             }
 
                             return d;
+                        } else if (type === System.DateTimeOffset) {
+                            var isUtc = System.String.endsWith(raw, "Z");
+                            var format = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF" + (isUtc ? "'Z'" : "K");
+
+                            var d = System.DateTime.parseExact(raw, format, null, true, true);
+
+                            d = d != null ? d : System.DateTime.parse(raw, undefined, true);
+
+                            if (isUtc && d.kind !== 1) {
+                                d = System.DateTime.specifyKind(d, 1);
+                            }
+
+                            return new System.DateTimeOffset.$ctor1(d);
                         } else if (Bridge.Reflection.isEnum(type)) {
                             return Bridge.unbox(System.Enum.parse(type, raw));
                         } else if (type === System.Array.type(System.Byte, 1)) {
