@@ -16,12 +16,12 @@ namespace Newtonsoft.Json.Tests.Issues
         {
             TimeSpan ts = (TimeSpan)JsonConvert.DeserializeObject("\"00:00:01\"", typeof(TimeSpan));
 
-            Assert.AreEqual(1, ts.Seconds);
-            Assert.AreEqual(0, ts.Hours);
-            Assert.AreEqual(0, ts.Minutes);
+            Assert.AreEqual(0, ts.Hours, "Hours could be parsed from a time span string.");
+            Assert.AreEqual(0, ts.Minutes, "Minutes could be parsed from a time span string.");
+            Assert.AreEqual(1, ts.Seconds, "Seconds could be parsed from a time span string.");
 
             var str = JsonConvert.SerializeObject(ts);
-            Assert.AreEqual("\"00:00:01\"", str);
+            Assert.AreEqual("\"00:00:01\"", str, "TimeSpan value could be serialized into a json string.");
         }
     }
 }
