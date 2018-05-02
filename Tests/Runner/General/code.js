@@ -2632,6 +2632,117 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case93
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case93", {
+        statics: {
+            methods: {
+                TestDictionary: function () {
+                    var $t;
+                    var person = new Newtonsoft.Json.Tests.Issues.Case93.Person();
+                    person.Addresses = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case93.AddressType,Newtonsoft.Json.Tests.Issues.Case93.Address))();
+                    person.Addresses.add(Newtonsoft.Json.Tests.Issues.Case93.AddressType.Home, ($t = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t.Street = "test", $t));
+
+                    var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t));
+                    var match = "{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Person, Newtonsoft.Json.Tests\",\"Addresses\":{\"Home\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"},\"$type\":\"System.Collections.Generic.Dictionary`2[[Newtonsoft.Json.Tests.Issues.Case93+AddressType, Newtonsoft.Json.Tests],[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\"},\"ArrayAddresses\":null,\"ListAddresses\":null,\"StringAddresses\":null}";
+                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized);
+
+                    var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.Addresses.get(Newtonsoft.Json.Tests.Issues.Case93.AddressType.Home).Street);
+                },
+                TestAll: function () {
+                    var $t, $t1;
+                    var person = new Newtonsoft.Json.Tests.Issues.Case93.Person();
+                    person.StringAddresses = new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case93.Address))();
+                    person.ListAddresses = new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case93.Address)).ctor();
+                    person.ArrayAddresses = System.Array.init(1, null, Newtonsoft.Json.Tests.Issues.Case93.Address);
+                    person.StringAddresses.add("Home", ($t = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t.Street = "test", $t));
+                    person.ListAddresses.add(($t = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t.Street = "test", $t));
+                    ($t = person.ArrayAddresses)[System.Array.index(0, $t)] = ($t1 = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t1.Street = "test", $t1);
+
+                    var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, ($t1 = new Newtonsoft.Json.JsonSerializerSettings(), $t1.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All, $t1));
+                    var match = "{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Person, Newtonsoft.Json.Tests\",\"Addresses\":null,\"ArrayAddresses\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address[]\",\"$values\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"ListAddresses\":{\"$type\":\"System.Collections.Generic.List`1[[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"$values\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"StringAddresses\":{\"Home\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"},\"$type\":\"System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\"}}";
+                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized);
+
+                    var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street);
+                },
+                TestAuto: function () {
+                    var $t, $t1;
+                    var person = new Newtonsoft.Json.Tests.Issues.Case93.Person();
+                    person.StringAddresses = new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case93.Address))();
+                    person.ListAddresses = new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case93.Address)).ctor();
+                    person.ArrayAddresses = System.Array.init(1, null, Newtonsoft.Json.Tests.Issues.Case93.Address);
+                    person.StringAddresses.add("Home", ($t = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t.Street = "test", $t));
+                    person.ListAddresses.add(($t = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t.Street = "test", $t));
+                    ($t = person.ArrayAddresses)[System.Array.index(0, $t)] = ($t1 = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t1.Street = "test", $t1);
+
+                    var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, ($t1 = new Newtonsoft.Json.JsonSerializerSettings(), $t1.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto, $t1));
+                    var match = "{\"Addresses\":null,\"ArrayAddresses\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}],\"ListAddresses\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}],\"StringAddresses\":{\"Home\":{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}}}";
+                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized);
+
+                    var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street);
+                },
+                TestArrays: function () {
+                    var $t, $t1;
+                    var person = new Newtonsoft.Json.Tests.Issues.Case93.Person();
+                    person.StringAddresses = new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case93.Address))();
+                    person.ListAddresses = new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case93.Address)).ctor();
+                    person.ArrayAddresses = System.Array.init(1, null, Newtonsoft.Json.Tests.Issues.Case93.Address);
+                    person.StringAddresses.add("Home", ($t = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t.Street = "test", $t));
+                    person.ListAddresses.add(($t = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t.Street = "test", $t));
+                    ($t = person.ArrayAddresses)[System.Array.index(0, $t)] = ($t1 = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t1.Street = "test", $t1);
+
+                    var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, ($t1 = new Newtonsoft.Json.JsonSerializerSettings(), $t1.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Arrays, $t1));
+                    var match = "{\"Addresses\":null,\"ArrayAddresses\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address[]\",\"$values\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"ListAddresses\":{\"$type\":\"System.Collections.Generic.List`1[[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"$values\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"StringAddresses\":{\"Home\":{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}}}";
+                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized);
+
+                    var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street);
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case93.Address", {
+        $kind: "nested class",
+        props: {
+            Street: null,
+            City: null,
+            State: null,
+            PostalCode: null
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case93.AddressType", {
+        $kind: "nested enum",
+        statics: {
+            fields: {
+                Home: 0,
+                Work: 1
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case93.Person", {
+        $kind: "nested class",
+        props: {
+            Addresses: null,
+            StringAddresses: null,
+            ListAddresses: null,
+            ArrayAddresses: null
+        }
+    });
+
+    /**
      * Test that DateTimeOffset Serialization and Deserialization works
      *
      * @public
