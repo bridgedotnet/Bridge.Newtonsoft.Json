@@ -42,10 +42,10 @@ namespace Newtonsoft.Json.Tests.Issues
 
             var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
             var match = "{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Person, Newtonsoft.Json.Tests\",\"Addresses\":{\"Home\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"},\"$type\":\"System.Collections.Generic.Dictionary`2[[Newtonsoft.Json.Tests.Issues.Case93+AddressType, Newtonsoft.Json.Tests],[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\"},\"ArrayAddresses\":null,\"ListAddresses\":null,\"StringAddresses\":null}";
-            Assert.AreEqual(match, serialized);
+            Assert.AreEqual(match, serialized, "Object with dictionary members and dictionary enum keys can be serialized.");
 
             var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(serialized);
-            Assert.AreEqual("test", deserialized.Addresses[AddressType.Home].Street);
+            Assert.AreEqual("test", deserialized.Addresses[AddressType.Home].Street, "Object with dictionary members and dictionary enum keys can be deserialized.");
         }
 
         [Test]
@@ -61,12 +61,12 @@ namespace Newtonsoft.Json.Tests.Issues
 
             var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             var match = "{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Person, Newtonsoft.Json.Tests\",\"Addresses\":null,\"ArrayAddresses\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address[]\",\"$values\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"ListAddresses\":{\"$type\":\"System.Collections.Generic.List`1[[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"$values\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"StringAddresses\":{\"Home\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"},\"$type\":\"System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\"}}";
-            Assert.AreEqual(match, serialized);
+            Assert.AreEqual(match, serialized, "Complex object with Dictionary, List, and array members can be serialized.");
 
             var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(serialized);
-            Assert.AreEqual("test", deserialized.StringAddresses["Home"].Street);
-            Assert.AreEqual("test", deserialized.ListAddresses[0].Street);
-            Assert.AreEqual("test", deserialized.ArrayAddresses[0].Street);
+            Assert.AreEqual("test", deserialized.StringAddresses["Home"].Street, "Complex object's dictionary member can be deserialized.");
+            Assert.AreEqual("test", deserialized.ListAddresses[0].Street, "Complex object's list member can be deserialized.");
+            Assert.AreEqual("test", deserialized.ArrayAddresses[0].Street, "Complex object's array member can be deserialized.");
         }
 
         [Test]
@@ -82,12 +82,12 @@ namespace Newtonsoft.Json.Tests.Issues
 
             var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
             var match = "{\"Addresses\":null,\"ArrayAddresses\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}],\"ListAddresses\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}],\"StringAddresses\":{\"Home\":{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}}}";
-            Assert.AreEqual(match, serialized);
+            Assert.AreEqual(match, serialized, "Complex object with TypeNameHandling as 'auto' can be serialized.");
 
             var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(serialized);
-            Assert.AreEqual("test", deserialized.StringAddresses["Home"].Street);
-            Assert.AreEqual("test", deserialized.ListAddresses[0].Street);
-            Assert.AreEqual("test", deserialized.ArrayAddresses[0].Street);
+            Assert.AreEqual("test", deserialized.StringAddresses["Home"].Street, "TypeNameHandling=Auto serialized object's dictionary member can be deserialized.");
+            Assert.AreEqual("test", deserialized.ListAddresses[0].Street, "TypeNameHandling=Auto serialized object's list member can be deserialized.");
+            Assert.AreEqual("test", deserialized.ArrayAddresses[0].Street, "TypeNameHandling=Auto serialized object's array member can be deserialized.");
         }
 
         [Test]
@@ -103,12 +103,12 @@ namespace Newtonsoft.Json.Tests.Issues
 
             var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Arrays });
             var match = "{\"Addresses\":null,\"ArrayAddresses\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address[]\",\"$values\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"ListAddresses\":{\"$type\":\"System.Collections.Generic.List`1[[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"$values\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"StringAddresses\":{\"Home\":{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}}}";
-            Assert.AreEqual(match, serialized);
+            Assert.AreEqual(match, serialized, "Complex object with TypeNameHandling as 'array' can be serialized.");
 
             var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(serialized);
-            Assert.AreEqual("test", deserialized.StringAddresses["Home"].Street);
-            Assert.AreEqual("test", deserialized.ListAddresses[0].Street);
-            Assert.AreEqual("test", deserialized.ArrayAddresses[0].Street);
+            Assert.AreEqual("test", deserialized.StringAddresses["Home"].Street, "TypeNameHandling=Array serialized object's dictionary member can be deserialized.");
+            Assert.AreEqual("test", deserialized.ListAddresses[0].Street, "TypeNameHandling=Array serialized object's dictionary member can be deserialized.");
+            Assert.AreEqual("test", deserialized.ArrayAddresses[0].Street, "TypeNameHandling=Array serialized object's dictionary member can be deserialized.");
         }
     }
 }
