@@ -2633,6 +2633,27 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
     /**
      * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case89
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case89", {
+        statics: {
+            methods: {
+                TimeSpanSerializationWorks: function () {
+                    var ts = System.Nullable.getValue(Bridge.cast(Bridge.unbox(Newtonsoft.Json.JsonConvert.DeserializeObject("\"00:00:01\"", System.TimeSpan)), System.TimeSpan));
+
+                    Bridge.Test.NUnit.Assert.AreEqual(0, ts.getHours(), "Hours could be parsed from a time span string.");
+                    Bridge.Test.NUnit.Assert.AreEqual(0, ts.getMinutes(), "Minutes could be parsed from a time span string.");
+                    Bridge.Test.NUnit.Assert.AreEqual(1, ts.getSeconds(), "Seconds could be parsed from a time span string.");
+
+                    var str = Newtonsoft.Json.JsonConvert.SerializeObject(ts);
+                    Bridge.Test.NUnit.Assert.AreEqual("\"00:00:01\"", str, "TimeSpan value could be serialized into a json string.");
+                }
+            }
+        }
+    });
+
+    /**
+     * @public
      * @class Newtonsoft.Json.Tests.Issues.Case93
      */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case93", {
@@ -2784,6 +2805,42 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(dto2.Second, 15, "Second is correct");
                     Bridge.Test.NUnit.Assert.AreEqual(dto2.Millisecond, 750, "Millisecond is correct");
                 }
+            }
+        }
+    });
+
+    /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case99
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case99", {
+        statics: {
+            methods: {
+                EnumAsDictionaryKeyWorks: function () {
+                    var dic = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case99.EnuVals,System.Int32))();
+                    dic.add(Newtonsoft.Json.Tests.Issues.Case99.EnuVals.One, 1);
+                    dic.add(Newtonsoft.Json.Tests.Issues.Case99.EnuVals.Two, 2);
+
+                    var dic_s = Newtonsoft.Json.JsonConvert.SerializeObject(dic);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"One\":1,\"Two\":2}", dic_s, "Serialized string results in the expected output.");
+
+                    var dic2 = new (System.Collections.Generic.Dictionary$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case99.EnuVals))();
+                    dic2.add(1, Newtonsoft.Json.Tests.Issues.Case99.EnuVals.One);
+                    dic2.add(2, Newtonsoft.Json.Tests.Issues.Case99.EnuVals.Two);
+
+                    var dic2_s = Newtonsoft.Json.JsonConvert.SerializeObject(dic2);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"1\":0,\"2\":1}", dic2_s, "Serialized string results in the expected output.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case99.EnuVals", {
+        $kind: "nested enum",
+        statics: {
+            fields: {
+                One: 0,
+                Two: 1
             }
         }
     });

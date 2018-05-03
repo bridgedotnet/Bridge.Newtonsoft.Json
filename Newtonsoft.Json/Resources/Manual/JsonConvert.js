@@ -309,7 +309,7 @@
                     }
                 },
 
-                SerializeObject: function (obj, formatting, settings, returnRaw, possibleType) {
+                SerializeObject: function (obj, formatting, settings, returnRaw, possibleType, dictKey) {
                     if (Bridge.is(formatting, Newtonsoft.Json.JsonSerializerSettings)) {
                         settings = formatting;
                         formatting = 0;
@@ -339,12 +339,13 @@
                         return String.fromCharCode(obj);
                     }
 
+                    var type = possibleType || objType;
+
                     if (typeof obj === "function") {
                         var name = Bridge.getTypeName(obj);
                         return returnRaw ? name : Newtonsoft.Json.JsonConvert.stringify(name, formatting);
                     } else if (typeof obj === "object") {
-                        var type = possibleType || objType,
-                            arr,
+                        var arr,
                             i;
 
                         var removeGuard = Newtonsoft.Json.JsonConvert.defaultGuard;
@@ -395,6 +396,9 @@
                         } else if (type === System.DateTime) {
                             var d = System.DateTime.format(obj, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
                             return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
+                        } else if (type === System.TimeSpan) {
+                            var d = Bridge.toString(obj);
+                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
                         } else if (type === System.DateTimeOffset) {
                             var d = obj.ToString$1("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
                             return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
@@ -425,6 +429,10 @@
                                 }
                             }
                         } else if (Bridge.Reflection.isEnum(type)) {
+                            if (dictKey) {
+                                return System.Enum.getName(type, obj);
+                            }
+
                             return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
                         } else if (type === System.Char) {
                             return returnRaw ? String.fromCharCode(obj) : Newtonsoft.Json.JsonConvert.stringify(String.fromCharCode(obj), formatting);
@@ -438,7 +446,7 @@
 
                             while (enm.moveNext()) {
                                 var entr = enm.Current,
-                                    keyJson = Newtonsoft.Json.JsonConvert.SerializeObject(entr.key, formatting, settings, true, typeKey);
+                                    keyJson = Newtonsoft.Json.JsonConvert.SerializeObject(entr.key, formatting, settings, true, typeKey, true);
 
                                 if (typeof keyJson === "object") {
                                     keyJson = Bridge.toString(entr.key);
@@ -579,7 +587,13 @@
                         }
 
                         removeGuard();
-                    }
+                    } else if (Bridge.Reflection.isEnum(type)) {
+                        if (dictKey) {
+                            return System.Enum.getName(type, obj);
+                        }
+
+                        return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
+                    } 
 
                     return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
                 },
@@ -868,6 +882,8 @@
                             return raw.toString();
                         } else if (type === System.DateTime) {
                             return System.DateTime.create$2(raw | 0, 0);
+                        } else if (type === System.TimeSpan) {
+                            return System.TimeSpan.fromTicks(raw);
                         } else if (type === System.DateTimeOffset) {
                             return new System.DateTimeOffset.$ctor5(System.Int64(raw | 0), new System.DateTimeOffset.ctor().Offset);
                         } else {
@@ -933,6 +949,8 @@
                             return raw.charCodeAt(0);
                         } else if (type === System.String) {
                             return field ? raw : JSON.parse(raw);
+                        } else if (type === System.TimeSpan) {
+                            return System.TimeSpan.parse(raw[0] == '"' ? JSON.parse(raw) : raw);
                         } else if (type === System.DateTime) {
                             var isUtc = System.String.endsWith(raw, "Z");
                             var format = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF" + (isUtc ? "'Z'" : "K");
