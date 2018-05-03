@@ -2698,6 +2698,42 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case99
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case99", {
+        statics: {
+            methods: {
+                EnumAsDictionaryKeyWorks: function () {
+                    var dic = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case99.EnuVals,System.Int32))();
+                    dic.add(Newtonsoft.Json.Tests.Issues.Case99.EnuVals.One, 1);
+                    dic.add(Newtonsoft.Json.Tests.Issues.Case99.EnuVals.Two, 2);
+
+                    var dic_s = Newtonsoft.Json.JsonConvert.SerializeObject(dic);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"One\":1,\"Two\":2}", dic_s, "Serialized string results in the expected output.");
+
+                    var dic2 = new (System.Collections.Generic.Dictionary$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case99.EnuVals))();
+                    dic2.add(1, Newtonsoft.Json.Tests.Issues.Case99.EnuVals.One);
+                    dic2.add(2, Newtonsoft.Json.Tests.Issues.Case99.EnuVals.Two);
+
+                    var dic2_s = Newtonsoft.Json.JsonConvert.SerializeObject(dic2);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"1\":0,\"2\":1}", dic2_s, "Serialized string results in the expected output.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case99.EnuVals", {
+        $kind: "nested enum",
+        statics: {
+            fields: {
+                One: 0,
+                Two: 1
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.JsonConstructorTests", {
         statics: {
             methods: {
