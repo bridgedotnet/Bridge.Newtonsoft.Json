@@ -42,6 +42,20 @@ namespace Newtonsoft.Json
         /// Serializes the specified object to a JSON string using formatting and <see cref="JsonSerializerSettings"/>.
         /// </summary>
         /// <param name="value">The object to serialize.</param>
+        /// <param name="type">The type of the value being serialized. This parameter is used when TypeNameHandling is Auto to write out the type name if the type of the value does not match. Specifying the type is optional.</param>
+        /// <param name="settings">The <see cref="JsonSerializerSettings"/> used to serialize the object.
+        /// If this is <c>null</c>, default serialization settings will be used.</param>
+        /// <returns>
+        /// A JSON string representation of the object.
+        /// </returns>
+        [Unbox(false)]
+        [Template("Newtonsoft.Json.JsonConvert.SerializeObject({value}, null, {settings}, false, {type})")]
+        public static extern string SerializeObject(object value, Type type, JsonSerializerSettings settings);
+
+        /// <summary>
+        /// Serializes the specified object to a JSON string using formatting and <see cref="JsonSerializerSettings"/>.
+        /// </summary>
+        /// <param name="value">The object to serialize.</param>
         /// <param name="formatting">Indicates how the output should be formatted.</param>
         /// <param name="settings">The <see cref="JsonSerializerSettings"/> used to serialize the object.
         /// If this is <c>null</c>, default serialization settings will be used.</param>
@@ -50,6 +64,21 @@ namespace Newtonsoft.Json
         /// </returns>
         [Unbox(false)]
         public static extern string SerializeObject(object value, Formatting formatting, JsonSerializerSettings settings);
+
+        /// <summary>
+        /// Serializes the specified object to a JSON string using formatting and <see cref="JsonSerializerSettings"/>.
+        /// </summary>
+        /// <param name="value">The object to serialize.</param>
+        /// <param name="type">The type of the value being serialized. This parameter is used when TypeNameHandling is Auto to write out the type name if the type of the value does not match. Specifying the type is optional.</param>
+        /// <param name="formatting">Indicates how the output should be formatted.</param>
+        /// <param name="settings">The <see cref="JsonSerializerSettings"/> used to serialize the object.
+        /// If this is <c>null</c>, default serialization settings will be used.</param>
+        /// <returns>
+        /// A JSON string representation of the object.
+        /// </returns>
+        [Unbox(false)]
+        [Template("Newtonsoft.Json.JsonConvert.SerializeObject({value}, {formatting}, {settings}, false, {type})")]
+        public static extern string SerializeObject(object value, Type type, Formatting formatting, JsonSerializerSettings settings);
 
         /// <summary>
         /// Deserializes the JSON to the specified .NET type.
