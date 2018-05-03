@@ -2667,10 +2667,10 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t));
                     var match = "{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Person, Newtonsoft.Json.Tests\",\"Addresses\":{\"Home\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"},\"$type\":\"System.Collections.Generic.Dictionary`2[[Newtonsoft.Json.Tests.Issues.Case93+AddressType, Newtonsoft.Json.Tests],[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\"},\"ArrayAddresses\":null,\"ListAddresses\":null,\"StringAddresses\":null}";
-                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized);
+                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized, "Object with dictionary members and dictionary enum keys can be serialized.");
 
                     var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.Addresses.get(Newtonsoft.Json.Tests.Issues.Case93.AddressType.Home).Street);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.Addresses.get(Newtonsoft.Json.Tests.Issues.Case93.AddressType.Home).Street, "Object with dictionary members and dictionary enum keys can be deserialized.");
                 },
                 TestAll: function () {
                     var $t, $t1;
@@ -2684,12 +2684,12 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, ($t1 = new Newtonsoft.Json.JsonSerializerSettings(), $t1.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All, $t1));
                     var match = "{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Person, Newtonsoft.Json.Tests\",\"Addresses\":null,\"ArrayAddresses\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address[]\",\"$values\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"ListAddresses\":{\"$type\":\"System.Collections.Generic.List`1[[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"$values\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"StringAddresses\":{\"Home\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"},\"$type\":\"System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\"}}";
-                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized);
+                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized, "Complex object with Dictionary, List, and array members can be serialized.");
 
                     var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street, "Complex object's dictionary member can be deserialized.");
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street, "Complex object's list member can be deserialized.");
+                    Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street, "Complex object's array member can be deserialized.");
                 },
                 TestAuto: function () {
                     var $t, $t1;
@@ -2703,12 +2703,12 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, ($t1 = new Newtonsoft.Json.JsonSerializerSettings(), $t1.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto, $t1));
                     var match = "{\"Addresses\":null,\"ArrayAddresses\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}],\"ListAddresses\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}],\"StringAddresses\":{\"Home\":{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}}}";
-                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized);
+                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized, "Complex object with TypeNameHandling as 'auto' can be serialized.");
 
                     var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street, "TypeNameHandling=Auto serialized object's dictionary member can be deserialized.");
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street, "TypeNameHandling=Auto serialized object's list member can be deserialized.");
+                    Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street, "TypeNameHandling=Auto serialized object's array member can be deserialized.");
                 },
                 TestArrays: function () {
                     var $t, $t1;
@@ -2722,12 +2722,12 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, ($t1 = new Newtonsoft.Json.JsonSerializerSettings(), $t1.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Arrays, $t1));
                     var match = "{\"Addresses\":null,\"ArrayAddresses\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address[]\",\"$values\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"ListAddresses\":{\"$type\":\"System.Collections.Generic.List`1[[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"$values\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"StringAddresses\":{\"Home\":{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}}}";
-                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized);
+                    Bridge.Test.NUnit.Assert.AreEqual(match, serialized, "Complex object with TypeNameHandling as 'array' can be serialized.");
 
                     var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street);
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street, "TypeNameHandling=Array serialized object's dictionary member can be deserialized.");
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street, "TypeNameHandling=Array serialized object's dictionary member can be deserialized.");
+                    Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street, "TypeNameHandling=Array serialized object's dictionary member can be deserialized.");
                 }
             }
         }
