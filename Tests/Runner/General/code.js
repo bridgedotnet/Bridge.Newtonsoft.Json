@@ -2632,6 +2632,27 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case89
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case89", {
+        statics: {
+            methods: {
+                TimeSpanSerializationWorks: function () {
+                    var ts = System.Nullable.getValue(Bridge.cast(Bridge.unbox(Newtonsoft.Json.JsonConvert.DeserializeObject("\"00:00:01\"", System.TimeSpan)), System.TimeSpan));
+
+                    Bridge.Test.NUnit.Assert.AreEqual(0, ts.getHours(), "Hours could be parsed from a time span string.");
+                    Bridge.Test.NUnit.Assert.AreEqual(0, ts.getMinutes(), "Minutes could be parsed from a time span string.");
+                    Bridge.Test.NUnit.Assert.AreEqual(1, ts.getSeconds(), "Seconds could be parsed from a time span string.");
+
+                    var str = Newtonsoft.Json.JsonConvert.SerializeObject(ts);
+                    Bridge.Test.NUnit.Assert.AreEqual("\"00:00:01\"", str, "TimeSpan value could be serialized into a json string.");
+                }
+            }
+        }
+    });
+
+    /**
      * Test that DateTimeOffset Serialization and Deserialization works
      *
      * @public

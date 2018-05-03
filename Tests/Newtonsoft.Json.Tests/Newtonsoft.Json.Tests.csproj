@@ -58,9 +58,10 @@
     <Compile Include="Issues\0100\Case074.cs" />
     <Compile Include="Issues\0100\Case079.cs" />
     <Compile Include="Issues\0100\Case081.cs" />
+    <Compile Include="Issues\0100\Case082.cs" />
+    <Compile Include="Issues\0100\Case089.cs" />
     <Compile Include="Issues\0100\Case099.cs" />
     <Compile Include="Issues\0100\Case094.cs" />
-    <Compile Include="Issues\0100\Case082.cs" />
     <Compile Include="Tests\ListOptimizationTests.cs" />
     <Compile Include="Tests\DeserializationTests.cs" />
     <Compile Include="Issues\Ported\N1134.cs" />

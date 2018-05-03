@@ -688,6 +688,9 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else if (type === System.DateTime) {
                             var d = System.DateTime.format(obj, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
                             return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
+                        } else if (type === System.TimeSpan) {
+                            var d = Bridge.toString(obj);
+                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
                         } else if (type === System.DateTimeOffset) {
                             var d = obj.ToString$1("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
                             return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
@@ -1133,6 +1136,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return raw.toString();
                         } else if (type === System.DateTime) {
                             return System.DateTime.create$2(raw | 0, 0);
+                        } else if (type === System.TimeSpan) {
+                            return System.TimeSpan.fromTicks(raw);
                         } else if (type === System.DateTimeOffset) {
                             return new System.DateTimeOffset.$ctor5(System.Int64(raw | 0), new System.DateTimeOffset.ctor().Offset);
                         } else {
@@ -1198,6 +1203,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return raw.charCodeAt(0);
                         } else if (type === System.String) {
                             return field ? raw : JSON.parse(raw);
+                        } else if (type === System.TimeSpan) {
+                            return System.TimeSpan.parse(raw[0] == '"' ? JSON.parse(raw) : raw);
                         } else if (type === System.DateTime) {
                             var isUtc = System.String.endsWith(raw, "Z");
                             var format = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFF" + (isUtc ? "'Z'" : "K");
