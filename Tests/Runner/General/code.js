@@ -969,6 +969,33 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /** @namespace Newtonsoft.Json.Tests.Issues */
+
+    /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case101
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case101", {
+        statics: {
+            methods: {
+                Test: function () {
+                    var $t;
+                    var obj = ($t = new Newtonsoft.Json.Tests.Issues.Case101.MyCustomClass(), $t.Value = Bridge.box(true, System.Boolean, System.Boolean.toString), $t);
+                    var str = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    var deser = Newtonsoft.Json.JsonConvert.DeserializeObject(str, Newtonsoft.Json.Tests.Issues.Case101.MyCustomClass);
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.getValue(Bridge.cast(Bridge.unbox(deser.Value), System.Boolean)));
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case101.MyCustomClass", {
+        $kind: "nested class",
+        props: {
+            Value: null
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {
@@ -1004,8 +1031,6 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             Data: null
         }
     }; });
-
-    /** @namespace Newtonsoft.Json.Tests.Issues */
 
     /**
      * Tests for the PopulateObject and related methods.
