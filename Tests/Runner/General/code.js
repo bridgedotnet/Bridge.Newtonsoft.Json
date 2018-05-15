@@ -2811,6 +2811,72 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
     /**
      * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case96
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case96", {
+        statics: {
+            methods: {
+                TestSerializationCallbacks: function () {
+                    var obj = new Newtonsoft.Json.Tests.Issues.Case96.SerializationEventTestObject();
+
+                    Bridge.Test.NUnit.Assert.AreEqual(11, obj.Member1, "Int member initial value is the expected one.");
+                    Bridge.Test.NUnit.Assert.AreEqual("Hello World!", obj.Member2, "String member initial value is the expected one.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This is a nonserialized value.", obj.Member3, "Json-ignored-string member initial value is the expected one.");
+                    Bridge.Test.NUnit.Assert.Null(obj.Member4, "Null string member initial value is the expected one.");
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(11, obj.Member1, "Member value is unchanged after serialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This value was reset after serialization.", obj.Member2, "Member changed on 'Serialized' is changed accordingly after serialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This is a nonserialized value.", obj.Member3, "Member with deserialization-changing event is unchanged after serialization.");
+                    Bridge.Test.NUnit.Assert.Null(obj.Member4, "Member with deserialization-changing event is unchanged after serialization.");
+
+                    obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case96.SerializationEventTestObject);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(11, obj.Member1, "Member value is unchanged after deserialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This value went into the data file during serialization.", obj.Member2, "Member changed on 'Serializing' is changed accordingly after deserialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This value was set during deserialization.", obj.Member3, "Member with 'Deserializing' event is changed accordingly after deserialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This value was set after deserialization.", obj.Member4, "Member with 'Deserialized' event is changed accordingly after deserialization.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case96.SerializationEventTestObject", {
+        $kind: "nested class",
+        props: {
+            Member1: 0,
+            Member2: null,
+            Member3: null,
+            Member4: null
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                this.Member1 = 11;
+                this.Member2 = "Hello World!";
+                this.Member3 = "This is a nonserialized value.";
+                this.Member4 = null;
+            }
+        },
+        methods: {
+            OnSerializingMethod: function (context) {
+                this.Member2 = "This value went into the data file during serialization.";
+            },
+            OnSerializedMethod: function (context) {
+                this.Member2 = "This value was reset after serialization.";
+            },
+            OnDeserializingMethod: function (context) {
+                this.Member3 = "This value was set during deserialization.";
+            },
+            OnDeserializedMethod: function (context) {
+                this.Member4 = "This value was set after deserialization.";
+            }
+        }
+    });
+
+    /**
+     * @public
      * @class Newtonsoft.Json.Tests.Issues.Case99
      */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case99", {
