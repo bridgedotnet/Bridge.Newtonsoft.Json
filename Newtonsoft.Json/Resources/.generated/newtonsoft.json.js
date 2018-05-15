@@ -813,6 +813,16 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 var fields = Newtonsoft.Json.JsonConvert.getMembers(type, 4),
                                     camelCase = settings && Bridge.is(settings.ContractResolver, Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver);
 
+                                var methods = Bridge.Reflection.getMembers(type, 8, 54);
+
+                                if (methods.length > 0) {
+                                    for (var midx = 0; midx < methods.length; midx++) {
+                                        if (System.Attribute.isDefined(methods[midx], System.Runtime.Serialization.OnSerializingAttribute, false)) {
+                                            Bridge.Reflection.midel(methods[midx], obj)(null);
+                                        }
+                                    }                                    
+                                }
+
                                 for (i = 0; i < fields.length; i++) {
                                     var cfg = fields[i],
                                         f = cfg.member,
@@ -873,6 +883,15 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                             if (typeNameHandling != null) {
                                                 settings._typeNameHandling = oldTypeNameHandling;
                                             }
+                                        }
+                                    }
+                                }
+
+                                if (methods.length > 0) {
+                                    for (var midx = 0; midx < methods.length; midx++) {
+                                        if (System.Attribute.isDefined(methods[midx], System.Runtime.Serialization.OnSerializedAttribute, false)) {
+                                            Bridge.Reflection.midel(methods[midx], obj)(null);
+                                            break;
                                         }
                                     }
                                 }
@@ -1389,6 +1408,16 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             names = o.names || [];
                             o = o.value;
 
+                            var methods = Bridge.Reflection.getMembers(type, 8, 54);
+
+                            if (methods.length > 0) {
+                                for (var midx = 0; midx < methods.length; midx++) {
+                                    if (System.Attribute.isDefined(methods[midx], System.Runtime.Serialization.OnDeserializingAttribute, false)) {
+                                        Bridge.Reflection.midel(methods[midx], o)(null);
+                                    }
+                                }
+                            }
+
                             var camelCase = settings && Bridge.is(settings.ContractResolver, Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver),
                                 fields = Newtonsoft.Json.JsonConvert.getMembers(type, 4),
                                 value,
@@ -1528,6 +1557,14 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                         else if (type.$kind === "anonymous") {
                                             o[p.n] = result.value;
                                         }
+                                    }
+                                }
+                            }
+
+                            if (methods.length > 0) {
+                                for (var midx = 0; midx < methods.length; midx++) {
+                                    if (System.Attribute.isDefined(methods[midx], System.Runtime.Serialization.OnDeserializedAttribute, false)) {
+                                        Bridge.Reflection.midel(methods[midx], o)(null);
                                     }
                                 }
                             }
