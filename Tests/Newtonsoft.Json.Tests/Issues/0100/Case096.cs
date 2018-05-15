@@ -1,5 +1,6 @@
 using Bridge.Test.NUnit;
 using System;
+using System.Runtime.Serialization;
 using System.Collections.Generic;
 
 namespace Newtonsoft.Json.Tests.Issues
@@ -33,7 +34,7 @@ namespace Newtonsoft.Json.Tests.Issues
             {
                 Member1 = 11;
                 Member2 = "Hello World!";
-                Member3 = "This is a nonserialized value";
+                Member3 = "This is a nonserialized value.";
                 Member4 = null;
             }
 
@@ -52,7 +53,7 @@ namespace Newtonsoft.Json.Tests.Issues
             [OnDeserializing]
             internal void OnDeserializingMethod(StreamingContext context)
             {
-                Member3 = "This value was set during deserialization";
+                Member3 = "This value was set during deserialization.";
             }
 
             [OnDeserialized]
@@ -67,24 +68,24 @@ namespace Newtonsoft.Json.Tests.Issues
         {
             SerializationEventTestObject obj = new SerializationEventTestObject();
 
-            Assert.AreEqual(11, obj.Member1);
-            Assert.AreEqual("Hello World!", obj.Member2);
-            Assert.AreEqual("This is a nonserialized value", obj.Member3);
-            Assert.Null(obj.Member4);
+            Assert.AreEqual(11, obj.Member1, "Int member initial value is the expected one.");
+            Assert.AreEqual("Hello World!", obj.Member2, "String member initial value is the expected one.");
+            Assert.AreEqual("This is a nonserialized value.", obj.Member3, "Json-ignored-string member initial value is the expected one.");
+            Assert.Null(obj.Member4, "Null string member initial value is the expected one.");
 
             string json = JsonConvert.SerializeObject(obj, Formatting.Indented);
 
-            Assert.AreEqual(11, obj.Member1);
-            Assert.AreEqual("This value was reset after serialization.", obj.Member2);
-            Assert.AreEqual("This is a nonserialized value", obj.Member3);
-            Assert.Null(obj.Member4);
+            Assert.AreEqual(11, obj.Member1, "Member value is unchanged after serialization.");
+            Assert.AreEqual("This value was reset after serialization.", obj.Member2, "Member changed on 'Serialized' is changed accordingly after serialization.");
+            Assert.AreEqual("This is a nonserialized value.", obj.Member3, "Member with deserialization-changing event is unchanged after serialization.");
+            Assert.Null(obj.Member4, "Member with deserialization-changing event is unchanged after serialization.");
 
             obj = JsonConvert.DeserializeObject<SerializationEventTestObject>(json);
 
-            Assert.AreEqual(11, obj.Member1);
-            Assert.AreEqual("This value went into the data file during serialization.", obj.Member2);
-            Assert.AreEqual("This value was set during deserialization", obj.Member3);
-            Assert.AreEqual("This value was set after deserialization", obj.Member4);
+            Assert.AreEqual(11, obj.Member1, "Member value is unchanged after deserialization.");
+            Assert.AreEqual("This value went into the data file during serialization.", obj.Member2, "Member changed on 'Serializing' is changed accordingly after deserialization.");
+            Assert.AreEqual("This value was set during deserialization.", obj.Member3, "Member with 'Deserializing' event is changed accordingly after deserialization.");
+            Assert.AreEqual("This value was set after deserialization.", obj.Member4, "Member with 'Deserialized' event is changed accordingly after deserialization.");
         }
     }
 }
