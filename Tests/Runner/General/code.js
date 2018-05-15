@@ -837,6 +837,50 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     }; });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge3571", {
+        statics: {
+            methods: {
+                Serialize: function (Obj) {
+                    var Settings = new Newtonsoft.Json.JsonSerializerSettings();
+                    Settings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects;
+                    return Newtonsoft.Json.JsonConvert.SerializeObject(Obj, Newtonsoft.Json.Formatting.Indented, Settings);
+                },
+                Deserialize: function (T, JSON) {
+                    var Settings = new Newtonsoft.Json.JsonSerializerSettings();
+                    Settings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects;
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject(JSON, T, Settings);
+                },
+                Test3571: function () {
+                    var OriginalObject = new Newtonsoft.Json.Tests.Issues.Bridge3571.DomRoot();
+                    OriginalObject.SubElement = new Newtonsoft.Json.Tests.Issues.Bridge3571.SpecificClass();
+                    OriginalObject.SubSpecific = new Newtonsoft.Json.Tests.Issues.Bridge3571.SpecificClass();
+                    var Str = Newtonsoft.Json.Tests.Issues.Bridge3571.Serialize(OriginalObject);
+                    System.Console.WriteLine(Str);
+
+                    var ReconstructObject = Newtonsoft.Json.Tests.Issues.Bridge3571.Deserialize(Newtonsoft.Json.Tests.Issues.Bridge3571.DomRoot, Str);
+                    Bridge.Test.NUnit.Assert.AreEqual("DomRoot", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject)));
+                    Bridge.Test.NUnit.Assert.AreEqual("SpecificClass", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject.SubSpecific)));
+                    Bridge.Test.NUnit.Assert.AreEqual("SpecificClass", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject.SubElement)));
+
+                    var Reconstruct2 = Newtonsoft.Json.Tests.Issues.Bridge3571.Deserialize(System.Object, Str);
+                    Bridge.Test.NUnit.Assert.AreEqual("DomRoot", Bridge.Reflection.getTypeName(Bridge.getType(Reconstruct2)));
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge3571.DomRoot", {
+        $kind: "nested class",
+        props: {
+            SubElement: null,
+            SubSpecific: null
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge3571.IGeneralInterface", {
+        $kind: "nested interface"
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge501", {
         statics: {
             methods: {
@@ -3567,6 +3611,11 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 return System.String.format("{0} {1} {2} {3}", this.Id, this.Name, this.Address.Street, this.Address.City);
             }
         }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge3571.SpecificClass", {
+        inherits: [Newtonsoft.Json.Tests.Issues.Bridge3571.IGeneralInterface],
+        $kind: "nested class"
     });
 
     Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.AlternativeKeyValuePairDataModel", {

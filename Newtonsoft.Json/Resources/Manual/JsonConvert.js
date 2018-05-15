@@ -801,6 +801,18 @@
                     }
 
                     var isObject = type === Object || type === System.Object;
+
+                    if (isObject && raw && raw.$type) {
+                        var realType = Bridge.Reflection.getType(raw.$type);
+
+                        if (realType === null) {
+                            throw TypeError(System.String.concat("Cannot find type: ", raw.$type));
+                        }
+
+                        type = realType;
+                        isObject = false;
+                    }
+
                     if (isObject || type.$literal && !Bridge.getMetadata(type)) {
                         return Bridge.merge(isObject ? {} : (instance || Bridge.createInstance(type)), raw);
                     }
