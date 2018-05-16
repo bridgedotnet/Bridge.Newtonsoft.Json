@@ -925,6 +925,57 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /** @namespace Newtonsoft.Json.Tests.Issues */
+
+    /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case107
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case107", {
+        statics: {
+            fields: {
+                BCtorArg: null
+            },
+            methods: {
+                Test: function () {
+                    Newtonsoft.Json.Tests.Issues.Case107.BCtorArg = "default";
+
+                    var b = new Newtonsoft.Json.Tests.Issues.Case107.B("foo");
+
+                    b.list.add("baz");
+
+                    var s = Newtonsoft.Json.JsonConvert.SerializeObject(b);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"list\":[\"foo\",\"baz\"]}", s);
+
+                    var bb = Newtonsoft.Json.JsonConvert.DeserializeObject(s, Newtonsoft.Json.Tests.Issues.Case107.B);
+                    Bridge.Test.NUnit.Assert.Null(Newtonsoft.Json.Tests.Issues.Case107.BCtorArg);
+                    Bridge.Test.NUnit.Assert.AreEqual(2, bb.list.Count);
+                    Bridge.Test.NUnit.Assert.AreEqual("foo", bb.list.getItem(0));
+                    Bridge.Test.NUnit.Assert.AreEqual("baz", bb.list.getItem(1));
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case107.B", {
+        $kind: "nested class",
+        fields: {
+            list: null
+        },
+        ctors: {
+            ctor: function (foo) {
+                this.$initialize();
+                Newtonsoft.Json.Tests.Issues.Case107.BCtorArg = foo;
+
+                this.list = function (_o1) {
+                        _o1.add(foo);
+                        return _o1;
+                    }(new (System.Collections.Generic.List$1(System.String)).ctor());
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {
@@ -960,8 +1011,6 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             Data: null
         }
     }; });
-
-    /** @namespace Newtonsoft.Json.Tests.Issues */
 
     /**
      * Tests for the PopulateObject and related methods.
