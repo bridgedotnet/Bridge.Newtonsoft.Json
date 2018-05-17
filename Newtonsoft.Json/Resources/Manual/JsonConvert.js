@@ -783,6 +783,7 @@
                             type !== System.Double &&
                             type !== System.Decimal &&
                             type !== Array &&
+                            !Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, type) &&
                             !type.$isArray) {
                             return true;
                         }
