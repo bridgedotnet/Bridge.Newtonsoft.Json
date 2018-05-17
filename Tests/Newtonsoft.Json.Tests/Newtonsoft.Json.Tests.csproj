@@ -65,13 +65,15 @@
     <Compile Include="Issues\0100\Case096.cs" />
     <Compile Include="Issues\0100\Case107.cs" />
     <Compile Include="Issues\0100\Case099.cs" />
+    <Compile Include="Issues\0100\Case101.cs" />
     <Compile Include="Tests\ListOptimizationTests.cs" />
     <Compile Include="Tests\DeserializationTests.cs" />
+    <Compile Include="Issues\Ported\N501.cs" />
     <Compile Include="Issues\Ported\N1134.cs" />
     <Compile Include="Issues\Ported\N1438.cs" />
     <Compile Include="Issues\Ported\N2641.cs" />
     <Compile Include="Issues\Ported\N2679.cs" />
-    <Compile Include="Issues\Ported\N501.cs" />
+    <Compile Include="Issues\Ported\N3571.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\.build\common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>

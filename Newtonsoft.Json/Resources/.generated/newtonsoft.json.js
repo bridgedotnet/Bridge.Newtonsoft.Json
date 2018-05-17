@@ -1115,8 +1115,22 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         }
                     }
 
-                    var isObject = type === Object || type === System.Object;
-                    if (isObject || type.$literal && !Bridge.getMetadata(type)) {
+                    var isObject = type === Object || type === System.Object,
+                        fromObject = Bridge.isObject(raw);
+
+
+                    if (isObject && fromObject && raw && raw.$type) {
+                        var realType = Bridge.Reflection.getType(raw.$type);
+
+                        if (realType === null) {
+                            throw TypeError(System.String.concat("Cannot find type: ", raw.$type));
+                        }
+
+                        type = realType;
+                        isObject = false;
+                    }
+
+                    if (isObject && fromObject || type.$literal && !Bridge.getMetadata(type)) {
                         return Bridge.merge(isObject ? {} : (instance || Bridge.createInstance(type)), raw);
                     }
 
@@ -1132,6 +1146,11 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         if (type === System.String) {
                             return "false";
                         }
+
+                        if (isObject) {
+                            return Bridge.box(raw, System.Boolean, System.Boolean.toString);
+                        }
+
                         return def;
                     } else if (raw === true) {
                         if (type === System.Boolean) {
@@ -1153,6 +1172,10 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else {
                             if (typeof def === "number") {
                                 return def + 1;
+                            }
+
+                            if (isObject) {
+                                return Bridge.box(raw, System.Boolean, System.Boolean.toString);
                             }
 
                             throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
@@ -1202,6 +1225,9 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else if (type === System.DateTimeOffset) {
                             return new System.DateTimeOffset.$ctor5(System.Int64(raw | 0), new System.DateTimeOffset.ctor().Offset);
                         } else {
+                            if (isObject) {
+                                return Bridge.box(raw, Bridge.getType(raw));
+                            }
                             throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
                     } else if (typeof raw === "string") {
@@ -1297,6 +1323,10 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         } else if (type === System.Array.type(System.Byte, 1)) {
                             return System.Convert.fromBase64String(raw);
                         } else {
+                            if (isObject) {
+                                return raw;
+                            }
+
                             throw new System.ArgumentException(System.String.format("Could not cast or convert from {0} to {1}", Bridge.getTypeName(raw), Bridge.getTypeName(type)));
                         }
                     } else if (typeof raw === "object") {
@@ -1401,6 +1431,10 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
 
                             if (type === null) {
                                 throw TypeError(System.String.concat("Cannot find type: ", raw["$type"]));
+                            }
+
+                            if (!Bridge.getMetadata(type)) {
+                                return Bridge.merge(isObject ? {} : (instance || Bridge.createInstance(type)), raw);
                             }
 
                             var o = instance ? { value: instance, names: i_names } : Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings),

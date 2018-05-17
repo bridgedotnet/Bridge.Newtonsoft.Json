@@ -837,6 +837,68 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     }; });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge3571", {
+        statics: {
+            methods: {
+                Serialize: function (Obj) {
+                    var Settings = new Newtonsoft.Json.JsonSerializerSettings();
+                    Settings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects;
+                    return Newtonsoft.Json.JsonConvert.SerializeObject(Obj, Newtonsoft.Json.Formatting.Indented, Settings);
+                },
+                Deserialize: function (T, JSON) {
+                    var Settings = new Newtonsoft.Json.JsonSerializerSettings();
+                    Settings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects;
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject(JSON, T, Settings);
+                },
+                ElaborateTest: function () {
+                    // Make an original object and serialize to a JSON string
+                    var OriginalObject = new Newtonsoft.Json.Tests.Issues.Bridge3571.DomRoot();
+                    OriginalObject.SubElement = new Newtonsoft.Json.Tests.Issues.Bridge3571.SpecificClass();
+                    OriginalObject.SubSpecific = new Newtonsoft.Json.Tests.Issues.Bridge3571.SpecificClass();
+                    var Str = Newtonsoft.Json.Tests.Issues.Bridge3571.Serialize(OriginalObject);
+
+                    // Reconstruct new of same type
+                    var ReconstructObject = Newtonsoft.Json.Tests.Issues.Bridge3571.Deserialize(Newtonsoft.Json.Tests.Issues.Bridge3571.DomRoot, Str);
+
+                    // Output: DomRoot			Correct: DomRoot
+                    // So far so good
+                    //Console.WriteLine($"ReconstructObject =\t\t{ReconstructObject.GetType().Name}");
+                    // This assertionwas not affected by this issue and is left for reference only.
+                    Bridge.Test.NUnit.Assert.AreEqual("DomRoot", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject)), "Serialized object has the expected type when deserialized back specifying its original type.");
+
+                    // Reconstruct a new using general Object also fails, even though type is specific in the JSON string
+                    // Output: String 			Correct: DomRoot
+                    var Reconstruct2 = Newtonsoft.Json.Tests.Issues.Bridge3571.Deserialize(System.Object, Str);
+                    //Console.WriteLine($"Reconstruct2 =\t\t\t{Reconstruct2.GetType().Name}");
+                    Bridge.Test.NUnit.Assert.AreEqual("DomRoot", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject)), "Serialized object has the expected type when deserialized back specifying a general/'object' type.");
+
+                    // Output: SpecificClass	Correct: SpecificClass
+                    // Still good, even though property is of type IGeneralInterface, it used Specific to construct the object because the JSON string says so
+                    //Console.WriteLine($"ReconstructObject.SubSpecific =\t{ReconstructObject.SubSpecific.GetType().Name}");
+                    // This assertionwas not affected by this issue and is left for reference only.
+                    Bridge.Test.NUnit.Assert.AreEqual("SpecificClass", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject.SubSpecific)), "Serialized object has the expected member type when deserialized back, for members with specific type definition.");
+
+                    // Output: String			Correct: SpecificClass
+                    // Here not so good :(. Property is of type object, but the JSON string tells it should use the type 'SpecificClass' to reconstruct this property value.
+                    //Console.WriteLine($"ReconstructObject.SubElement =\t{ReconstructObject.SubElement.GetType().Name}");
+                    Bridge.Test.NUnit.Assert.AreEqual("SpecificClass", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject.SubElement)), "Serialized object has the expected member type when deserialized back, for members with general/'object' type definition.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge3571.DomRoot", {
+        $kind: "nested class",
+        props: {
+            SubElement: null,
+            SubSpecific: null
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge3571.IGeneralInterface", {
+        $kind: "nested interface"
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge501", {
         statics: {
             methods: {
@@ -926,6 +988,41 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     /** @namespace Newtonsoft.Json.Tests.Issues */
+
+    /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case101
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case101", {
+        statics: {
+            methods: {
+                /**
+                 * The test here checks whether a simple serialization and
+                 deserialization back of an 'object' member works.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case101
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case101
+                 * @return  {void}
+                 */
+                Test: function () {
+                    var $t;
+                    var obj = ($t = new Newtonsoft.Json.Tests.Issues.Case101.MyCustomClass(), $t.Value = Bridge.box(true, System.Boolean, System.Boolean.toString), $t);
+                    var str = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    var deser = Newtonsoft.Json.JsonConvert.DeserializeObject(str, Newtonsoft.Json.Tests.Issues.Case101.MyCustomClass);
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.getValue(Bridge.cast(Bridge.unbox(deser.Value), System.Boolean)), "Boolean bound to an 'object' member can be correctly serialized and deserialized back.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case101.MyCustomClass", {
+        $kind: "nested class",
+        props: {
+            Value: null
+        }
+    });
 
     /**
      * @public
@@ -3682,6 +3779,11 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 return System.String.format("{0} {1} {2} {3}", this.Id, this.Name, this.Address.Street, this.Address.City);
             }
         }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge3571.SpecificClass", {
+        inherits: [Newtonsoft.Json.Tests.Issues.Bridge3571.IGeneralInterface],
+        $kind: "nested class"
     });
 
     Bridge.define("Newtonsoft.Json.Tests.ListOptimizationTests.AlternativeKeyValuePairDataModel", {
