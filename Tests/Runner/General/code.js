@@ -850,20 +850,38 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Settings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects;
                     return Newtonsoft.Json.JsonConvert.DeserializeObject(JSON, T, Settings);
                 },
-                Test3571: function () {
+                ElaborateTest: function () {
+                    // Make an original object and serialize to a JSON string
                     var OriginalObject = new Newtonsoft.Json.Tests.Issues.Bridge3571.DomRoot();
                     OriginalObject.SubElement = new Newtonsoft.Json.Tests.Issues.Bridge3571.SpecificClass();
                     OriginalObject.SubSpecific = new Newtonsoft.Json.Tests.Issues.Bridge3571.SpecificClass();
                     var Str = Newtonsoft.Json.Tests.Issues.Bridge3571.Serialize(OriginalObject);
-                    System.Console.WriteLine(Str);
 
+                    // Reconstruct new of same type
                     var ReconstructObject = Newtonsoft.Json.Tests.Issues.Bridge3571.Deserialize(Newtonsoft.Json.Tests.Issues.Bridge3571.DomRoot, Str);
-                    Bridge.Test.NUnit.Assert.AreEqual("DomRoot", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject)));
-                    Bridge.Test.NUnit.Assert.AreEqual("SpecificClass", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject.SubSpecific)));
-                    Bridge.Test.NUnit.Assert.AreEqual("SpecificClass", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject.SubElement)));
 
+                    // Output: DomRoot			Correct: DomRoot
+                    // So far so good
+                    //Console.WriteLine($"ReconstructObject =\t\t{ReconstructObject.GetType().Name}");
+                    // This assertionwas not affected by this issue and is left for reference only.
+                    Bridge.Test.NUnit.Assert.AreEqual("DomRoot", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject)), "Serialized object has the expected type when deserialized back specifying its original type.");
+
+                    // Reconstruct a new using general Object also fails, even though type is specific in the JSON string
+                    // Output: String 			Correct: DomRoot
                     var Reconstruct2 = Newtonsoft.Json.Tests.Issues.Bridge3571.Deserialize(System.Object, Str);
-                    Bridge.Test.NUnit.Assert.AreEqual("DomRoot", Bridge.Reflection.getTypeName(Bridge.getType(Reconstruct2)));
+                    //Console.WriteLine($"Reconstruct2 =\t\t\t{Reconstruct2.GetType().Name}");
+                    Bridge.Test.NUnit.Assert.AreEqual("DomRoot", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject)), "Serialized object has the expected type when deserialized back specifying a general/'object' type.");
+
+                    // Output: SpecificClass	Correct: SpecificClass
+                    // Still good, even though property is of type IGeneralInterface, it used Specific to construct the object because the JSON string says so
+                    //Console.WriteLine($"ReconstructObject.SubSpecific =\t{ReconstructObject.SubSpecific.GetType().Name}");
+                    // This assertionwas not affected by this issue and is left for reference only.
+                    Bridge.Test.NUnit.Assert.AreEqual("SpecificClass", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject.SubSpecific)), "Serialized object has the expected member type when deserialized back, for members with specific type definition.");
+
+                    // Output: String			Correct: SpecificClass
+                    // Here not so good :(. Property is of type object, but the JSON string tells it should use the type 'SpecificClass' to reconstruct this property value.
+                    //Console.WriteLine($"ReconstructObject.SubElement =\t{ReconstructObject.SubElement.GetType().Name}");
+                    Bridge.Test.NUnit.Assert.AreEqual("SpecificClass", Bridge.Reflection.getTypeName(Bridge.getType(ReconstructObject.SubElement)), "Serialized object has the expected member type when deserialized back, for members with general/'object' type definition.");
                 }
             }
         }
@@ -978,12 +996,22 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case101", {
         statics: {
             methods: {
+                /**
+                 * The test here checks whether a simple serialization and
+                 deserialization back of an 'object' member works.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case101
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case101
+                 * @return  {void}
+                 */
                 Test: function () {
                     var $t;
                     var obj = ($t = new Newtonsoft.Json.Tests.Issues.Case101.MyCustomClass(), $t.Value = Bridge.box(true, System.Boolean, System.Boolean.toString), $t);
                     var str = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
                     var deser = Newtonsoft.Json.JsonConvert.DeserializeObject(str, Newtonsoft.Json.Tests.Issues.Case101.MyCustomClass);
-                    Bridge.Test.NUnit.Assert.True(System.Nullable.getValue(Bridge.cast(Bridge.unbox(deser.Value), System.Boolean)));
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.getValue(Bridge.cast(Bridge.unbox(deser.Value), System.Boolean)), "Boolean bound to an 'object' member can be correctly serialized and deserialized back.");
                 }
             }
         }
@@ -2874,6 +2902,72 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(dto2.Second, 15, "Second is correct");
                     Bridge.Test.NUnit.Assert.AreEqual(dto2.Millisecond, 750, "Millisecond is correct");
                 }
+            }
+        }
+    });
+
+    /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case96
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case96", {
+        statics: {
+            methods: {
+                TestSerializationCallbacks: function () {
+                    var obj = new Newtonsoft.Json.Tests.Issues.Case96.SerializationEventTestObject();
+
+                    Bridge.Test.NUnit.Assert.AreEqual(11, obj.Member1, "Int member initial value is the expected one.");
+                    Bridge.Test.NUnit.Assert.AreEqual("Hello World!", obj.Member2, "String member initial value is the expected one.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This is a nonserialized value.", obj.Member3, "Json-ignored-string member initial value is the expected one.");
+                    Bridge.Test.NUnit.Assert.Null(obj.Member4, "Null string member initial value is the expected one.");
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(11, obj.Member1, "Member value is unchanged after serialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This value was reset after serialization.", obj.Member2, "Member changed on 'Serialized' is changed accordingly after serialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This is a nonserialized value.", obj.Member3, "Member with deserialization-changing event is unchanged after serialization.");
+                    Bridge.Test.NUnit.Assert.Null(obj.Member4, "Member with deserialization-changing event is unchanged after serialization.");
+
+                    obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case96.SerializationEventTestObject);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(11, obj.Member1, "Member value is unchanged after deserialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This value went into the data file during serialization.", obj.Member2, "Member changed on 'Serializing' is changed accordingly after deserialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This value was set during deserialization.", obj.Member3, "Member with 'Deserializing' event is changed accordingly after deserialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("This value was set after deserialization.", obj.Member4, "Member with 'Deserialized' event is changed accordingly after deserialization.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case96.SerializationEventTestObject", {
+        $kind: "nested class",
+        props: {
+            Member1: 0,
+            Member2: null,
+            Member3: null,
+            Member4: null
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                this.Member1 = 11;
+                this.Member2 = "Hello World!";
+                this.Member3 = "This is a nonserialized value.";
+                this.Member4 = null;
+            }
+        },
+        methods: {
+            OnSerializingMethod: function (context) {
+                this.Member2 = "This value went into the data file during serialization.";
+            },
+            OnSerializedMethod: function (context) {
+                this.Member2 = "This value was reset after serialization.";
+            },
+            OnDeserializingMethod: function (context) {
+                this.Member3 = "This value was set during deserialization.";
+            },
+            OnDeserializedMethod: function (context) {
+                this.Member4 = "This value was set after deserialization.";
             }
         }
     });
