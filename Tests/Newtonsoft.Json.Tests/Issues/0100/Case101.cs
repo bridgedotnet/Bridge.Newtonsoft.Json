@@ -16,13 +16,17 @@ namespace Newtonsoft.Json.Tests.Issues
             public object Value { get; set; }
         }
 
+        /// <summary>
+        /// The test here checks whether a simple serialization and
+        /// deserialization back of an 'object' member works.
+        /// </summary>
         [Test]
         public static void Test()
         {
             var obj = new MyCustomClass { Value = true };
             var str = JsonConvert.SerializeObject(obj);
             var deser = JsonConvert.DeserializeObject<MyCustomClass>(str);
-            Assert.True((bool)deser.Value);
+            Assert.True((bool)deser.Value, "Boolean bound to an 'object' member can be correctly serialized and deserialized back.");
         }
     }
 }
