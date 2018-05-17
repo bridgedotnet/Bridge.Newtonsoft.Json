@@ -1034,7 +1034,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 BCtorArg: null
             },
             methods: {
-                Test: function () {
+                TestJsonReplaceList: function () {
                     Newtonsoft.Json.Tests.Issues.Case107.BCtorArg = "default";
 
                     var b = new Newtonsoft.Json.Tests.Issues.Case107.B("foo");
@@ -1043,13 +1043,13 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var s = Newtonsoft.Json.JsonConvert.SerializeObject(b);
 
-                    Bridge.Test.NUnit.Assert.AreEqual("{\"list\":[\"foo\",\"baz\"]}", s);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"list\":[\"foo\",\"baz\"]}", s, "Serialized string representation of class is correct.");
 
                     var bb = Newtonsoft.Json.JsonConvert.DeserializeObject(s, Newtonsoft.Json.Tests.Issues.Case107.B);
-                    Bridge.Test.NUnit.Assert.Null(Newtonsoft.Json.Tests.Issues.Case107.BCtorArg);
-                    Bridge.Test.NUnit.Assert.AreEqual(2, bb.list.Count);
-                    Bridge.Test.NUnit.Assert.AreEqual("foo", bb.list.getItem(0));
-                    Bridge.Test.NUnit.Assert.AreEqual("baz", bb.list.getItem(1));
+                    Bridge.Test.NUnit.Assert.Null(Newtonsoft.Json.Tests.Issues.Case107.BCtorArg, "Change assigned by constructor is reflected in code when deserialization is called.");
+                    Bridge.Test.NUnit.Assert.AreEqual(2, bb.list.Count, "List within deserialized object has the expected number of entries.");
+                    Bridge.Test.NUnit.Assert.AreEqual("foo", bb.list.getItem(0), "List within deserialized object has the expected element in first position.");
+                    Bridge.Test.NUnit.Assert.AreEqual("baz", bb.list.getItem(1), "List within deserialized object has the expected element in second position.");
                 }
             }
         }
