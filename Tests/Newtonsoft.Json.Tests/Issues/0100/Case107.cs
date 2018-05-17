@@ -24,7 +24,7 @@ namespace Newtonsoft.Json.Tests.Issues
         }
 
         [Test]
-        public static void Test()
+        public static void TestJsonReplaceList()
         {
             BCtorArg = "default";
 
@@ -34,13 +34,13 @@ namespace Newtonsoft.Json.Tests.Issues
 
             string s = JsonConvert.SerializeObject(b);
 
-            Assert.AreEqual("{\"list\":[\"foo\",\"baz\"]}", s);
+            Assert.AreEqual("{\"list\":[\"foo\",\"baz\"]}", s, "Serialized string representation of class is correct.");
 
             var bb = JsonConvert.DeserializeObject<B>(s);
-            Assert.Null(BCtorArg);
-            Assert.AreEqual(2, bb.list.Count);
-            Assert.AreEqual("foo", bb.list[0]);
-            Assert.AreEqual("baz", bb.list[1]);
+            Assert.Null(BCtorArg, "Change assigned by constructor is reflected in code when deserialization is called.");
+            Assert.AreEqual(2, bb.list.Count, "List within deserialized object has the expected number of entries.");
+            Assert.AreEqual("foo", bb.list[0], "List within deserialized object has the expected element in first position.");
+            Assert.AreEqual("baz", bb.list[1], "List within deserialized object has the expected element in second position.");
         }
     }
 }
