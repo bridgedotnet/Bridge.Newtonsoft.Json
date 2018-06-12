@@ -296,7 +296,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
     Bridge.define("Newtonsoft.Json.JsonConvert", {
         statics: {
             methods: {
-                stringify: function (value, formatting) {
+                stringify: function (value, formatting, settings) {
                     if (formatting === Newtonsoft.Json.Formatting.Indented) {
                         return JSON.stringify(value, null, "  ");
                     }
@@ -615,7 +615,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return;
                         }
 
-                        return returnRaw ? null : Newtonsoft.Json.JsonConvert.stringify(null, formatting);
+                        return returnRaw ? null : Newtonsoft.Json.JsonConvert.stringify(null, formatting, settings);
                     }
 
                     var objType = Bridge.getType(obj);
@@ -638,7 +638,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
 
                     if (typeof obj === "function") {
                         var name = Bridge.getTypeName(obj);
-                        return returnRaw ? name : Newtonsoft.Json.JsonConvert.stringify(name, formatting);
+                        return returnRaw ? name : Newtonsoft.Json.JsonConvert.stringify(name, formatting, settings);
                     } else if (typeof obj === "object") {
                         var arr,
                             i;
@@ -677,11 +677,11 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                         }
 
                         if (type === System.Globalization.CultureInfo) {
-                            return returnRaw ? obj.name : Newtonsoft.Json.JsonConvert.stringify(obj.name, formatting);
+                            return returnRaw ? obj.name : Newtonsoft.Json.JsonConvert.stringify(obj.name, formatting, settings);
                         } else if (type === System.Guid) {
-                            return returnRaw ? Bridge.toString(obj) : Newtonsoft.Json.JsonConvert.stringify(Bridge.toString(obj), formatting);
+                            return returnRaw ? Bridge.toString(obj) : Newtonsoft.Json.JsonConvert.stringify(Bridge.toString(obj), formatting, settings);
                         } else if (type === System.Uri) {
-                            return returnRaw ? obj.getAbsoluteUri() : Newtonsoft.Json.JsonConvert.stringify(obj.getAbsoluteUri(), formatting);
+                            return returnRaw ? obj.getAbsoluteUri() : Newtonsoft.Json.JsonConvert.stringify(obj.getAbsoluteUri(), formatting, settings);
                         } else if (type === System.Int64) {
                             return obj.toJSON();
                         } else if (type === System.UInt64) {
@@ -690,18 +690,18 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return obj.toJSON();
                         } else if (type === System.DateTime) {
                             var d = System.DateTime.format(obj, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
-                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
+                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting, settings);
                         } else if (type === System.TimeSpan) {
                             var d = Bridge.toString(obj);
-                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
+                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting, settings);
                         } else if (type === System.DateTimeOffset) {
                             var d = obj.ToString$1("yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
-                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
+                            return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting, settings);
                         } else if (Bridge.isArray(null, type)) {
                             if (type.$elementType === System.Byte) {
                                 removeGuard();
                                 var json = System.Convert.toBase64String(obj);
-                                return returnRaw ? json : Newtonsoft.Json.JsonConvert.stringify(json, formatting);
+                                return returnRaw ? json : Newtonsoft.Json.JsonConvert.stringify(json, formatting, settings);
                             }                            
 
                             arr = [];
@@ -728,9 +728,9 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 return System.Enum.getName(type, obj);
                             }
 
-                            return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
+                            return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting, settings);
                         } else if (type === System.Char) {
-                            return returnRaw ? String.fromCharCode(obj) : Newtonsoft.Json.JsonConvert.stringify(String.fromCharCode(obj), formatting);
+                            return returnRaw ? String.fromCharCode(obj) : Newtonsoft.Json.JsonConvert.stringify(String.fromCharCode(obj), formatting, settings);
                         } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IDictionary, type)) {
                             var typesGeneric = System.Collections.Generic.Dictionary$2.getTypeParameters(type),
                                 typeKey = typesGeneric[0],
@@ -738,6 +738,15 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
 
                             var dict = {},
                                 enm = Bridge.getEnumerator(obj);
+
+                            if (settings && settings._typeNameHandling) {
+                                var handling = settings._typeNameHandling,
+                                    writeType = handling == 1 || handling == 3 || (handling == 4 && possibleType && possibleType !== objType);
+
+                                if (writeType) {
+                                    dict["$type"] = Bridge.Reflection.getTypeQName(type);
+                                }
+                            }
 
                             while (enm.moveNext()) {
                                 var entr = enm.Current,
@@ -748,16 +757,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 }
 
                                 dict[keyJson] = Newtonsoft.Json.JsonConvert.SerializeObject(entr.value, formatting, settings, true, typeValue);
-                            }
-
-                            if (settings && settings._typeNameHandling) {
-                                var handling = settings._typeNameHandling,
-                                    writeType = handling == 1 || handling == 3 || (handling == 4 && possibleType && possibleType !== objType);
-
-                                if (writeType) {
-                                    dict["$type"] = Bridge.Reflection.getTypeQName(type);
-                                }
-                            }
+                            }                            
 
                             obj = dict;
                         } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, type)) {
@@ -906,10 +906,10 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return System.Enum.getName(type, obj);
                         }
 
-                        return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
+                        return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting, settings);
                     } 
 
-                    return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting);
+                    return returnRaw ? obj : Newtonsoft.Json.JsonConvert.stringify(obj, formatting, settings);
                 },
 
                 getInstanceBuilder: function (type, raw, settings) {
