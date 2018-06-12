@@ -2032,7 +2032,7 @@
             };
         }());
     } else {
-        core.setImmediate = globals.setImmediate;
+        core.setImmediate = globals.setImmediate.bind(globals);
     }
 
     globals.Bridge = core;
