@@ -1129,6 +1129,20 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case112", {
+        statics: {
+            methods: {
+                TestInt64: function () {
+                    var a = System.Int64(19);
+                    var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(a);
+                    Bridge.Test.NUnit.Assert.True(Bridge.is(serialized, System.String));
+                    Bridge.Test.NUnit.Assert.AreEqual(2, serialized.length);
+                    Bridge.Test.NUnit.Assert.AreEqual("19", serialized);
+                }
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {
@@ -3393,33 +3407,33 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 },
                 Int64Works: function () {
                     var value = System.Int64.MaxValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Int64.MaxValue.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(Bridge.toString(System.Int64.MaxValue), Newtonsoft.Json.JsonConvert.SerializeObject(value));
 
                     value = System.Int64.MinValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Int64.MinValue.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(Bridge.toString(System.Int64.MinValue), Newtonsoft.Json.JsonConvert.SerializeObject(value));
                 },
                 UInt64Works: function () {
                     var value = System.UInt64.MaxValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.UInt64.MaxValue.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(Bridge.toString(System.UInt64.MaxValue), Newtonsoft.Json.JsonConvert.SerializeObject(value));
 
                     value = System.UInt64.MinValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.UInt64.MinValue.toNumber(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(Bridge.toString(System.UInt64.MinValue), Newtonsoft.Json.JsonConvert.SerializeObject(value));
                 },
                 DecimalWorks: function () {
                     var value = System.Decimal.MaxValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Decimal.MaxValue.toFloat(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Decimal.MaxValue.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
 
                     value = System.Decimal.MinValue;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Decimal.MinValue.toFloat(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Decimal.MinValue.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
 
                     value = System.Decimal.MinusOne;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Decimal.MinusOne.toFloat(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Decimal.MinusOne.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
 
                     value = System.Decimal.One;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Decimal.One.toFloat(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Decimal.One.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
 
                     value = System.Decimal.Zero;
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Decimal.Zero.toFloat(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Decimal.Zero.toString(), Newtonsoft.Json.JsonConvert.SerializeObject(value));
                 },
                 DateTimeWorks: function () {
                     var dt = System.DateTime.create(2010, 6, 10, 12, 0, 0, 0);

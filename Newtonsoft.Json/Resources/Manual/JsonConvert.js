@@ -387,12 +387,8 @@
                             return returnRaw ? Bridge.toString(obj) : Newtonsoft.Json.JsonConvert.stringify(Bridge.toString(obj), formatting);
                         } else if (type === System.Uri) {
                             return returnRaw ? obj.getAbsoluteUri() : Newtonsoft.Json.JsonConvert.stringify(obj.getAbsoluteUri(), formatting);
-                        } else if (type === System.Int64) {
-                            return obj.toJSON();
-                        } else if (type === System.UInt64) {
-                            return obj.toJSON();
-                        } else if (type === System.Decimal) {
-                            return obj.toJSON();
+                        } else if (type === System.Int64 || type === System.UInt64 || type === System.Decimal) {
+                            return returnRaw ? obj.toJSON() : obj.toString();
                         } else if (type === System.DateTime) {
                             var d = System.DateTime.format(obj, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK");
                             return returnRaw ? d : Newtonsoft.Json.JsonConvert.stringify(d, formatting);
