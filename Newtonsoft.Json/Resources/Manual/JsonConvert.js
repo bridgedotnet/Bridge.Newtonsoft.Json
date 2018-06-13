@@ -206,7 +206,7 @@
                             var typeElement = System.Collections.Generic.List$1.getElementType(targetType) || System.Object;
 
                             if (!Bridge.isArray(raw)) {
-                                raw = raw.ToArray();
+                                raw = raw.ToArray ? raw.ToArray() : Bridge.Collections.EnumerableHelpers.ToArray(typeElement, raw);
                             }                            
 
                             for (var i = 0; i < raw.length; i++) {
