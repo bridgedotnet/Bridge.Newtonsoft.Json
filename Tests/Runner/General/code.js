@@ -1073,6 +1073,57 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case111", {
+        statics: {
+            methods: {
+                TestInterfaceCollection: function () {
+                    var $t;
+                    var json = "\r\n            {  \r\n               \"Nodes\": [\r\n                    {\r\n                        \"Name\": \"First\",\r\n                        \"Children\": []\r\n                    },\r\n                    {\r\n                        \"Name\": \"Second\",\r\n                        \"Children\": []\r\n                    }\r\n                ]\r\n            }";
+
+                    var json2 = "{ \"Nodes\": [ {\"Name\": \"First\", \"Children\": [] }, { \"Name\": \"Second\", \"Children\": [] } ] }";
+
+                    var response = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case111.Response);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(2, System.Array.getCount(response.Nodes, Newtonsoft.Json.Tests.Issues.Case111.Node), "Nodes Count is 2.");
+                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response.Nodes).first().Name, "First node's name is 'First'.");
+
+                    var response2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json2, Newtonsoft.Json.Tests.Issues.Case111.Response);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(2, System.Array.getCount(response2.Nodes, Newtonsoft.Json.Tests.Issues.Case111.Node), "Nodes2 Count is 2.");
+                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response2.Nodes).first().Name, "First node2's name is 'First'.");
+
+                    var response3 = new Newtonsoft.Json.Tests.Issues.Case111.Response();
+                    response3.Nodes = new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case111.Node)).ctor();
+                    System.Array.add(response3.Nodes, ($t = new Newtonsoft.Json.Tests.Issues.Case111.Node(), $t.Name = "First", $t.Children = new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case111.Node)).ctor(), $t), Newtonsoft.Json.Tests.Issues.Case111.Node);
+                    System.Array.add(response3.Nodes, ($t = new Newtonsoft.Json.Tests.Issues.Case111.Node(), $t.Name = "Second", $t.Children = new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case111.Node)).ctor(), $t), Newtonsoft.Json.Tests.Issues.Case111.Node);
+
+                    var json3 = Newtonsoft.Json.JsonConvert.SerializeObject(response3);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Nodes\":[{\"Children\":[],\"Name\":\"First\"},{\"Children\":[],\"Name\":\"Second\"}]}", json3, "Serialized list of nodes3 is right.");
+
+                    var response4 = Newtonsoft.Json.JsonConvert.DeserializeObject(json3, Newtonsoft.Json.Tests.Issues.Case111.Response);
+
+                    Bridge.Test.NUnit.Assert.AreEqual(2, System.Array.getCount(response4.Nodes, Newtonsoft.Json.Tests.Issues.Case111.Node), "Nodes4 Count is 2.");
+                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response4.Nodes).first().Name, "First node4's name is 'First'.");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case111.Node", {
+        $kind: "nested class",
+        fields: {
+            Name: null,
+            Children: null
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case111.Response", {
+        $kind: "nested class",
+        fields: {
+            Nodes: null
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {
