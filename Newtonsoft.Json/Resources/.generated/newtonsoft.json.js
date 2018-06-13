@@ -1043,7 +1043,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     }
 
                     var fn = function () {
-                        return { names: [], value: Bridge.createInstance(type) };
+                        return { names: [], value: Bridge.createInstance(type), default: true };
                     };
 
                     fn.default = true;
@@ -1056,9 +1056,10 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     return builder(raw);
                 },
 
-                needReuse: function (objectCreationHandling, value, type) {
+                needReuse: function (objectCreationHandling, value, type, isDefCtor) {
                     if (objectCreationHandling === Newtonsoft.Json.ObjectCreationHandling.Reuse || (objectCreationHandling === Newtonsoft.Json.ObjectCreationHandling.Auto && value != null)) {
-                        if (type.$kind !== "struct" &&
+                        if (isDefCtor && 
+                            type.$kind !== "struct" &&
                             type.$kind !== "enum" &&
                             type !== System.String && 
                             type !== System.Boolean &&
@@ -1072,10 +1073,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             type !== System.SByte &&
                             type !== System.Single &&
                             type !== System.Double &&
-                            type !== System.Decimal &&
-                            type !== Array &&
-                            !Bridge.Reflection.isAssignableFrom(System.Collections.IEnumerable, type) &&
-                            !type.$isArray) {
+                            type !== System.Decimal                            
+                            ) {
                             return true;
                         }
                     }
@@ -1437,9 +1436,11 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             }
 
                             var o = instance ? { value: instance, names: i_names } : Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings),
+                                isDefCtor,
                                 names;
 
                             names = o.names || [];
+                            isDefCtor = o.default;
                             o = o.value;
 
                             var methods = Bridge.Reflection.getMembers(type, 8, 54);
@@ -1494,7 +1495,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                         objectCreationHandling = settings._objectCreationHandling;
                                     }
 
-                                    if (Newtonsoft.Json.JsonConvert.needReuse(objectCreationHandling, currentValue, f.rt)) {
+                                    if (Newtonsoft.Json.JsonConvert.needReuse(objectCreationHandling, currentValue, f.rt, isDefCtor)) {
                                         finst = Bridge.unbox(currentValue, true);
                                     }
 
@@ -1559,7 +1560,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                             objectCreationHandling = settings._objectCreationHandling;
                                         }
 
-                                        if (Newtonsoft.Json.JsonConvert.needReuse(objectCreationHandling, currentValue, p.rt)) {
+                                        if (Newtonsoft.Json.JsonConvert.needReuse(objectCreationHandling, currentValue, p.rt, isDefCtor)) {
                                             finst = Bridge.unbox(currentValue, true);
                                         }
                                     }

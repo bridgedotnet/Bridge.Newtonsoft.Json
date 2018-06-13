@@ -1143,6 +1143,43 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case114", {
+        statics: {
+            methods: {
+                TestPropertyInitInCtor: function () {
+                    var msg = new Newtonsoft.Json.Tests.Issues.Case114.MyClass();
+                    var str = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Items\":[]}", str);
+                    var obj = Newtonsoft.Json.JsonConvert.DeserializeObject(str, Newtonsoft.Json.Tests.Issues.Case114.MyClass);
+                    Bridge.Test.NUnit.Assert.True(Bridge.is(obj.Items, Newtonsoft.Json.Tests.Issues.Case114.MyList));
+                    Bridge.Test.NUnit.Assert.AreEqual("123", obj.Items.Parent);
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case114.MyClass", {
+        $kind: "nested class",
+        props: {
+            Items: null
+        },
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                this.Items = new Newtonsoft.Json.Tests.Issues.Case114.MyList();
+                this.Items.Parent = "123";
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case114.MyList", {
+        inherits: [System.Collections.Generic.List$1(System.String)],
+        $kind: "nested class",
+        props: {
+            Parent: null
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {
