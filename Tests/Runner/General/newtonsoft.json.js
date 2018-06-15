@@ -1141,6 +1141,10 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     if (raw === null) {
                         return def;
                     } else if (raw === false) {
+                        if (type === System.Boolean) {
+                            return false;
+                        }
+
                         if (type === System.String) {
                             return "false";
                         }
