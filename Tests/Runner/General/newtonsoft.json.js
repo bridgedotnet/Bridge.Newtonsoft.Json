@@ -304,6 +304,21 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     return JSON.stringify(value);
                 },
 
+                parse: function (value) {
+                    try {
+                        return JSON.parse(value);
+                    } catch (e) {
+                        if (e instanceof SyntaxError) {
+                            try {
+                                return eval('(' + value + ')');
+                            } catch (e) {
+                                throw new Newtonsoft.Json.JsonException(e.message);
+                            }
+                        }
+                        throw new Newtonsoft.Json.JsonException(e.message);
+                    }
+                },
+
                 getEnumerableElementType: function (type) {
                     var interfaceType;
                     if (System.String.startsWith(type.$$name, "System.Collections.Generic.IEnumerable")) {
@@ -454,11 +469,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     var raw;
 
                     if (typeof value === "string") {
-                        try {
-                            raw = JSON.parse(value);
-                        } catch (e) {
-                            throw new Newtonsoft.Json.JsonException(e.message);
-                        }
+                        raw = Newtonsoft.Json.JsonConvert.parse(value);
                     }
                     else {
                         raw = value;
@@ -1101,12 +1112,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                     }
 
                     if (!field && typeof raw === "string") {
-                        var obj;
-                        try {
-                            obj = JSON.parse(raw);
-                        } catch (e) {
-                            throw new Newtonsoft.Json.JsonException(e.message);
-                        }
+                        var obj = Newtonsoft.Json.JsonConvert.parse(raw);
 
                         if (typeof obj === "object" || Bridge.isArray(obj) || type === System.Array.type(System.Byte, 1) || type === Function || type === System.Guid || type === System.Globalization.CultureInfo || type === System.Uri || type === System.DateTime || type === System.DateTimeOffset || type === System.Char || Bridge.Reflection.isEnum(type)) {
                             raw = obj;

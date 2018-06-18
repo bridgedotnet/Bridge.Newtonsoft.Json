@@ -1260,6 +1260,56 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case123
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case123", {
+        statics: {
+            methods: {
+                TestSingleQuotes: function () {
+                    var dto = Newtonsoft.Json.JsonConvert.DeserializeObject("{'CreatedDate':'2018-01-22T11:18:00.8820874+00:00','LastModifiedDate':'2017-12-06T09:22:22.6865867+00:00'}", Newtonsoft.Json.Tests.Issues.Case123.ContentApiModel);
+
+                    Bridge.Test.NUnit.Assert.NotNull(System.Nullable.lift1("$clone", dto.CreatedDate));
+                    Bridge.Test.NUnit.Assert.AreEqual(2018, System.Nullable.getValue(dto.CreatedDate).Year);
+                    Bridge.Test.NUnit.Assert.AreEqual(1, System.Nullable.getValue(dto.CreatedDate).Month);
+                    Bridge.Test.NUnit.Assert.AreEqual(22, System.Nullable.getValue(dto.CreatedDate).Day);
+
+                    Bridge.Test.NUnit.Assert.NotNull(System.Nullable.lift1("$clone", dto.LastModifiedDate));
+                    Bridge.Test.NUnit.Assert.AreEqual(2017, System.Nullable.getValue(dto.LastModifiedDate).Year);
+                    Bridge.Test.NUnit.Assert.AreEqual(12, System.Nullable.getValue(dto.LastModifiedDate).Month);
+                    Bridge.Test.NUnit.Assert.AreEqual(6, System.Nullable.getValue(dto.LastModifiedDate).Day);
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case123.ContentApiModel", {
+        $kind: "nested class",
+        props: {
+            /**
+             * The creation date (UTC) of the content
+             *
+             * @instance
+             * @public
+             * @memberof Newtonsoft.Json.Tests.Issues.Case123.ContentApiModel
+             * @function CreatedDate
+             * @type ?System.DateTimeOffset
+             */
+            CreatedDate: null,
+            /**
+             * The last modified date (UTC) of the content
+             *
+             * @instance
+             * @public
+             * @memberof Newtonsoft.Json.Tests.Issues.Case123.ContentApiModel
+             * @function LastModifiedDate
+             * @type ?System.DateTimeOffset
+             */
+            LastModifiedDate: null
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {
