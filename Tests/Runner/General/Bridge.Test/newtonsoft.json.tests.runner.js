@@ -39,6 +39,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             QUnit.test("#115 - TestOrder", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case115.TestOrder);
             QUnit.test("#121 - TestNullable", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case121.TestNullable);
             QUnit.test("#123 - TestSingleQuotes", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case123.TestSingleQuotes);
+            QUnit.test("#126 - TestSystemVersion", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case126.TestSystemVersion);
             QUnit.test("#14 - TestCaseInsensitiveMatch", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case14.TestCaseInsensitiveMatch);
             QUnit.test("#16 - TestPopulateObject", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16.TestPopulateObject);
             QUnit.test("#16 - DeserializationBasics2", Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case16.DeserializationBasics2);
@@ -512,6 +513,32 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
                 var $t;
                 if (this.context == null) {
                     this.context = ($t = new Bridge.Test.Runtime.FixtureContext(), $t.Project = "Newtonsoft.Json.Tests", $t.ClassName = "Newtonsoft.Json.Tests.Issues.Case123", $t.File = "Newtonsoft.Json.Tests\\Issues\\0100\\Case123.cs", $t);
+                }
+                return this.context;
+            }
+        }
+    });
+
+    Bridge.define("Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case126", {
+        inherits: [Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case126)],
+        $kind: "nested class",
+        statics: {
+            methods: {
+                TestSystemVersion: function (assert) {
+                    var $t;
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case126).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case126, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestSystemVersion()", $t.Line = "14", $t));
+                    Newtonsoft.Json.Tests.Issues.Case126.TestSystemVersion();
+                }
+            }
+        },
+        fields: {
+            context: null
+        },
+        methods: {
+            GetContext: function () {
+                var $t;
+                if (this.context == null) {
+                    this.context = ($t = new Bridge.Test.Runtime.FixtureContext(), $t.Project = "Newtonsoft.Json.Tests", $t.ClassName = "Newtonsoft.Json.Tests.Issues.Case126", $t.File = "Newtonsoft.Json.Tests\\Issues\\0100\\Case126.cs", $t);
                 }
                 return this.context;
             }

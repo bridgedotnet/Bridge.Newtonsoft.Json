@@ -1310,6 +1310,28 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case126
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case126", {
+        statics: {
+            methods: {
+                TestSystemVersion: function () {
+                    var vers = new System.Version.$ctor3(4, 3, 2, 1);
+                    var serial = Newtonsoft.Json.JsonConvert.SerializeObject(vers);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("4.3.2.1", vers.toString());
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Build\":2,\"Major\":4,\"MajorRevision\":0,\"Minor\":3,\"MinorRevision\":1,\"Revision\":1}", serial);
+
+                    var deserial = Newtonsoft.Json.JsonConvert.DeserializeObject(serial, System.Version);
+
+                    Bridge.Test.NUnit.Assert.AreEqual("4.3.2.1", deserial.toString());
+                }
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {

@@ -636,7 +636,12 @@
                             hasDefault = false,
                             jsonCtor = null;
 
-                        if (ctors.length > 0) {
+                         // little hack to get Version objects to deserialize correctly
+                        if (type === System.Version) {
+                            ctors = [Bridge.Reflection.getMembers(type, 1, 284, null, [System.Int32, System.Int32, System.Int32, System.Int32])];
+                            jsonCtor = ctors[0];
+                        }
+                        else if (ctors.length > 0) {
                             ctors = ctors.filter(function (c) { return !c.isSynthetic; });
 
                             for (var idx = 0; idx < ctors.length; idx++) {
