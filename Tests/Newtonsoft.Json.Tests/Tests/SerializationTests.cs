@@ -144,39 +144,39 @@ namespace Newtonsoft.Json.Tests
         public static void Int64Works()
         {
             long value = long.MaxValue;
-            Assert.AreEqual(long.MaxValue.ToDynamic().toString(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(long.MaxValue.ToString(), JsonConvert.SerializeObject(value));
 
             value = long.MinValue;
-            Assert.AreEqual(long.MinValue.ToDynamic().toString(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(long.MinValue.ToString(), JsonConvert.SerializeObject(value));
         }
 
         [Test]
         public static void UInt64Works()
         {
             ulong value = ulong.MaxValue;
-            Assert.AreEqual(ulong.MaxValue.ToDynamic().toString(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(ulong.MaxValue.ToString(), JsonConvert.SerializeObject(value));
 
             value = ulong.MinValue;
-            Assert.AreEqual(ulong.MinValue.ToDynamic().toNumber(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(ulong.MinValue.ToString(), JsonConvert.SerializeObject(value));
         }
 
         [Test]
         public static void DecimalWorks()
         {
             decimal value = decimal.MaxValue;
-            Assert.AreEqual(decimal.MaxValue.ToDynamic().toFloat(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(decimal.MaxValue.ToString(), JsonConvert.SerializeObject(value));
 
             value = decimal.MinValue;
-            Assert.AreEqual(decimal.MinValue.ToDynamic().toFloat(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(decimal.MinValue.ToString(), JsonConvert.SerializeObject(value));
 
             value = decimal.MinusOne;
-            Assert.AreEqual(decimal.MinusOne.ToDynamic().toFloat(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(decimal.MinusOne.ToString(), JsonConvert.SerializeObject(value));
 
             value = decimal.One;
-            Assert.AreEqual(decimal.One.ToDynamic().toFloat(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(decimal.One.ToString(), JsonConvert.SerializeObject(value));
 
             value = decimal.Zero;
-            Assert.AreEqual(decimal.Zero.ToDynamic().toFloat(), JsonConvert.SerializeObject(value));
+            Assert.AreEqual(decimal.Zero.ToString(), JsonConvert.SerializeObject(value));
         }
 
         [Test]
