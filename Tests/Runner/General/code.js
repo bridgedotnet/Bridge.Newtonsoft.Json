@@ -1078,6 +1078,41 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case121
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case121", {
+        statics: {
+            methods: {
+                TestNullable: function () {
+                    var test = new Newtonsoft.Json.Tests.Issues.Case121.TestDto();
+                    test.A = true;
+                    test.B = false;
+                    test.C = null;
+
+                    var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(test);
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"A\":true,\"B\":false,\"C\":null}", serialized);
+
+                    var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case121.TestDto);
+
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.getValue(deserialized.A));
+                    Bridge.Test.NUnit.Assert.False(System.Nullable.getValue(deserialized.B));
+                    Bridge.Test.NUnit.Assert.Null(deserialized.C);
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case121.TestDto", {
+        $kind: "nested class",
+        props: {
+            A: null,
+            B: null,
+            C: null
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {
