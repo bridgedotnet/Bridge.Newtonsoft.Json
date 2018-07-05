@@ -182,16 +182,6 @@
                             for (var i = 0; i < raw.length; i++) {
                                 target.push(Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], targetType.$elementType, settings, true));
                             }
-                        } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IList, targetType)) {
-                            var typeElement = System.Collections.Generic.List$1.getElementType(targetType) || System.Object;
-
-                            if (!Bridge.isArray(raw)) {
-                                raw = raw.ToArray();
-                            }                            
-
-                            for (var i = 0; i < raw.length; i++) {
-                                target.add(Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], typeElement, settings, true));
-                            }
                         } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IDictionary, targetType)) {
                             var typesGeneric = System.Collections.Generic.Dictionary$2.getTypeParameters(targetType),
                                 typeKey = typesGeneric[0] || System.Object,
@@ -211,7 +201,17 @@
                                         target.set(Newtonsoft.Json.JsonConvert.DeserializeObject(each, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw[each], typeValue, settings, true), false);
                                     }
                                 }
+                            }
+                        } else if (Bridge.Reflection.isAssignableFrom(System.Collections.IList, targetType) || Bridge.Reflection.isAssignableFrom(System.Collections.ICollection, targetType)) {
+                            var typeElement = System.Collections.Generic.List$1.getElementType(targetType) || System.Object;
+
+                            if (!Bridge.isArray(raw)) {
+                                raw = raw.ToArray ? raw.ToArray() : Bridge.Collections.EnumerableHelpers.ToArray(typeElement, raw);
                             }                            
+
+                            for (var i = 0; i < raw.length; i++) {
+                                target.add(Newtonsoft.Json.JsonConvert.DeserializeObject(raw[i], typeElement, settings, true));
+                            }
                         } else {
                             var camelCase = settings && Bridge.is(settings.ContractResolver, Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver),
                                 fields = Newtonsoft.Json.JsonConvert.getMembers(targetType, 4),
@@ -795,15 +795,18 @@
                 DeserializeObject: function (raw, type, settings, field, instance, i_names) {
                     settings = settings || {};
                     if (type.$kind === "interface") {
-                        if (type === System.Collections.IList) {
-                            type = System.Collections.Generic.List$1(System.Object);
-                        } else if (Bridge.Reflection.isGenericType(type) && Bridge.Reflection.isAssignableFrom(System.Collections.Generic.IList$1, Bridge.Reflection.getGenericTypeDefinition(type))) {
-                            type = System.Collections.Generic.List$1(System.Collections.Generic.List$1.getElementType(type) || System.Object);
-                        } else if (System.Collections.IDictionary === type) {
+                        if (System.Collections.IDictionary === type) {
                             type = System.Collections.Generic.Dictionary$2(System.Object, System.Object);
                         } else if (Bridge.Reflection.isGenericType(type) && Bridge.Reflection.isAssignableFrom(System.Collections.Generic.IDictionary$2, Bridge.Reflection.getGenericTypeDefinition(type))) {
                             var tPrms = System.Collections.Generic.Dictionary$2.getTypeParameters(type);
                             type = System.Collections.Generic.Dictionary$2(tPrms[0] || System.Object, tPrms[1] || System.Object);
+                        } else if (type === System.Collections.IList || type === System.Collections.ICollection) {
+                            type = System.Collections.Generic.List$1(System.Object);
+                        } else if (Bridge.Reflection.isGenericType(type) && (
+                            Bridge.Reflection.isAssignableFrom(System.Collections.Generic.IList$1, Bridge.Reflection.getGenericTypeDefinition(type)) ||
+                            Bridge.Reflection.isAssignableFrom(System.Collections.Generic.ICollection$1, Bridge.Reflection.getGenericTypeDefinition(type))
+                        )) {
+                            type = System.Collections.Generic.List$1(System.Collections.Generic.List$1.getElementType(type) || System.Object);
                         }
                     }
 
