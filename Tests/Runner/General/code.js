@@ -1016,7 +1016,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var obj = ($t = new Newtonsoft.Json.Tests.Issues.Case101.MyCustomClass(), $t.Value = Bridge.box(true, System.Boolean, System.Boolean.toString), $t);
                     var str = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
                     var deser = Newtonsoft.Json.JsonConvert.DeserializeObject(str, Newtonsoft.Json.Tests.Issues.Case101.MyCustomClass);
-                    Bridge.Test.NUnit.Assert.True(System.Nullable.getValue(Bridge.cast(Bridge.unbox(deser.Value), System.Boolean)), "Boolean bound to an 'object' member can be correctly serialized and deserialized back.");
+                    Bridge.Test.NUnit.Assert.True(System.Nullable.getValue(Bridge.cast(Bridge.unbox(deser.Value, System.Boolean), System.Boolean)), "Boolean bound to an 'object' member can be correctly serialized and deserialized back.");
                 }
             }
         }
@@ -2304,7 +2304,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 return this.Value === o.Value;
             },
             equals: function (o) {
-                return Bridge.is(o, Newtonsoft.Json.Tests.Issues.Case74.MyKey) && this.equalsT(System.Nullable.getValue(Bridge.cast(Bridge.unbox(o), Newtonsoft.Json.Tests.Issues.Case74.MyKey)));
+                return Bridge.is(o, Newtonsoft.Json.Tests.Issues.Case74.MyKey) && this.equalsT(System.Nullable.getValue(Bridge.cast(Bridge.unbox(o, Newtonsoft.Json.Tests.Issues.Case74.MyKey), Newtonsoft.Json.Tests.Issues.Case74.MyKey)));
             },
             getHashCode: function () {
                 return Bridge.getHashCode(this.Value);
@@ -2790,7 +2790,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         statics: {
             methods: {
                 TimeSpanSerializationWorks: function () {
-                    var ts = System.Nullable.getValue(Bridge.cast(Bridge.unbox(Newtonsoft.Json.JsonConvert.DeserializeObject("\"00:00:01\"", System.TimeSpan)), System.TimeSpan));
+                    var ts = System.Nullable.getValue(Bridge.cast(Bridge.unbox(Newtonsoft.Json.JsonConvert.DeserializeObject("\"00:00:01\"", System.TimeSpan), System.TimeSpan), System.TimeSpan));
 
                     Bridge.Test.NUnit.Assert.AreEqual(0, ts.getHours(), "Hours could be parsed from a time span string.");
                     Bridge.Test.NUnit.Assert.AreEqual(0, ts.getMinutes(), "Minutes could be parsed from a time span string.");
