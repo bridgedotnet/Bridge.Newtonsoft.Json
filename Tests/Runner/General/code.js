@@ -1647,6 +1647,144 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case132", {
+        statics: {
+            methods: {
+                Serialize: function (Obj) {
+                    var Settings = new Newtonsoft.Json.JsonSerializerSettings();
+                    Settings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects;
+                    return Newtonsoft.Json.JsonConvert.SerializeObject(Obj, Newtonsoft.Json.Formatting.Indented, Settings);
+                },
+                Deserialize: function (T, JSON) {
+                    var Settings = new Newtonsoft.Json.JsonSerializerSettings();
+                    Settings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects;
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject(JSON, T, Settings);
+                },
+                TestStructCtors: function () {
+                    // Create a test object and serialize it
+                    var Test = new Newtonsoft.Json.Tests.Issues.Case132.Point.$ctor2(10, 20);
+                    var Json = Newtonsoft.Json.Tests.Issues.Case132.Serialize(Test.$clone());
+
+                    var Test1 = Newtonsoft.Json.Tests.Issues.Case132.Deserialize(Newtonsoft.Json.Tests.Issues.Case132.Point, Json).$clone();
+                    Bridge.Test.NUnit.Assert.Null(Test1.ctorType);
+                    Bridge.Test.NUnit.Assert.AreEqual(10, Test1.X);
+                    Bridge.Test.NUnit.Assert.AreEqual(20, Test1.Y);
+
+
+                    Json = Newtonsoft.Json.Tests.Issues.Case132.Serialize(new Newtonsoft.Json.Tests.Issues.Case132.Point2.$ctor2(10, 20).$clone());
+                    var Test2 = Newtonsoft.Json.Tests.Issues.Case132.Deserialize(Newtonsoft.Json.Tests.Issues.Case132.Point2, Json).$clone();
+                    Bridge.Test.NUnit.Assert.AreEqual("double", Test2.ctorType);
+                    Bridge.Test.NUnit.Assert.AreEqual(10, Test2.X);
+                    Bridge.Test.NUnit.Assert.AreEqual(20, Test2.Y);
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case132.Point", {
+        $kind: "nested struct",
+        statics: {
+            methods: {
+                getDefaultValue: function () { return new Newtonsoft.Json.Tests.Issues.Case132.Point(); }
+            }
+        },
+        fields: {
+            ctorType: null
+        },
+        props: {
+            X: 0,
+            Y: 0
+        },
+        ctors: {
+            $ctor2: function (X, Y) {
+                this.$initialize();
+                this.X = X;
+                this.Y = Y;
+                this.ctorType = "float";
+            },
+            $ctor1: function (X, Y) {
+                this.$initialize();
+                this.X = System.Convert.toSingle(Bridge.box(X, System.Double, System.Double.format, System.Double.getHashCode));
+                this.Y = System.Convert.toSingle(Bridge.box(Y, System.Double, System.Double.format, System.Double.getHashCode));
+                this.ctorType = "double";
+            },
+            ctor: function () {
+                this.$initialize();
+            }
+        },
+        methods: {
+            getHashCode: function () {
+                var h = Bridge.addHash([1852403652, this.ctorType, this.X, this.Y]);
+                return h;
+            },
+            equals: function (o) {
+                if (!Bridge.is(o, Newtonsoft.Json.Tests.Issues.Case132.Point)) {
+                    return false;
+                }
+                return Bridge.equals(this.ctorType, o.ctorType) && Bridge.equals(this.X, o.X) && Bridge.equals(this.Y, o.Y);
+            },
+            $clone: function (to) {
+                var s = to || new Newtonsoft.Json.Tests.Issues.Case132.Point();
+                s.ctorType = this.ctorType;
+                s.X = this.X;
+                s.Y = this.Y;
+                return s;
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case132.Point2", {
+        $kind: "nested struct",
+        statics: {
+            methods: {
+                getDefaultValue: function () { return new Newtonsoft.Json.Tests.Issues.Case132.Point2(); }
+            }
+        },
+        fields: {
+            ctorType: null
+        },
+        props: {
+            X: 0,
+            Y: 0
+        },
+        ctors: {
+            $ctor2: function (X, Y) {
+                this.$initialize();
+                this.X = X;
+                this.Y = Y;
+                this.ctorType = "float";
+            },
+            $ctor1: function (X, Y) {
+                this.$initialize();
+                this.X = System.Convert.toSingle(Bridge.box(X, System.Double, System.Double.format, System.Double.getHashCode));
+                this.Y = System.Convert.toSingle(Bridge.box(Y, System.Double, System.Double.format, System.Double.getHashCode));
+                this.ctorType = "double";
+            },
+            ctor: function () {
+                this.$initialize();
+            }
+        },
+        methods: {
+            getHashCode: function () {
+                var h = Bridge.addHash([1852416452, this.ctorType, this.X, this.Y]);
+                return h;
+            },
+            equals: function (o) {
+                if (!Bridge.is(o, Newtonsoft.Json.Tests.Issues.Case132.Point2)) {
+                    return false;
+                }
+                return Bridge.equals(this.ctorType, o.ctorType) && Bridge.equals(this.X, o.X) && Bridge.equals(this.Y, o.Y);
+            },
+            $clone: function (to) {
+                var s = to || new Newtonsoft.Json.Tests.Issues.Case132.Point2();
+                s.ctorType = this.ctorType;
+                s.X = this.X;
+                s.Y = this.Y;
+                return s;
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {
