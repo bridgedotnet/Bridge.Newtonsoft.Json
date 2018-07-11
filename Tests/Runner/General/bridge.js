@@ -474,9 +474,24 @@
                 return type.ctor();
             } else if (args && args.length > 0) {
                 return Bridge.Reflection.applyConstructor(type, args);
-            } else {
-                return new type();
+            } 
+
+            var ctors = Bridge.Reflection.getMembers(type, 1, 54);
+
+            if (ctors.length > 0) {
+                ctors = ctors.filter(function (c) { return !c.isSynthetic; });
+
+                for (var idx = 0; idx < ctors.length; idx++) {
+                    var c = ctors[idx],
+                        isDefault = (c.pi || []).length === 0;
+
+                    if (isDefault) {
+                        return Bridge.Reflection.invokeCI(c, []);
+                    }
+                }
             }
+
+            return new type();
         },
 
         clone: function (obj) {
@@ -10313,7 +10328,7 @@
                 if (isUTC === true) {
                     dt.setUTCHours(0);
                     dt.setUTCMinutes(0);
-                    dt.setUTCMinutes(0);
+                    dt.setUTCSeconds(0);
                     dt.setUTCMilliseconds(0);
                 } else {
                     dt.setHours(0);

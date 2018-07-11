@@ -1647,6 +1647,13 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * This test ensures structs with multiple constructors works with
+     Bridge's Newtonsoft.Json serializing forth and back.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case132
+     */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case132", {
         statics: {
             methods: {
@@ -1665,25 +1672,66 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var Test = new Newtonsoft.Json.Tests.Issues.Case132.Point.$ctor2(10, 20);
                     var Json = Newtonsoft.Json.Tests.Issues.Case132.Serialize(Test.$clone());
 
+                    // Tests first use case: two constructors, serialize then
+                    // deserialize.
+                    Newtonsoft.Json.Tests.Issues.Case132.Point.CtorCalled = false;
                     var Test1 = Newtonsoft.Json.Tests.Issues.Case132.Deserialize(Newtonsoft.Json.Tests.Issues.Case132.Point, Json).$clone();
-                    Bridge.Test.NUnit.Assert.Null(Test1.ctorType);
-                    Bridge.Test.NUnit.Assert.AreEqual(10, Test1.X);
-                    Bridge.Test.NUnit.Assert.AreEqual(20, Test1.Y);
+                    Bridge.Test.NUnit.Assert.False(Newtonsoft.Json.Tests.Issues.Case132.Point.CtorCalled, "Dual constructor class' constructor not called while deserializing.");
+                    Bridge.Test.NUnit.Assert.Null(Test1.ctorType, "Dual constructor class' JsonIgnore'd, constructor-filled variable is null after deserializing object representation string.");
+                    Bridge.Test.NUnit.Assert.AreEqual(10, Test1.X, "Dual constructor class' member value could be filled (X).");
+                    Bridge.Test.NUnit.Assert.AreEqual(20, Test1.Y, "Dual constructor class' member value could be filled (Y).");
 
-
-                    Json = Newtonsoft.Json.Tests.Issues.Case132.Serialize(new Newtonsoft.Json.Tests.Issues.Case132.Point2.$ctor2(10, 20).$clone());
+                    // Just try to deserialize by inlining the object instance instead
+                    // of passing the instance reference to the call.
+                    Json = Newtonsoft.Json.Tests.Issues.Case132.Serialize(new Newtonsoft.Json.Tests.Issues.Case132.Point2.$ctor2(11, 21).$clone());
+                    Newtonsoft.Json.Tests.Issues.Case132.Point2.CtorCalled = false;
                     var Test2 = Newtonsoft.Json.Tests.Issues.Case132.Deserialize(Newtonsoft.Json.Tests.Issues.Case132.Point2, Json).$clone();
-                    Bridge.Test.NUnit.Assert.AreEqual("double", Test2.ctorType);
-                    Bridge.Test.NUnit.Assert.AreEqual(10, Test2.X);
-                    Bridge.Test.NUnit.Assert.AreEqual(20, Test2.Y);
+                    Bridge.Test.NUnit.Assert.True(Newtonsoft.Json.Tests.Issues.Case132.Point2.CtorCalled, "Dual constructor inlined class' constructor called while deserializing.");
+                    Bridge.Test.NUnit.Assert.AreEqual("double", Test2.ctorType, "Dual constructor inlined class' JsonIgnore'd, constructor-filled variable is set after deserializing object representation string.");
+                    Bridge.Test.NUnit.Assert.AreEqual(11, Test2.X, "Dual constructor inlined class' member value could be filled (X).");
+                    Bridge.Test.NUnit.Assert.AreEqual(21, Test2.Y, "Dual constructor inlined class' member value could be filled (Y).");
+
+                    // Tests second use case: single constructor, shouldn't call constructor twice, and it also shouldn't
+                    var Test_single = new Newtonsoft.Json.Tests.Issues.Case132.Point_Single_Ctor.$ctor1(12, 22);
+                    Json = Newtonsoft.Json.Tests.Issues.Case132.Serialize(Test_single.$clone());
+                    Newtonsoft.Json.Tests.Issues.Case132.Point_Single_Ctor.CtorCalled = false;
+                    var Test3 = Newtonsoft.Json.Tests.Issues.Case132.Deserialize(Newtonsoft.Json.Tests.Issues.Case132.Point_Single_Ctor, Json).$clone();
+                    Bridge.Test.NUnit.Assert.False(Newtonsoft.Json.Tests.Issues.Case132.Point_Single_Ctor.CtorCalled, "Single constructor class' constructor not called when deserializing.");
+                    Bridge.Test.NUnit.Assert.Null(Test3.ctorType, "Single constructor class' JsonIgnore'd variable null after deserializing the object representation string.");
+                    Bridge.Test.NUnit.Assert.AreEqual(12, Test3.X, "Single constructor class' member value could be filled (X).");
+                    Bridge.Test.NUnit.Assert.AreEqual(22, Test3.Y, "Single constructor class' member value could be filled (Y).");
                 }
             }
         }
     });
 
+    /**
+     * Struct with two constructors differing only by their parameters'
+     types.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case132.Point
+     */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case132.Point", {
         $kind: "nested struct",
         statics: {
+            fields: {
+                /**
+                 * Control to know when the constructor has been called.
+                 *
+                 * @static
+                 * @public
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case132.Point
+                 * @default false
+                 * @type boolean
+                 */
+                CtorCalled: false
+            },
+            ctors: {
+                init: function () {
+                    this.CtorCalled = false;
+                }
+            },
             methods: {
                 getDefaultValue: function () { return new Newtonsoft.Json.Tests.Issues.Case132.Point(); }
             }
@@ -1698,12 +1746,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         ctors: {
             $ctor2: function (X, Y) {
                 this.$initialize();
+                Newtonsoft.Json.Tests.Issues.Case132.Point.CtorCalled = true;
                 this.X = X;
                 this.Y = Y;
                 this.ctorType = "float";
             },
             $ctor1: function (X, Y) {
                 this.$initialize();
+                Newtonsoft.Json.Tests.Issues.Case132.Point.CtorCalled = true;
                 this.X = System.Convert.toSingle(Bridge.box(X, System.Double, System.Double.format, System.Double.getHashCode));
                 this.Y = System.Convert.toSingle(Bridge.box(Y, System.Double, System.Double.format, System.Double.getHashCode));
                 this.ctorType = "double";
@@ -1733,9 +1783,110 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * Struct with just one constructor. It shouldn't get the constructor
+     called twice, second time with an empty 'Y' value.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case132.Point_Single_Ctor
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case132.Point_Single_Ctor", {
+        $kind: "nested struct",
+        statics: {
+            fields: {
+                /**
+                 * Control to ensure the constructor will not be called when
+                 deserializing.
+                 *
+                 * @static
+                 * @public
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case132.Point_Single_Ctor
+                 * @default false
+                 * @type boolean
+                 */
+                CtorCalled: false
+            },
+            ctors: {
+                init: function () {
+                    this.CtorCalled = false;
+                }
+            },
+            methods: {
+                getDefaultValue: function () { return new Newtonsoft.Json.Tests.Issues.Case132.Point_Single_Ctor(); }
+            }
+        },
+        fields: {
+            ctorType: null
+        },
+        props: {
+            X: 0,
+            Y: 0
+        },
+        ctors: {
+            $ctor1: function (X, Y) {
+                this.$initialize();
+                // We don't mean to call this with a null/empty/NaN Y, so
+                // throw an assertion fail if so.
+                if (isNaN(Y)) {
+                    Bridge.Test.NUnit.Assert.Fail("Single constructor struct's constructor called with invalid Y parameter.");
+                }
+
+                Newtonsoft.Json.Tests.Issues.Case132.Point_Single_Ctor.CtorCalled = true;
+                this.X = X;
+                this.Y = Y;
+                this.ctorType = "float";
+            },
+            ctor: function () {
+                this.$initialize();
+            }
+        },
+        methods: {
+            getHashCode: function () {
+                var h = Bridge.addHash([7190968835, this.ctorType, this.X, this.Y]);
+                return h;
+            },
+            equals: function (o) {
+                if (!Bridge.is(o, Newtonsoft.Json.Tests.Issues.Case132.Point_Single_Ctor)) {
+                    return false;
+                }
+                return Bridge.equals(this.ctorType, o.ctorType) && Bridge.equals(this.X, o.X) && Bridge.equals(this.Y, o.Y);
+            },
+            $clone: function (to) {
+                var s = to || new Newtonsoft.Json.Tests.Issues.Case132.Point_Single_Ctor();
+                s.ctorType = this.ctorType;
+                s.X = this.X;
+                s.Y = this.Y;
+                return s;
+            }
+        }
+    });
+
+    /**
+     * Struct
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case132.Point2
+     */
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case132.Point2", {
         $kind: "nested struct",
         statics: {
+            fields: {
+                /**
+                 * Control to know when the constructor has been called.
+                 *
+                 * @static
+                 * @public
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case132.Point2
+                 * @default false
+                 * @type boolean
+                 */
+                CtorCalled: false
+            },
+            ctors: {
+                init: function () {
+                    this.CtorCalled = false;
+                }
+            },
             methods: {
                 getDefaultValue: function () { return new Newtonsoft.Json.Tests.Issues.Case132.Point2(); }
             }
@@ -1750,12 +1901,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         ctors: {
             $ctor2: function (X, Y) {
                 this.$initialize();
+                Newtonsoft.Json.Tests.Issues.Case132.Point2.CtorCalled = true;
                 this.X = X;
                 this.Y = Y;
                 this.ctorType = "float";
             },
             $ctor1: function (X, Y) {
                 this.$initialize();
+                Newtonsoft.Json.Tests.Issues.Case132.Point2.CtorCalled = true;
                 this.X = System.Convert.toSingle(Bridge.box(X, System.Double, System.Double.format, System.Double.getHashCode));
                 this.Y = System.Convert.toSingle(Bridge.box(Y, System.Double, System.Double.format, System.Double.getHashCode));
                 this.ctorType = "double";
