@@ -1647,6 +1647,31 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case136", {
+        statics: {
+            methods: {
+                TestTuple: function () {
+                    var guids = new (System.Collections.Generic.List$1(System.Object)).ctor();
+
+                    for (var i = 0; i < 5; i = (i + 1) | 0) {
+                        var guid = new System.Guid.$ctor2(i, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                        var tuple = { Item1: guid, Item2: i };
+                        guids.add(tuple);
+                    }
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(guids);
+                    var newGuids = Newtonsoft.Json.JsonConvert.DeserializeObject(json, System.Collections.Generic.List$1(System.Object));
+                    var guid2 = new System.Guid.$ctor2(3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+
+                    var value = newGuids.Find(function (x) {
+                        return System.Guid.op_Equality(x.Item1, guid2);
+                    }).Item2;
+                    Bridge.Test.NUnit.Assert.AreEqual(3, value);
+                }
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {
