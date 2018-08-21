@@ -234,7 +234,8 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
                         if (Bridge.is($t, System.IDisposable)) {
                             $t.System$IDisposable$Dispose();
                         }
-                    }},
+                    }
+                },
                 Init: function () {
                     // Check that required elements exist and created if required
                     var ensure = $asm.$.Bridge.Test.Runtime.ContextHelper.f1;

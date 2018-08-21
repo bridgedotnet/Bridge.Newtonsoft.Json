@@ -60,7 +60,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     if (Bridge.is($t, System.IDisposable)) {
                         $t.System$IDisposable$Dispose();
                     }
-                }this._headIfAny = node;
+                }
+                this._headIfAny = node;
             }
         },
         methods: {
@@ -2891,7 +2892,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     if (Bridge.is($t, System.IDisposable)) {
                         $t.System$IDisposable$Dispose();
                     }
-                }this._headIfAny = node;
+                }
+                this._headIfAny = node;
             }
         },
         methods: {
@@ -3465,7 +3467,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     if (Bridge.is($t, System.IDisposable)) {
                         $t.System$IDisposable$Dispose();
                     }
-                }this._headIfAny = node;
+                }
+                this._headIfAny = node;
             }
         },
         methods: {
@@ -4109,7 +4112,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     if (Bridge.is($t, System.IDisposable)) {
                         $t.System$IDisposable$Dispose();
                     }
-                }this._headIfAny = node;
+                }
+                this._headIfAny = node;
             }
         },
         methods: {
