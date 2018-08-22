@@ -1,5 +1,5 @@
 /*
- * @version   : 1.8.0 - A Bridge.NET implementation of Newtonsoft.Json
+ * @version   : 1.10.0 - A Bridge.NET implementation of Newtonsoft.Json
  * @author    : Object.NET, Inc. http://www.bridge.net/
  * @copyright : Copyright (c) 2008-2018, Object.NET, Inc. (http://www.object.net/). All rights reserved.
  * @license   : See license.txt and https://github.com/bridgedotnet/Bridge.NET/blob/master/LICENSE.
@@ -261,8 +261,8 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
             },
             ctors: {
                 init: function () {
-                    this.version = "1.8.0";
-                    this.compiler = "17.1.2";
+                    this.version = "1.10.0";
+                    this.compiler = "17.3.0";
                 }
             }
         }
@@ -962,6 +962,56 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             }
                         }
 
+                        if (!hasDefault && !jsonCtor && type.$kind === "struct") {
+                            var useDefault = true;
+                            if (publicCtors.length > 0) {
+                                useDefault = false;
+                                jsonCtor = publicCtors[0];
+                                var params = jsonCtor.pi || [],                                   
+                                    fields = Newtonsoft.Json.JsonConvert.getMembers(type, 4),
+                                    properties = Newtonsoft.Json.JsonConvert.getMembers(type, 16);
+
+                                for (var i = 0; i < params.length; i++) {
+                                    var prm = params[i],
+                                        name = prm.sn || prm.n;
+
+                                    for (var j = 0; j < properties.length; j++) {
+                                        var cfg = properties[i],
+                                            p = cfg.member,
+                                            mname = cfg.attr && cfg.attr.PropertyName || p.n;
+
+                                        if (name === mname || name.toLowerCase() === mname.toLowerCase() && cfg.s) {
+                                            useDefault = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!useDefault) {
+                                        for (var j = 0; j < fields.length; j++) {
+                                            var cfg = fields[i],
+                                                f = cfg.member,
+                                                mname = cfg.attr && cfg.attr.PropertyName || f.n;
+
+                                            if (name === mname || name.toLowerCase() === mname.toLowerCase() && !cfg.ro) {
+                                                useDefault = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    if (useDefault) {
+                                        break;
+                                    }
+                                }
+
+
+                            }
+
+                            if (useDefault) {
+                                jsonCtor = { td: type };
+                            }                            
+                        }
+
                         if (!hasDefault && ctors.length > 0) {
                             if (publicCtors.length !== 1 && jsonCtor == null) {
                                 throw new Newtonsoft.Json.JsonSerializationException("Unable to find a constructor to use for type " + Bridge.getTypeName(type) + ". A class should either have a default constructor or one constructor with arguments.");
@@ -1035,15 +1085,31 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                             return function (raw) {
                                 var args = [],
                                     names = [],
-                                    keys = Object.getOwnPropertyNames(raw),
-                                    strKeys = keys.toString();
+                                    keys = Object.getOwnPropertyNames(raw);
 
                                 for (var i = 0; i < params.length; i++) {
                                     var prm = params[i],
                                         name = prm.sn || prm.n,
-                                        match = new RegExp(name, "i").exec(strKeys);
+                                        foundName = null;
 
-                                    name = match && match.length > 0 ? match[0] : null;
+                                    for (var j = 0; j < keys.length; j++) {
+                                        if (name === keys[j]) {
+                                            foundName = keys[j];
+                                            break;
+                                        }
+                                    }
+
+                                    if (!foundName) {
+                                        name = name.toLowerCase();
+                                        for (var j = 0; j < keys.length; j++) {
+                                            if (name === keys[j].toLowerCase()) {
+                                                foundName = keys[j];
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    name = foundName;
 
                                     if (name) {
                                         args[i] = Newtonsoft.Json.JsonConvert.DeserializeObject(raw[name], prm.pt, settings, true);
