@@ -598,7 +598,7 @@ Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
             methods: {
                 TestTuple: function (assert) {
                     var $t;
-                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case136).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case136, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestTuple()", $t.Line = "11", $t));
+                    var t = Bridge.Test.Runtime.TestFixture$1(Newtonsoft.Json.Tests.Issues.Case136).BeforeTest(false, assert, Bridge.Test.Runtime.NewtonsoftJsonTestsRunner.Case136, void 0, ($t = new Bridge.Test.Runtime.TestContext(), $t.Method = "TestTuple()", $t.Line = "19", $t));
                     Newtonsoft.Json.Tests.Issues.Case136.TestTuple();
                 }
             }
