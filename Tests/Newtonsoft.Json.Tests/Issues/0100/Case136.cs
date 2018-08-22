@@ -4,10 +4,18 @@ using System.Collections.Generic;
 
 namespace Newtonsoft.Json.Tests.Issues
 {
+    /// <summary>
+    /// Ensures GUID structures can be deserialized.
+    /// </summary>
     [Category("Issues")]
     [TestFixture(TestNameFormat = "#136 - {0}")]
     public class Case136
     {
+        /// <summary>
+        /// This simply creates some GUIDs, serializes and de-serializes; then
+        /// checking whether the full Guid class behavior is retained after
+        /// deserialization.
+        /// </summary>
         [Test]
         public static void TestTuple()
         {
@@ -25,7 +33,7 @@ namespace Newtonsoft.Json.Tests.Issues
             Guid guid2 = new Guid(3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
             int value = newGuids.Find(x => x.Item1 == guid2).Item2;
-            Assert.AreEqual(3, value);
+            Assert.AreEqual(3, value, "System.Guid structure can be correctly deserialized.");
         }
     }
 }
