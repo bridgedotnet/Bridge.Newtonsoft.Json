@@ -1939,6 +1939,48 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * Ensures GUID structures can be deserialized.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case136
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case136", {
+        statics: {
+            methods: {
+                /**
+                 * This simply creates some GUIDs, serializes and de-serializes; then
+                 checking whether the full Guid class behavior is retained after
+                 deserialization.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case136
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case136
+                 * @return  {void}
+                 */
+                TestTuple: function () {
+                    var guids = new (System.Collections.Generic.List$1(System.Tuple$2(System.Guid,System.Int32))).ctor();
+
+                    for (var i = 0; i < 5; i = (i + 1) | 0) {
+                        var guid = new System.Guid.$ctor2(i, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                        var tuple = { Item1: guid, Item2: i };
+                        guids.add(tuple);
+                    }
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(guids);
+                    var newGuids = Newtonsoft.Json.JsonConvert.DeserializeObject(json, System.Collections.Generic.List$1(System.Tuple$2(System.Guid,System.Int32)));
+                    var guid2 = new System.Guid.$ctor2(3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+
+                    var value = newGuids.Find(function (x) {
+                        return System.Guid.op_Equality(x.Item1, guid2);
+                    }).Item2;
+                    Bridge.Test.NUnit.Assert.AreEqual(3, value, "System.Guid structure can be correctly deserialized.");
+                }
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {
