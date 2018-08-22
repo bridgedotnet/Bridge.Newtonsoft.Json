@@ -1516,7 +1516,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                 return Bridge.merge(isObject ? {} : (instance || Bridge.createInstance(type)), raw);
                             }
 
-                            var o = instance ? { value: instance, names: i_names } : Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings),
+                            var o = instance ? { value: instance, names: i_names, default: true } : Newtonsoft.Json.JsonConvert.createInstance(type, raw, settings),
                                 isDefCtor,
                                 names;
 

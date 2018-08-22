@@ -1981,6 +1981,122 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    /**
+     * Ensures arbitrarily nested lists can be deserialized.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case138
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case138", {
+        statics: {
+            methods: {
+                /**
+                 * The tests here worked by the time of the issue, and were used as 
+                 reference for the breaking batch of tests.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case138
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case138
+                 * @return  {void}
+                 */
+                ReferenceTestBatch: function () {
+                    var $t;
+                    var name = "Reference test batch: ";
+                    var Test = new Newtonsoft.Json.Tests.Issues.Case138.SubClass();
+                    Test.Items.add(($t = new Newtonsoft.Json.Tests.Issues.Case138.ItemClass(), $t.A = "WorksAsExpected.Test1A", $t.B = "WorksAsExpected.Test1B", $t));
+                    Test.Items.add(($t = new Newtonsoft.Json.Tests.Issues.Case138.ItemClass(), $t.A = "WorksAsExpected.Test2A", $t.B = "WorksAsExpected.Test2B", $t));
+
+                    var Settings = new Newtonsoft.Json.JsonSerializerSettings();
+                    Settings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects;
+
+                    var Json = Newtonsoft.Json.JsonConvert.SerializeObject(Test, Newtonsoft.Json.Formatting.Indented, Settings);
+
+                    var Result = Newtonsoft.Json.JsonConvert.DeserializeObject(Json, Newtonsoft.Json.Tests.Issues.Case138.SubClass, Settings);
+                    Bridge.Test.NUnit.Assert.AreEqual(2, Result.Items.Count, (name || "") + "Amount of items is right.");
+                    Bridge.Test.NUnit.Assert.AreEqual("WorksAsExpected.Test1A", Result.Items.getItem(0).A, (name || "") + "Item 0, property A is right.");
+                    Bridge.Test.NUnit.Assert.AreEqual("WorksAsExpected.Test1B", Result.Items.getItem(0).B, (name || "") + "Item 0, property B is right.");
+                    Bridge.Test.NUnit.Assert.AreEqual("WorksAsExpected.Test2A", Result.Items.getItem(1).A, (name || "") + "Item 1, property A is right.");
+                    Bridge.Test.NUnit.Assert.AreEqual("WorksAsExpected.Test2B", Result.Items.getItem(1).B, (name || "") + "Item 1, property B is right.");
+                },
+                /**
+                 * This code used to break in version 1.9.0.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case138
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case138
+                 * @return  {void}
+                 */
+                OffendingTestBatch: function () {
+                    var $t;
+                    var name = "Offending test batch: ";
+                    // Create an instance with an extra level, with 2 items in its list and serialize it to JSON
+                    var Test = new Newtonsoft.Json.Tests.Issues.Case138.ContainerClass();
+                    Test.Inst.Items.add(($t = new Newtonsoft.Json.Tests.Issues.Case138.ItemClass(), $t.A = "NotWorkAsExpected.Test1A", $t.B = "NotWorkAsExpected.Test1B", $t));
+                    Test.Inst.Items.add(($t = new Newtonsoft.Json.Tests.Issues.Case138.ItemClass(), $t.A = "NotWorkAsExpected.Test2A", $t.B = "NotWorkAsExpected.Test2B", $t));
+                    var Settings = new Newtonsoft.Json.JsonSerializerSettings();
+                    Settings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects;
+
+                    var Json = Newtonsoft.Json.JsonConvert.SerializeObject(Test, Newtonsoft.Json.Formatting.Indented, Settings);
+
+                    var Result = Newtonsoft.Json.JsonConvert.DeserializeObject(Json, Newtonsoft.Json.Tests.Issues.Case138.ContainerClass, Settings);
+                    Bridge.Test.NUnit.Assert.AreEqual(2, Result.Inst.Items.Count, (name || "") + "Amount of items is right.");
+                    Bridge.Test.NUnit.Assert.AreEqual("NotWorkAsExpected.Test1A", Result.Inst.Items.getItem(0).A, (name || "") + "Item 0, property A is right.");
+                    Bridge.Test.NUnit.Assert.AreEqual("NotWorkAsExpected.Test1B", Result.Inst.Items.getItem(0).B, (name || "") + "Item 0, property B is right.");
+                    Bridge.Test.NUnit.Assert.AreEqual("NotWorkAsExpected.Test2A", Result.Inst.Items.getItem(1).A, (name || "") + "Item 1, property A is right.");
+                    Bridge.Test.NUnit.Assert.AreEqual("NotWorkAsExpected.Test2B", Result.Inst.Items.getItem(1).B, (name || "") + "Item 1, property B is right.");
+                },
+                /**
+                 * Just call the two batches of tests; the assertions will be made
+                 therein.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case138
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case138
+                 * @return  {void}
+                 */
+                TestNestedList: function () {
+                    Newtonsoft.Json.Tests.Issues.Case138.ReferenceTestBatch();
+                    Newtonsoft.Json.Tests.Issues.Case138.OffendingTestBatch();
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case138.ContainerClass", {
+        $kind: "nested class",
+        props: {
+            Inst: null
+        },
+        ctors: {
+            init: function () {
+                this.Inst = new Newtonsoft.Json.Tests.Issues.Case138.SubClass();
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case138.ItemClass", {
+        $kind: "nested class",
+        props: {
+            A: null,
+            B: null
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case138.SubClass", {
+        $kind: "nested class",
+        props: {
+            Items: null
+        },
+        ctors: {
+            init: function () {
+                this.Items = new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case138.ItemClass)).ctor();
+            }
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Case14", {
         statics: {
             methods: {
