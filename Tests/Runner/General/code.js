@@ -3,7 +3,7 @@
  * @version 1.10.0
  * @author Object.NET, Inc.
  * @copyright Copyright 2008-2018 Object.NET, Inc.
- * @compiler Bridge.NET 17.3.0
+ * @compiler Bridge.NET 17.3.1
  */
 Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     "use strict";
