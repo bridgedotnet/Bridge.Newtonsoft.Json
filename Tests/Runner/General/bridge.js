@@ -1,5 +1,5 @@
 /**
- * @version   : 17.3.1 - Bridge.NET
+ * @version   : 17.4.0 - Bridge.NET
  * @author    : Object.NET, Inc. http://bridge.net/
  * @copyright : Copyright 2008-2018 Object.NET, Inc. http://object.net/
  * @license   : See license.txt and https://github.com/bridgedotnet/Bridge/blob/master/LICENSE.md
@@ -851,7 +851,7 @@
                 if (obj.type.$kind === "enum" && (obj.type.prototype.$utype === type || type === System.Enum || type === System.IFormattable || type === System.IComparable)) {
                     return true;
                 } else if (!Bridge.Reflection.isInterface(type) && !type.$nullable) {
-                    return obj.type === type || Bridge.isObject(type);
+                    return obj.type === type || Bridge.isObject(type) || type === System.ValueType && Bridge.Reflection.isValueType(obj.type);
                 }
 
                 if (ignoreFn !== true && type.$is) {
@@ -3457,8 +3457,8 @@
     // @source SystemAssemblyVersion.js
 
     Bridge.init(function () {
-        Bridge.SystemAssembly.version = "17.3.1";
-        Bridge.SystemAssembly.compiler = "17.3.1";
+        Bridge.SystemAssembly.version = "17.4.0";
+        Bridge.SystemAssembly.compiler = "17.4.0";
     });
 
     Bridge.define("Bridge.Utils.SystemAssemblyVersion");
@@ -4633,6 +4633,18 @@
     Bridge.define("System.IAsyncResult", {
         $kind: "interface"
     });
+
+    // @source ValueType.js
+
+Bridge.define("System.ValueType", {
+    statics: {
+        methods: {
+            $is: function (obj) {
+                return Bridge.Reflection.isValueType(Bridge.getType(obj));
+            }
+        }
+    }
+});
 
     // @source Enum.js
 
@@ -12145,7 +12157,12 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 v;
 
             if (Bridge.isArray(obj)) {
-                return obj.$type && Bridge.getDefaultValue(obj.$type.$elementType) != null ? Bridge.box(obj[idx], obj.$type.$elementType) : obj[idx];
+                v = obj[idx];
+                if (T) {
+                    return v;
+                }
+
+                return (obj.$type && (Bridge.isNumber(v) || Bridge.isBoolean(v) || Bridge.isDate(v))) ? Bridge.box(v, obj.$type.$elementType) : v;
             } else if (T && Bridge.isFunction(obj[name = "System$Collections$Generic$IList$1$" + Bridge.getTypeAlias(T) + "$getItem"])) {
                 v = obj[name](idx);
                 return v;
@@ -32968,8 +32985,24 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
 
                     return new System.Guid.$ctor1(a);
                 },
-                MakeBinary: function (x) {
-                    return System.Int32.format((x & 255), "x2");
+                ToHex$1: function (x, precision) {
+                    var result = x.toString(16);
+                    precision = (precision - result.length) | 0;
+
+                    for (var i = 0; i < precision; i = (i + 1) | 0) {
+                        result = "0" + (result || "");
+                    }
+
+                    return result;
+                },
+                ToHex: function (x) {
+                    var result = x.toString(16);
+
+                    if (result.length === 1) {
+                        result = "0" + (result || "");
+                    }
+
+                    return result;
                 },
                 op_Equality: function (a, b) {
                     if (Bridge.referenceEquals(a, null)) {
@@ -33207,17 +33240,17 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 return false;
             },
             Format: function (format) {
-                var s = (System.UInt32.format((this._a >>> 0), "x8") || "") + (System.UInt16.format((this._b & 65535), "x4") || "") + (System.UInt16.format((this._c & 65535), "x4") || "");
-                s = (s || "") + ((System.Array.init([this._d, this._e, this._f, this._g, this._h, this._i, this._j, this._k], System.Byte)).map(System.Guid.MakeBinary).join("") || "");
+                var s = (System.Guid.ToHex$1((this._a >>> 0), 8) || "") + (System.Guid.ToHex$1((this._b & 65535), 4) || "") + (System.Guid.ToHex$1((this._c & 65535), 4) || "");
+                s = (s || "") + ((System.Array.init([this._d, this._e, this._f, this._g, this._h, this._i, this._j, this._k], System.Byte)).map(System.Guid.ToHex).join("") || "");
 
-                var m = System.Guid.Split.match(s);
-                var list = new (System.Collections.Generic.List$1(System.String)).ctor();
-                for (var i = 1; i <= m.getGroups().getCount(); i = (i + 1) | 0) {
-                    if (m.getGroups().get(i).getSuccess()) {
-                        list.add(m.getGroups().get(i).getValue());
+                var m = /^(.{8})(.{4})(.{4})(.{4})(.{12})$/.exec(s);
+                var list = System.Array.init(0, null, System.String);
+                for (var i = 1; i < m.length; i = (i + 1) | 0) {
+                    if (m[System.Array.index(i, m)] != null) {
+                        list.push(m[System.Array.index(i, m)]);
                     }
                 }
-                s = list.ToArray().join("-");
+                s = list.join("-");
 
                 switch (format) {
                     case "n": 
