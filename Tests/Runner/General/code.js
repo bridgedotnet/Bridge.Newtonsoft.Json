@@ -3262,8 +3262,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var listingLevelNames = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String))();
                     listingLevelNames.add(key, "None");
 
-                    Bridge.Test.NUnit.Assert.AreEqual("{\"Value\":1}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.Newtonsoft.Json.Tests.Issues.Case74.MyKey, key, false), "Object serialized correctly.");
-                    Bridge.Test.NUnit.Assert.AreEqual("{\"1\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String), listingLevelNames, false), "Custom dictionary serialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Value\":1}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Newtonsoft.Json.Tests.Issues.Case74.MyKey, key, false), "Object serialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"1\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String), listingLevelNames, false), "Custom dictionary serialized correctly.");
                 },
                 /**
                  * This tests another breaking approach when using dictionary with
@@ -3280,7 +3280,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var listingLevelNames = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.SimpleKey,System.String))();
                     listingLevelNames.add(key, "None");
 
-                    Bridge.Test.NUnit.Assert.AreEqual("{\"Newtonsoft.Json.Tests.Issues.Case74+SimpleKey\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Bridge.global.System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.SimpleKey,System.String), listingLevelNames, false), "Simple dictionary serialized correctly.");
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"Newtonsoft.Json.Tests.Issues.Case74+SimpleKey\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.SimpleKey,System.String), listingLevelNames, false), "Simple dictionary serialized correctly.");
                 }
             }
         }
@@ -3464,7 +3464,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var pages = System.Array.init([($t = new Newtonsoft.Json.Tests.Issues.Case8.PageEditData(), $t.Data = 7, $t)], Newtonsoft.Json.Tests.Issues.Case8.PageEditData);
 
-                    var contaners = System.Array.init([Newtonsoft.Json.Tests.Issues.Case8.Container.Create(Bridge.global.System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.PageEditData), pages)], Newtonsoft.Json.Tests.Issues.Case8.Container$1(System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.PageEditData)));
+                    var contaners = System.Array.init([Newtonsoft.Json.Tests.Issues.Case8.Container.Create(System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.PageEditData), pages)], Newtonsoft.Json.Tests.Issues.Case8.Container$1(System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.PageEditData)));
 
                     var responses = System.Array.init([($t = new (Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$1(System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.Container$1(System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.PageEditData)))))(), $t.Value = contaners, $t)], Newtonsoft.Json.Tests.Issues.Case8.ApiResponse$1(System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.Container$1(System.Array.type(Newtonsoft.Json.Tests.Issues.Case8.PageEditData)))));
 
