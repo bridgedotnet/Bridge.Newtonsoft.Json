@@ -48,7 +48,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Serialization\DefaultSerializationBinder.cs" />
     <Compile Include="Json\DefaultValueHandling.cs" />
+    <Compile Include="Serialization\ISerializationBinder.cs" />
     <Compile Include="Json\JsonPropertyAttribute.cs" />
     <Compile Include="Json\JsonIgnoreAttribute.cs" />
     <Compile Include="Json\JsonException.cs" />
@@ -67,6 +69,11 @@
     <Compile Include="Serialization\IContractResolver.cs" />
     <Compile Include="Json\Formatting.cs" />
     <Compile Include="Json\TypeNameHandling.cs" />
+    <Compile Include="Serialization\SerializationBinderAdapter.cs" />
+    <Compile Include="Utilities\ReflectionUtils.cs" />
+    <Compile Include="Utilities\StringUtils.cs" />
+    <Compile Include="Utilities\ThreadSafeStore.cs" />
+    <Compile Include="Utilities\ValidationUtils.cs" />
     <Compile Include="Utils\Version.cs" />
   </ItemGroup>
   <ItemGroup>

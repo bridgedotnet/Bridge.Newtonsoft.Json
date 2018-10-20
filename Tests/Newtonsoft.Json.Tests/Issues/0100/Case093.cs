@@ -1,6 +1,5 @@
-using Bridge.Test.NUnit;
-using System;
 using System.Collections.Generic;
+using Bridge.Test.NUnit;
 
 namespace Newtonsoft.Json.Tests.Issues
 {
@@ -60,6 +59,7 @@ namespace Newtonsoft.Json.Tests.Issues
             person.ArrayAddresses[0] = new Address { Street = "test" };
 
             var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+            // Error, because of Issue https://github.com/bridgedotnet/Bridge/issues/3746
             var match = "{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Person, Newtonsoft.Json.Tests\",\"Addresses\":null,\"ArrayAddresses\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address[]\",\"$values\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"ListAddresses\":{\"$type\":\"System.Collections.Generic.List`1[[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"$values\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"StringAddresses\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"Home\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}}}";
             Assert.AreEqual(match, serialized, "Complex object with Dictionary, List, and array members can be serialized.");
 
@@ -102,6 +102,7 @@ namespace Newtonsoft.Json.Tests.Issues
             person.ArrayAddresses[0] = new Address { Street = "test" };
 
             var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Arrays });
+            // Error, because of Issue https://github.com/bridgedotnet/Bridge/issues/3746
             var match = "{\"Addresses\":null,\"ArrayAddresses\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address[]\",\"$values\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"ListAddresses\":{\"$type\":\"System.Collections.Generic.List`1[[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"$values\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"StringAddresses\":{\"Home\":{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}}}";
             Assert.AreEqual(match, serialized, "Complex object with TypeNameHandling as 'array' can be serialized.");
 

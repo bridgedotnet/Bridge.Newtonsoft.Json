@@ -710,6 +710,31 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         }
     });
 
+    Bridge.define("Newtonsoft.Json.Tests.Issues._0100.Case131", {
+        statics: {
+            methods: {
+                TestNoTypeNameHandling: function () {
+                    var $t;
+                    // Create a test object and serialize it
+                    var Test = ($t = new Newtonsoft.Json.Tests.Issues._0100.Case131.MyClass(), $t.SomeString = "Hello World", $t);
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All, $t);
+                    var Json = Newtonsoft.Json.JsonConvert.SerializeObject(Test, settings);
+
+                    settings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None;
+                    var Result = Newtonsoft.Json.JsonConvert.DeserializeObject(Json, System.Object, settings);
+                    Bridge.Test.NUnit.Assert.True(Bridge.referenceEquals(Bridge.getType(Result), System.Object), "Deserialized as simple object");
+                }
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Issues._0100.Case131.MyClass", {
+        $kind: "nested class",
+        props: {
+            SomeString: null
+        }
+    });
+
     Bridge.define("Newtonsoft.Json.Tests.Issues.Bridge1134", {
         statics: {
             methods: {
@@ -1090,7 +1115,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             methods: {
                 TestInterfaceCollection: function () {
                     var $t;
-                    var json = "\n            {  \n               \"Nodes\": [\n                    {\n                        \"Name\": \"First\",\n                        \"Children\": []\n                    },\n                    {\n                        \"Name\": \"Second\",\n                        \"Children\": []\n                    }\n                ]\n            }";
+                    var json = "\r\n            {  \r\n               \"Nodes\": [\r\n                    {\r\n                        \"Name\": \"First\",\r\n                        \"Children\": []\r\n                    },\r\n                    {\r\n                        \"Name\": \"Second\",\r\n                        \"Children\": []\r\n                    }\r\n                ]\r\n            }";
 
                     var json2 = "{ \"Nodes\": [ {\"Name\": \"First\", \"Children\": [] }, { \"Name\": \"Second\", \"Children\": [] } ] }";
 
@@ -1116,7 +1141,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 },
                 TestListAndDictInterfaces: function () {
                     var $t;
-                    var json = "\n            {\n\t\t\t    \"Nodes\": {\n\t\t\t\t    \"1\": {\n\t\t\t\t\t    \"Name\": \"First\",\n\t\t\t\t\t    \"Colors\": []\n\t\t\t\t    },\n\t\t\t\t    \"2\": {\n\t\t\t\t\t    \"Name\": \"Second\",\n\t\t\t\t\t    \"Colors\": []\n\t\t\t\t    }\n\t\t\t    }\n\t\t    }";
+                    var json = "\r\n            {\r\n\t\t\t    \"Nodes\": {\r\n\t\t\t\t    \"1\": {\r\n\t\t\t\t\t    \"Name\": \"First\",\r\n\t\t\t\t\t    \"Colors\": []\r\n\t\t\t\t    },\r\n\t\t\t\t    \"2\": {\r\n\t\t\t\t\t    \"Name\": \"Second\",\r\n\t\t\t\t\t    \"Colors\": []\r\n\t\t\t\t    }\r\n\t\t\t    }\r\n\t\t    }";
 
                     var json2 = "{\"Nodes\":{\"1\":{\"Name\":\"First\",\"Colors\":[]},\"2\":{\"Name\":\"Second\",\"Colors\":[]}}}";
 
@@ -1380,7 +1405,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                  * @return  {void}
                  */
                 TestException: function () {
-                    var serialized = "{\n  \"Home\": {\n    \"$type\": \"Newtonsoft.Json.Tests.Issues.Case115+Address, Newtonsoft.Json.Tests\",\n    \"City\": \"London\"\n  },\n  \"$type\": \"System.Collections.Generic.Dictionary`2[[Newtonsoft.Json.Tests.Issues.Case115+AddressType, Newtonsoft.Json.Tests],[Newtonsoft.Json.Tests.Issues.Case115+Address, Newtonsoft.Json.Tests]], mscorlib\"\n}";
+                    var serialized = "{\r\n  \"Home\": {\r\n    \"$type\": \"Newtonsoft.Json.Tests.Issues.Case115+Address, Newtonsoft.Json.Tests\",\r\n    \"City\": \"London\"\r\n  },\r\n  \"$type\": \"System.Collections.Generic.Dictionary`2[[Newtonsoft.Json.Tests.Issues.Case115+AddressType, Newtonsoft.Json.Tests],[Newtonsoft.Json.Tests.Issues.Case115+Address, Newtonsoft.Json.Tests]], mscorlib\"\r\n}";
                     // Bridge does not throw an exception at all, it accepts this kind of mistake.
                     /* 
                     Assert.Throws<ArgumentException>(
@@ -2146,7 +2171,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var $t;
                     var account = ($t = new Newtonsoft.Json.Tests.Issues.Case16.Account(), $t.Email = "james@example.com", $t.Active = true, $t.CreatedDate = System.DateTime.create(2013, 1, 20, 0, 0, 0, 0, 1), $t.Roles = $asm.$.Newtonsoft.Json.Tests.Issues.Case16.f1(new (System.Collections.Generic.List$1(System.String)).ctor()), $t);
 
-                    var json = "{\n              \"Active\": false,\n              \"Roles\": [\n                \"Expired\"\n              ]\n            }";
+                    var json = "{\r\n              \"Active\": false,\r\n              \"Roles\": [\r\n                \"Expired\"\r\n              ]\r\n            }";
 
                     Newtonsoft.Json.JsonConvert.PopulateObject(json, account);
 
@@ -2158,7 +2183,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var s = new Newtonsoft.Json.Tests.Issues.Case16.Session();
                     s.Date = System.DateTime.create(2014, 6, 4);
 
-                    var j = "{\n              \"Name\": \"Serialize All The Things\"\n            }";
+                    var j = "{\r\n              \"Name\": \"Serialize All The Things\"\r\n            }";
 
                     Newtonsoft.Json.JsonConvert.PopulateObject(j, s);
 
@@ -3855,6 +3880,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     ($t = person.ArrayAddresses)[System.Array.index(0, $t)] = ($t1 = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t1.Street = "test", $t1);
 
                     var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, ($t1 = new Newtonsoft.Json.JsonSerializerSettings(), $t1.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All, $t1));
+                    // Error, because of Issue https://github.com/bridgedotnet/Bridge/issues/3746
                     var match = "{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Person, Newtonsoft.Json.Tests\",\"Addresses\":null,\"ArrayAddresses\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address[]\",\"$values\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"ListAddresses\":{\"$type\":\"System.Collections.Generic.List`1[[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"$values\":[{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"StringAddresses\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"Home\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests\",\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}}}";
                     Bridge.Test.NUnit.Assert.AreEqual(match, serialized, "Complex object with Dictionary, List, and array members can be serialized.");
 
@@ -3893,6 +3919,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     ($t = person.ArrayAddresses)[System.Array.index(0, $t)] = ($t1 = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t1.Street = "test", $t1);
 
                     var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, ($t1 = new Newtonsoft.Json.JsonSerializerSettings(), $t1.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Arrays, $t1));
+                    // Error, because of Issue https://github.com/bridgedotnet/Bridge/issues/3746
                     var match = "{\"Addresses\":null,\"ArrayAddresses\":{\"$type\":\"Newtonsoft.Json.Tests.Issues.Case93+Address[]\",\"$values\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"ListAddresses\":{\"$type\":\"System.Collections.Generic.List`1[[Newtonsoft.Json.Tests.Issues.Case93+Address, Newtonsoft.Json.Tests]], mscorlib\",\"$values\":[{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}]},\"StringAddresses\":{\"Home\":{\"City\":null,\"PostalCode\":null,\"State\":null,\"Street\":\"test\"}}}";
                     Bridge.Test.NUnit.Assert.AreEqual(match, serialized, "Complex object with TypeNameHandling as 'array' can be serialized.");
 
@@ -4613,6 +4640,61 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         props: {
             Owner: null,
             List1: null
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Tests.Car", {
+        props: {
+            Maker: null,
+            Model: null
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Tests.KnownTypesBinder", {
+        inherits: [Newtonsoft.Json.Serialization.ISerializationBinder],
+        props: {
+            KnownTypes: null
+        },
+        alias: [
+            "BindToType", "Newtonsoft$Json$Serialization$ISerializationBinder$BindToType",
+            "BindToName", "Newtonsoft$Json$Serialization$ISerializationBinder$BindToName"
+        ],
+        methods: {
+            BindToType: function (assemblyName, typeName) {
+                return System.Linq.Enumerable.from(this.KnownTypes).singleOrDefault(function (t) {
+                        return Bridge.referenceEquals(Bridge.Reflection.getTypeName(t), typeName);
+                    }, null);
+            },
+            BindToName: function (serializedType, assemblyName, typeName) {
+                assemblyName.v = null;
+                typeName.v = Bridge.Reflection.getTypeName(serializedType);
+            }
+        }
+    });
+
+    Bridge.define("Newtonsoft.Json.Tests.Tests.SerializationBinderTests", {
+        methods: {
+            KnownTypesBinderTest: function () {
+                var $t;
+                var knownTypesBinder = ($t = new Newtonsoft.Json.Tests.Tests.KnownTypesBinder(), $t.KnownTypes = $asm.$.Newtonsoft.Json.Tests.Tests.SerializationBinderTests.f1(new (System.Collections.Generic.List$1(Function)).ctor()), $t);
+
+                var car = ($t = new Newtonsoft.Json.Tests.Tests.Car(), $t.Maker = "Ford", $t.Model = "Explorer", $t);
+
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(car, Newtonsoft.Json.Formatting.Indented, ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t.SerializationBinder = knownTypesBinder, $t));
+
+                var newValue = Newtonsoft.Json.JsonConvert.DeserializeObject(json, System.Object, ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t.SerializationBinder = knownTypesBinder, $t));
+
+                Bridge.Test.NUnit.Assert.AreEqual("Car", Bridge.Reflection.getTypeName(Bridge.getType(newValue)));
+            }
+        }
+    });
+
+    Bridge.ns("Newtonsoft.Json.Tests.Tests.SerializationBinderTests", $asm.$);
+
+    Bridge.apply($asm.$.Newtonsoft.Json.Tests.Tests.SerializationBinderTests, {
+        f1: function (_o1) {
+            _o1.add(Newtonsoft.Json.Tests.Tests.Car);
+            return _o1;
         }
     });
 

@@ -13,6 +13,7 @@ namespace Newtonsoft.Json
         internal TypeNameHandling? _typeNameHandling;
         internal NullValueHandling? _nullValueHandling;
         internal ObjectCreationHandling? _objectCreationHandling;
+        internal ISerializationBinder _serializationBinder;
 
         /// <summary>
         /// Gets or sets how null values are handled during serialization and deserialization.
@@ -51,7 +52,7 @@ namespace Newtonsoft.Json
         /// </summary>
         /// <remarks>
         /// <see cref="JsonSerializerSettings.TypeNameHandling"/> should be used with caution when your application deserializes JSON from an external source.
-        /// Incoming types should be validated with a custom SerializationBinder />
+        /// Incoming types should be validated with a custom <see cref="JsonSerializerSettings.SerializationBinder"/>
         /// when deserializing with a value other than <see cref="TypeNameHandling.None"/>.
         /// </remarks>
         /// <value>The type name handling.</value>
@@ -75,6 +76,22 @@ namespace Newtonsoft.Json
         public IContractResolver ContractResolver
         {
             get; set;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="ISerializationBinder"/> used by the serializer when resolving type names.
+        /// </summary>
+        /// <value>The binder.</value>
+        public ISerializationBinder SerializationBinder
+        {
+            get
+            {
+                return _serializationBinder ?? DefaultSerializationBinder.Instance;
+            }
+            set
+            {
+                _serializationBinder = value;
+            }
         }
     }
 }

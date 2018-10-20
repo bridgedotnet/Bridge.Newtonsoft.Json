@@ -73,6 +73,7 @@
     <Compile Include="Issues\0100\Case121.cs" />
     <Compile Include="Issues\0100\Case123.cs" />
     <Compile Include="Issues\0100\Case126.cs" />
+    <Compile Include="Issues\0100\Case131.cs" />
     <Compile Include="Issues\0100\Case132.cs" />
     <Compile Include="Issues\0100\Case136.cs" />
     <Compile Include="Issues\0100\Case138.cs" />
@@ -89,6 +90,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Tests\JsonConstructorTests.cs" />
+    <Compile Include="Tests\SerializationBinderTests.cs" />
     <Compile Include="Tests\SerializationTests.cs" />
     <Compile Include="Utilities\DateHelper.cs" />
     <Compile Include="Utilities\DecimalHelper.cs" />
