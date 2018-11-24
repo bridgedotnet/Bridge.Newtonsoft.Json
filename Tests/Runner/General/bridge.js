@@ -148,7 +148,7 @@
                     t = System.Enum.getUnderlyingType(t);
                 }
 
-                if (T && T !== t && !Bridge.isObject(T)) { 
+                if (T && T !== t && !Bridge.isObject(T)) {
                     throw new System.InvalidCastException.$ctor1("Specified cast is not valid.");
                 }
 
@@ -479,7 +479,7 @@
                 return type.ctor();
             } else if (args && args.length > 0) {
                 return Bridge.Reflection.applyConstructor(type, args);
-            } 
+            }
 
             if (type.$kind === 'interface') {
                 throw new System.MissingMethodException.$ctor1('Default constructor not found for type ' + Bridge.getTypeName(type));
@@ -505,7 +505,7 @@
                 if (type.$$name && !(ctors.length == 1 && ctors[0].isSynthetic)) {
                     throw new System.MissingMethodException.$ctor1('Default constructor not found for type ' + Bridge.getTypeName(type));
                 }
-            }            
+            }
 
             return new type();
         },
@@ -1639,7 +1639,7 @@
                 throw new System.NullReferenceException.$ctor1("instance is null");
             }
 
-            if (T) {               
+            if (T) {
                 var type = Bridge.getType(instance);
                 return Bridge.Reflection.isAssignableFrom(T, type) ? type : T;
             }
@@ -2727,7 +2727,7 @@
             }
             else {
                 prototype = extend ? new extend[0].$$initCtor() : (objectType.$$initCtor ? new objectType.$$initCtor() : new objectType());
-            }            
+            }
 
             Class.$$initCtor = function () { };
             Class.$$initCtor.prototype = prototype;
@@ -3324,7 +3324,7 @@
                                 task.continueWith(function () {
                                     setTimeout(function () {
                                         task.getAwaitedResult();
-                                    }, 0);                                    
+                                    }, 0);
                                 });
                             }
                         });
@@ -4795,7 +4795,7 @@ Bridge.define("System.ValueType", {
                         return enumMethods.toName(name);
                     }
                 }
-                
+
                 return value.toString();
             } else {
                 var parts = [],
@@ -9316,7 +9316,7 @@ Bridge.define("System.ValueType", {
                         d1 = this.create$2(ticks, 2);
                     }
                 }
-                
+
                 return d1;
             },
 
@@ -9447,9 +9447,9 @@ Bridge.define("System.ValueType", {
             },
 
             ToFileTimeUtc: function (d) {
-                return (this.getKind(d) !== 0) ? this.getTicks(this.toUniversalTime(d)) : this.getTicks(d); 
+                return (this.getKind(d) !== 0) ? this.getTicks(this.toUniversalTime(d)) : this.getTicks(d);
             },
- 
+
             isUseGenitiveForm: function (format, index, tokenLen, patternToMatch) {
                 var i,
                     repeat = 0;
@@ -10385,7 +10385,7 @@ Bridge.define("System.ValueType", {
                 }
 
                 dt.ticks = this.getTicks(dt);
-                
+
                 return dt;
             },
 
@@ -18112,7 +18112,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
 
                         for (var j = 0; j < entry.length; j++) {
                             keys.push(entry[j].key);
-                        }                       
+                        }
                     }
                 }
 
@@ -18133,7 +18133,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
 
                         for (var j = 0; j < entry.length; j++) {
                             values.push(entry[j].value);
-                        }                         
+                        }
                     }
                 }
 
