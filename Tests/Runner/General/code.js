@@ -1,9 +1,9 @@
 /**
  * Newtonsoft.Json Test library
- * @version 1.13.0
+ * @version 1.14.0
  * @author Object.NET, Inc.
- * @copyright Copyright 2008-2018 Object.NET, Inc.
- * @compiler Bridge.NET 17.6.0
+ * @copyright Copyright 2008-2019 Object.NET, Inc.
+ * @compiler Bridge.NET 17.7.0
  */
 Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     "use strict";
@@ -191,7 +191,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                 },
                 TypeWorks: function () {
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Collections.Generic.List$1(System.String), Newtonsoft.Json.JsonConvert.DeserializeObject("\"" + (Bridge.Reflection.getTypeFullName(System.Collections.Generic.List$1(System.String)) || "") + "\"", Function));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Collections.Generic.List$1(System.String), Newtonsoft.Json.JsonConvert.DeserializeObject("\"" + (Bridge.Reflection.getTypeFullName(System.Collections.Generic.List$1(System.String)) || "") + "\"", System.Type));
                 },
                 CharWorks: function () {
                     Bridge.Test.NUnit.Assert.AreEqual(97, Newtonsoft.Json.JsonConvert.DeserializeObject("\"a\"", System.Char));
@@ -321,14 +321,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.True(list.getItem(2) === jsonList.getItem(2));
                 },
                 IDictionaryWorks: function () {
-                    var dict = $asm.$.Newtonsoft.Json.Tests.DeserializationTests.f2(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.DeserializationTests.E1))());
+                    var dict = $asm.$.Newtonsoft.Json.Tests.DeserializationTests.f2(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.DeserializationTests.E1)).ctor());
 
                     var jsonDict = Newtonsoft.Json.JsonConvert.DeserializeObject("{\"i1\":\"Item1\",\"i2\":\"Item2\",\"i3\":\"Item3\"}", System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.DeserializationTests.E1));
 
-                    Bridge.Test.NUnit.Assert.AreEqual(dict.count, jsonDict.count);
-                    Bridge.Test.NUnit.Assert.AreEqual(dict.get("i1"), jsonDict.get("i1"));
-                    Bridge.Test.NUnit.Assert.AreEqual(dict.get("i2"), jsonDict.get("i2"));
-                    Bridge.Test.NUnit.Assert.AreEqual(dict.get("i3"), jsonDict.get("i3"));
+                    Bridge.Test.NUnit.Assert.AreEqual(dict.Count, jsonDict.Count);
+                    Bridge.Test.NUnit.Assert.AreEqual(dict.getItem("i1"), jsonDict.getItem("i1"));
+                    Bridge.Test.NUnit.Assert.AreEqual(dict.getItem("i2"), jsonDict.getItem("i2"));
+                    Bridge.Test.NUnit.Assert.AreEqual(dict.getItem("i3"), jsonDict.getItem("i3"));
                 },
                 TypeWithFieldWorks: function () {
                     var c = new Newtonsoft.Json.Tests.DeserializationTests.ClassWithFields();
@@ -556,9 +556,9 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             return _o1;
         },
         f2: function (_o1) {
-            _o1.set("i1", Newtonsoft.Json.Tests.DeserializationTests.E1.Item1);
-            _o1.set("i2", Newtonsoft.Json.Tests.DeserializationTests.E1.Item2);
-            _o1.set("i3", Newtonsoft.Json.Tests.DeserializationTests.E1.Item3);
+            _o1.setItem("i1", Newtonsoft.Json.Tests.DeserializationTests.E1.Item1);
+            _o1.setItem("i2", Newtonsoft.Json.Tests.DeserializationTests.E1.Item2);
+            _o1.setItem("i3", Newtonsoft.Json.Tests.DeserializationTests.E1.Item3);
             return _o1;
         }
     });
@@ -620,7 +620,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 this.dateField = System.DateTime.create(2010, 6, 10, 12, 0, 0, 0, 1);
                 this.arrayField = System.Array.init([1, 2, 3], System.Int32);
                 this.listField = $asm.$.Newtonsoft.Json.Tests.DeserializationTests.ClassWithFields.f1(new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.DeserializationTests.E1)).ctor());
-                this.dictField = $asm.$.Newtonsoft.Json.Tests.DeserializationTests.ClassWithFields.f2(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.DeserializationTests.E1))());
+                this.dictField = $asm.$.Newtonsoft.Json.Tests.DeserializationTests.ClassWithFields.f2(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.DeserializationTests.E1)).ctor());
             }
         }
     });
@@ -635,9 +635,9 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             return _o1;
         },
         f2: function (_o2) {
-            _o2.set("i1", Newtonsoft.Json.Tests.DeserializationTests.E1.Item1);
-            _o2.set("i2", Newtonsoft.Json.Tests.DeserializationTests.E1.Item2);
-            _o2.set("i3", Newtonsoft.Json.Tests.DeserializationTests.E1.Item3);
+            _o2.setItem("i1", Newtonsoft.Json.Tests.DeserializationTests.E1.Item1);
+            _o2.setItem("i2", Newtonsoft.Json.Tests.DeserializationTests.E1.Item2);
+            _o2.setItem("i3", Newtonsoft.Json.Tests.DeserializationTests.E1.Item3);
             return _o2;
         }
     });
@@ -1131,7 +1131,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(0, System.Linq.Enumerable.from(System.Linq.Enumerable.from(response2.Nodes).first().value.Colors).count(), "First node2's color count is 0.");
 
                     var response3 = new Newtonsoft.Json.Tests.Issues.Case111.DictResponse();
-                    response3.Nodes = new (System.Collections.Generic.Dictionary$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode))();
+                    response3.Nodes = new (System.Collections.Generic.Dictionary$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode)).ctor();
                     response3.Nodes.System$Collections$Generic$IDictionary$2$System$Int32$Newtonsoft$Json$Tests$Issues$Case111$ListNode$add(1, ($t = new Newtonsoft.Json.Tests.Issues.Case111.ListNode(), $t.Name = "First", $t.Colors = $asm.$.Newtonsoft.Json.Tests.Issues.Case111.f1(new (System.Collections.Generic.List$1(System.String)).ctor()), $t));
                     response3.Nodes.System$Collections$Generic$IDictionary$2$System$Int32$Newtonsoft$Json$Tests$Issues$Case111$ListNode$add(2, ($t = new Newtonsoft.Json.Tests.Issues.Case111.ListNode(), $t.Name = "Second", $t.Colors = $asm.$.Newtonsoft.Json.Tests.Issues.Case111.f2(new (System.Collections.Generic.List$1(System.String)).ctor()), $t));
 
@@ -1361,7 +1361,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                  */
                 TestOrder: function () {
                     var $t;
-                    var request = $asm.$.Newtonsoft.Json.Tests.Issues.Case115.f1(new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case115.AddressType,Newtonsoft.Json.Tests.Issues.Case115.Address))());
+                    var request = $asm.$.Newtonsoft.Json.Tests.Issues.Case115.f1(new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case115.AddressType,Newtonsoft.Json.Tests.Issues.Case115.Address)).ctor());
 
                     var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(request, ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t));
                     // This won't match native's, but the order of the other properties
@@ -1388,7 +1388,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                        "Trying to deserialize a '$type' broken string results in ArgumentException.");
                     */
                     var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case115.AddressType,Newtonsoft.Json.Tests.Issues.Case115.Address));
-                    Bridge.Test.NUnit.Assert.AreEqual("London", deserialized.get(0).City, "Invalid '$type' serialized strings can be deserialized -- and results in the correct object.");
+                    Bridge.Test.NUnit.Assert.AreEqual("London", deserialized.getItem(0).City, "Invalid '$type' serialized strings can be deserialized -- and results in the correct object.");
                 }
             }
         }
@@ -2191,7 +2191,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(null, System.Array.getItem(people, 2, Newtonsoft.Json.Tests.Issues.Case16.Person), "Last populated entry placed last in the array.");
                 },
                 PopulateDictionary: function () {
-                    var people = $asm.$.Newtonsoft.Json.Tests.Issues.Case16.f3(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case16.Person))());
+                    var people = $asm.$.Newtonsoft.Json.Tests.Issues.Case16.f3(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case16.Person)).ctor());
 
                     Newtonsoft.Json.JsonConvert.PopulateObject("{\"key3\":{\"Name\":\"Initial3_1\"},\"key5\":{\"Name\":\"Initial5\"}}", people);
 
@@ -3259,7 +3259,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 },
                 TestCustomDictionaryKey: function () {
                     var key = new Newtonsoft.Json.Tests.Issues.Case74.MyKey.$ctor1(1);
-                    var listingLevelNames = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String))();
+                    var listingLevelNames = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.MyKey,System.String)).ctor();
                     listingLevelNames.add(key, "None");
 
                     Bridge.Test.NUnit.Assert.AreEqual("{\"Value\":1}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(Newtonsoft.Json.Tests.Issues.Case74.MyKey, key, false), "Object serialized correctly.");
@@ -3277,7 +3277,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                  */
                 TestSimpleDictionaryKey: function () {
                     var key = new Newtonsoft.Json.Tests.Issues.Case74.SimpleKey();
-                    var listingLevelNames = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.SimpleKey,System.String))();
+                    var listingLevelNames = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.SimpleKey,System.String)).ctor();
                     listingLevelNames.add(key, "None");
 
                     Bridge.Test.NUnit.Assert.AreEqual("{\"Newtonsoft.Json.Tests.Issues.Case74+SimpleKey\":\"None\"}", Newtonsoft.Json.Tests.Issues.Case74.Serialize(System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case74.SimpleKey,System.String), listingLevelNames, false), "Simple dictionary serialized correctly.");
@@ -3834,7 +3834,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 TestDictionary: function () {
                     var $t;
                     var person = new Newtonsoft.Json.Tests.Issues.Case93.Person();
-                    person.Addresses = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case93.AddressType,Newtonsoft.Json.Tests.Issues.Case93.Address))();
+                    person.Addresses = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case93.AddressType,Newtonsoft.Json.Tests.Issues.Case93.Address)).ctor();
                     person.Addresses.add(Newtonsoft.Json.Tests.Issues.Case93.AddressType.Home, ($t = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t.Street = "test", $t));
 
                     var serialized = Newtonsoft.Json.JsonConvert.SerializeObject(person, ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t));
@@ -3842,12 +3842,12 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(match, serialized, "Object with dictionary members and dictionary enum keys can be serialized.");
 
                     var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.Addresses.get(Newtonsoft.Json.Tests.Issues.Case93.AddressType.Home).Street, "Object with dictionary members and dictionary enum keys can be deserialized.");
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.Addresses.getItem(Newtonsoft.Json.Tests.Issues.Case93.AddressType.Home).Street, "Object with dictionary members and dictionary enum keys can be deserialized.");
                 },
                 TestAll: function () {
                     var $t, $t1;
                     var person = new Newtonsoft.Json.Tests.Issues.Case93.Person();
-                    person.StringAddresses = new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case93.Address))();
+                    person.StringAddresses = new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case93.Address)).ctor();
                     person.ListAddresses = new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case93.Address)).ctor();
                     person.ArrayAddresses = System.Array.init(1, null, Newtonsoft.Json.Tests.Issues.Case93.Address);
                     person.StringAddresses.add("Home", ($t = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t.Street = "test", $t));
@@ -3859,14 +3859,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(match, serialized, "Complex object with Dictionary, List, and array members can be serialized.");
 
                     var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street, "Complex object's dictionary member can be deserialized.");
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.getItem("Home").Street, "Complex object's dictionary member can be deserialized.");
                     Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street, "Complex object's list member can be deserialized.");
                     Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street, "Complex object's array member can be deserialized.");
                 },
                 TestAuto: function () {
                     var $t, $t1;
                     var person = new Newtonsoft.Json.Tests.Issues.Case93.Person();
-                    person.StringAddresses = new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case93.Address))();
+                    person.StringAddresses = new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case93.Address)).ctor();
                     person.ListAddresses = new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case93.Address)).ctor();
                     person.ArrayAddresses = System.Array.init(1, null, Newtonsoft.Json.Tests.Issues.Case93.Address);
                     person.StringAddresses.add("Home", ($t = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t.Street = "test", $t));
@@ -3878,14 +3878,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(match, serialized, "Complex object with TypeNameHandling as 'auto' can be serialized.");
 
                     var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street, "TypeNameHandling=Auto serialized object's dictionary member can be deserialized.");
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.getItem("Home").Street, "TypeNameHandling=Auto serialized object's dictionary member can be deserialized.");
                     Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street, "TypeNameHandling=Auto serialized object's list member can be deserialized.");
                     Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street, "TypeNameHandling=Auto serialized object's array member can be deserialized.");
                 },
                 TestArrays: function () {
                     var $t, $t1;
                     var person = new Newtonsoft.Json.Tests.Issues.Case93.Person();
-                    person.StringAddresses = new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case93.Address))();
+                    person.StringAddresses = new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case93.Address)).ctor();
                     person.ListAddresses = new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case93.Address)).ctor();
                     person.ArrayAddresses = System.Array.init(1, null, Newtonsoft.Json.Tests.Issues.Case93.Address);
                     person.StringAddresses.add("Home", ($t = new Newtonsoft.Json.Tests.Issues.Case93.Address(), $t.Street = "test", $t));
@@ -3897,7 +3897,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(match, serialized, "Complex object with TypeNameHandling as 'array' can be serialized.");
 
                     var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(serialized, Newtonsoft.Json.Tests.Issues.Case93.Person);
-                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.get("Home").Street, "TypeNameHandling=Array serialized object's dictionary member can be deserialized.");
+                    Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.StringAddresses.getItem("Home").Street, "TypeNameHandling=Array serialized object's dictionary member can be deserialized.");
                     Bridge.Test.NUnit.Assert.AreEqual("test", deserialized.ListAddresses.getItem(0).Street, "TypeNameHandling=Array serialized object's dictionary member can be deserialized.");
                     Bridge.Test.NUnit.Assert.AreEqual("test", ($t1 = deserialized.ArrayAddresses)[System.Array.index(0, $t1)].Street, "TypeNameHandling=Array serialized object's dictionary member can be deserialized.");
                 }
@@ -4055,14 +4055,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         statics: {
             methods: {
                 EnumAsDictionaryKeyWorks: function () {
-                    var dic = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case99.EnuVals,System.Int32))();
+                    var dic = new (System.Collections.Generic.Dictionary$2(Newtonsoft.Json.Tests.Issues.Case99.EnuVals,System.Int32)).ctor();
                     dic.add(Newtonsoft.Json.Tests.Issues.Case99.EnuVals.One, 1);
                     dic.add(Newtonsoft.Json.Tests.Issues.Case99.EnuVals.Two, 2);
 
                     var dic_s = Newtonsoft.Json.JsonConvert.SerializeObject(dic);
                     Bridge.Test.NUnit.Assert.AreEqual("{\"One\":1,\"Two\":2}", dic_s, "Serialized string results in the expected output.");
 
-                    var dic2 = new (System.Collections.Generic.Dictionary$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case99.EnuVals))();
+                    var dic2 = new (System.Collections.Generic.Dictionary$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case99.EnuVals)).ctor();
                     dic2.add(1, Newtonsoft.Json.Tests.Issues.Case99.EnuVals.One);
                     dic2.add(2, Newtonsoft.Json.Tests.Issues.Case99.EnuVals.Two);
 
@@ -4416,7 +4416,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual("[0,1,2]", Newtonsoft.Json.JsonConvert.SerializeObject(list));
                 },
                 IDictionaryWorks: function () {
-                    var dict = $asm.$.Newtonsoft.Json.Tests.SerializationTests.f2(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.SerializationTests.E1))());
+                    var dict = $asm.$.Newtonsoft.Json.Tests.SerializationTests.f2(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.SerializationTests.E1)).ctor());
 
                     Bridge.Test.NUnit.Assert.AreEqual("{\"i1\":0,\"i2\":1,\"i3\":2}", Newtonsoft.Json.JsonConvert.SerializeObject(dict));
                 },
@@ -4505,9 +4505,9 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             return _o1;
         },
         f2: function (_o1) {
-            _o1.set("i1", Newtonsoft.Json.Tests.SerializationTests.E1.Item1);
-            _o1.set("i2", Newtonsoft.Json.Tests.SerializationTests.E1.Item2);
-            _o1.set("i3", Newtonsoft.Json.Tests.SerializationTests.E1.Item3);
+            _o1.setItem("i1", Newtonsoft.Json.Tests.SerializationTests.E1.Item1);
+            _o1.setItem("i2", Newtonsoft.Json.Tests.SerializationTests.E1.Item2);
+            _o1.setItem("i3", Newtonsoft.Json.Tests.SerializationTests.E1.Item3);
             return _o1;
         },
         f3: function (_o2) {
@@ -4567,7 +4567,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 this.dateField = System.DateTime.create(2010, 6, 10, 12, 0, 0, 0);
                 this.arrayField = System.Array.init([1, 2, 3], System.Int32);
                 this.listField = $asm.$.Newtonsoft.Json.Tests.SerializationTests.ClassWithFields.f1(new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.SerializationTests.E1)).ctor());
-                this.dictField = $asm.$.Newtonsoft.Json.Tests.SerializationTests.ClassWithFields.f2(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.SerializationTests.E1))());
+                this.dictField = $asm.$.Newtonsoft.Json.Tests.SerializationTests.ClassWithFields.f2(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.SerializationTests.E1)).ctor());
             }
         }
     });
@@ -4582,9 +4582,9 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             return _o1;
         },
         f2: function (_o2) {
-            _o2.set("i1", Newtonsoft.Json.Tests.SerializationTests.E1.Item1);
-            _o2.set("i2", Newtonsoft.Json.Tests.SerializationTests.E1.Item2);
-            _o2.set("i3", Newtonsoft.Json.Tests.SerializationTests.E1.Item3);
+            _o2.setItem("i1", Newtonsoft.Json.Tests.SerializationTests.E1.Item1);
+            _o2.setItem("i2", Newtonsoft.Json.Tests.SerializationTests.E1.Item2);
+            _o2.setItem("i3", Newtonsoft.Json.Tests.SerializationTests.E1.Item3);
             return _o2;
         }
     });
