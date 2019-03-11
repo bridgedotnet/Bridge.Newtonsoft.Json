@@ -203,13 +203,13 @@
                                 keys = System.Linq.Enumerable.from(raw.getKeys()).ToArray()
                                 for (var i = 0; i < keys.length; i++) {
                                     var key = keys[i];
-                                    target.set(Newtonsoft.Json.JsonConvert.DeserializeObject(key, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw.get(key), typeValue, settings, true), false);
+                                    target.setItem(Newtonsoft.Json.JsonConvert.DeserializeObject(key, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw.get(key), typeValue, settings, true), false);
                                 }
                             }
                             else {
                                 for (var each in raw) {
                                     if (raw.hasOwnProperty(each)) {
-                                        target.set(Newtonsoft.Json.JsonConvert.DeserializeObject(each, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw[each], typeValue, settings, true), false);
+                                        target.setItem(Newtonsoft.Json.JsonConvert.DeserializeObject(each, typeKey, settings, true), Newtonsoft.Json.JsonConvert.DeserializeObject(raw[each], typeValue, settings, true), false);
                                     }
                                 }
                             }
@@ -890,7 +890,7 @@
                     if (!field && typeof raw === "string") {
                         var obj = Newtonsoft.Json.JsonConvert.parse(raw);
 
-                        if (typeof obj === "object" || Bridge.isArray(obj) || type === System.Array.type(System.Byte, 1) || type === Function || type === System.Guid || type === System.Globalization.CultureInfo || type === System.Uri || type === System.DateTime || type === System.DateTimeOffset || type === System.Char || Bridge.Reflection.isEnum(type)) {
+                        if (typeof obj === "object" || Bridge.isArray(obj) || type === System.Array.type(System.Byte, 1) || type === Function || type == System.Type || type === System.Guid || type === System.Globalization.CultureInfo || type === System.Uri || type === System.DateTime || type === System.DateTimeOffset || type === System.Char || Bridge.Reflection.isEnum(type)) {
                             raw = obj;
                         }
                     }
@@ -1026,7 +1026,7 @@
                             throw new Newtonsoft.Json.JsonException(System.String.format("Could not convert {0} to {1}: {2}", Bridge.getTypeName(raw), Bridge.getTypeName(type), raw));
                         }
 
-                        if (type === Function) {
+                        if (type === Function || type == System.Type) {
                             return Bridge.Reflection.getType(raw);
                         } else if (type === System.Globalization.CultureInfo) {
                             return new System.Globalization.CultureInfo(raw);
