@@ -1,9 +1,9 @@
 /**
  * Newtonsoft.Json Test library
- * @version 1.13.0
+ * @version 1.14.0
  * @author Object.NET, Inc.
- * @copyright Copyright 2008-2018 Object.NET, Inc.
- * @compiler Bridge.NET 17.6.0
+ * @copyright Copyright 2008-2019 Object.NET, Inc.
+ * @compiler Bridge.NET 17.7.0
  */
 Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     "use strict";
@@ -191,7 +191,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                 },
                 TypeWorks: function () {
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Collections.Generic.List$1(System.String), Newtonsoft.Json.JsonConvert.DeserializeObject("\"" + (Bridge.Reflection.getTypeFullName(System.Collections.Generic.List$1(System.String)) || "") + "\"", Function));
+                    Bridge.Test.NUnit.Assert.AreEqual(System.Collections.Generic.List$1(System.String), Newtonsoft.Json.JsonConvert.DeserializeObject("\"" + (Bridge.Reflection.getTypeFullName(System.Collections.Generic.List$1(System.String)) || "") + "\"", System.Type));
                 },
                 CharWorks: function () {
                     Bridge.Test.NUnit.Assert.AreEqual(97, Newtonsoft.Json.JsonConvert.DeserializeObject("\"a\"", System.Char));

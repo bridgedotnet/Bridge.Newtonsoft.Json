@@ -246,8 +246,8 @@
             },
             ctors: {
                 init: function () {
-                    this.version = "1.13.0";
-                    this.compiler = "17.6.0";
+                    this.version = "1.14.0";
+                    this.compiler = "17.7.0";
                 }
             }
         }

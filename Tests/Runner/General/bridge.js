@@ -1,7 +1,7 @@
 /**
- * @version   : 17.6.0 - Bridge.NET
+ * @version   : 17.7.0 - Bridge.NET
  * @author    : Object.NET, Inc. http://bridge.net/
- * @copyright : Copyright 2008-2018 Object.NET, Inc. http://object.net/
+ * @copyright : Copyright 2008-2019 Object.NET, Inc. http://object.net/
  * @license   : See license.txt and https://github.com/bridgedotnet/Bridge/blob/master/LICENSE.md
  */
 
@@ -811,6 +811,10 @@
 
             alias = name.replace(/[\.\(\)\,\+]/g, "$");
 
+            if (type.$module) {
+                alias = type.$module + "$" + alias;
+            }
+
             if (type.$$name) {
                 type.$$alias = alias;
             } else {
@@ -1394,7 +1398,7 @@
                 }
 
                 if (!eq && a && b && a.hasOwnProperty("Item1") && Bridge.isPlainObject(a) && b.hasOwnProperty("Item1") && Bridge.isPlainObject(b)) {
-                    return Bridge.objectEquals(a, b);
+                    return Bridge.objectEquals(a, b, true);
                 }
 
                 return eq;
@@ -1406,11 +1410,11 @@
             return result;
         },
 
-        objectEquals: function (a, b) {
+        objectEquals: function (a, b, oneLevel) {
             Bridge.$$leftChain = [];
             Bridge.$$rightChain = [];
 
-            var result = Bridge.deepEquals(a, b);
+            var result = Bridge.deepEquals(a, b, oneLevel);
 
             delete Bridge.$$leftChain;
             delete Bridge.$$rightChain;
@@ -1418,7 +1422,7 @@
             return result;
         },
 
-        deepEquals: function (a, b) {
+        deepEquals: function (a, b, oneLevel) {
             if (typeof a === "object" && typeof b === "object") {
                 if (a === b) {
                     return true;
@@ -1447,7 +1451,7 @@
 
                     if (a[p] === b[p]) {
                         continue;
-                    } else if (typeof (a[p]) === "object") {
+                    } else if (typeof (a[p]) === "object" && !oneLevel) {
                         Bridge.$$leftChain.push(a);
                         Bridge.$$rightChain.push(b);
 
@@ -2679,6 +2683,10 @@
 
             Class.$kind = prop.$kind;
 
+            if (prop.$module) {
+                Class.$module = prop.$module;
+            }
+
             if (prop.$metadata) {
                 Class.$metadata = prop.$metadata;
             }
@@ -3268,6 +3276,10 @@
                 fn.prototype = prototype;
                 fn.prototype.constructor = fn;
                 fn.$kind = cfg.$kind || "class";
+
+                if (cfg.$module) {
+                    fn.$module = cfg.$module;
+                }
             };
 
             Bridge.Class.$queue.push(fn);
@@ -3471,8 +3483,8 @@
     // @source SystemAssemblyVersion.js
 
     Bridge.init(function () {
-        Bridge.SystemAssembly.version = "17.6.0";
-        Bridge.SystemAssembly.compiler = "17.6.0";
+        Bridge.SystemAssembly.version = "17.7.0";
+        Bridge.SystemAssembly.compiler = "17.7.0";
     });
 
     Bridge.define("Bridge.Utils.SystemAssemblyVersion");
@@ -3709,7 +3721,11 @@
 
             var results = (/function (.{1,})\(/).exec(str);
 
-            return (results && results.length > 1) ? results[1] : "System.Object";
+            if ((results && results.length > 1)) {
+                return results[1];
+            }
+
+            return "System.Object";
         },
 
         _makeQName: function (name, asm) {
@@ -3750,7 +3766,7 @@
 
         getTypeAssembly: function (type) {
             if (type.$isArray) {
-                return type.$elementType.$assembly;
+                return Bridge.Reflection.getTypeAssembly(type.$elementType);
             }
 
             if (System.Array.contains([Date, Number, Boolean, String, Function, Array], type)) {
@@ -3927,6 +3943,8 @@
                         return true;
                     }
                 }
+            } else {
+                return baseType.isPrototypeOf(type);
             }
 
             return false;
@@ -3949,7 +3967,7 @@
         },
 
         isAbstract: function (type) {
-            if (type === Function) {
+            if (type === Function || type === System.Type) {
                 return true;
             }
             return ((Bridge.Reflection.getMetaValue(type, "att", 0) & 128) != 0);
@@ -4103,6 +4121,27 @@
             }
 
             return typeName ? Bridge.Reflection._getType(typeName, asm) : null;
+        },
+
+        isPrimitive: function (type) {
+            if (type === System.Int64 ||
+                type === System.UInt64 ||
+                type === System.Double ||
+                type === System.Single ||
+                type === System.Byte ||
+                type === System.SByte ||
+                type === System.Int16 ||
+                type === System.UInt16 ||
+                type === System.Int32 ||
+                type === System.UInt32 ||
+                type === System.Boolean ||
+                type === Boolean ||
+                type === System.Char ||
+                type === Number) {
+                return true;
+            }
+
+            return false;
         },
 
         canAcceptNull: function (type) {
@@ -4700,6 +4739,16 @@ Bridge.define("System.ValueType", {
 
         toName: function (name) {
             return name;
+        },
+
+        toObject: function (enumType, value) {
+            value = Bridge.unbox(value, true);
+
+            if (value == null) {
+                return null;
+            }
+
+            return enumMethods.parse(enumType, value.toString(), false, true);
         },
 
         parse: function (enumType, s, ignoreCase, silent) {
@@ -6620,6 +6669,16 @@ Bridge.define("System.ValueType", {
         $flags: true
     });
 
+    // @source Type.js
+
+Bridge.define("System.Type", {
+
+    statics: {
+        $is: function (instance) {
+            return instance && instance.constructor === Function;
+        }
+    }
+});
     // @source Math.js
 
     Bridge.Math = {
@@ -12266,7 +12325,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             return unboxed;
         },
 
-        resize: function (arr, newSize, val) {
+        resize: function (arr, newSize, val, T) {
             if (newSize < 0) {
                 throw new System.ArgumentOutOfRangeException.$ctor3("newSize", newSize, "newSize cannot be less than 0.");
             }
@@ -12276,7 +12335,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 ref = arr.v;
 
             if (!ref) {
-                ref = new Array(newSize);
+                ref = System.Array.init(new Array(newSize), T);
             } else {
                 oldSize = ref.length;
                 ref.length = newSize;
@@ -12285,6 +12344,8 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             for (var i = oldSize; i < newSize; i++) {
                 ref[i] = isFn ? val() : val;
             }
+
+            ref.$s = [ref.length];
 
             arr.v = ref;
         },
@@ -14237,8 +14298,8 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             "setItem", "System$Collections$Generic$IReadOnlyDictionary$2$" + Bridge.getTypeAlias(TKey) + "$" + Bridge.getTypeAlias(TValue) + "$setItem",
             "getItem", "System$Collections$Generic$IDictionary$2$" + Bridge.getTypeAlias(TKey) + "$" + Bridge.getTypeAlias(TValue) + "$getItem",
             "setItem", "System$Collections$Generic$IDictionary$2$" + Bridge.getTypeAlias(TKey) + "$" + Bridge.getTypeAlias(TValue) + "$setItem",
-            "getItem", "System$Collections$IDictionary$getItem",
-            "setItem", "System$Collections$IDictionary$setItem",
+            "getItem$1", "System$Collections$IDictionary$getItem",
+            "setItem$1", "System$Collections$IDictionary$setItem",
             "tryGetValue", "System$Collections$Generic$IReadOnlyDictionary$2$" + Bridge.getTypeAlias(TKey) + "$" + Bridge.getTypeAlias(TValue) + "$tryGetValue",
             "tryGetValue", "System$Collections$Generic$IDictionary$2$" + Bridge.getTypeAlias(TKey) + "$" + Bridge.getTypeAlias(TValue) + "$tryGetValue",
             "remove", "System$Collections$Generic$IDictionary$2$" + Bridge.getTypeAlias(TKey) + "$" + Bridge.getTypeAlias(TValue) + "$remove"
@@ -14310,7 +14371,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 }
                 this.Insert(~i, key, value);
             },
-            getItem: function (key) {
+            getItem$1: function (key) {
                 if (System.Collections.Generic.SortedList$2(TKey,TValue).IsCompatibleKey(key)) {
                     var i = this.IndexOfKey(Bridge.cast(Bridge.unbox(key, TKey), TKey));
                     if (i >= 0) {
@@ -14320,7 +14381,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
 
                 return null;
             },
-            setItem: function (key, value) {
+            setItem$1: function (key, value) {
                 if (!System.Collections.Generic.SortedList$2(TKey,TValue).IsCompatibleKey(key)) {
                     System.ThrowHelper.ThrowArgumentNullException(System.ExceptionArgument.key);
                 }
@@ -33565,7 +33626,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 ToArray: function (T, source) {
                     var count = { };
                     var results = { v : Bridge.Collections.EnumerableHelpers.ToArray$1(T, source, count) };
-                    System.Array.resize(results, count.v, Bridge.getDefaultValue(T));
+                    System.Array.resize(results, count.v, Bridge.getDefaultValue(T), T);
                     return results.v;
                 },
                 ToArray$1: function (T, source, length) {
@@ -33588,7 +33649,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                                         newLength = MaxArrayLength <= count ? ((count + 1) | 0) : MaxArrayLength;
                                     }
 
-                                    System.Array.resize(arr, newLength, Bridge.getDefaultValue(T));
+                                    System.Array.resize(arr, newLength, Bridge.getDefaultValue(T), T);
                                 }
 
                                 arr.v[System.Array.index(Bridge.identity(count, (count = (count + 1) | 0)), arr.v)] = en[Bridge.geti(en, "System$Collections$Generic$IEnumerator$1$" + Bridge.getTypeAlias(T) + "$Current$1", "System$Collections$Generic$IEnumerator$1$Current$1")];
@@ -35292,7 +35353,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 var threshold = Bridge.Int.clip32(this._array.length * 0.9);
                 if (this._size < threshold) {
                     var localArray = { v : this._array };
-                    System.Array.resize(localArray, this._size, Bridge.getDefaultValue(T));
+                    System.Array.resize(localArray, this._size, Bridge.getDefaultValue(T), T);
                     this._array = localArray.v;
                     this._version = (this._version + 1) | 0;
                 }
@@ -35315,7 +35376,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             Push: function (item) {
                 if (this._size === this._array.length) {
                     var localArray = { v : this._array };
-                    System.Array.resize(localArray, (this._array.length === 0) ? System.Collections.Generic.Stack$1(T).DefaultCapacity : Bridge.Int.mul(2, this._array.length), Bridge.getDefaultValue(T));
+                    System.Array.resize(localArray, (this._array.length === 0) ? System.Collections.Generic.Stack$1(T).DefaultCapacity : Bridge.Int.mul(2, this._array.length), Bridge.getDefaultValue(T), T);
                     this._array = localArray.v;
                 }
                 this._array[System.Array.index(Bridge.identity(this._size, (this._size = (this._size + 1) | 0)), this._array)] = item;
@@ -45434,7 +45495,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                     return c;
                 }
 
-                var ret = System.Array.init(cnt, null, Function);
+                var ret = System.Array.init(cnt, null, System.Type);
                 cnt = 0;
                 for (var i1 = 0; i1 < c.length; i1 = (i1 + 1) | 0) {
                     if (c[System.Array.index(i1, c)] != null) {
