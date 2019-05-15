@@ -646,7 +646,7 @@ namespace Newtonsoft.Json.Tests
         {
             var json = "{ ID: true }";
             var result = JsonConvert.DeserializeObject<SomethingWithIDRequiringImplicitOperator<bool>>(json);
-            Assert.AreEqual("True", result.ID.Value);
+            Assert.AreEqual("true", result.ID.Value);
         }
 
         [Test]
@@ -678,7 +678,7 @@ namespace Newtonsoft.Json.Tests
         {
             var json = "{ ID: true }";
             var result = JsonConvert.DeserializeObject<SomethingWithIDRequiringExplicitOperator<bool>>(json);
-            Assert.AreEqual("True", result.ID.Value);
+            Assert.AreEqual("true", result.ID.Value);
         }
 
         [Test]
