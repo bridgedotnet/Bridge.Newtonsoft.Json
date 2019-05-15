@@ -495,7 +495,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 PropertyThatRequiresImplicitConversionFromBoolWorks: function () {
                     var json = "{ ID: true }";
                     var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringImplicitOperator$1(System.Boolean));
-                    Bridge.Test.NUnit.Assert.AreEqual("True", result.ID.Value);
+                    Bridge.Test.NUnit.Assert.AreEqual("true", result.ID.Value);
                 },
                 PropertyThatRequiresImplicitConversionFromIntegerWorks: function () {
                     var json = "{ ID: 123 }";
@@ -515,7 +515,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 PropertyThatRequiresExplicitConversionFromBoolWorks: function () {
                     var json = "{ ID: true }";
                     var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringExplicitOperator$1(System.Boolean));
-                    Bridge.Test.NUnit.Assert.AreEqual("True", result.ID.Value);
+                    Bridge.Test.NUnit.Assert.AreEqual("true", result.ID.Value);
                 },
                 PropertyThatRequiresExplicitConversionFromIntegerWorks: function () {
                     var json = "{ ID: 123 }";
@@ -725,7 +725,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
         $kind: "nested class",
         statics: {
             methods: {
-                op_Implicit: function (source) {
+                op_Explicit: function (source) {
                     return new (Newtonsoft.Json.Tests.DeserializationTests.SomethingWithExplicitOperatorFrom$1(T))(Bridge.toString(source));
                 }
             }
