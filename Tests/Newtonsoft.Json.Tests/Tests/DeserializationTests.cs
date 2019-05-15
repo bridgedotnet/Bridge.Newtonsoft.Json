@@ -207,7 +207,7 @@ namespace Newtonsoft.Json.Tests
         {
             public SomethingWithExplicitOperatorFrom(string value) => Value = value;
             public string Value { get; }
-            public static implicit operator SomethingWithExplicitOperatorFrom<T>(T source) => new SomethingWithExplicitOperatorFrom<T>(source.ToString());
+            public static explicit operator SomethingWithExplicitOperatorFrom<T>(T source) => new SomethingWithExplicitOperatorFrom<T>(source.ToString());
         }
 
         [Reflectable]
