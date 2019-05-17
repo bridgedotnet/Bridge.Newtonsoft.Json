@@ -50,7 +50,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 var $t, $t1;
                 this.$initialize();
                 var node = null;
-                $t = Bridge.getEnumerator(System.Linq.Enumerable.from(values).reverse());
+                $t = Bridge.getEnumerator(System.Linq.Enumerable.from(values, T).reverse());
                 try {
                     while ($t.moveNext()) {
                         var value = $t.Current;
@@ -1096,11 +1096,11 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var response = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case111.Response);
                     Bridge.Test.NUnit.Assert.AreEqual(2, System.Array.getCount(response.Nodes, Newtonsoft.Json.Tests.Issues.Case111.Node), "Nodes Count is 2.");
-                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response.Nodes).first().Name, "First node's name is 'First'.");
+                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response.Nodes, Newtonsoft.Json.Tests.Issues.Case111.Node).first().Name, "First node's name is 'First'.");
 
                     var response2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json2, Newtonsoft.Json.Tests.Issues.Case111.Response);
                     Bridge.Test.NUnit.Assert.AreEqual(2, System.Array.getCount(response2.Nodes, Newtonsoft.Json.Tests.Issues.Case111.Node), "Nodes2 Count is 2.");
-                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response2.Nodes).first().Name, "First node2's name is 'First'.");
+                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response2.Nodes, Newtonsoft.Json.Tests.Issues.Case111.Node).first().Name, "First node2's name is 'First'.");
 
                     var response3 = new Newtonsoft.Json.Tests.Issues.Case111.Response();
                     response3.Nodes = new (System.Collections.Generic.List$1(Newtonsoft.Json.Tests.Issues.Case111.Node)).ctor();
@@ -1112,7 +1112,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var response4 = Newtonsoft.Json.JsonConvert.DeserializeObject(json3, Newtonsoft.Json.Tests.Issues.Case111.Response);
                     Bridge.Test.NUnit.Assert.AreEqual(2, System.Array.getCount(response4.Nodes, Newtonsoft.Json.Tests.Issues.Case111.Node), "Nodes4 Count is 2.");
-                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response4.Nodes).first().Name, "First node4's name is 'First'.");
+                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response4.Nodes, Newtonsoft.Json.Tests.Issues.Case111.Node).first().Name, "First node4's name is 'First'.");
                 },
                 TestListAndDictInterfaces: function () {
                     var $t;
@@ -1122,13 +1122,13 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var response = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case111.DictResponse);
                     Bridge.Test.NUnit.Assert.AreEqual(2, System.Array.getCount(response.Nodes, System.Collections.Generic.KeyValuePair$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode)), "Nodes Count is 2.");
-                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response.Nodes).first().value.Name, "First node's name is 'First'.");
-                    Bridge.Test.NUnit.Assert.AreEqual(0, System.Linq.Enumerable.from(System.Linq.Enumerable.from(response.Nodes).first().value.Colors).count(), "First node's color count is 0.");
+                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response.Nodes, System.Collections.Generic.KeyValuePair$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode)).first().value.Name, "First node's name is 'First'.");
+                    Bridge.Test.NUnit.Assert.AreEqual(0, System.Linq.Enumerable.from(System.Linq.Enumerable.from(response.Nodes, System.Collections.Generic.KeyValuePair$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode)).first().value.Colors, System.String).count(), "First node's color count is 0.");
 
                     var response2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json2, Newtonsoft.Json.Tests.Issues.Case111.DictResponse);
                     Bridge.Test.NUnit.Assert.AreEqual(2, System.Array.getCount(response2.Nodes, System.Collections.Generic.KeyValuePair$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode)), "Nodes2 Count is 2.");
-                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response2.Nodes).first().value.Name, "First node2's name is 'First'.");
-                    Bridge.Test.NUnit.Assert.AreEqual(0, System.Linq.Enumerable.from(System.Linq.Enumerable.from(response2.Nodes).first().value.Colors).count(), "First node2's color count is 0.");
+                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response2.Nodes, System.Collections.Generic.KeyValuePair$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode)).first().value.Name, "First node2's name is 'First'.");
+                    Bridge.Test.NUnit.Assert.AreEqual(0, System.Linq.Enumerable.from(System.Linq.Enumerable.from(response2.Nodes, System.Collections.Generic.KeyValuePair$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode)).first().value.Colors, System.String).count(), "First node2's color count is 0.");
 
                     var response3 = new Newtonsoft.Json.Tests.Issues.Case111.DictResponse();
                     response3.Nodes = new (System.Collections.Generic.Dictionary$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode)).ctor();
@@ -1141,8 +1141,8 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     var response4 = Newtonsoft.Json.JsonConvert.DeserializeObject(json3, Newtonsoft.Json.Tests.Issues.Case111.DictResponse);
                     Bridge.Test.NUnit.Assert.AreEqual(2, System.Array.getCount(response4.Nodes, System.Collections.Generic.KeyValuePair$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode)), "Nodes4 Count is 2.");
-                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response4.Nodes).first().value.Name, "First node4's name is 'First'.");
-                    Bridge.Test.NUnit.Assert.AreEqual(3, System.Linq.Enumerable.from(System.Linq.Enumerable.from(response4.Nodes).first().value.Colors).count(), "First node4's color count is 3.");
+                    Bridge.Test.NUnit.Assert.AreEqual("First", System.Linq.Enumerable.from(response4.Nodes, System.Collections.Generic.KeyValuePair$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode)).first().value.Name, "First node4's name is 'First'.");
+                    Bridge.Test.NUnit.Assert.AreEqual(3, System.Linq.Enumerable.from(System.Linq.Enumerable.from(response4.Nodes, System.Collections.Generic.KeyValuePair$2(System.Int32,Newtonsoft.Json.Tests.Issues.Case111.ListNode)).first().value.Colors, System.String).count(), "First node4's color count is 3.");
                 }
             }
         }
@@ -2191,12 +2191,13 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(null, System.Array.getItem(people, 2, Newtonsoft.Json.Tests.Issues.Case16.Person), "Last populated entry placed last in the array.");
                 },
                 PopulateDictionary: function () {
+                    var $t;
                     var people = $asm.$.Newtonsoft.Json.Tests.Issues.Case16.f3(new (System.Collections.Generic.Dictionary$2(System.String,Newtonsoft.Json.Tests.Issues.Case16.Person)).ctor());
 
                     Newtonsoft.Json.JsonConvert.PopulateObject("{\"key3\":{\"Name\":\"Initial3_1\"},\"key5\":{\"Name\":\"Initial5\"}}", people);
 
                     Bridge.Test.NUnit.Assert.AreEqual(3, System.Array.getCount(people, System.Collections.Generic.KeyValuePair$2(System.String,Newtonsoft.Json.Tests.Issues.Case16.Person)), "Dictionary length increased by populating it. Existing entry updated.");
-                    Bridge.Test.NUnit.Assert.AreEqual("key3, key4, key5", System.Linq.Enumerable.from(people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$Keys).ToArray(System.String).join(", "), "Keys' sequence follow expected order in dictionary.");
+                    Bridge.Test.NUnit.Assert.AreEqual("key3, key4, key5", ($t = System.String, System.Linq.Enumerable.from(people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$Keys, $t).ToArray($t)).join(", "), "Keys' sequence follow expected order in dictionary.");
                     Bridge.Test.NUnit.Assert.AreEqual("Initial3_1", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key3").Name, "'key3' entry updated accordingly after populating it.");
                     Bridge.Test.NUnit.Assert.AreEqual(0, people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key3").Tag, "Updated key's object fully renewed (new instance).");
                     Bridge.Test.NUnit.Assert.AreEqual("Initial4", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key4").Name, "Unchanged key remained intact.");
@@ -2534,12 +2535,13 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual("abc", cloneX.Value);
                 },
                 TestConstructorWithIEnumerable: function () {
+                    var $t, $t1;
                     var list = new (Newtonsoft.Json.Tests.Issues.Case4.MyList$1(System.String))(System.Array.init(["a", "b"], System.String));
                     var json = Newtonsoft.Json.JsonConvert.SerializeObject(list);
                     var clone = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case4.MyList$1(System.String));
 
                     Bridge.Test.NUnit.Assert.AreEqual("[\"a\",\"b\"]", json);
-                    Bridge.Test.NUnit.Assert.AreEqual(System.Linq.Enumerable.from(list).ToArray(System.String), System.Linq.Enumerable.from(clone).ToArray(System.String));
+                    Bridge.Test.NUnit.Assert.AreEqual(($t = System.String, System.Linq.Enumerable.from(list, $t).ToArray($t)), ($t1 = System.String, System.Linq.Enumerable.from(clone, $t1).ToArray($t1)));
                 }
             }
         }
@@ -2984,16 +2986,16 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var json = Newtonsoft.Json.JsonConvert.SerializeObject(o1, s);
                     var o2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case68.Test), s);
 
-                    Bridge.Test.NUnit.Assert.AreEqual(1, System.Linq.Enumerable.from(o2).count(), "Number of elements retained over serialization.");
-                    Bridge.Test.NUnit.Assert.AreEqual("bla1", System.Linq.Enumerable.from(o2).first().Name, "First element's value retained over serialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual(1, System.Linq.Enumerable.from(o2, Newtonsoft.Json.Tests.Issues.Case68.Test).count(), "Number of elements retained over serialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla1", System.Linq.Enumerable.from(o2, Newtonsoft.Json.Tests.Issues.Case68.Test).first().Name, "First element's value retained over serialization.");
 
                     o1 = new (Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case68.Test)).$ctor1(System.Array.init([new Newtonsoft.Json.Tests.Issues.Case68.Test("bla1"), new Newtonsoft.Json.Tests.Issues.Case68.Test("bla2")], Newtonsoft.Json.Tests.Issues.Case68.Test));
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(o1, s);
                     o2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case68.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case68.Test), s);
 
-                    Bridge.Test.NUnit.Assert.AreEqual(2, System.Linq.Enumerable.from(o2).count(), "Number of elements retained over serialization when there are two elements in the list.");
-                    Bridge.Test.NUnit.Assert.AreEqual("bla1", System.Linq.Enumerable.from(o2).first().Name, "First element's value retained over serialization.");
-                    Bridge.Test.NUnit.Assert.AreEqual("bla2", System.Linq.Enumerable.from(o2).skip(1).first().Name, "Second element's value retained over serialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual(2, System.Linq.Enumerable.from(o2, Newtonsoft.Json.Tests.Issues.Case68.Test).count(), "Number of elements retained over serialization when there are two elements in the list.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla1", System.Linq.Enumerable.from(o2, Newtonsoft.Json.Tests.Issues.Case68.Test).first().Name, "First element's value retained over serialization.");
+                    Bridge.Test.NUnit.Assert.AreEqual("bla2", System.Linq.Enumerable.from(o2, Newtonsoft.Json.Tests.Issues.Case68.Test).skip(1).first().Name, "Second element's value retained over serialization.");
                 }
             }
         }
@@ -3040,7 +3042,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 var $t, $t1;
                 this.$initialize();
                 var node = null;
-                $t = Bridge.getEnumerator(System.Linq.Enumerable.from(values).reverse());
+                $t = Bridge.getEnumerator(System.Linq.Enumerable.from(values, T).reverse());
                 try {
                     while ($t.moveNext()) {
                         var value = $t.Current;
@@ -3564,14 +3566,14 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                  * @return  {void}
                  */
                 TestConstructors: function () {
-                    var $t;
+                    var $t, $t1, $t2;
                     var s = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
 
                     var o1 = new (Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test))(System.Array.init([new Newtonsoft.Json.Tests.Issues.Case81.Test("bla1"), new Newtonsoft.Json.Tests.Issues.Case81.Test("bla2")], Newtonsoft.Json.Tests.Issues.Case81.Test));
                     var json = Newtonsoft.Json.JsonConvert.SerializeObject(o1, s);
                     var o2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test), s);
 
-                    var arr1 = System.Linq.Enumerable.from(o2).ToArray(Newtonsoft.Json.Tests.Issues.Case81.Test);
+                    var arr1 = ($t = Newtonsoft.Json.Tests.Issues.Case81.Test, System.Linq.Enumerable.from(o2, $t).ToArray($t));
                     Bridge.Test.NUnit.Assert.AreEqual("bla1", arr1[System.Array.index(0, arr1)].Name, "Matching property name object's first entry can be deserialized correctly.");
                     Bridge.Test.NUnit.Assert.AreEqual("bla2", arr1[System.Array.index(1, arr1)].Name, "Matching property name object's second entry can be deserialized correctly.");
 
@@ -3579,15 +3581,15 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(d1, s);
                     var d2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test2), s);
 
-                    var arr2 = System.Linq.Enumerable.from(d2).ToArray(Newtonsoft.Json.Tests.Issues.Case81.Test2);
+                    var arr2 = ($t1 = Newtonsoft.Json.Tests.Issues.Case81.Test2, System.Linq.Enumerable.from(d2, $t1).ToArray($t1));
                     Bridge.Test.NUnit.Assert.AreEqual("bla1", arr2[System.Array.index(0, arr2)].Name, "Mismatching property name object's first entry can be deserialized correctly.");
                     Bridge.Test.NUnit.Assert.AreEqual("bla2", arr2[System.Array.index(1, arr2)].Name, "Mismatching property name object's second entry can be deserialized correctly.");
 
-                    var t1 = new (Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test3))(System.Array.init([($t = new Newtonsoft.Json.Tests.Issues.Case81.Test3(), $t.Name = "bla1", $t), ($t = new Newtonsoft.Json.Tests.Issues.Case81.Test3(), $t.Name = "bla2", $t)], Newtonsoft.Json.Tests.Issues.Case81.Test3));
+                    var t1 = new (Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test3))(System.Array.init([($t2 = new Newtonsoft.Json.Tests.Issues.Case81.Test3(), $t2.Name = "bla1", $t2), ($t2 = new Newtonsoft.Json.Tests.Issues.Case81.Test3(), $t2.Name = "bla2", $t2)], Newtonsoft.Json.Tests.Issues.Case81.Test3));
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(t1, s);
                     var t2 = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case81.NonNullList$1(Newtonsoft.Json.Tests.Issues.Case81.Test3), s);
 
-                    var arr3 = System.Linq.Enumerable.from(t2).ToArray(Newtonsoft.Json.Tests.Issues.Case81.Test3);
+                    var arr3 = ($t2 = Newtonsoft.Json.Tests.Issues.Case81.Test3, System.Linq.Enumerable.from(t2, $t2).ToArray($t2));
                     Bridge.Test.NUnit.Assert.AreEqual("bla1", arr3[System.Array.index(0, arr3)].Name, "Absent constructor parameter object's first entry can be deserialized correctly.");
                     Bridge.Test.NUnit.Assert.AreEqual("bla2", arr3[System.Array.index(1, arr3)].Name, "Absent constructor parameter object's second entry can be deserialized correctly.");
                 }
@@ -3615,7 +3617,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 var $t, $t1;
                 this.$initialize();
                 var node = null;
-                $t = Bridge.getEnumerator(System.Linq.Enumerable.from(values).reverse());
+                $t = Bridge.getEnumerator(System.Linq.Enumerable.from(values, T).reverse());
                 try {
                     while ($t.moveNext()) {
                         var value = $t.Current;
@@ -4199,7 +4201,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
 
                     var json = Newtonsoft.Json.JsonConvert.SerializeObject(items, settings);
-                    var cloneAsArray = System.Linq.Enumerable.from(Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel), settings)).ToArray(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel);
+                    var cloneAsArray = ($t = Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, System.Linq.Enumerable.from(Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel), settings), $t).ToArray($t));
 
                     Bridge.Test.NUnit.Assert.AreEqual(2, cloneAsArray.length, "Optimized deserialization length");
                     Bridge.Test.NUnit.Assert.AreEqual(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, Bridge.getType(cloneAsArray[System.Array.index(0, cloneAsArray)], Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel), "Optimized deserialization index 0 data type");
@@ -4223,7 +4225,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
 
                     var json = Newtonsoft.Json.JsonConvert.SerializeObject(items, settings);
-                    var cloneAsArray = System.Linq.Enumerable.from(Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase), settings)).ToArray(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase);
+                    var cloneAsArray = ($t = Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase, System.Linq.Enumerable.from(Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.ListOptimizationTests.NonNullList$1(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModelBase), settings), $t).ToArray($t));
 
                     Bridge.Test.NUnit.Assert.AreEqual(2, cloneAsArray.length, "Non-optimized deserialization length");
                     Bridge.Test.NUnit.Assert.AreEqual(Newtonsoft.Json.Tests.ListOptimizationTests.KeyValuePairDataModel, Bridge.getType(cloneAsArray[System.Array.index(0, cloneAsArray)]), "Non-optimized deserialization index 0 data type");
@@ -4260,7 +4262,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                 var $t, $t1;
                 this.$initialize();
                 var node = null;
-                $t = Bridge.getEnumerator(System.Linq.Enumerable.from(values).reverse());
+                $t = Bridge.getEnumerator(System.Linq.Enumerable.from(values, T).reverse());
                 try {
                     while ($t.moveNext()) {
                         var value = $t.Current;
