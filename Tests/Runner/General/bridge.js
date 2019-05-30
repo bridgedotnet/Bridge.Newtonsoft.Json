@@ -21840,13 +21840,11 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
 
                         if (Bridge.is(result, System.Threading.Tasks.Task)) {
                             result.continueWith(function () {
-                                if (result.isCanceled()) {
-                                    tcs.setCanceled();
-                                } else if (result.isFaulted()) {
+                                if (result.isFaulted() || result.isCanceled()) {
                                     tcs.setException(result.exception);
                                 } else {
                                     tcs.setResult(result.getAwaitedResult());
-                                }                                
+                                }                                                           
                             });
                         } else {
                             tcs.setResult(result);
@@ -22208,7 +22206,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                         throw awaiting ? (this.exception.innerExceptions.Count > 0 ? this.exception.innerExceptions.getItem(0) : null) : this.exception;
                     }
 
-                    throw awaiting ? ex : new System.AggregateException(null, [ex]);
+                    throw /*awaiting ? ex : */new System.AggregateException(null, [ex]);
                 case System.Threading.Tasks.TaskStatus.faulted:
                     throw awaiting ? (this.exception.innerExceptions.Count > 0 ? this.exception.innerExceptions.getItem(0) : null) : this.exception;
                 default:
@@ -22289,11 +22287,20 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
         },
 
         trySetException: function (exception) {
-            if (Bridge.is(exception, System.Exception)) {
-                exception = [exception];
+            var innerException;
+            if (Bridge.is(exception, System.AggregateException)) {
+                innerException = exception.innerExceptions.getItem(0);
+            } else if (Bridge.is(exception, System.Exception)) {
+                innerException = exception;
+                exception = new System.AggregateException(null, [exception]);
             }
 
-            return this.task.fail(new System.AggregateException(null, exception));
+            if (Bridge.is(innerException, System.Threading.Tasks.TaskCanceledException)) {
+                debugger;
+                return this.task.cancel(exception);
+            }
+
+            return this.task.fail(exception);
         }
     });
 

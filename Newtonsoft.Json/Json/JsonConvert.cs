@@ -88,6 +88,9 @@ namespace Newtonsoft.Json
         /// <returns>The deserialized object from the JSON string.</returns>
         public static extern object DeserializeObject(string value, Type type);
 
+        [Template("Newtonsoft.Json.JsonConvert.DeserializeObject({value}, System.Object, {settings})")]
+        public static extern object DeserializeObject(string value, JsonSerializerSettings settings);
+
         /// <summary>
         /// Deserializes the JSON to the specified .NET type.
         /// </summary>
