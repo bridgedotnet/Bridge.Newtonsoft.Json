@@ -76,5 +76,10 @@ namespace Newtonsoft.Json
         {
             get; set;
         }
+
+        public ISerializationBinder SerializationBinder
+        {
+            get; set;
+        }
     }
 }
