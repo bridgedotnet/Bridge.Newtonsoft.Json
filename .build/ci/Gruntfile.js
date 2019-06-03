@@ -2,17 +2,9 @@ module.exports = function(grunt) {
     var browsers = [
     {
         browserName: "firefox",
-        //version: "55",
+        version: "54",
         platform: "Windows 10"
     }
-    /*, {
-        browserName: "googlechrome",
-        platform: "WIN7"
-    }
-    , {
-        browserName: "googlechrome",
-        platform: "WIN8"
-    }*/
     , {
         browserName: "googlechrome",
         platform: "Windows 8.1"
@@ -24,7 +16,7 @@ module.exports = function(grunt) {
     , {
         browserName: "googlechrome",
         platform: "linux"
-    } 
+    }
     /* MS-Edge never returns from a submitted test run.
      * ,{
         browserName: "microsoftedge",
@@ -68,6 +60,10 @@ module.exports = function(grunt) {
                     build: process.env.TRAVIS_JOB_ID,
                     testname: "Bridge.Newtonsoft.Json client tests",
                     throttled: 4,
+                    pollInterval: 10000,
+                    statusCheckAttempts: 100,
+                    maxDuration: 1000,
+                    maxRetries: 2,
                     sauceConfig: {
                         // https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options
                         'video-upload-on-pass': false
