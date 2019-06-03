@@ -183,7 +183,8 @@
                     this._typeNameHandling = value;
                 }
             },
-            ContractResolver: null
+            ContractResolver: null,
+            SerializationBinder: null
         }
     });
 
@@ -221,6 +222,10 @@
     });
 
     Bridge.define("Newtonsoft.Json.Serialization.IContractResolver", {
+        $kind: "interface"
+    });
+
+    Bridge.define("Newtonsoft.Json.Serialization.ISerializationBinder", {
         $kind: "interface"
     });
 

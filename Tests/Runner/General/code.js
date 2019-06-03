@@ -1031,6 +1031,97 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     });
 
     /**
+     * The tests here ensures ISerializationBinder implementation is correct.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case106
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case106", {
+        statics: {
+            methods: {
+                /**
+                 * Sets up the serialization with KnownTypesBinder defined above, then
+                 serializes and deserializes, checking whether the result is sane.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case106
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case106
+                 * @return  {void}
+                 */
+                TestSerializationBinderInterface: function () {
+                    var $t;
+                    var knownTypesBinder = ($t = new Newtonsoft.Json.Tests.Issues.Case106.KnownTypesBinder(), $t.KnownTypes = $asm.$.Newtonsoft.Json.Tests.Issues.Case106.f1(new (System.Collections.Generic.List$1(System.Type)).ctor()), $t);
+
+                    var car = ($t = new Newtonsoft.Json.Tests.Issues.Case106.Car(), $t.Maker = "Ford", $t.Model = "Explorer", $t);
+
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(car, Newtonsoft.Json.Formatting.None, ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t.SerializationBinder = knownTypesBinder, $t));
+
+                    Bridge.Test.NUnit.Assert.AreEqual("{\"$type\":\"Car\",\"Maker\":\"Ford\",\"Model\":\"Explorer\"}", json, "Serialized string is the expected one.");
+
+                    var newValue = Newtonsoft.Json.JsonConvert.DeserializeObject(json, System.Object, ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t.SerializationBinder = knownTypesBinder, $t));
+
+                    Bridge.Test.NUnit.Assert.AreEqual("Car", Bridge.Reflection.getTypeName(Bridge.getType(newValue)), "Serialized representation of the Car object is correctly deserialized.");
+                }
+            }
+        }
+    });
+
+    Bridge.ns("Newtonsoft.Json.Tests.Issues.Case106", $asm.$);
+
+    Bridge.apply($asm.$.Newtonsoft.Json.Tests.Issues.Case106, {
+        f1: function (_o1) {
+            _o1.add(Newtonsoft.Json.Tests.Issues.Case106.Car);
+            return _o1;
+        }
+    });
+
+    /**
+     * A Simple class to be tested against.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case106.Car
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case106.Car", {
+        $kind: "nested class",
+        props: {
+            Maker: null,
+            Model: null
+        }
+    });
+
+    /**
+     * A class implementing ISerializationBinder, which will then be used
+     to serialize and de-serialize a class.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case106.KnownTypesBinder
+     * @implements  Newtonsoft.Json.Serialization.ISerializationBinder
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case106.KnownTypesBinder", {
+        inherits: [Newtonsoft.Json.Serialization.ISerializationBinder],
+        $kind: "nested class",
+        props: {
+            KnownTypes: null
+        },
+        alias: [
+            "BindToType", "Newtonsoft$Json$Serialization$ISerializationBinder$BindToType",
+            "BindToName", "Newtonsoft$Json$Serialization$ISerializationBinder$BindToName"
+        ],
+        methods: {
+            BindToType: function (assemblyName, typeName) {
+                return System.Linq.Enumerable.from(this.KnownTypes, System.Type).singleOrDefault(function (t) {
+                        return Bridge.referenceEquals(Bridge.Reflection.getTypeName(t), typeName);
+                    }, null);
+            },
+            BindToName: function (serializedType, assemblyName, typeName) {
+                assemblyName.v = null;
+                typeName.v = Bridge.Reflection.getTypeName(serializedType);
+            }
+        }
+    });
+
+    /**
      * @public
      * @class Newtonsoft.Json.Tests.Issues.Case107
      */
@@ -2132,6 +2223,74 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             Data: null
         }
     }; });
+
+    /**
+     * The tests here ensures when an instance of a class is serialized, yet
+     the serialized string is mangled to describe it as being from another
+     class, throws an exception when trying to deserialize it back into
+     its original class.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case157
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case157", {
+        statics: {
+            methods: {
+                /**
+                 * Tests by creating an instance of Class1, serializing it, and then
+                 mangle it to point as if it was a Class2 instance. Then try to
+                 deserialize, expecting an exception to be thrown.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case157
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case157
+                 * @return  {void}
+                 */
+                TestExpectedType: function () {
+                    var $t;
+                    var settings = ($t = new Newtonsoft.Json.JsonSerializerSettings(), $t.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects, $t);
+                    var a = ($t = new Newtonsoft.Json.Tests.Issues.Case157.Class1(), $t.Uid = "HelloWorld", $t);
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(a, settings);
+                    var newjson = System.String.replaceAll(json, "Class1", "Class2");
+
+                    Bridge.Test.NUnit.Assert.Throws$2(Newtonsoft.Json.JsonSerializationException, function () {
+                        var newresult = Newtonsoft.Json.JsonConvert.DeserializeObject(newjson, Newtonsoft.Json.Tests.Issues.Case157.Class1);
+                    }, "Serializing Class1, mangling to Class2, then trying to deserialize back as Class1 incurs an exception.");
+
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case157.Class1);
+                    Bridge.Test.NUnit.Assert.NotNull(result, "Serializing Class1 then deserializing back as Class1 works.");
+                }
+            }
+        }
+    });
+
+    /**
+     * A base class to serialize with.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case157.Class1
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case157.Class1", {
+        $kind: "nested class",
+        props: {
+            Uid: null
+        }
+    });
+
+    /**
+     * Another class, compatible with the above, to which the serialized
+     string will be renamed to.
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case157.Class2
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case157.Class2", {
+        $kind: "nested class",
+        props: {
+            Uid: null
+        }
+    });
 
     /**
      * Tests for the PopulateObject and related methods.

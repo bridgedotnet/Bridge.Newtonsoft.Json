@@ -694,7 +694,9 @@
             }
 
             if (Bridge.isDate(value)) {
-                return value.valueOf() & 0xFFFFFFFF;
+                var val = value.ticks !== undefined ? value.ticks : System.DateTime.getTicks(value);
+
+                return val.toNumber() & 0xFFFFFFFF;
             }
 
             if (value === Number.POSITIVE_INFINITY) {
@@ -1302,7 +1304,7 @@
         },
 
         isDate: function (obj) {
-            return obj instanceof Date;
+            return obj instanceof Date || Object.prototype.toString.call(obj) === "[object Date]";
         },
 
         isNull: function (value) {
@@ -1535,7 +1537,7 @@
                 return a < b ? -1 : (a > b ? 1 : 0);
             } else if (Bridge.isDate(a)) {
                 if (a.kind !== undefined && a.ticks !== undefined) {
-                    return Bridge.compare(a.ticks, b.ticks);
+                    return Bridge.compare(System.DateTime.getTicks(a), System.DateTime.getTicks(b));
                 }
 
                 return Bridge.compare(a.valueOf(), b.valueOf());
@@ -1597,7 +1599,7 @@
                 return a === b;
             } else if (Bridge.isDate(a)) {
                 if (a.kind !== undefined && a.ticks !== undefined) {
-                    return a.ticks.equals(b.ticks);
+                    return System.DateTime.getTicks(a).equals(System.DateTime.getTicks(b));
                 }
 
                 return a.valueOf() === b.valueOf();
@@ -6726,6 +6728,83 @@ Bridge.define("System.ValueType", {
         $flags: true
     });
 
+    // @source TypeCode.js
+
+    Bridge.define("System.TypeCode", {
+        $kind: "enum",
+        statics: {
+            fields: {
+                Empty: 0,
+                Object: 1,
+                DBNull: 2,
+                Boolean: 3,
+                Char: 4,
+                SByte: 5,
+                Byte: 6,
+                Int16: 7,
+                UInt16: 8,
+                Int32: 9,
+                UInt32: 10,
+                Int64: 11,
+                UInt64: 12,
+                Single: 13,
+                Double: 14,
+                Decimal: 15,
+                DateTime: 16,
+                String: 18
+            }
+        }
+    });
+
+    // @source TypeCodeValues.js
+
+    Bridge.define("System.TypeCodeValues", {
+        statics: {
+            fields: {
+                Empty: null,
+                Object: null,
+                DBNull: null,
+                Boolean: null,
+                Char: null,
+                SByte: null,
+                Byte: null,
+                Int16: null,
+                UInt16: null,
+                Int32: null,
+                UInt32: null,
+                Int64: null,
+                UInt64: null,
+                Single: null,
+                Double: null,
+                Decimal: null,
+                DateTime: null,
+                String: null
+            },
+            ctors: {
+                init: function () {
+                    this.Empty = "0";
+                    this.Object = "1";
+                    this.DBNull = "2";
+                    this.Boolean = "3";
+                    this.Char = "4";
+                    this.SByte = "5";
+                    this.Byte = "6";
+                    this.Int16 = "7";
+                    this.UInt16 = "8";
+                    this.Int32 = "9";
+                    this.UInt32 = "10";
+                    this.Int64 = "11";
+                    this.UInt64 = "12";
+                    this.Single = "13";
+                    this.Double = "14";
+                    this.Decimal = "15";
+                    this.DateTime = "16";
+                    this.String = "18";
+                }
+            }
+        }
+    });
+
     // @source Type.js
 
 Bridge.define("System.Type", {
@@ -6733,6 +6812,58 @@ Bridge.define("System.Type", {
     statics: {
         $is: function (instance) {
             return instance && instance.constructor === Function;
+        },
+
+        getTypeCode: function (t) {
+            if (t == null) {
+                return System.TypeCode.Empty;
+            }
+            if (t === System.Double) {
+                return System.TypeCode.Double;
+            }
+            if (t === System.Single) {
+                return System.TypeCode.Single;
+            }
+            if (t === System.Decimal) {
+                return System.TypeCode.Decimal;
+            }
+            if (t === System.Byte) {
+                return System.TypeCode.Byte;
+            }
+            if (t === System.SByte) {
+                return System.TypeCode.SByte;
+            }
+            if (t === System.UInt16) {
+                return System.TypeCode.UInt16;
+            }
+            if (t === System.Int16) {
+                return System.TypeCode.Int16;
+            }
+            if (t === System.UInt32) {
+                return System.TypeCode.UInt32;
+            }
+            if (t === System.Int32) {
+                return System.TypeCode.Int32;
+            }
+            if (t === System.UInt64) {
+                return System.TypeCode.UInt64;
+            }
+            if (t === System.Int64) {
+                return System.TypeCode.Int64;
+            }
+            if (t === System.Boolean) {
+                return System.TypeCode.Boolean;
+            }
+            if (t === System.Char) {
+                return System.TypeCode.Char;
+            }
+            if (t === System.DateTime) {
+                return System.TypeCode.DateTime;
+            }
+            if (t === System.String) {
+                return System.TypeCode.String;
+            }
+            return System.TypeCode.Object;
         }
     }
 });
@@ -7059,7 +7190,7 @@ Bridge.define("System.Type", {
                                     minDecimals = 0;
                                     maxDecimals = precision - (exponent > 0 ? exponent + 1 : 1);
 
-                                    return this.defaultFormat(number, 1, minDecimals, maxDecimals, nf, true);
+                                    return this.defaultFormat(number, 1, isDecimal ? Math.min(27, Math.max(minDecimals, number.$precision)) : minDecimals, maxDecimals, nf, true);
                                 }
 
                                 exponentPrefix = exponentPrefix === "G" ? "E" : "e";
@@ -7085,7 +7216,7 @@ Bridge.define("System.Type", {
                                 }
                             }
 
-                            return this.defaultFormat(coefficient, 1, minDecimals, maxDecimals, nf) + exponentPrefix + this.defaultFormat(exponent, exponentPrecision, 0, 0, nf, true);
+                            return this.defaultFormat(coefficient, 1, isDecimal ? Math.min(27, Math.max(minDecimals, number.$precision)) : minDecimals, maxDecimals, nf) + exponentPrefix + this.defaultFormat(exponent, exponentPrecision, 0, 0, nf, true);
                         case "P":
                             if (isNaN(precision)) {
                                 precision = nf.percentDecimalDigits;
@@ -7571,17 +7702,19 @@ Bridge.define("System.Type", {
                     return true;
                 }
 
-                var countExp = 0;
+                var countExp = 0,
+                    ePrev = false;
 
                 for (var i = 0; i < s.length; i++) {
                     if (!System.Char.isNumber(s[i].charCodeAt(0)) &&
                         s[i] !== "." &&
                         s[i] !== "," &&
-                        s[i] !== nfInfo.positiveSign &&
-                        s[i] !== nfInfo.negativeSign &&
+                        (s[i] !== nfInfo.positiveSign || i !== 0 && !ePrev) &&
+                        (s[i] !== nfInfo.negativeSign || i !== 0 && !ePrev) &&
                         s[i] !== point &&
                         s[i] !== thousands) {
                         if (s[i].toLowerCase() === "e") {
+                            ePrev = true;
                             countExp++;
 
                             if (countExp > 1) {
@@ -7592,12 +7725,15 @@ Bridge.define("System.Type", {
                                 throw new System.FormatException.$ctor1(errMsg);
                             }
                         } else {
+                            ePrev = false;
                             if (safe) {
                                 return false;
                             }
 
                             throw new System.FormatException.$ctor1(errMsg);
                         }
+                    } else {
+                        ePrev = false;
                     }
                 }
 
@@ -8838,20 +8974,47 @@ Bridge.define("System.Type", {
             v = 0;
         }
 
+        if (Bridge.isNumber(provider)) {
+            this.$precision = provider;
+            provider = undefined;
+        } else {
+            this.$precision = 0;
+        }
+
         if (typeof v === "string") {
             provider = provider || System.Globalization.CultureInfo.getCurrentCulture();
 
-            var nfInfo = provider && provider.getFormat(System.Globalization.NumberFormatInfo);
+            var nfInfo = provider && provider.getFormat(System.Globalization.NumberFormatInfo),
+                dot;
 
             if (nfInfo && nfInfo.numberDecimalSeparator !== ".") {
                 v = v.replace(nfInfo.numberDecimalSeparator, ".");
             }
 
-            if (!/^\s*[+-]?(\d+|\d+.|\d*\.\d+)((e|E)[+-]?\d+)?\s*$/.test(v)) {
+            // Native .NET accepts the sign in postfixed form. Yet, it is documented otherwise.
+            // https://docs.microsoft.com/en-us/dotnet/api/system.decimal.parse
+            if (!/^\s*[+-]?(\d+|\d+\.|\d*\.\d+)((e|E)[+-]?\d+)?\s*$/.test(v) &&
+                !/^\s*(\d+|\d+\.|\d*\.\d+)((e|E)[+-]?\d+)?[+-]\s*$/.test(v)) {
                 throw new System.FormatException();
             }
 
             v = v.replace(/\s/g, "");
+
+            // Move the postfixed - to front, or remove '+' so the underlying
+            // decimal handler knows what to do with the string.
+            if (/[+-]$/.test(v)) {
+                if (v.endsWith('-')) {
+                    v = v.replace(/(.*)(-)$/, "$2$1");
+                } else {
+                    v = v.substr(0, v.length - 1);
+                }
+            } else if (v.startsWith("+")) {
+                v = v.substr(1);
+            }
+
+            if (!this.$precision && (dot = v.indexOf('.')) >= 0) {
+                this.$precision = v.length - dot - 1;
+            }
         }
 
         if (T && T.precision && typeof v === "number") {
@@ -8862,6 +9025,10 @@ Bridge.define("System.Type", {
                 p = 0;
             }
             v = v.toFixed(p);
+        }
+
+        if (v instanceof System.Decimal) {
+            this.$precision = v.$precision;
         }
 
         this.value = System.Decimal.getValue(v);
@@ -8936,15 +9103,17 @@ Bridge.define("System.Type", {
     };
 
     System.Decimal.prototype.dividedToIntegerBy = function (d) {
-        return new System.Decimal(this.value.dividedToIntegerBy(System.Decimal.getValue(d)));
+        var d = new System.Decimal(this.value.dividedToIntegerBy(System.Decimal.getValue(d)), this.$precision);
+        d.$precision = Math.max(d.value.decimalPlaces(), this.$precision);
+        return d;
     };
 
     System.Decimal.prototype.exponential = function () {
-        return new System.Decimal(this.value.exponential());
+        return new System.Decimal(this.value.exponential(), this.$precision);
     };
 
     System.Decimal.prototype.abs = function () {
-        return new System.Decimal(this.value.abs());
+        return new System.Decimal(this.value.abs(), this.$precision);
     };
 
     System.Decimal.prototype.floor = function () {
@@ -8984,11 +9153,15 @@ Bridge.define("System.Type", {
     };
 
     System.Decimal.prototype.add = function (another) {
-        return new System.Decimal(this.value.plus(System.Decimal.getValue(another)));
+        var d = new System.Decimal(this.value.plus(System.Decimal.getValue(another)));
+        d.$precision = Math.max(d.value.decimalPlaces(), Math.max(another.$precision || 0, this.$precision));
+        return d;
     };
 
     System.Decimal.prototype.sub = function (another) {
-        return new System.Decimal(this.value.minus(System.Decimal.getValue(another)));
+        var d = new System.Decimal(this.value.minus(System.Decimal.getValue(another)));
+        d.$precision = Math.max(d.value.decimalPlaces(), Math.max(another.$precision || 0, this.$precision));
+        return d;
     };
 
     System.Decimal.prototype.isZero = function () {
@@ -8996,27 +9169,33 @@ Bridge.define("System.Type", {
     };
 
     System.Decimal.prototype.mul = function (another) {
-        return new System.Decimal(this.value.times(System.Decimal.getValue(another)));
+        var d = new System.Decimal(this.value.times(System.Decimal.getValue(another)));
+        d.$precision = Math.max(d.value.decimalPlaces(), Math.max(another.$precision || 0, this.$precision));
+        return d;
     };
 
     System.Decimal.prototype.div = function (another) {
-        return new System.Decimal(this.value.dividedBy(System.Decimal.getValue(another)));
+        var d = new System.Decimal(this.value.dividedBy(System.Decimal.getValue(another)));
+        d.$precision = Math.max(d.value.decimalPlaces(), Math.max(another.$precision || 0, this.$precision));
+        return d;
     };
 
     System.Decimal.prototype.mod = function (another) {
-        return new System.Decimal(this.value.modulo(System.Decimal.getValue(another)));
+        var d = new System.Decimal(this.value.modulo(System.Decimal.getValue(another)));
+        d.$precision = Math.max(d.value.decimalPlaces(), Math.max(another.$precision || 0, this.$precision));
+        return d;
     };
 
     System.Decimal.prototype.neg = function () {
-        return new System.Decimal(this.value.negated());
+        return new System.Decimal(this.value.negated(), this.$precision);
     };
 
     System.Decimal.prototype.inc = function () {
-        return new System.Decimal(this.value.plus(System.Decimal.getValue(1)));
+        return new System.Decimal(this.value.plus(System.Decimal.getValue(1)), this.$precision);
     };
 
     System.Decimal.prototype.dec = function () {
-        return new System.Decimal(this.value.minus(System.Decimal.getValue(1)));
+        return new System.Decimal(this.value.minus(System.Decimal.getValue(1)), this.$precision);
     };
 
     System.Decimal.prototype.sign = function () {
@@ -9024,7 +9203,7 @@ Bridge.define("System.Type", {
     };
 
     System.Decimal.prototype.clone = function () {
-        return new System.Decimal(this);
+        return new System.Decimal(this, this.$precision);
     };
 
     System.Decimal.prototype.ne = function (v) {
@@ -9141,23 +9320,41 @@ Bridge.define("System.Type", {
     };
 
     System.Decimal.min = function () {
-        var values = [];
+        var values = [],
+            d, p;
 
         for (var i = 0, len = arguments.length; i < len; i++) {
             values.push(System.Decimal.getValue(arguments[i]));
         }
 
-        return new System.Decimal(Bridge.$Decimal.min.apply(Bridge.$Decimal, values));
+        d = Bridge.$Decimal.min.apply(Bridge.$Decimal, values);
+
+        for (var i = 0; i < arguments.length; i++) {
+            if (d.eq(values[i])) {
+                p = arguments[i].$precision;
+            }
+        }
+
+        return new System.Decimal(d, p);
     };
 
     System.Decimal.max = function () {
-        var values = [];
+        var values = [],
+            d, p;
 
         for (var i = 0, len = arguments.length; i < len; i++) {
             values.push(System.Decimal.getValue(arguments[i]));
         }
 
-        return new System.Decimal(Bridge.$Decimal.max.apply(Bridge.$Decimal, values));
+        d = Bridge.$Decimal.max.apply(Bridge.$Decimal, values);
+
+        for (var i = 0; i < arguments.length; i++) {
+            if (d.eq(values[i])) {
+                p = arguments[i].$precision;
+            }
+        }
+
+        return new System.Decimal(d, p);
     };
 
     System.Decimal.random = function (dp) {
@@ -9209,11 +9406,15 @@ Bridge.define("System.Type", {
     };
 
     System.Decimal.prototype.log = function (logBase) {
-        return new System.Decimal(this.value.log(logBase));
+        var d = new System.Decimal(this.value.log(logBase));
+        d.$precision = Math.max(d.value.decimalPlaces(), this.$precision);
+        return d;
     };
 
     System.Decimal.prototype.ln = function () {
-        return new System.Decimal(this.value.ln());
+        var d = new System.Decimal(this.value.ln());
+        d.$precision = Math.max(d.value.decimalPlaces(), this.$precision);
+        return d;
     };
 
     System.Decimal.prototype.precision = function () {
@@ -9232,7 +9433,9 @@ Bridge.define("System.Type", {
     };
 
     System.Decimal.prototype.sqrt = function () {
-        return new System.Decimal(this.value.sqrt());
+        var d = new System.Decimal(this.value.sqrt());
+        d.$precision = Math.max(d.value.decimalPlaces(), this.$precision);
+        return d;
     };
 
     System.Decimal.prototype.toDecimalPlaces = function (dp, rm) {
@@ -9248,7 +9451,9 @@ Bridge.define("System.Type", {
     };
 
     System.Decimal.prototype.pow = function (n) {
-        return new System.Decimal(this.value.pow(n));
+        var d = new System.Decimal(this.value.pow(n));
+        d.$precision = Math.max(d.value.decimalPlaces(), this.$precision);
+        return d;
     };
 
     System.Decimal.prototype.toPrecision = function (dp, rm) {
@@ -9256,7 +9461,9 @@ Bridge.define("System.Type", {
     };
 
     System.Decimal.prototype.toSignificantDigits = function (dp, rm) {
-        return new System.Decimal(this.value.toSignificantDigits(dp, rm));
+        var d = new System.Decimal(this.value.toSignificantDigits(dp, rm));
+        d.$precision = Math.max(d.value.decimalPlaces(), this.$precision);
+        return d;
     };
 
     System.Decimal.prototype.valueOf = function () {
@@ -9409,90 +9616,123 @@ Bridge.define("System.Type", {
             $clone: function (to) { return this; }
         },
         statics: {
-            TicksPerDay: System.Int64("864000000000"),
+            $minTicks: null,
+            $maxTicks: null,
+            $minOffset: null,
+            $maxOffset: null,
+            $default: null,
+            $min: null,
+            $max: null,
+
+            TicksPerDay: System.Int64(864e9),
 
             DaysTo1970: 719162,
             YearDaysByMonth: [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334],
 
-            MinTicks: System.Int64("0"),
-            MaxTicks: System.Int64("3652059").mul(System.Int64("864000000000")).sub(1),
+            getMinTicks: function () {
+                if (this.$minTicks === null) {
+                    this.$minTicks = System.Int64(0);
+                }
+
+                return this.$minTicks;
+            },
+
+            getMaxTicks: function () {
+                if (this.$maxTicks === null) {
+                    this.$maxTicks = System.Int64("3652059").mul(this.TicksPerDay).sub(1);
+                }
+
+                return this.$maxTicks;
+            },
 
             // Difference in Ticks from 1-Jan-0001 to 1-Jan-1970 at UTC
-            $minOffset: System.Int64("621355968000000000"),
+            $getMinOffset: function () {
+                if (this.$minOffset === null) {
+                    this.$minOffset = System.Int64(621355968e9);
+                }
+
+                return this.$minOffset;
+            },
+
+            // Difference in Ticks between 1970-01-01 and 100 nanoseconds before 10000-01-01 UTC
+            $getMaxOffset: function () {
+                if (this.$maxOffset === null) {
+                    this.$maxOffset = this.getMaxTicks().sub(this.$getMinOffset());
+                }
+
+                return this.$maxOffset;
+            },
 
             $is: function (instance) {
                 return Bridge.isDate(instance);
             },
 
-            $default: null,
-
             getDefaultValue: function () {
                 if (this.$default === null) {
-                    this.$default = this.create(1, 1, 1, 0, 0, 0, 0, 0);
+                    this.$default = this.getMinValue();
                 }
 
                 return this.$default;
             },
 
-            $min: null,
-
-            // UTC Min Value
             getMinValue: function () {
                 if (this.$min === null) {
-                    this.$min = this.create$2(0, 0);
+                    var d = new Date(1, 0, 1, 0, 0, 0, 0);
+
+                    d.setFullYear(1);
+                    d.setSeconds(0);
+
+                    d.kind = 0;
+                    d.ticks = this.getMinTicks();
+
+                    this.$min = d;
                 }
 
                 return this.$min;
             },
 
-            $max: null,
-
-            // UTC Max Value
             getMaxValue: function () {
                 if (this.$max === null) {
-                    this.$max = this.create$2(this.MaxTicks, 0);
-                    this.$max.ticks = this.MaxTicks;
+                    var d = new Date(9999, 11, 31, 23, 59, 59, 999);
+
+                    d.kind = 0;
+                    d.ticks = this.getMaxTicks();
+
+                    this.$max = d;
                 }
 
                 return this.$max;
             },
 
             $getTzOffset: function (d) {
-                return d.getTimezoneOffset() * 60 * 1000;
-            },
-
-            // Get the number of ticks since 0001-01-01T00:00:00.0000000 UTC
-            getTicks: function (d) {
-                d.kind = (d.kind !== undefined) ? d.kind : 0
-
-                if (d.ticks === undefined) {
-                    if (d.kind === 1) {
-                        d.ticks = System.Int64(d.getTime()).mul(10000).add(this.$minOffset);
-                    } else {
-                        d.ticks = System.Int64(d.getTime() - this.$getTzOffset(d)).mul(10000).add(this.$minOffset);
-                    }
-                }
-
-                return d.ticks;
+                // 60 seconds * 1000 milliseconds * 10000
+                return System.Int64(d.getTimezoneOffset()).mul(6e8);
             },
 
             toLocalTime: function (d, throwOnOverflow) {
-                var d1,
-                    ticks = this.getTicks(d);
+                var kind = (d.kind !== undefined) ? d.kind : 0,
+                    ticks = this.getTicks(d),
+                    d1;
 
-                if (d.kind !== 2) {
-                    ticks = d.ticks.sub(System.Int64(this.$getTzOffset(d)).mul(10000));
+                if (kind === 2) {
+                    d1 = new Date(d.getTime());
+                    d1.kind = 2;
+                    d1.ticks = ticks;
+
+                    return d1;
                 }
 
-                d1 = this.create$2(ticks, 2);
+                d1 = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds()));
+
+                d1.kind = 2;
+                d1.ticks = ticks;
 
                 // Check if Ticks are out of range
-                if (ticks.gt(this.MaxTicks) || ticks.lt(0)) {
+                if (d1.ticks.gt(this.getMaxTicks()) || d1.ticks.lt(0)) {
                     if (throwOnOverflow && throwOnOverflow === true) {
                         throw new System.ArgumentException.$ctor1("Specified argument was out of the range of valid values.");
                     } else {
-                        ticks = ticks.add(System.Int64(this.$getTzOffset(d1)).mul(10000));
-                        d1 = this.create$2(ticks, 2);
+                        d1 = this.create$2(ticks.add(this.$getTzOffset(d1)), 2);
                     }
                 }
 
@@ -9500,23 +9740,46 @@ Bridge.define("System.Type", {
             },
 
             toUniversalTime: function (d) {
-                var ticks = this.getTicks(d),
+                var kind = (d.kind !== undefined) ? d.kind : 0,
+                    ticks = this.getTicks(d),
                     d1;
 
-                // Assuming d is Local time, so adjust to UTC
-                if (d.kind !== 1) {
-                    ticks = ticks.add(System.Int64(this.$getTzOffset(d)).mul(10000));
+                if (kind === 1) {
+                    d1 = new Date(d.getTime());
+                    d1.kind = 1;
+                    d1.ticks = ticks;
+
+                    return d1;
                 }
 
-                d1 = this.create$2(ticks, 1);
+                d1 = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds()));
+
+                d1.kind = 1;
+                d1.ticks = ticks;
 
                 // Check if Ticks are out of range
-                if (ticks.gt(this.MaxTicks) || ticks.lt(0)) {
-                    ticks = ticks.sub(System.Int64(this.$getTzOffset(d1)).mul(10000));
-                    d1 = this.create$2(ticks, 1);
+                if (d1.ticks.gt(this.getMaxTicks()) || d1.ticks.lt(0)) {
+                    d1 = this.create$2(ticks.add(this.$getTzOffset(d1)), 1);
                 }
 
                 return d1;
+            },
+
+            // Get the number of ticks since 0001-01-01T00:00:00.0000000 UTC
+            getTicks: function (d) {
+                if (d.ticks) {
+                    return d.ticks;
+                }
+
+                var kind = (d.kind !== undefined) ? d.kind : 0;
+
+                if (kind === 1) {
+                    d.ticks = System.Int64(d.getTime()).mul(10000).add(this.$getMinOffset());
+                } else {
+                    d.ticks = System.Int64(d.getTime()).mul(10000).add(this.$getMinOffset()).sub(this.$getTzOffset(d));
+                }
+
+                return d.ticks;
             },
 
             create: function (year, month, day, hour, minute, second, millisecond, kind) {
@@ -9529,74 +9792,76 @@ Bridge.define("System.Type", {
                 millisecond = (millisecond !== undefined) ? millisecond : 0;
                 kind = (kind !== undefined) ? kind : 0;
 
-                var d,
-                    ticks;
-
-                d = new Date(year, month - 1, day, hour, minute, second, millisecond);
-                d.setFullYear(year);
-
-                ticks = this.getTicks(d);
-
-                if (kind === 1) {
-                    d = new Date(d.getTime() - this.$getTzOffset(d))
-                }
-
-                d.kind = kind;
-                d.ticks = ticks;
-
-                return d;
-            },
-
-            create$1: function (date, kind) {
-                kind = (kind !== undefined) ? kind : 0;
-
                 var d;
 
                 if (kind === 1) {
-                    d = this.create(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds(), kind);
+                    d = new Date(Date.UTC(year, month - 1, day, hour, minute, second, millisecond));
+                    d.setUTCFullYear(year);
                 } else {
-                    d = this.create(date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds(), kind);
+                    d = new Date(year, month - 1, day, hour, minute, second, millisecond);
+                    d.setFullYear(year);
                 }
 
-                d.ticks = this.getTicks(d)
+                d.kind = kind;
+                d.ticks = this.getTicks(d);
 
                 return d;
             },
 
             create$2: function (ticks, kind) {
                 ticks = System.Int64.is64Bit(ticks) ? ticks : System.Int64(ticks);
-                kind = (kind !== undefined) ? kind : 0
 
-                var d = new Date(ticks.sub(this.$minOffset).div(10000).toNumber());
+                var d;
 
-                if (kind !== 1) {
-                    d = new Date(d.getTime() + this.$getTzOffset(d));
+                if (ticks.lt(this.TicksPerDay)) {
+                    d = new Date(0);
+                    d.setMilliseconds(d.getMilliseconds() + this.$getTzOffset(d).div(10000).toNumber());
+                    d.setFullYear(1);
+                } else {
+                    d = new Date(ticks.sub(this.$getMinOffset()).div(10000).toNumber());
+
+                    if (kind !== 1) {
+                        d.setTime(d.getTime() + (d.getTimezoneOffset() * 60000));
+                    }
                 }
 
+                d.kind = (kind !== undefined) ? kind : 0;
                 d.ticks = ticks;
-                d.kind = kind;
 
                 return d;
             },
 
             getToday: function () {
-                var d = new Date();
+                var d = this.getNow()
 
-                return this.create(d.getFullYear(), d.getMonth() + 1, d.getDate(), 0, 0, 0, 0, 2);
+                d.setHours(0);
+                d.setMinutes(0);
+                d.setSeconds(0);
+                d.setMilliseconds(0);
+
+                return d;
             },
 
             getNow: function () {
-                return this.create$1(new Date(), 2);
+                var d = new Date();
+
+                d.kind = 2;
+
+                return d;
             },
 
             getUtcNow: function () {
-                return this.create$1(new Date(), 1);
+                var d = new Date();
+
+                d.kind = 1;
+
+                return d;
             },
 
             getTimeOfDay: function (d) {
-                var d1 = this.getDate(d);
+                var dt = this.getDate(d);
 
-                return new System.TimeSpan((d - d1) * 10000);
+                return new System.TimeSpan((d - dt) * 10000);
             },
 
             getKind: function (d) {
@@ -9606,10 +9871,14 @@ Bridge.define("System.Type", {
             },
 
             specifyKind: function (d, kind) {
-                return this.create$2(this.getTicks(d), kind);
+                var dt = new Date(d.getTime());
+                dt.kind = kind;
+                dt.ticks = d.ticks !== undefined ? d.ticks : this.getTicks(dt);
+
+                return dt;
             },
 
-            $FileTimeOffset: System.Int64("584388").mul(System.Int64("864000000000")),
+            $FileTimeOffset: System.Int64("584388").mul(System.Int64(864e9)),
 
             FromFileTime: function (fileTime) {
                 return this.toLocalTime(this.FromFileTimeUtc(fileTime));
@@ -9665,7 +9934,7 @@ Bridge.define("System.Type", {
             format: function (d, f, p) {
                 var me = this,
                     kind = d.kind || 0,
-                    isUtc = (kind === 1),
+                    isUtc = (kind === 1 || ["u", "r", "R"].indexOf(f) > -1),
                     df = (p || System.Globalization.CultureInfo.getCurrentCulture()).getFormat(System.Globalization.DateTimeFormatInfo),
                     year = isUtc ? d.getUTCFullYear() : d.getFullYear(),
                     month = isUtc ? d.getUTCMonth() : d.getMonth(),
@@ -10391,13 +10660,13 @@ Bridge.define("System.Type", {
 
                 if (kind === 2) {
                     if (adjust === true) {
-                        d = new Date(d.getTime() - this.$getTzOffset(d));
-                        d.kind = kind;
+                        d = new Date(d.getTime() - d.getTimezoneOffset() * 60 * 1000);
                     } else if (offset !== 0) {
-                        d = new Date(d.getTime() - this.$getTzOffset(d));
+                        d = new Date(d.getTime() - d.getTimezoneOffset() * 60 * 1000);
                         d = this.addMilliseconds(d, -offset);
-                        d.kind = kind;
                     }
+
+                    d.kind = kind;
                 }
 
                 return d;
@@ -10460,7 +10729,13 @@ Bridge.define("System.Type", {
             },
 
             dateAddSubTimeSpan: function (d, t, direction) {
-                return Bridge.hasValue$1(d, t) ? this.create$2(this.getTicks(d).add(t.getTicks().mul(direction)), d.kind) : null;
+                var ticks = t.getTicks().mul(direction),
+                    dt = new Date(d.getTime() + ticks.div(10000).toNumber());
+
+                dt.kind = d.kind;
+                dt.ticks = this.getTicks(dt);
+
+                return dt;
             },
 
             subdt: function (d, t) {
@@ -10472,7 +10747,18 @@ Bridge.define("System.Type", {
             },
 
             subdd: function (a, b) {
-                return Bridge.hasValue$1(a, b) ? (new System.TimeSpan((this.getTicks(a).sub(this.getTicks(b))))) : null;
+                var offset = 0,
+                    ticksA = this.getTicks(a),
+                    ticksB = this.getTicks(b),
+                    valA = ticksA.toNumber(),
+                    valB = ticksB.toNumber(),
+                    spread = ticksA.sub(ticksB);
+
+                if ((valA === 0 && valB !== 0) || (valB === 0 && valA !== 0)) {
+                    offset = Math.round((spread.toNumberDivided(6e8) - (Math.round(spread.toNumberDivided(9e9)) * 15)) * 6e8);
+                }
+
+                return new System.TimeSpan(spread.sub(offset));
             },
 
             addYears: function (d, v) {
@@ -10484,44 +10770,70 @@ Bridge.define("System.Type", {
                     day = d.getDate();
 
                 dt.setDate(1);
-                dt.setMonth(dt.getMonth() + v * 1);
+                dt.setMonth(dt.getMonth() + v);
                 dt.setDate(Math.min(day, this.getDaysInMonth(dt.getFullYear(), dt.getMonth() + 1)));
                 dt.kind = (d.kind !== undefined) ? d.kind : 0;
+                dt.ticks = this.getTicks(dt);
 
                 return dt;
             },
 
             addDays: function (d, v) {
-                var d1 = new Date(d.getTime());
+                var kind = (d.kind !== undefined) ? d.kind : 0,
+                    dt = new Date(d.getTime());
 
-                d1.setDate(d1.getDate() + Math.floor(v));
-                d1.kind = (d.kind !== undefined) ? d.kind : 0;
+                if (kind === 1) {
+                    dt.setUTCDate(dt.getUTCDate() + (Math.floor(v) * 1));
 
-                return v % 1 !== 0 ? this.addMilliseconds(d1, Math.round((v % 1) * 864e5)) : d1;
+                    if (v % 1 !== 0) {
+                        dt.setUTCMilliseconds(dt.getUTCMilliseconds() + Math.round((v % 1) * 864e5));
+                    }
+                } else {
+                    dt.setDate(dt.getDate() + (Math.floor(v) * 1));
+
+                    if (v % 1 !== 0) {
+                        dt.setMilliseconds(dt.getMilliseconds() + Math.round((v % 1) * 864e5));
+                    }
+                }
+
+                dt.kind = kind;
+                dt.ticks = this.getTicks(dt);
+
+                return dt;
             },
 
             addHours: function (d, v) {
-                return this.addMilliseconds(d, Math.round(v * 36e5));
+                return this.addMilliseconds(d, v * 36e5);
             },
 
             addMinutes: function (d, v) {
-                return this.addMilliseconds(d, Math.round(v * 6e4));
+                return this.addMilliseconds(d, v * 6e4);
             },
 
             addSeconds: function (d, v) {
-                return this.addMilliseconds(d, Math.round(v * 1e3));
+                return this.addMilliseconds(d, v * 1e3);
             },
 
             addMilliseconds: function (d, v) {
-                v = System.Int64.is64Bit(v) ? v : System.Int64(v);
+                var dt = new Date(d.getTime());
+                dt.setMilliseconds(dt.getMilliseconds() + v)
+                dt.kind = (d.kind !== undefined) ? d.kind : 0;
+                dt.ticks = this.getTicks(dt);
 
-                return System.DateTime.addTicks(d, v.mul(10000));
+                return dt;
             },
 
             addTicks: function (d, v) {
                 v = System.Int64.is64Bit(v) ? v : System.Int64(v);
 
-                return this.create$2(this.getTicks(d).add(v), d.kind);
+                var dt = new Date(d.getTime()),
+                    ticks = this.getTicks(d).add(v);
+
+                dt.setMilliseconds(dt.getMilliseconds() + v.div(10000).toNumber())
+                dt.ticks = ticks;
+                dt.kind = (d.kind !== undefined) ? d.kind : 0;
+
+                return dt;
             },
 
             add: function (d, value) {
@@ -10546,28 +10858,6 @@ Bridge.define("System.Type", {
                 return [31, (this.getIsLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
             },
 
-            $clearTime: function (d, isUTC) {
-                var dt = new Date(d.getTime());
-
-                if (isUTC === true) {
-                    dt.setUTCHours(0);
-                    dt.setUTCMinutes(0);
-                    dt.setUTCSeconds(0);
-                    dt.setUTCMilliseconds(0);
-                    dt.kind = 1;
-                } else {
-                    dt.setHours(0);
-                    dt.setMinutes(0);
-                    dt.setSeconds(0);
-                    dt.setMilliseconds(0);
-                    dt.kind = 2;
-                }
-
-                dt.ticks = this.getTicks(dt);
-
-                return dt;
-            },
-
             // Optimized as per: https://jsperf.com/get-day-of-year
             getDayOfYear: function (d) {
                 var dt = this.getDate(d),
@@ -10583,45 +10873,81 @@ Bridge.define("System.Type", {
             },
 
             getDate: function (d) {
-                d.kind = (d.kind !== undefined) ? d.kind : 0
+                var kind = (d.kind !== undefined) ? d.kind : 0,
+                    dt = new Date(d.getTime());
 
-                var d1 = this.$clearTime(d, d.kind === 1);
+                if (kind === 1) {
+                    dt.setUTCHours(0);
+                    dt.setUTCMinutes(0);
+                    dt.setUTCSeconds(0);
+                    dt.setUTCMilliseconds(0);
+                } else {
+                    dt.setHours(0);
+                    dt.setMinutes(0);
+                    dt.setSeconds(0);
+                    dt.setMilliseconds(0);
+                }
 
-                d1.kind = d.kind;
+                dt.ticks = this.getTicks(dt);
 
-                return d1;
+                return dt;
             },
 
             getDayOfWeek: function (d) {
-                return (this.getKind(d) === 1) ? d.getUTCDay() : d.getDay();
+                return d.getDay();
             },
 
             getYear: function (d) {
-                return (this.getKind(d) === 1) ? d.getUTCFullYear() : d.getFullYear();
+                var kind = (d.kind !== undefined) ? d.kind : 0,
+                    ticks = this.getTicks(d);
+
+                if (ticks.lt(this.TicksPerDay)) {
+                    return 1;
+                }
+
+                return kind === 1 ? d.getUTCFullYear() : d.getFullYear();
             },
 
             getMonth: function (d) {
-                return ((this.getKind(d) === 1) ? d.getUTCMonth() : d.getMonth()) + 1;
+                var kind = (d.kind !== undefined) ? d.kind : 0,
+                    ticks = this.getTicks(d);
+
+                if (ticks.lt(this.TicksPerDay)) {
+                    return 1;
+                }
+
+                return kind === 1 ? d.getUTCMonth() + 1 : d.getMonth() + 1;
             },
 
             getDay: function (d) {
-                return (this.getKind(d) === 1) ? d.getUTCDate() : d.getDate();
+                var kind = (d.kind !== undefined) ? d.kind : 0,
+                    ticks = this.getTicks(d);
+
+                if (ticks.lt(this.TicksPerDay)) {
+                    return 1;
+                }
+
+                return kind === 1 ? d.getUTCDate() : d.getDate();
             },
 
             getHour: function (d) {
-                return (this.getKind(d) === 1) ? d.getUTCHours() : d.getHours();
+                var kind = (d.kind !== undefined) ? d.kind : 0;
+
+                return kind === 1 ? d.getUTCHours() : d.getHours();
             },
 
             getMinute: function (d) {
-                return (this.getKind(d) === 1) ? d.getUTCMinutes() : d.getMinutes();
+                var kind = (d.kind !== undefined) ? d.kind : 0;
+
+                return kind === 1 ? d.getUTCMinutes() : d.getMinutes();
             },
 
             getSecond: function (d) {
-                return (this.getKind(d) === 1) ? d.getUTCSeconds() : d.getSeconds();
+                return d.getSeconds();
             },
 
             getMillisecond: function (d) {
-                return (this.getKind(d) === 1) ? d.getUTCMilliseconds() : d.getMilliseconds();
+                return d.getMilliseconds();
             },
 
             gt: function (a, b) {
@@ -13054,6 +13380,9 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             }
 
             return arr || result;
+        },
+        getLongLength: function (array) {
+            return System.Int64(array.length);
         }
     };
 
@@ -13570,14 +13899,12 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                     throw new System.ArgumentOutOfRangeException.$ctor4("length", "Index and length must refer to a location within the string");
                 }
 
-                var s = str.substr(startIndex, length);
+                length = startIndex + length;
+                anyOf = String.fromCharCode.apply(null, anyOf);
 
-                for (var i = 0; i < anyOf.length; i++) {
-                    var c = String.fromCharCode(anyOf[i]),
-                        index = s.indexOf(c);
-
-                    if (index > -1) {
-                        return index + startIndex;
+                for (var i = startIndex; i < length; i++) {
+                    if (anyOf.indexOf(str.charAt(i)) >= 0) {
+                        return i;
                     }
                 }
 
@@ -21916,18 +22243,31 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
     // @source Task.js
 
     Bridge.define("System.Threading.Tasks.Task", {
-        inherits: [System.IDisposable],
+        inherits: [System.IDisposable, System.IAsyncResult],
 
         config: {
             alias: [
-                "dispose", "System$IDisposable$Dispose"
-            ]
+                "dispose", "System$IDisposable$Dispose",
+                "AsyncState", "System$IAsyncResult$AsyncState",
+                "CompletedSynchronously", "System$IAsyncResult$CompletedSynchronously",
+                "IsCompleted", "System$IAsyncResult$IsCompleted"
+            ],
+
+            properties: {
+                IsCompleted: {
+                    get: function () {
+                        return this.isCompleted();
+                    }
+                }
+            }
         },
 
         ctor: function (action, state) {
             this.$initialize();
             this.action = action;
             this.state = state;
+            this.AsyncState = state;
+            this.CompletedSynchronously = false;
             this.exception = null;
             this.status = System.Threading.Tasks.TaskStatus.created;
             this.callbacks = [];
@@ -22009,10 +22349,8 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
 
                         if (Bridge.is(result, System.Threading.Tasks.Task)) {
                             result.continueWith(function () {
-                                if (result.isCanceled()) {
-                                    tcs.setCanceled();
-                                } else if (result.isFaulted()) {
-                                    tcs.setException(result.exception);
+                                if (result.isFaulted() || result.isCanceled()) {
+                                    tcs.setException(result.exception.innerExceptions.Count > 0 ? result.exception.innerExceptions.getItem(0) : result.exception);
                                 } else {
                                     tcs.setResult(result.getAwaitedResult());
                                 }
@@ -22105,8 +22443,6 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                                 tcs.trySetResult(t);
                                 break;
                             case System.Threading.Tasks.TaskStatus.canceled:
-                                tcs.trySetCanceled();
-                                break;
                             case System.Threading.Tasks.TaskStatus.faulted:
                                 tcs.trySetException(t.exception.innerExceptions);
                                 break;
@@ -22197,6 +22533,10 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             }
         },
 
+        getException: function () {
+            return this.isCanceled() ? null : this.exception;
+        },
+
         waitt: function (timeout, token) {
             var ms = timeout,
                 tcs = new System.Threading.Tasks.TaskCompletionSource(),
@@ -22249,10 +22589,8 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             this.continueWith(function () {
                 if (!complete) {
                     complete = true;
-                    if (me.isFaulted()) {
+                    if (me.isFaulted() || me.isCanceled()) {
                         tcs.setException(me.exception);
-                    } else if (me.isCanceled()) {
-                        tcs.setCanceled();
                     } else {
                         tcs.setResult();
                     }
@@ -22260,6 +22598,15 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             })
 
             return tcs.task;
+        },
+
+        continue: function (continuationAction) {
+            if (this.isCompleted()) {
+                System.Threading.Tasks.Task.queue.push(continuationAction);
+                System.Threading.Tasks.Task.runQueue();
+            } else {
+                this.callbacks.push(continuationAction);
+            }
         },
 
         continueWith: function (continuationAction, raise) {
@@ -22337,7 +22684,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             }
 
             this.exception = error;
-            this.status = System.Threading.Tasks.TaskStatus.faulted;
+            this.status = this.exception.hasTaskCanceledException && this.exception.hasTaskCanceledException() ? System.Threading.Tasks.TaskStatus.canceled : System.Threading.Tasks.TaskStatus.faulted;
             this.runCallbacks();
 
             return true;
@@ -22348,6 +22695,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 return false;
             }
 
+            this.exception = error || new System.AggregateException(null, [new System.Threading.Tasks.TaskCanceledException.$ctor3(this)]);
             this.status = System.Threading.Tasks.TaskStatus.canceled;
             this.runCallbacks();
 
@@ -22371,12 +22719,11 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 case System.Threading.Tasks.TaskStatus.ranToCompletion:
                     return this.result;
                 case System.Threading.Tasks.TaskStatus.canceled:
-                    var ex = new System.Threading.Tasks.TaskCanceledException.$ctor3(this);
-
                     if (this.exception && this.exception.innerExceptions) {
                         throw awaiting ? (this.exception.innerExceptions.Count > 0 ? this.exception.innerExceptions.getItem(0) : null) : this.exception;
                     }
 
+                    var ex = new System.Threading.Tasks.TaskCanceledException.$ctor3(this);
                     throw awaiting ? ex : new System.AggregateException(null, [ex]);
                 case System.Threading.Tasks.TaskStatus.faulted:
                     throw awaiting ? (this.exception.innerExceptions.Count > 0 ? this.exception.innerExceptions.getItem(0) : null) : this.exception;
@@ -22425,9 +22772,9 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
     });
 
     Bridge.define("System.Threading.Tasks.TaskCompletionSource", {
-        ctor: function () {
+        ctor: function (state) {
             this.$initialize();
-            this.task = new System.Threading.Tasks.Task();
+            this.task = new System.Threading.Tasks.Task(null, state);
             this.task.status = System.Threading.Tasks.TaskStatus.running;
         },
 
@@ -22462,7 +22809,13 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 exception = [exception];
             }
 
-            return this.task.fail(new System.AggregateException(null, exception));
+            exception = new System.AggregateException(null, exception);
+
+            if (exception.hasTaskCanceledException()) {
+                return this.task.cancel(exception);
+            }
+
+            return this.task.fail(exception);
         }
     });
 
@@ -22942,6 +23295,28 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             DateTime: 16,
             String: 18
         },
+
+        convertTypes: [
+            null,
+            System.Object,
+            null,
+            System.Boolean,
+            System.Char,
+            System.SByte,
+            System.Byte,
+            System.Int16,
+            System.UInt16,
+            System.Int32,
+            System.UInt32,
+            System.Int64,
+            System.UInt64,
+            System.Single,
+            System.Double,
+            System.Decimal,
+            System.DateTime,
+            System.Object,
+            System.String
+        ],
 
         toBoolean: function (value, formatProvider) {
             value = Bridge.unbox(value, true);
@@ -23612,9 +23987,192 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             return bytes;
         },
 
-        convertToType: function (typeCode, value, formatProvider) {
-            //TODO: #822 IConvertible
-            throw new System.NotSupportedException.$ctor1("IConvertible interface is not supported.");
+        getTypeCode: function (t) {
+            if (t == null) {
+                return System.TypeCode.Object;
+            }
+            if (t === System.Double) {
+                return System.TypeCode.Double;
+            }
+            if (t === System.Single) {
+                return System.TypeCode.Single;
+            }
+            if (t === System.Decimal) {
+                return System.TypeCode.Decimal;
+            }
+            if (t === System.Byte) {
+                return System.TypeCode.Byte;
+            }
+            if (t === System.SByte) {
+                return System.TypeCode.SByte;
+            }
+            if (t === System.UInt16) {
+                return System.TypeCode.UInt16;
+            }
+            if (t === System.Int16) {
+                return System.TypeCode.Int16;
+            }
+            if (t === System.UInt32) {
+                return System.TypeCode.UInt32;
+            }
+            if (t === System.Int32) {
+                return System.TypeCode.Int32;
+            }
+            if (t === System.UInt64) {
+                return System.TypeCode.UInt64;
+            }
+            if (t === System.Int64) {
+                return System.TypeCode.Int64;
+            }
+            if (t === System.Boolean) {
+                return System.TypeCode.Boolean;
+            }
+            if (t === System.Char) {
+                return System.TypeCode.Char;
+            }
+            if (t === System.DateTime) {
+                return System.TypeCode.DateTime;
+            }
+            if (t === System.String) {
+                return System.TypeCode.String;
+            }
+            return System.TypeCode.Object;
+        },
+
+        changeConversionType: function (value, conversionType, provider) {
+            if (conversionType == null) {
+                throw new System.ArgumentNullException.$ctor1("conversionType");
+            }
+
+            if (value == null) {
+                if (Bridge.Reflection.isValueType(conversionType)) {
+                    throw new System.InvalidCastException.$ctor1("Null object cannot be converted to a value type.");
+                }
+                return null;
+            }
+
+            var fromTypeCode = scope.convert.getTypeCode(Bridge.getType(value)),
+                ic = Bridge.as(value, System.IConvertible);
+
+            if (ic == null && fromTypeCode == System.TypeCode.Object) {
+                if (Bridge.referenceEquals(Bridge.getType(value), conversionType)) {
+                    return value;
+                }
+                throw new System.InvalidCastException.$ctor1("Cannot convert to IConvertible");
+            }
+
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.Boolean, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toBoolean(value, provider) : ic.System$IConvertible$ToBoolean(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.Char, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toChar(value, provider, fromTypeCode) : ic.System$IConvertible$ToChar(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.SByte, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toSByte(value, provider, fromTypeCode) : ic.System$IConvertible$ToSByte(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.Byte, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toByte(value, provider) : ic.System$IConvertible$ToByte(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.Int16, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toInt16(value, provider) : ic.System$IConvertible$ToInt16(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.UInt16, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toUInt16(value, provider) : ic.System$IConvertible$ToUInt16(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.Int32, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toInt32(value, provider) : ic.System$IConvertible$ToInt32(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.UInt32, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toUInt32(value, provider) : ic.System$IConvertible$ToUInt32(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.Int64, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toInt64(value, provider) : ic.System$IConvertible$ToInt64(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.UInt64, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toUInt64(value, provider) : ic.System$IConvertible$ToUInt64(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.Single, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toSingle(value, provider) : ic.System$IConvertible$ToSingle(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.Double, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toDouble(value, provider) : ic.System$IConvertible$ToDouble(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.Decimal, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toDecimal(value, provider) : ic.System$IConvertible$ToDecimal(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.DateTime, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toDateTime(value, provider) : ic.System$IConvertible$ToDateTime(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.String, scope.convert.convertTypes)])) {
+                return ic == null ? scope.convert.toString(value, provider, fromTypeCode) : ic.System$IConvertible$ToString(provider);
+            }
+            if (Bridge.referenceEquals(conversionType, scope.convert.convertTypes[System.Array.index(System.TypeCode.Object, scope.convert.convertTypes)])) {
+                return value;
+            }
+
+            if (ic == null) {
+                throw new System.InvalidCastException.$ctor1("Cannot convert to IConvertible");
+            }
+
+            return ic.System$IConvertible$ToType(conversionType, provider);
+        },
+
+        changeType: function (value, typeCode, formatProvider) {
+            if (Bridge.isFunction(typeCode)) {
+                return scope.convert.changeConversionType(value, typeCode, formatProvider);
+            }
+
+            if (value == null && (typeCode === System.TypeCode.Empty || typeCode === System.TypeCode.String || typeCode === System.TypeCode.Object)) {
+                return null;
+            }
+
+            var fromTypeCode = scope.convert.getTypeCode(Bridge.getType(value)),
+                v = Bridge.as(value, System.IConvertible);
+
+            if (v == null && fromTypeCode == System.TypeCode.Object) {
+                throw new System.InvalidCastException.$ctor1("Cannot convert to IConvertible");
+            }
+
+            switch (typeCode) {
+                case System.TypeCode.Boolean:
+                    return v == null ? scope.convert.toBoolean(value, formatProvider) : v.System$IConvertible$ToBoolean(provider);
+                case System.TypeCode.Char:
+                    return v == null ? scope.convert.toChar(value, formatProvider, fromTypeCode) : v.System$IConvertible$ToChar(provider);
+                case System.TypeCode.SByte:
+                    return v == null ? scope.convert.toSByte(value, formatProvider, fromTypeCode) : v.System$IConvertible$ToSByte(provider);
+                case System.TypeCode.Byte:
+                    return v == null ? scope.convert.toByte(value, formatProvider, fromTypeCode) : v.System$IConvertible$ToByte(provider);
+                case System.TypeCode.Int16:
+                    return v == null ? scope.convert.toInt16(value, formatProvider) : v.System$IConvertible$ToInt16(provider);
+                case System.TypeCode.UInt16:
+                    return v == null ? scope.convert.toUInt16(value, formatProvider) : v.System$IConvertible$ToUInt16(provider);
+                case System.TypeCode.Int32:
+                    return v == null ? scope.convert.toInt32(value, formatProvider) : v.System$IConvertible$ToInt32(provider);
+                case System.TypeCode.UInt32:
+                    return v == null ? scope.convert.toUInt32(value, formatProvider) : v.System$IConvertible$ToUInt32(provider);
+                case System.TypeCode.Int64:
+                    return v == null ? scope.convert.toInt64(value, formatProvider) : v.System$IConvertible$ToInt64(provider);
+                case System.TypeCode.UInt64:
+                    return v == null ? scope.convert.toUInt64(value, formatProvider) : v.System$IConvertible$ToUInt64(provider);
+                case System.TypeCode.Single:
+                    return v == null ? scope.convert.toSingle(value, formatProvider) : v.System$IConvertible$ToSingle(provider);
+                case System.TypeCode.Double:
+                    return v == null ? scope.convert.toDouble(value, formatProvider) : v.System$IConvertible$ToDouble(provider);
+                case System.TypeCode.Decimal:
+                    return v == null ? scope.convert.toDecimal(value, formatProvider) : v.System$IConvertible$ToDecimal(provider);
+                case System.TypeCode.DateTime:
+                    return v == null ? scope.convert.toDateTime(value, formatProvider) : v.System$IConvertible$ToDateTime(provider);
+                case System.TypeCode.String:
+                    return v == null ? scope.convert.toString(value, formatProvider, fromTypeCode) : v.System$IConvertible$ToString(provider);
+                case System.TypeCode.Object:
+                    return value;
+                case System.TypeCode.DBNull:
+                    throw new System.InvalidCastException.$ctor1("Cannot convert DBNull values");
+                case System.TypeCode.Empty:
+                    throw new System.InvalidCastException.$ctor1("Cannot convert Empty values");
+                default:
+                    throw new System.ArgumentException.$ctor1("Unknown type code");
+            }
         }
     };
 
@@ -38679,8 +39237,8 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                     this.UnixEpochTicks = System.Int64([-139100160,144670709]);
                     this.UnixEpochSeconds = System.Int64([2006054656,14]);
                     this.UnixEpochMilliseconds = System.Int64([304928768,14467]);
-                    this.MinValue = new System.DateTimeOffset.$ctor5(System.DateTime.MinTicks, System.TimeSpan.zero);
-                    this.MaxValue = new System.DateTimeOffset.$ctor5(System.DateTime.MaxTicks, System.TimeSpan.zero);
+                    this.MinValue = new System.DateTimeOffset.$ctor5(System.DateTime.getMinTicks(), System.TimeSpan.zero);
+                    this.MaxValue = new System.DateTimeOffset.$ctor5(System.DateTime.getMaxTicks(), System.TimeSpan.zero);
                 }
             },
             methods: {
@@ -38751,7 +39309,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 },
                 ValidateDate: function (dateTime, offset) {
                     var utcTicks = System.DateTime.getTicks(dateTime).sub(offset.getTicks());
-                    if (utcTicks.lt(System.DateTime.MinTicks) || utcTicks.gt(System.DateTime.MaxTicks)) {
+                    if (utcTicks.lt(System.DateTime.getMinTicks()) || utcTicks.gt(System.DateTime.getMaxTicks())) {
                         throw new System.ArgumentOutOfRangeException.$ctor4("offset", System.Environment.GetResourceString("Argument_UTCOutOfRange"));
                     }
                     return System.DateTime.create$2(utcTicks, 0);
@@ -44974,7 +45532,8 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                                     case 1: {
                                         $task1 = System.IO.FileStream.ReadBytesAsync(this.name);
                                         $step = 2;
-                                        $task1.continueWith($asyncBody);
+                                        if ($task1.isCompleted()) continue;
+                                        $task1.continue($asyncBody);
                                         return;
                                     }
                                     case 2: {
@@ -46217,7 +46776,8 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                                     case 1: {
                                         $task1 = this.stream.EnsureBufferAsync();
                                         $step = 2;
-                                        $task1.continueWith($asyncBody);
+                                        if ($task1.isCompleted()) continue;
+                                        $task1.continue($asyncBody);
                                         return;
                                     }
                                     case 2: {
@@ -46228,7 +46788,8 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                                     case 3: {
                                         $task2 = System.IO.TextReader.prototype.ReadToEndAsync.call(this);
                                         $step = 4;
-                                        $task2.continueWith($asyncBody);
+                                        if ($task2.isCompleted()) continue;
+                                        $task2.continue($asyncBody);
                                         return;
                                     }
                                     case 4: {
@@ -48115,6 +48676,16 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
             }
 
             return back;
+        },
+
+        hasTaskCanceledException: function () {
+            for (var i = 0; i < this.innerExceptions.Count; i++) {
+                var e = this.innerExceptions.getItem(i);
+                if (Bridge.is(e, System.Threading.Tasks.TaskCanceledException) || (Bridge.is(e, System.AggregateException) && e.hasTaskCanceledException())) {
+                    return true;
+                }
+            }
+            return false;
         },
 
         flatten: function () {
