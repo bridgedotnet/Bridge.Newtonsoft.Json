@@ -492,6 +492,46 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Bridge.Test.NUnit.Assert.AreEqual(persons[System.Array.index(1, persons)].Address.City, entity.Address.City);
                     Bridge.Test.NUnit.Assert.AreEqual(persons[System.Array.index(1, persons)].Address.Street, entity.Address.Street);
                 },
+                PropertyThatRequiresImplicitConversionFromBoolWorks: function () {
+                    var json = "{ ID: true }";
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringImplicitOperator$1(System.Boolean));
+                    Bridge.Test.NUnit.Assert.AreEqual("true", result.ID.Value);
+                },
+                PropertyThatRequiresImplicitConversionFromIntegerWorks: function () {
+                    var json = "{ ID: 123 }";
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringImplicitOperator$1(System.Int64));
+                    Bridge.Test.NUnit.Assert.AreEqual("123", result.ID.Value);
+                },
+                PropertyThatRequiresImplicitConversionFromFloatingPointNumberWorks: function () {
+                    var json = "{ ID: 1.23 }";
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringImplicitOperator$1(System.Double));
+                    Bridge.Test.NUnit.Assert.AreEqual("1.23", result.ID.Value);
+                },
+                PropertyThatRequiresImplicitConversionFromStringWorks: function () {
+                    var json = "{ ID: \"abc\" }";
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringImplicitOperator$1(System.String));
+                    Bridge.Test.NUnit.Assert.AreEqual("abc", result.ID.Value);
+                },
+                PropertyThatRequiresExplicitConversionFromBoolWorks: function () {
+                    var json = "{ ID: true }";
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringExplicitOperator$1(System.Boolean));
+                    Bridge.Test.NUnit.Assert.AreEqual("true", result.ID.Value);
+                },
+                PropertyThatRequiresExplicitConversionFromIntegerWorks: function () {
+                    var json = "{ ID: 123 }";
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringExplicitOperator$1(System.Int64));
+                    Bridge.Test.NUnit.Assert.AreEqual("123", result.ID.Value);
+                },
+                PropertyThatRequiresExplicitConversionFromFloatingPointNumberWorks: function () {
+                    var json = "{ ID: 1.23 }";
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringExplicitOperator$1(System.Double));
+                    Bridge.Test.NUnit.Assert.AreEqual("1.23", result.ID.Value);
+                },
+                PropertyThatRequiresExplicitConversionFromStringWorks: function () {
+                    var json = "{ ID: \"abc\" }";
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringExplicitOperator$1(System.String));
+                    Bridge.Test.NUnit.Assert.AreEqual("abc", result.ID.Value);
+                },
                 TestN504: function () {
                     var o = Newtonsoft.Json.JsonConvert.DeserializeObject("true", System.Boolean);
                     Bridge.Test.NUnit.Assert.AreEqual(true, o, "Bridge544 bool");
@@ -680,6 +720,72 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.INamedEntity", {
         $kind: "nested interface"
     });
+
+    Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.SomethingWithExplicitOperatorFrom$1", function (T) { return {
+        $kind: "nested class",
+        statics: {
+            methods: {
+                op_Explicit: function (source) {
+                    return new (Newtonsoft.Json.Tests.DeserializationTests.SomethingWithExplicitOperatorFrom$1(T))(Bridge.toString(source));
+                }
+            }
+        },
+        props: {
+            Value: null
+        },
+        ctors: {
+            ctor: function (value) {
+                this.$initialize();
+                this.Value = value;
+            }
+        }
+    }; });
+
+    Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringExplicitOperator$1", function (T) { return {
+        $kind: "nested class",
+        props: {
+            ID: null
+        },
+        ctors: {
+            ctor: function (id) {
+                this.$initialize();
+                this.ID = id;
+            }
+        }
+    }; });
+
+    Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.SomethingWithIDRequiringImplicitOperator$1", function (T) { return {
+        $kind: "nested class",
+        props: {
+            ID: null
+        },
+        ctors: {
+            ctor: function (id) {
+                this.$initialize();
+                this.ID = id;
+            }
+        }
+    }; });
+
+    Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.SomethingWithImplicitOperatorFrom$1", function (T) { return {
+        $kind: "nested class",
+        statics: {
+            methods: {
+                op_Implicit: function (source) {
+                    return new (Newtonsoft.Json.Tests.DeserializationTests.SomethingWithImplicitOperatorFrom$1(T))(Bridge.toString(source));
+                }
+            }
+        },
+        props: {
+            Value: null
+        },
+        ctors: {
+            ctor: function (value) {
+                this.$initialize();
+                this.Value = value;
+            }
+        }
+    }; });
 
     Bridge.define("Newtonsoft.Json.Tests.DeserializationTests.SubClass1", {
         $kind: "nested class",
@@ -2223,6 +2329,77 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
             Data: null
         }
     }; });
+
+    /**
+     * The tests here ensures
+     *
+     * @public
+     * @class Newtonsoft.Json.Tests.Issues.Case154
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case154", {
+        statics: {
+            methods: {
+                /**
+                 * Tests by trying to deserialize a simple-crafted json string into
+                 the class that implements a member which type has an explicit
+                 operator assigned to it.
+                 *
+                 * @static
+                 * @public
+                 * @this Newtonsoft.Json.Tests.Issues.Case154
+                 * @memberof Newtonsoft.Json.Tests.Issues.Case154
+                 * @return  {void}
+                 */
+                TestSerializeMemberWithExplicitOperator: function () {
+                    // AS the JSON has a string value but the "ID" property of Example is of type "SpecialID",
+                    // the explicit operator on the SpecialID class is used in the deserialisation process
+                    var json = "{ \"ID\": \"abc\" }";
+                    var value = Newtonsoft.Json.JsonConvert.DeserializeObject(json, Newtonsoft.Json.Tests.Issues.Case154.Example);
+                    Bridge.Test.NUnit.Assert.AreEqual("abc", value.ID.Value, "Deserializing json strings into classes with custom types with explicit operators, works.");
+                }
+            }
+        }
+    });
+
+    /**
+     * A class with a member using a custom type.
+     *
+     * @private
+     * @class Newtonsoft.Json.Tests.Issues.Case154.Example
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case154.Example", {
+        $kind: "nested class",
+        props: {
+            ID: null
+        }
+    });
+
+    /**
+     * Custom type for the class above, implementing an explicit operator
+     for value binding.
+     *
+     * @private
+     * @class Newtonsoft.Json.Tests.Issues.Case154.SpecialID
+     */
+    Bridge.define("Newtonsoft.Json.Tests.Issues.Case154.SpecialID", {
+        $kind: "nested class",
+        statics: {
+            methods: {
+                op_Explicit: function (value) {
+                    return new Newtonsoft.Json.Tests.Issues.Case154.SpecialID(value);
+                }
+            }
+        },
+        props: {
+            Value: null
+        },
+        ctors: {
+            ctor: function (value) {
+                this.$initialize();
+                this.Value = value;
+            }
+        }
+    });
 
     /**
      * The tests here ensures when an instance of a class is serialized, yet
