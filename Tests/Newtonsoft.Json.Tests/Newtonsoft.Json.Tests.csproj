@@ -76,6 +76,7 @@
     <Compile Include="Issues\0100\Case132.cs" />
     <Compile Include="Issues\0100\Case136.cs" />
     <Compile Include="Issues\0100\Case106.cs" />
+    <Compile Include="Issues\0100\Case154.cs" />
     <Compile Include="Issues\0100\Case157.cs" />
     <Compile Include="Issues\0100\Case138.cs" />
     <Compile Include="Tests\ListOptimizationTests.cs" />
