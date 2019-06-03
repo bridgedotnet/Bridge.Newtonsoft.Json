@@ -1,9 +1,9 @@
-﻿using Bridge;
+﻿using System;
+using System.Collections.Generic;
+using Bridge;
+using Bridge.Test.NUnit;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Tests.Utilities;
-using Bridge.Test.NUnit;
-using System;
-using System.Collections.Generic;
 
 namespace Newtonsoft.Json.Tests
 {
@@ -192,6 +192,36 @@ namespace Newtonsoft.Json.Tests
             {
                 get; private set;
             }
+        }
+
+        [Reflectable]
+        public class SomethingWithImplicitOperatorFrom<T>
+        {
+            public SomethingWithImplicitOperatorFrom(string value) => Value = value;
+            public string Value { get; }
+            public static implicit operator SomethingWithImplicitOperatorFrom<T>(T source) => new SomethingWithImplicitOperatorFrom<T>(source.ToString());
+        }
+
+        [Reflectable]
+        public class SomethingWithExplicitOperatorFrom<T>
+        {
+            public SomethingWithExplicitOperatorFrom(string value) => Value = value;
+            public string Value { get; }
+            public static explicit operator SomethingWithExplicitOperatorFrom<T>(T source) => new SomethingWithExplicitOperatorFrom<T>(source.ToString());
+        }
+
+        [Reflectable]
+        public class SomethingWithIDRequiringImplicitOperator<T>
+        {
+            public SomethingWithIDRequiringImplicitOperator(SomethingWithImplicitOperatorFrom<T> id) => ID = id;
+            public SomethingWithImplicitOperatorFrom<T> ID { get; }
+        }
+
+        [Reflectable]
+        public class SomethingWithIDRequiringExplicitOperator<T>
+        {
+            public SomethingWithIDRequiringExplicitOperator(SomethingWithExplicitOperatorFrom<T> id) => ID = id;
+            public SomethingWithExplicitOperatorFrom<T> ID { get; }
         }
 
         #endregion Test data
@@ -609,6 +639,70 @@ namespace Newtonsoft.Json.Tests
             Assert.True((object)entity.Address is Address);
             Assert.AreEqual(persons[1].Address.City, entity.Address.City);
             Assert.AreEqual(persons[1].Address.Street, entity.Address.Street);
+        }
+
+        [Test]
+        public static void PropertyThatRequiresImplicitConversionFromBoolWorks()
+        {
+            var json = "{ ID: true }";
+            var result = JsonConvert.DeserializeObject<SomethingWithIDRequiringImplicitOperator<bool>>(json);
+            Assert.AreEqual("true", result.ID.Value);
+        }
+
+        [Test]
+        public static void PropertyThatRequiresImplicitConversionFromIntegerWorks()
+        {
+            var json = "{ ID: 123 }";
+            var result = JsonConvert.DeserializeObject<SomethingWithIDRequiringImplicitOperator<long>>(json);
+            Assert.AreEqual("123", result.ID.Value);
+        }
+
+        [Test]
+        public static void PropertyThatRequiresImplicitConversionFromFloatingPointNumberWorks()
+        {
+            var json = "{ ID: 1.23 }";
+            var result = JsonConvert.DeserializeObject<SomethingWithIDRequiringImplicitOperator<double>>(json);
+            Assert.AreEqual("1.23", result.ID.Value);
+        }
+
+        [Test]
+        public static void PropertyThatRequiresImplicitConversionFromStringWorks()
+        {
+            var json = "{ ID: \"abc\" }";
+            var result = JsonConvert.DeserializeObject<SomethingWithIDRequiringImplicitOperator<string>>(json);
+            Assert.AreEqual("abc", result.ID.Value);
+        }
+
+        [Test]
+        public static void PropertyThatRequiresExplicitConversionFromBoolWorks()
+        {
+            var json = "{ ID: true }";
+            var result = JsonConvert.DeserializeObject<SomethingWithIDRequiringExplicitOperator<bool>>(json);
+            Assert.AreEqual("true", result.ID.Value);
+        }
+
+        [Test]
+        public static void PropertyThatRequiresExplicitConversionFromIntegerWorks()
+        {
+            var json = "{ ID: 123 }";
+            var result = JsonConvert.DeserializeObject<SomethingWithIDRequiringExplicitOperator<long>>(json);
+            Assert.AreEqual("123", result.ID.Value);
+        }
+
+        [Test]
+        public static void PropertyThatRequiresExplicitConversionFromFloatingPointNumberWorks()
+        {
+            var json = "{ ID: 1.23 }";
+            var result = JsonConvert.DeserializeObject<SomethingWithIDRequiringExplicitOperator<double>>(json);
+            Assert.AreEqual("1.23", result.ID.Value);
+        }
+
+        [Test]
+        public static void PropertyThatRequiresExplicitConversionFromStringWorks()
+        {
+            var json = "{ ID: \"abc\" }";
+            var result = JsonConvert.DeserializeObject<SomethingWithIDRequiringExplicitOperator<string>>(json);
+            Assert.AreEqual("abc", result.ID.Value);
         }
 
         [Test(ExpectedCount = 1)]

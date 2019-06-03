@@ -963,6 +963,38 @@
                     return false;
                 },
 
+                tryToGetCastOperator: function (raw, type) {
+                    // Implicit/explicit operators are not supported for null inputs values because we don't know what the source type is (this is consistent with the Newtonsoft implementation).
+                    // They are also only supported for particular primitive values - again, consistent with Newtonsoft and due to limited source type information. Newtonsoft parses numbers as
+                    // either Int64 or Double, depending upon whether the input string includes a ".", but we don't have that information here (a number is always parsed into the type "number")
+                    // and so we'll look for either a Double or Int64 operator if the raw value is a number.
+                    if (raw === null) {
+                        return null;
+                    }
+                    var typesToLookFor;
+                    if ((typeof raw === "boolean") || (typeof raw === "string")) {
+                        typesToLookFor = [ Bridge.getType(raw) ];
+                    }
+                    else if (typeof raw === "number") {
+                        typesToLookFor = [ System.Double, System.Int64 ];
+                    }
+                    else {
+                        return null;
+                    }
+                    for (var i = 0; i < typesToLookFor.length; i++) {
+                        var typeToLookFor = typesToLookFor[i];
+                        var explicitCastOnTarget = Bridge.Reflection.getMembers(type, 8, 284, "op_Explicit", [typeToLookFor]);
+                        if (explicitCastOnTarget) {
+                            return function (value) { return Bridge.Reflection.midel(explicitCastOnTarget, null)(value); };
+                        }
+                        var implicitCastOnTarget = Bridge.Reflection.getMembers(type, 8, 284, "op_Implicit", [typeToLookFor]);
+                        if (implicitCastOnTarget) {
+                            return function (value) { return Bridge.Reflection.midel(implicitCastOnTarget, null)(value); };
+                        }
+                    }
+                    return null;
+                },
+
                 DeserializeObject: function (raw, type, settings, field, instance, i_names) {
                     settings = settings || {};
                     if (type.$kind === "interface") {
@@ -1021,6 +1053,11 @@
                             return "false";
                         }
 
+                        var castOperator = Newtonsoft.Json.JsonConvert.tryToGetCastOperator(raw, type);
+                        if (castOperator) {
+                            return castOperator(raw);
+                        }
+
                         if (isObject) {
                             return Bridge.box(raw, System.Boolean, System.Boolean.toString);
                         }
@@ -1046,6 +1083,11 @@
                         } else {
                             if (typeof def === "number") {
                                 return def + 1;
+                            }
+
+                            var castOperator = Newtonsoft.Json.JsonConvert.tryToGetCastOperator(raw, type);
+                            if (castOperator) {
+                                return castOperator(raw);
                             }
 
                             if (isObject) {
@@ -1099,6 +1141,10 @@
                         } else if (type === System.DateTimeOffset) {
                             return new System.DateTimeOffset.$ctor5(System.Int64(raw | 0), new System.DateTimeOffset.ctor().Offset);
                         } else {
+                            var castOperator = Newtonsoft.Json.JsonConvert.tryToGetCastOperator(raw, type);
+                            if (castOperator) {
+                                return castOperator(raw);
+                            }
                             if (isObject) {
                                 return Bridge.box(raw, Bridge.getType(raw));
                             }
@@ -1197,6 +1243,11 @@
                         } else if (type === System.Array.type(System.Byte, 1)) {
                             return System.Convert.fromBase64String(raw);
                         } else {
+                            var castOperator = Newtonsoft.Json.JsonConvert.tryToGetCastOperator(raw, type);
+                            if (castOperator) {
+                                return castOperator(raw);
+                            }
+
                             if (isObject) {
                                 return raw;
                             }
