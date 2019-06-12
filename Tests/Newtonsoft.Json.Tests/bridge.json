@@ -9,5 +9,6 @@
   },
   "logging": {
     "level": "None"
-  }
+  },
+  "ignoreDuplicateTypes": true
 }
