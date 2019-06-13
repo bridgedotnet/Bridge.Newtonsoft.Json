@@ -1,5 +1,5 @@
 /**
- * @version   : 17.8.1 - Bridge.NET
+ * @version   : 17.9.0 - Bridge.NET
  * @author    : Object.NET, Inc. http://bridge.net/
  * @copyright : Copyright 2008-2019 Object.NET, Inc. http://object.net/
  * @license   : See license.txt and https://github.com/bridgedotnet/Bridge/blob/master/LICENSE.md
@@ -3507,8 +3507,8 @@
     // @source SystemAssemblyVersion.js
 
     Bridge.init(function () {
-        Bridge.SystemAssembly.version = "17.8.1";
-        Bridge.SystemAssembly.compiler = "17.8.1";
+        Bridge.SystemAssembly.version = "17.9.0";
+        Bridge.SystemAssembly.compiler = "17.9.0";
     });
 
     Bridge.define("Bridge.Utils.SystemAssemblyVersion");
@@ -3559,7 +3559,7 @@
 
                     if (m.tprm && Bridge.isArray(m.tprm)) {
                         for (var j = 0; j < m.tprm.length; j++) {
-                            m.tprm[j] = Bridge.Reflection.createTypeParam(m.tprm[j], type);
+                            m.tprm[j] = Bridge.Reflection.createTypeParam(m.tprm[j], type, m, j);
                         }
                     }
                 }
@@ -3607,13 +3607,13 @@
             args = fnStr.slice(fnStr.indexOf("(") + 1, fnStr.indexOf(")")).match(/([^\s,]+)/g) || [];
 
             for (var i = 0; i < args.length; i++) {
-                names.push(Bridge.Reflection.createTypeParam(args[i], t));
+                names.push(Bridge.Reflection.createTypeParam(args[i], t, null, i));
             }
 
             return names;
         },
 
-        createTypeParam: function (name, t) {
+        createTypeParam: function (name, t, m, idx) {
             var fn = function TypeParameter() { };
 
             fn.$$name = name;
@@ -3621,6 +3621,14 @@
 
             if (t) {
                 fn.td = t;
+            }
+
+            if (m) {
+                fn.md = m;
+            }
+
+            if (idx != null) {
+                fn.gPrmPos = idx;
             }
 
             return fn;
@@ -4445,6 +4453,10 @@
                 method = mi.def || (mi.is || mi.sm ? mi.td[mi.sn] : (target ? target[mi.sn] : mi.td.prototype[mi.sn]));
 
                 if (mi.tpc) {
+                    if (mi.constructed && (!typeArguments || typeArguments.length == 0)) {
+                        typeArguments = mi.tprm;
+                    }
+
                     if (!typeArguments || typeArguments.length !== mi.tpc) {
                         throw new System.ArgumentException.$ctor1("Wrong number of type arguments");
                     }
@@ -4556,18 +4568,6 @@
             return Bridge.arrayTypes.indexOf(type) >= 0;
         },
 
-        hasGenericParameters: function (type) {
-            if (type.$typeArguments) {
-                for (var i = 0; i < type.$typeArguments.length; i++) {
-                    if (type.$typeArguments[i].$isTypeParameter) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        },
-
         isValueType: function (type) {
             return !Bridge.Reflection.canAcceptNull(type);
         },
@@ -4605,6 +4605,59 @@
             }
 
             return null;
+        },
+
+        isGenericMethodDefinition: function (mi) {
+            return Bridge.Reflection.isGenericMethod(mi) && !mi.constructed;
+        },
+
+        isGenericMethod: function (mi) {
+            return !!mi.tpc;
+        },
+
+        containsGenericParameters: function (mi) {
+            if (mi.$typeArguments) {
+                for (var i = 0; i < mi.$typeArguments.length; i++) {
+                    if (mi.$typeArguments[i].$isTypeParameter) {
+                        return true;
+                    }
+                }
+            }
+
+            var tprm = mi.tprm || [];
+
+            for (var i = 0; i < tprm.length; i++) {
+                if (tprm[i].$isTypeParameter) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
+
+        genericParameterPosition: function (type) {
+            if (!type.$isTypeParameter) {
+                throw new System.InvalidOperationException.$ctor1("The current type does not represent a type parameter.");
+            }
+            return type.gPrmPos || 0;
+        },
+
+        makeGenericMethod: function (mi, args) {
+            var cmi = Bridge.apply({}, mi);
+            cmi.tprm = args;
+            cmi.p = args;
+            cmi.gd = mi;
+            cmi.constructed = true;
+
+            return cmi;
+        },
+
+        getGenericMethodDefinition: function (mi) {
+            if (!mi.tpc) {
+                throw new System.InvalidOperationException.$ctor1("The current method is not a generic method. ");
+            }
+
+            return mi.gd || mi;
         }
     };
 
@@ -45532,7 +45585,9 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                                     case 1: {
                                         $task1 = System.IO.FileStream.ReadBytesAsync(this.name);
                                         $step = 2;
-                                        if ($task1.isCompleted()) continue;
+                                        if ($task1.isCompleted()) {
+                                            continue;
+                                        }
                                         $task1.continue($asyncBody);
                                         return;
                                     }
@@ -46776,7 +46831,9 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                                     case 1: {
                                         $task1 = this.stream.EnsureBufferAsync();
                                         $step = 2;
-                                        if ($task1.isCompleted()) continue;
+                                        if ($task1.isCompleted()) {
+                                            continue;
+                                        }
                                         $task1.continue($asyncBody);
                                         return;
                                     }
@@ -46788,7 +46845,9 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                                     case 3: {
                                         $task2 = System.IO.TextReader.prototype.ReadToEndAsync.call(this);
                                         $step = 4;
-                                        if ($task2.isCompleted()) continue;
+                                        if ($task2.isCompleted()) {
+                                            continue;
+                                        }
                                         $task2.continue($asyncBody);
                                         return;
                                     }
