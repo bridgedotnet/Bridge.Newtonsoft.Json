@@ -267,7 +267,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
             ctors: {
                 init: function () {
                     this.version = "1.16.0";
-                    this.compiler = "17.9.0";
+                    this.compiler = "17.9.1";
                 }
             }
         }
