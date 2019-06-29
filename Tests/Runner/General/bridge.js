@@ -1725,6 +1725,20 @@
                     return false;
                 }
 
+                if (this.$invocationList && fn.$invocationList) {
+                    if (this.$invocationList.length !== fn.$invocationList.length) {
+                        return false;
+                    }
+
+                    for (var i = 0; i < this.$invocationList.length; i++) {
+                        if (this.$invocationList[i] !== fn.$invocationList[i]) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+
                 return this.equals && (this.equals === fn.equals) && this.$method && (this.$method === fn.$method) && this.$scope && (this.$scope === fn.$scope);
             },
 
@@ -1983,31 +1997,29 @@
                     return fn1 || null;
                 }
 
-                var list1 = fn1.$invocationList ? fn1.$invocationList : [fn1],
-                    list2 = fn2.$invocationList ? fn2.$invocationList : [fn2],
+                var list1 = fn1.$invocationList ? fn1.$invocationList.slice(0) : [fn1],
+                    removeFn = fn2.$invocationList && fn2.$invocationList.length === 1 ? fn2.$invocationList[0] : fn2,
                     result = [],
                     exclude,
                     i,
                     j;
 
-                for (j = 0; j < list2.length; j++) {
-                    exclude = -1;
+                exclude = -1;
 
-                    for (i = list1.length - 1; i >= 0; i--) {
-                        if (list1[i] === list2[j] ||
-                            ((list1[i].$method && (list1[i].$method === list2[j].$method)) && (list1[i].$scope && (list1[i].$scope === list2[j].$scope)))) {
-                            exclude = i;
+                for (i = list1.length - 1; i >= 0; i--) {
+                    if (list1[i] === removeFn ||
+                        ((list1[i].$method && (list1[i].$method === removeFn.$method)) && (list1[i].$scope && (list1[i].$scope === removeFn.$scope)))) {
+                        exclude = i;
 
-                            break;
-                        }
-                    }
-
-                    if (exclude > -1) {
-                        list1.splice(exclude, 1);
+                        break;
                     }
                 }
 
-                return Bridge.fn.$build(list1);
+                if (exclude > -1) {
+                    list1.splice(exclude, 1);
+                }
+
+                return list1.length == 1 ? list1[0] : Bridge.fn.$build(list1);
             }
         },
 
@@ -45460,13 +45472,13 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
 
                     if (Bridge.isNode) {
                         var fs = require("fs");
-                        fs.readFile(path, function (err, data) {
+                        fs.readFile(path, Bridge.fn.$build([function (err, data) {
                             if (err != null) {
                                 throw new System.IO.IOException.ctor();
                             }
 
                             tcs.setResult(data);
-                        });
+                        }]));
                     } else {
                         var req = new XMLHttpRequest();
                         req.open("GET", path, true);
