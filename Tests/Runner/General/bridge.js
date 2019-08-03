@@ -6578,7 +6578,7 @@ Bridge.define("System.ValueType", {
                 },
                 CommandLine: {
                     get: function () {
-                        return System.Environment.GetCommandLineArgs().join(" ");
+                        return (System.Environment.GetCommandLineArgs()).join(" ");
                     }
                 },
                 CurrentDirectory: {
@@ -9058,6 +9058,7 @@ Bridge.define("System.Type", {
 
             // Native .NET accepts the sign in postfixed form. Yet, it is documented otherwise.
             // https://docs.microsoft.com/en-us/dotnet/api/system.decimal.parse
+            // True at least as with: Microsoft (R) Build Engine version 16.1.76+g14b0a930a7 for .NET Framework
             if (!/^\s*[+-]?(\d+|\d+\.|\d*\.\d+)((e|E)[+-]?\d+)?\s*$/.test(v) &&
                 !/^\s*(\d+|\d+\.|\d*\.\d+)((e|E)[+-]?\d+)?[+-]\s*$/.test(v)) {
                 throw new System.FormatException();
@@ -9065,19 +9066,20 @@ Bridge.define("System.Type", {
 
             v = v.replace(/\s/g, "");
 
-            // Move the postfixed - to front, or remove '+' so the underlying
+            // Move the postfixed - to front, or remove "+" so the underlying
             // decimal handler knows what to do with the string.
             if (/[+-]$/.test(v)) {
-                if (v.endsWith('-')) {
+                var vlastpos = v.length - 1;
+                if (v.indexOf("-", vlastpos) === vlastpos) {
                     v = v.replace(/(.*)(-)$/, "$2$1");
                 } else {
-                    v = v.substr(0, v.length - 1);
+                    v = v.substr(0, vlastpos);
                 }
-            } else if (v.startsWith("+")) {
+            } else if (v.lastIndexOf("+", 0) === 0) {
                 v = v.substr(1);
             }
 
-            if (!this.$precision && (dot = v.indexOf('.')) >= 0) {
+            if (!this.$precision && (dot = v.indexOf(".")) >= 0) {
                 this.$precision = v.length - dot - 1;
             }
         }
@@ -25983,7 +25985,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
 
     Enumerable.from = function (obj, T) {
         if (obj == null) {
-            return Enumerable.empty();
+            return null;
         }
         if (obj instanceof Enumerable) {
             return obj;
@@ -26658,6 +26660,10 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
         if (arguments.length == 2) {
             var second = arguments[0];
 
+            if (second == null) {
+                throw new System.ArgumentNullException();
+            }
+
             return new Enumerable(function () {
                 var firstEnumerator;
                 var secondEnumerator;
@@ -26761,6 +26767,10 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
         innerKeySelector = Utils.createLambda(innerKeySelector);
         resultSelector = Utils.createLambda(resultSelector);
 
+        if (inner == null) {
+            throw new System.ArgumentNullException();
+        }
+
         var source = this;
 
         return new Enumerable(function () {
@@ -26805,6 +26815,10 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
         innerKeySelector = Utils.createLambda(innerKeySelector);
         resultSelector = Utils.createLambda(resultSelector);
         var source = this;
+
+        if (inner == null) {
+            throw new System.ArgumentNullException();
+        }
 
         return new Enumerable(function () {
             var enumerator = source.GetEnumerator();
@@ -26871,6 +26885,10 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
 
         if (arguments.length == 1) {
             var second = arguments[0];
+
+            if (second == null) {
+                throw new System.ArgumentNullException();
+            }
 
             return new Enumerable(function () {
                 var firstEnumerator;
@@ -27113,6 +27131,10 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
     Enumerable.prototype.except = function (second, comparer) {
         var source = this;
 
+        if (second == null) {
+            throw new System.ArgumentNullException();
+        }
+
         return new Enumerable(function () {
             var enumerator,
                 keys,
@@ -27156,6 +27178,10 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
     // Overload:function (second, compareSelector)
     Enumerable.prototype.intersect = function (second, comparer) {
         var source = this;
+
+        if (second == null) {
+            throw new System.ArgumentNullException();
+        }
 
         return new Enumerable(function () {
             var enumerator;
@@ -27203,6 +27229,10 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
     Enumerable.prototype.sequenceEqual = function (second, comparer) {
         comparer = comparer || System.Collections.Generic.EqualityComparer$1.$default;
 
+        if (second == null) {
+            throw new System.ArgumentNullException();
+        }
+
         var firstEnumerator = this.GetEnumerator();
         try {
             var secondEnumerator = Enumerable.from(second).GetEnumerator();
@@ -27228,6 +27258,10 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
 
     Enumerable.prototype.union = function (second, comparer) {
         var source = this;
+
+        if (second == null) {
+            throw new System.ArgumentNullException();
+        }
 
         return new Enumerable(function () {
             var firstEnumerator;
@@ -48662,7 +48696,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                     if (args === void 0) { args = []; }
                     if (args != null) {
                         if (System.SR.UsingResourceKeys()) {
-                            return (resourceFormat || "") + (args.join(", ") || "");
+                            return (resourceFormat || "") + ((args).join(", ") || "");
                         }
 
                         return System.String.format.apply(System.String, [resourceFormat].concat(args));
@@ -48672,21 +48706,21 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 },
                 Format: function (resourceFormat, p1) {
                     if (System.SR.UsingResourceKeys()) {
-                        return [resourceFormat, p1].join(", ");
+                        return ([resourceFormat, p1]).join(", ");
                     }
 
                     return System.String.format(resourceFormat, [p1]);
                 },
                 Format$1: function (resourceFormat, p1, p2) {
                     if (System.SR.UsingResourceKeys()) {
-                        return [resourceFormat, p1, p2].join(", ");
+                        return ([resourceFormat, p1, p2]).join(", ");
                     }
 
                     return System.String.format(resourceFormat, p1, p2);
                 },
                 Format$2: function (resourceFormat, p1, p2, p3) {
                     if (System.SR.UsingResourceKeys()) {
-                        return [resourceFormat, p1, p2, p3].join(", ");
+                        return ([resourceFormat, p1, p2, p3]).join(", ");
                     }
                     return System.String.format(resourceFormat, p1, p2, p3);
                 }

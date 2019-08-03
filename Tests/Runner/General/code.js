@@ -2488,7 +2488,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
                     Bridge.Test.NUnit.Assert.AreEqual("james@example.com", account.Email, "Previously feed string is intact.");
                     Bridge.Test.NUnit.Assert.False(account.Active, "Boolean propery updated from json.");
-                    Bridge.Test.NUnit.Assert.AreEqual("User, Admin, Expired", account.Roles.ToArray().join(", "), "Old list members kept and new list entry populated in the object.");
+                    Bridge.Test.NUnit.Assert.AreEqual("User, Admin, Expired", (account.Roles.ToArray()).join(", "), "Old list members kept and new list entry populated in the object.");
                 },
                 DeserializationBasics2: function () {
                     var s = new Newtonsoft.Json.Tests.Issues.Case16.Session();
@@ -2533,7 +2533,7 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
                     Newtonsoft.Json.JsonConvert.PopulateObject("{\"key3\":{\"Name\":\"Initial3_1\"},\"key5\":{\"Name\":\"Initial5\"}}", people);
 
                     Bridge.Test.NUnit.Assert.AreEqual(3, System.Array.getCount(people, System.Collections.Generic.KeyValuePair$2(System.String,Newtonsoft.Json.Tests.Issues.Case16.Person)), "Dictionary length increased by populating it. Existing entry updated.");
-                    Bridge.Test.NUnit.Assert.AreEqual("key3, key4, key5", ($t = System.String, System.Linq.Enumerable.from(people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$Keys, $t).ToArray($t)).join(", "), "Keys' sequence follow expected order in dictionary.");
+                    Bridge.Test.NUnit.Assert.AreEqual("key3, key4, key5", (($t = System.String, System.Linq.Enumerable.from(people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$Keys, $t).ToArray($t))).join(", "), "Keys' sequence follow expected order in dictionary.");
                     Bridge.Test.NUnit.Assert.AreEqual("Initial3_1", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key3").Name, "'key3' entry updated accordingly after populating it.");
                     Bridge.Test.NUnit.Assert.AreEqual(0, people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key3").Tag, "Updated key's object fully renewed (new instance).");
                     Bridge.Test.NUnit.Assert.AreEqual("Initial4", people.System$Collections$Generic$IDictionary$2$System$String$Newtonsoft$Json$Tests$Issues$Case16$Person$getItem("key4").Name, "Unchanged key remained intact.");
