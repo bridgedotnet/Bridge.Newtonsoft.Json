@@ -4,8 +4,6 @@ Bridge.assembly("Newtonsoft.Json.Tests", function ($asm, globals) {
 
     var $m = Bridge.setMetadata,
         $n = ["TestCase67","TestCase67.SubNameSpace","System.Collections.Generic","System","Demo25","Newtonsoft.Json.Tests","Newtonsoft.Json.Tests.Issues","System.Text","System.Runtime.Serialization"];
-    $m("Microsoft.CodeAnalysis.EmbeddedAttribute", function () { return {"att":1048832,"a":4,"at":[new Microsoft.CodeAnalysis.EmbeddedAttribute()],"m":[{"a":2,"n":".ctor","t":1,"sn":"ctor"}]}; }, $n);
-    $m("System.Runtime.CompilerServices.IsReadOnlyAttribute", function () { return {"att":1048832,"a":4,"at":[new Microsoft.CodeAnalysis.EmbeddedAttribute()],"m":[{"a":2,"n":".ctor","t":1,"sn":"ctor"}]}; }, $n);
     $m("TestCase67.Optional$1", function (T) { return {"att":1048576,"a":4,"m":[{"a":2,"n":".ctor","t":1,"p":[T],"pi":[{"n":"value","pt":T,"ps":0}],"sn":"ctor"},{"a":2,"n":"Value","t":16,"rt":T,"g":{"a":2,"n":"get_Value","t":8,"rt":T,"fg":"Value"},"fn":"Value"},{"a":1,"backing":true,"n":"<Value>k__BackingField","t":4,"rt":T,"sn":"Value"}]}; }, $n);
     $m("TestCase67.SubClass", function () { return {"nested":[$n[0].SubClass.Optional$1],"att":1048576,"a":4,"m":[{"a":2,"isSynthetic":true,"n":".ctor","t":1,"sn":"ctor"}]}; }, $n);
     $m("TestCase67.SubClass.Optional$1", function (T) { return {"td":$n[0].SubClass,"att":1048578,"a":2,"m":[{"a":2,"n":".ctor","t":1,"p":[T],"pi":[{"n":"value","pt":T,"ps":0}],"sn":"ctor"},{"a":2,"n":"Value","t":16,"rt":T,"g":{"a":2,"n":"get_Value","t":8,"rt":T,"fg":"Value"},"fn":"Value"},{"a":1,"backing":true,"n":"<Value>k__BackingField","t":4,"rt":T,"sn":"Value"}]}; }, $n);
