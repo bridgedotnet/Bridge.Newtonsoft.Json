@@ -1,4 +1,6 @@
 before_install:
+# The saucelabs test is broken, we can't do client tests anymore.
+- export SKIP_CLIENT_TESTS=true;
 # Gets commit message
 - "export TRAVIS_COMMIT_MSG=\"$(git log --format=%B --no-merges -n 1)\""
 - echo "$TRAVIS_COMMIT_MSG"
