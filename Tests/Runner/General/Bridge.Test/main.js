@@ -1,5 +1,5 @@
 /**
- * @compiler Bridge.NET 17.10.0
+ * @compiler Bridge.NET 17.10.1
  */
 Bridge.assembly("Bridge.Test.Newtonsoft.Json.Tests", function ($asm, globals) {
     
