@@ -1,7 +1,7 @@
 /**
  * @version   : 17.10.1 - Bridge.NET
  * @author    : Object.NET, Inc. http://bridge.net/
- * @copyright : Copyright 2008-2019 Object.NET, Inc. http://object.net/
+ * @copyright : Copyright 2008-2020 Object.NET, Inc. http://object.net/
  * @license   : See license.txt and https://github.com/bridgedotnet/Bridge/blob/master/LICENSE.md
  */
 
@@ -19326,7 +19326,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
 
                 if (this.isSimpleKey) {
                     if (this.simpleBuckets != null) {
-                        if (this.simpleBuckets.hasOwnProperty(key)) {
+                        if (Object.prototype.hasOwnProperty.call(this.simpleBuckets, key)) {
                             var i = this.simpleBuckets[key];
                             delete this.simpleBuckets[key];
                             this.entries[System.Array.index(i, this.entries)].hashCode = -1;
@@ -19503,7 +19503,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 }
 
                 if (this.isSimpleKey) {
-                    if (this.simpleBuckets != null && this.simpleBuckets.hasOwnProperty(key)) {
+                    if (this.simpleBuckets != null && Object.prototype.hasOwnProperty.call(this.simpleBuckets, key)) {
                         return this.simpleBuckets[key];
                     }
                 } else if (this.buckets != null) {
@@ -19539,7 +19539,7 @@ if (typeof window !== 'undefined' && window.performance && window.performance.no
                 }
 
                 if (this.isSimpleKey) {
-                    if (this.simpleBuckets.hasOwnProperty(key)) {
+                    if (Object.prototype.hasOwnProperty.call(this.simpleBuckets, key)) {
                         if (add) {
                             System.ThrowHelper.ThrowArgumentException(System.ExceptionResource.Argument_AddingDuplicate);
                         }
