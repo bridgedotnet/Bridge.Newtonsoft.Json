@@ -1075,7 +1075,7 @@ Bridge.assembly("Newtonsoft.Json", function ($asm, globals) {
                                         name = prm.sn || prm.n;
 
                                     for (var j = 0; j < properties.length; j++) {
-                                        var cfg = properties[i],
+                                        var cfg = properties[j],
                                             p = cfg.member,
                                             mname = cfg.attr && cfg.attr.PropertyName || p.n;
 
